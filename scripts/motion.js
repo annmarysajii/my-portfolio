@@ -60,3 +60,69 @@
         });
     });
 });
+
+    
+    // 4. Text Splitting for Typography Animations
+    document.querySelectorAll('.sec-title').forEach(title => {
+        const html = title.innerHTML;
+        const parts = html.split(/<br\s*\/?>/i);
+        
+        let charIndex = 0;
+        const newHtml = parts.map(part => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = part;
+            const text = tempDiv.textContent; 
+            
+            let partHtml = '';
+            for(let i=0; i<text.length; i++){
+                const char = text[i];
+                if(char === ' ') {
+                    partHtml += ' '; 
+                } else {
+                    partHtml += `<span class="char" style="--char-index:${charIndex}">${char}</span>`;
+                    charIndex++;
+                }
+            }
+            return partHtml;
+        }).join('<br>');
+        
+        title.innerHTML = newHtml;
+        title.classList.add('split-text');
+    });
+
+    // Add .play-anim class when intersecting
+    const typeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('play-anim');
+                // Remove class after animation completes so hover can re-trigger it
+                setTimeout(() => entry.target.classList.remove('play-anim'), 1200);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('.sec-title').forEach(el => typeObserver.observe(el));
+
+
+    // 5. Thematic Falling Backgrounds
+    const bgObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.target.classList.contains('hero')) {
+                    window.currentCanvasTheme = 'star';
+                } else if (entry.target.id === 'animation') {
+                    window.currentCanvasTheme = 'animation';
+                } else if (entry.target.id === 'illustration') {
+                    window.currentCanvasTheme = 'illustration';
+                } else if (entry.target.id === 'motion') {
+                    window.currentCanvasTheme = 'motion';
+                } else if (entry.target.id === 'brand') {
+                    window.currentCanvasTheme = 'brand';
+                } else if (entry.target.id === 'music') {
+                    window.currentCanvasTheme = 'music';
+                }
+            }
+        });
+    }, { threshold: 0.4 });
+    
+    document.querySelectorAll('.sec, .hero').forEach(el => bgObserver.observe(el));
