@@ -1724,160 +1724,107 @@ const main = document.getElementById('main');
 
 
 if(!p){
+    main.innerHTML=`<div class="con" style="padding:6rem 0;text-align:center;"><p style="font-size:1rem;color:var(--ink5);">Project not found.</p><a href="portfolio.html" style="display:inline-block;margin-top:1rem;font-size:.9rem;font-weight:600;color:var(--blue);">Back to portfolio</a></div>`;
+  } else {
+    document.title = p.title + ' — Annmary Saji';
 
-  main.innerHTML=`<div class="con" style="padding:6rem 0;text-align:center;"><p style="font-size:1rem;color:var(--ink5);">Project not found.</p><a href="portfolio.html" style="display:inline-block;margin-top:1rem;font-size:.9rem;font-weight:600;color:var(--blue);">Back to portfolio</a></div>`;
+    function imgSlot(size,idx){
+      // for projects with 1 image
+      if(!p.images[idx]) return ''; 
+      const im=p.images[idx];
+      const cls=size==='sq' ? 'gallery-img gallery-img-sq' : 'gallery-img';
+      return `<div class="${cls}"><span class="ph-icon">${im.emoji}</span><span class="ph-label">${im.label}</span></div>`;
+    }
 
-} else {
+    // Determine gallery rows to hide if no images
+    const r2 = imgSlot('med',1) + imgSlot('med',2);
+    const r3 = imgSlot('sq',3) + imgSlot('sq',4) + imgSlot('sq',5);
 
-  document.title = p.title + ' — Annmary Saji';
-
-
-
-  function imgSlot(size,idx){
-
-    // for projects with 1 image
-
-    if(!p.images[idx]) return ''; 
-
-    const im=p.images[idx];
-
-    const cls=size==='sq' ? 'gallery-img gallery-img-sq' : 'gallery-img';
-
-    return `<div class="${cls}"><span class="ph-icon">${im.emoji}</span><span class="ph-label">${im.label}</span></div>`;
-
-  }
-
-
-
-  // Determine gallery rows to hide if no images
-
-  const r2 = imgSlot('med',1) + imgSlot('med',2);
-
-  const r3 = imgSlot('sq',3) + imgSlot('sq',4) + imgSlot('sq',5);
-
-
-
-  main.innerHTML=`
-
-<div class="con">
-
-  <div class="proj-header">
-
-    <div class="proj-disc-tag">${p.discipline}${p.context?' · '+p.context:''}</div>
-
-    <h1 class="proj-title">${p.title}</h1>
-
-    ${p.badge ? `<div class=\"proj-badge\">${p.badge}</div>` : ''}
-
-    <div class="proj-meta-row">
-
-      <span class="proj-meta-item"><strong>Year</strong> &nbsp;${p.year}</span>
-
-      <div class="proj-meta-sep"></div>
-
-      <span class="proj-meta-item"><strong>Discipline</strong> &nbsp;${p.discipline}</span>
-
-      <div class="proj-meta-sep"></div>
-
-      <span class="proj-meta-item"><strong>Role</strong> &nbsp;${p.role}</span>
-
+    main.innerHTML=`
+  <div class="con">
+    <div class="proj-header">
+      <div class="proj-disc-tag">${p.discipline}${p.context?' • '+p.context:''}</div>
+      <h1 class="proj-title">${p.title}</h1>
+      ${p.badge ? `<div class="proj-badge">${p.badge}</div>` : ''}
+      <div class="proj-meta-row">
+        <span class="proj-meta-item"><strong>Year</strong> &nbsp;${p.year}</span>
+        <div class="proj-meta-sep"></div>
+        <span class="proj-meta-item"><strong>Role</strong> &nbsp;${p.role}</span>
+      </div>
     </div>
 
-  </div>
-
-
-
-  <div class="proj-grid">
-
-    <div>
-
-      <p class="proj-overview">${p.overview}</p>
-
-      <div class="proj-process">
-
-        <div class="proc-h">Process and Approach</div>
-
-        <p class="proc-p">${p.process}</p>
-
+    <div class="proj-desc-grid">
+      <div class="proj-desc-col">
+        <h2 class="proj-desc-title">Overview</h2>
+        <p class="proj-desc-text">${p.overview}</p>
+        <div class="proj-tools">
+          ${p.tools.map(t=>`<span class="tool">${t}</span>`).join('')}
+        </div>
       </div>
-
+      <div class="proj-desc-col">
+        <h2 class="proj-desc-title">Process & Approach</h2>
+        <p class="proj-desc-text">${p.process}</p>
+      </div>
     </div>
-
-    <div class="proj-sidebar">
-
-      <div class="sidebar-block">
-
-        <div class="sb-lbl">Role</div>
-
-        <div class="sb-val small">${p.role}</div>
-
-      </div>
-
-      <div class="sidebar-block">
-
-        <div class="sb-lbl">Tools</div>
-
-        <div class="tools-list">${p.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>
-
-      </div>
-
-      <div class="sidebar-block">
-
-        <div class="sb-lbl">Year</div>
-
-        <div class="sb-val">${p.year}</div>
-
-      </div>
-
-      <div class="sidebar-block">
-
-        <div class="sb-lbl">Discipline</div>
-
-        <div class="sb-val">${p.discipline}</div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div>
 
     <div class="gallery-h">Visual Development / Output</div>
-
-    <div class="gallery-hero">
-
-      <div class="tape tape-tl"></div>
-
-      <div class="tape tape-tr"></div>
-
-      <span class="ph-icon">${(p.images[0]||{emoji:'<i data-lucide="image"></i>'}).emoji}</span>
-
-      <span class="ph-label">${(p.images[0]||{label:'Image / footage coming soon'}).label}</span>
-
+    
+    <div id="dynamic-gallery">
+      <div class="gallery-hero">
+        <div class="tape tape-tl"></div>
+        <div class="tape tape-tr"></div>
+        <span class="ph-icon"><i data-lucide="image"></i></span>
+        <span class="ph-label">Loading media...</span>
+      </div>
     </div>
 
-    ${r2 ? `<div class=\"gallery-row2\">${r2}</div>` : ''}
-
-    ${r3 ? `<div class=\"gallery-row3\">${r3}</div>` : ''}
-
-  </div>
-
-
-
-  <div class="proj-footer">
-
-    <a href="portfolio.html" class="back-btn">← Back to Portfolio</a>
-
-    <a href="portfolio.html" class="portfolio-btn">View All Work →</a>
-
-  </div>
-
-</div>`;
-
-}
+    <div class="proj-footer">
+      <a href="portfolio.html" class="back-btn">← Back to Portfolio</a>
+      <a href="portfolio.html" class="portfolio-btn">View All Work →</a>
+    </div>
+  </div>`;
+  
+    // Fetch and populate gallery
+    fetch('assets/portfolio-data.json').then(r=>r.json()).then(data => {
+        const media = data[id] || [];
+        const gal = document.getElementById('dynamic-gallery');
+        if (media.length === 0) {
+            gal.innerHTML = `<div class="gallery-hero"><div class="tape tape-tl"></div><div class="tape tape-tr"></div><span class="ph-label">Media coming soon</span></div>`;
+            return;
+        }
+        
+        let htmlStr = '';
+        media.forEach((file, idx) => {
+            let el = '';
+            const isVideo = !!file.match(/\.(mp4|mov|webm)$/i);
+            const isAudio = !!file.match(/\.(m4a|mp3|wav)$/i);
+            
+            if (isVideo) {
+                el = `<video src="${file}" controls style="width:100%; height:100%; object-fit:cover; background:var(--surf); border-radius:4px;"></video>`;
+            } else if (isAudio) {
+                el = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:var(--surf); padding:2rem;"><audio src="${file}" controls style="width:100%;"></audio></div>`;
+            } else {
+                el = `<img src="${file}" alt="" style="width:100%; height:100%; object-fit:cover; background:var(--surf); border-radius:4px;">`;
+            }
+            
+            // Layout: First item is hero, next 2 are medium row, next are square grid
+            if (idx === 0) {
+                htmlStr += `<div class="gallery-hero"><div class="tape tape-tl"></div><div class="tape tape-tr"></div>${el}</div>`;
+            } else if (idx === 1 || idx === 2) {
+                if (idx === 1) htmlStr += `<div class="gallery-row2">`;
+                htmlStr += `<div class="gallery-img">${el}</div>`;
+                if (idx === 2 || idx === media.length-1) htmlStr += `</div>`;
+            } else {
+                if (idx === 3) htmlStr += `<div class="gallery-row3">`;
+                htmlStr += `<div class="gallery-img gallery-img-sq">${el}</div>`;
+                if (idx === media.length-1) htmlStr += `</div>`;
+            }
+        });
+        gal.innerHTML = htmlStr;
+    }).catch(err => {
+        console.error("Error loading media:", err);
+    });
+  }
 
 </script>
 

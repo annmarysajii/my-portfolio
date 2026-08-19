@@ -927,15 +927,15 @@ button{cursor:none;font-family:inherit;}
 
     <div class="dl-grid">
 
-      <a href="assets/downloads/AnnMarySaji_Portfolio_Animation.pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="sparkles"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Animation &amp; Visual Dev</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_Production_Portfolio_2026 (1).pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="sparkles"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Animation &amp; Visual Dev</span></a>
 
-      <a href="assets/downloads/AnnMarySaji_Portfolio_Illustration.pdf" class="dl-btn" download><span class="dl-ico ir"><i data-lucide="pen-tool"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Illustration &amp; Comics</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_ComicPortfolio.pdf" class="dl-btn" download><span class="dl-ico ir"><i data-lucide="pen-tool"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Illustration &amp; Comics</span></a>
 
-      <a href="assets/downloads/AnnMarySaji_Portfolio_Videography.pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="clapperboard"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Videography &amp; Motion</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_SocialmediaPortfolio (1).pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="clapperboard"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Videography &amp; Motion</span></a>
 
-      <a href="assets/downloads/AnnMarySaji_Portfolio_GraphicDesign.pdf" class="dl-btn" download><span class="dl-ico ir"><i data-lucide="palette"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Graphic Design &amp; Brand</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/Brand Design Portfolio - Annmary Saji.pdf" class="dl-btn" download><span class="dl-ico ir"><i data-lucide="palette"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Graphic Design &amp; Brand</span></a>
 
-      <a href="assets/downloads/AnnMarySaji_Portfolio_Music.pdf" class="dl-btn" download><span class="dl-ico iy"><i data-lucide="music"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Music Production</span></a>
+      
 
     </div>
 
@@ -971,7 +971,7 @@ button{cursor:none;font-family:inherit;}
 
    </div>
 
-   <a href="assets/downloads/AnnMarySaji_Portfolio_Animation.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+   <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_Production_Portfolio_2026 (1).pdf" class="sec-dl rv d2" download>↓ PDF</a>
 
   </div>
 
@@ -1105,7 +1105,7 @@ button{cursor:none;font-family:inherit;}
 
    </div>
 
-   <a href="assets/downloads/AnnMarySaji_Portfolio_Illustration.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+   <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_ComicPortfolio.pdf" class="sec-dl rv d2" download>↓ PDF</a>
 
   </div>
 
@@ -1225,7 +1225,7 @@ button{cursor:none;font-family:inherit;}
 
    </div>
 
-   <a href="assets/downloads/AnnMarySaji_Portfolio_Videography.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+   <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_SocialmediaPortfolio (1).pdf" class="sec-dl rv d2" download>↓ PDF</a>
 
   </div>
 
@@ -1325,7 +1325,7 @@ button{cursor:none;font-family:inherit;}
 
    </div>
 
-   <a href="assets/downloads/AnnMarySaji_Portfolio_GraphicDesign.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+   <a href="assets/portfolio-data/PORTFOLIO PDFS/Brand Design Portfolio - Annmary Saji.pdf" class="sec-dl rv d2" download>↓ PDF</a>
 
   </div>
 
@@ -1529,7 +1529,7 @@ button{cursor:none;font-family:inherit;}
 
    </div>
 
-   <a href="assets/downloads/AnnMarySaji_Portfolio_Music.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+   
 
   </div>
 
@@ -2223,6 +2223,31 @@ window.sub=function(e){
   <script src="scripts/motion.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>lucide.createIcons();</script>
+<script>
+fetch('assets/portfolio-data.json').then(r=>r.json()).then(data => {
+  document.querySelectorAll('a.card-img').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href && href.includes('id=')) {
+      const id = href.split('id=')[1];
+      if (data[id] && data[id].length > 0) {
+        const file = data[id].find(f => f.match(/\.(png|jpe?g|gif|webm|mp4|mov)$/i)) || data[id][0];
+        if (file) {
+          if (file.match(/\.(mp4|mov|webm)$/i)) {
+            a.innerHTML = `<video src="${file}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>`;
+          } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
+            a.innerHTML = `<img src="${file}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
+          } else if (file.match(/\.(pdf)$/i)) {
+            a.innerHTML = `<div class="ph"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
+          } else if (file.match(/\.(mp3|wav|m4a)$/i)) {
+            a.innerHTML = `<div class="ph"><i data-lucide="music" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">Audio Track</span></div>`;
+          }
+        }
+      }
+    }
+  });
+  if(window.lucide) window.lucide.createIcons();
+});
+</script>
 </body>
 
 </html>
