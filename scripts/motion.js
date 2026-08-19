@@ -45,11 +45,11 @@
             const rotateX = ((y - centerY) / centerY) * -4;
             const rotateY = ((x - centerX) / centerX) * 4;
             
-            card.style.transform = perspective(1000px) scale3d(1.01, 1.01, 1.01) rotateX( + rotateX + deg) rotateY( + rotateY + deg);
+            card.style.transform = `perspective(1000px) scale3d(1.01, 1.01, 1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            card.style.transform = perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg);
+            card.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
             setTimeout(() => {
                 card.style.transition = '';
             }, 100);
