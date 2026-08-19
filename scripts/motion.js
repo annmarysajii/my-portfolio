@@ -123,6 +123,6 @@
                 }
             }
         });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.15 });
     
     document.querySelectorAll('.sec, .hero').forEach(el => bgObserver.observe(el));
