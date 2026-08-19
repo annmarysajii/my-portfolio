@@ -90,6 +90,7 @@
     }
     .back-btn:hover { border-color: var(--page-accent-sat); color: var(--page-accent-sat); }
   </style>
+  <link rel="stylesheet" href="css/motion.css"/>
 </head>
 <body>
 
@@ -319,5 +320,6 @@
     reveals.forEach(el => obs.observe(el));
     setTimeout(() => reveals[0] && reveals[0].classList.add('visible'), 100);
   </script>
+  <script src="scripts/motion.js"></script>
 </body>
 </html>
