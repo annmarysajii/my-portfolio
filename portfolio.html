@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8"/>
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+<title>Annmary Saji</title>
+
+<meta name="description" content="Annmary Saji — animator, illustrator, videographer, designer, and composer. BFA Animation, NTU ADM. Annecy 2025."/>
+
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+
+<noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
+
+<style>
+
+/* ================================================================
+
+   DESIGN TOKENS  —  2 fonts only, 8px rhythm
+
+================================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+html{scroll-behavior:smooth;}
+
+:root{
+
+  --ink:#111009;--ink5:rgba(17,16,9,.5);--ink12:rgba(17,16,9,.12);--ink07:rgba(17,16,9,.07);
+
+  --blue:#1850A8;--red:#D93020;--yel:#E8B000;
+
+  --bg:#FAF8F4;--surf:#F0EAE0;--white:#FFFDF9;
+
+  --fd:'Clash Display',Georgia,serif;
+
+  --fb:'General Sans',system-ui,sans-serif;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+
+  --sh1:2px 3px 0 rgba(17,16,9,.08),0 4px 14px rgba(17,16,9,.06);
+
+  --sh2:3px 5px 0 rgba(17,16,9,.1),0 10px 30px rgba(17,16,9,.1);
+
+  --sh3:4px 7px 0 rgba(17,16,9,.12),0 20px 50px rgba(17,16,9,.13);
+
+}
+
+
+
+/*  — " — " —  DARK MODE  — " — " —  */
+
+[data-theme="dark"]{
+
+  --ink:#F0EEF5;--ink5:rgba(240,238,245,.5);--ink12:rgba(240,238,245,.12);--ink07:rgba(240,238,245,.07);
+
+  --bg:#0D0C11;--surf:#1A1828;--white:#13111C;
+
+  --blue:#6088E0;--red:#E84030;--yel:#F0B800;
+
+  --sh1:2px 3px 0 rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+
+  --sh2:3px 5px 0 rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);
+
+  --sh3:4px 7px 0 rgba(0,0,0,.4),0 20px 50px rgba(0,0,0,.35);
+
+}
+
+[data-theme="dark"] .about,[data-theme="dark"] .dl-sec,[data-theme="dark"] .foot{background:#0A0910!important;}
+
+[data-theme="dark"] .dl-sec,[data-theme="dark"] .dl-btn{color:var(--ink)!important;}
+
+[data-theme="dark"] .dl-btn{background:rgba(240,238,245,.04);border-color:rgba(240,238,245,.08);}
+
+[data-theme="dark"] .dl-btn:hover{background:rgba(240,238,245,.08);border-color:var(--yel);}
+
+[data-theme="dark"] .about .about-p{color:rgba(240,238,245,.55)!important;}
+
+[data-theme="dark"] .about .about-h{color:var(--ink)!important;}
+
+[data-theme="dark"] .about .about-h em{color:var(--blue)!important;}
+
+[data-theme="dark"] .aw-n{color:var(--ink)!important;}
+
+[data-theme="dark"] .about .about-link{color:rgba(240,238,245,.5)!important;}
+
+[data-theme="dark"] .about .about-link:hover{color:#F0EEF5!important;}
+
+[data-theme="dark"] body{background-image:radial-gradient(circle,rgba(240,238,245,.05) 1px,transparent 1px);}
+
+[data-theme="dark"] .nav.sc{background:rgba(13,12,17,.94)!important;}
+
+
+
+[data-theme="dark"] .foot-logo,[data-theme="dark"] .foot-copy,[data-theme="dark"] .foot-back,[data-theme="dark"] .foot-egg{color:rgba(240,238,245,.45)!important;}
+
+[data-theme="dark"] .foot-back:hover,[data-theme="dark"] .foot-egg:hover{color:#F0EEF5!important;}
+
+
+
+body{
+
+  font-family:var(--fb);color:var(--ink);overflow-x:hidden;cursor:none;
+
+  background-color:var(--bg);font-size:16px;line-height:1.6;
+
+  background-image:radial-gradient(circle,rgba(17,16,9,.09) 1px,transparent 1px);
+
+  background-size:24px 24px;
+
+  transition:background-color .4s ease,color .4s ease;
+
+}
+
+body::before{
+
+  content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;
+
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+
+  opacity:.035;mix-blend-mode:multiply;
+
+}
+
+img,video{display:block;max-width:100%;}
+
+a{color:inherit;text-decoration:none;}
+
+button{cursor:none;font-family:inherit;}
+
+
+
+/* ================================================================
+
+   CURSOR & BACKGROUND CANVAS
+
+================================================================ */
+
+#cur{position:fixed;top:0;left:0;width:30px;height:30px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;}
+
+#cur.hov{transform:translate(-50%,-50%) scale(2.1);}
+
+#bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+
+
+
+/* ================================================================
+
+   ENTRY ZOOM from warp  —  starts bright/white matching the warp end
+
+================================================================ */
+
+.from-warp #wrap{animation:zIn .72s cubic-bezier(.4,0,.2,1) both;}
+
+@keyframes zIn{
+
+  from{transform:scale(1.06);filter:brightness(2.8) blur(1.5px);}
+
+  55%{filter:brightness(1.2) blur(0);}
+
+  to{transform:scale(1);filter:brightness(1);}
+
+}
+
+
+
+/* ================================================================
+
+   THEME TOGGLE
+
+================================================================ */
+
+.theme-toggle{
+
+  background:none;border:1.5px solid var(--ink12);border-radius:2px;
+
+  padding:.3rem .55rem;color:var(--ink5);font-size:.88rem;
+
+  transition:color .2s,border-color .2s,background .2s;line-height:1;
+
+}
+
+.theme-toggle:hover{color:var(--ink);border-color:var(--ink12);background:var(--ink07);}
+
+
+
+/* ================================================================
+
+   FOOTER GAME EASTER EGG
+
+================================================================ */
+
+.foot-egg{
+
+  font-size:.72rem;font-weight:500;letter-spacing:.04em;
+
+  color:rgba(250,248,244,.28);transition:color .25s;text-decoration:none;
+
+}
+
+.foot-egg:hover{color:rgba(250,248,244,.65);}
+
+.foot-egg::before{content:'★ ';}
+
+
+
+
+
+
+
+/* ================================================================
+
+   NAV
+
+================================================================ */
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.25rem 0;transition:background .3s,box-shadow .3s,padding .3s;}
+
+.nav.sc{background:rgba(250,248,244,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1px 0 var(--ink12);padding:.8rem 0;}
+
+.nav-in{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+
+.nav-logo{font-family:var(--fd);font-size:.95rem;font-weight:700;letter-spacing:-.01em;}
+
+.nav-links{display:flex;align-items:center;gap:2.25rem;list-style:none;}
+
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--ink5);position:relative;transition:color .2s;}
+
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:var(--ink);transition:width .3s var(--ease);}
+
+.nav-links a:hover{color:var(--ink);}
+
+.nav-links a:hover::after{width:100%;}
+
+.nav-cta{padding:.45rem 1.1rem;background:var(--ink);color:var(--bg)!important;border-radius:2px;font-size:.875rem;font-weight:600;transition:background .2s,transform .15s;}
+
+.nav-cta:hover{background:var(--blue);transform:translateY(-1px);}
+
+.nav-cta::after{display:none!important;}
+
+
+
+/* ================================================================
+
+   HERO  —  clean hierarchy
+
+================================================================ */
+
+.hero{min-height:100svh;display:flex;flex-direction:column;padding-top:76px;}
+
+.hero-body{
+
+  flex:1;max-width:1200px;margin:0 auto;width:100%;
+
+  padding:clamp(3rem,5vw,5rem) clamp(1.5rem,5vw,4rem) 2.5rem;
+
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(3rem,6vw,6rem);
+
+}
+
+
+
+.hero-name{
+
+  font-family:var(--fd);
+
+  font-size:clamp(3.8rem,7.5vw,7.5rem);
+
+  font-weight:700;line-height:.9;letter-spacing:-.04em;
+
+  margin-bottom:.75rem;
+
+}
+
+.hero-role{
+
+  font-family:var(--fd);font-size:clamp(.95rem,1.8vw,1.35rem);
+
+  font-weight:500;color:var(--ink5);letter-spacing:-.01em;
+
+  margin-bottom:1.25rem;
+
+}
+
+.hero-bio{
+
+  font-size:1rem;line-height:1.75;color:var(--ink5);
+
+  max-width:400px;margin-bottom:1.5rem;
+
+}
+
+.disc-row{
+
+  display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;
+
+  margin-bottom:2rem;
+
+}
+
+.disc{
+
+  font-size:.8125rem;font-weight:500;
+
+  padding:.22rem .7rem;border:1.5px solid var(--ink12);
+
+  background:var(--white);border-radius:2px;color:var(--ink);
+
+}
+
+.disc:nth-child(odd){transform:rotate(-.4deg);}
+
+.disc:nth-child(even){transform:rotate(.3deg);}
+
+
+
+.metrics{
+
+  display:flex;align-items:center;gap:2rem;
+
+  padding-top:1.5rem;border-top:1px solid var(--ink12);
+
+  flex-wrap:wrap;
+
+}
+
+.metric{display:flex;flex-direction:column;gap:.2rem;}
+
+.metric-num{
+
+  font-family:var(--fd);font-size:clamp(1.5rem,2.8vw,2.1rem);
+
+  font-weight:700;line-height:1;letter-spacing:-.02em;
+
+}
+
+.metric-lbl{font-size:.75rem;color:var(--ink5);line-height:1.4;max-width:130px;}
+
+.metric-sep{width:1px;height:36px;background:var(--ink12);flex-shrink:0;}
+
+
+
+.hero-vis{position:relative;}
+
+.hero-vid img{width:100%;border-radius:3px;display:block;}
+
+.chip{
+
+  position:absolute;font-size:.95rem;font-weight:600;
+
+  padding:.5rem 1rem;border:1.5px solid;border-radius:2px;
+
+  box-shadow:3px 3px 0 rgba(17,16,9,.15);
+
+  white-space:nowrap;animation:fl 5s ease-in-out infinite;
+
+}
+
+.ch1{top:-1rem;right:-1rem;background:var(--blue);color:#fff;border-color:var(--blue);--r:-1.5deg;transform:rotate(-1.5deg);}
+
+.ch2{bottom:1.5rem;left:-2.5rem;background:var(--white);color:var(--ink);border-color:var(--ink12);--r:1.2deg;transform:rotate(1.2deg);animation-delay:1.6s;}
+
+.ch3{top:38%;right:-2.5rem;background:var(--yel);color:var(--ink);border-color:var(--yel);--r:-2deg;transform:rotate(-2deg);animation-delay:.9s;}
+
+@keyframes fl{0%,100%{transform:rotate(var(--r)) translateY(0);}50%{transform:rotate(var(--r)) translateY(-10px);}}
+
+
+
+.hero-foot{
+
+  max-width:1200px;margin:0 auto;width:100%;
+
+  padding:1rem clamp(1.5rem,5vw,4rem);
+
+  border-top:1px solid var(--ink12);
+
+  display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
+
+}
+
+.hero-foot span{font-size:.8125rem;color:var(--ink5);}
+
+.hero-foot strong{color:var(--ink);font-weight:600;}
+
+.scroll-cue{display:flex;align-items:center;gap:.4rem;animation:bob 2.5s ease-in-out infinite;}
+
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(3px);}}
+
+
+
+/* ================================================================
+
+   DOWNLOADS
+
+================================================================ */
+
+.dl-sec{padding:4.5rem 0;background:var(--ink);color:var(--bg);position:relative;overflow:hidden;}
+
+.dl-sec::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(250,248,244,.05) 1px,transparent 1px);background-size:24px 24px;}
+
+.dl-in{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+
+.dl-h{font-family:var(--fd);font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:700;margin-bottom:2rem;line-height:1.1;}
+
+.dl-h em{font-style:normal;color:var(--yel);}
+
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem;margin-bottom:.6rem;}
+
+.dl-btn{display:flex;align-items:center;gap:.75rem;padding:.9rem 1rem;background:rgba(250,248,244,.07);border:1.5px solid rgba(250,248,244,.12);border-radius:2px;color:var(--bg);font-size:.875rem;font-weight:500;transition:background .2s,border-color .2s,transform .2s;cursor:none;}
+
+.dl-btn:hover{background:rgba(250,248,244,.14);border-color:var(--yel);transform:translateY(-2px);}
+
+.dl-ico{width:30px;height:30px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+
+.ib{background:rgba(24,80,168,.45);}.ir{background:rgba(217,48,32,.4);}.iy{background:rgba(232,176,0,.3);}
+
+.dl-txt{display:flex;flex-direction:column;gap:.04rem;}
+
+.dl-lbl{font-size:.7rem;opacity:.4;}
+
+.dl-feat{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+
+
+
+/* ================================================================
+
+   SECTIONS
+
+================================================================ */
+
+.sec{padding:5.5rem 0;position:relative;}
+
+.sec:nth-child(even){background:var(--surf);}
+
+.sec:not(:first-child)::before{
+
+  content:'';position:absolute;top:-1px;left:0;right:0;height:16px;background:inherit;
+
+  clip-path:polygon(0 0,1% 100%,3% 20%,5% 85%,7% 15%,9% 75%,12% 5%,14% 65%,17% 15%,19% 80%,21% 5%,24% 60%,27% 10%,30% 70%,33% 5%,36% 65%,39% 0,42% 60%,45% 10%,48% 75%,51% 5%,54% 65%,57% 10%,60% 80%,63% 5%,66% 70%,69% 15%,72% 80%,75% 5%,78% 65%,81% 10%,84% 75%,87% 5%,90% 60%,93% 10%,96% 70%,98% 15%,100% 100%,100% 0);
+
+  z-index:2;
+
+}
+
+.con{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+
+.sec-hd{display:grid;grid-template-columns:1fr auto;align-items:start;gap:2rem;margin-bottom:3rem;padding-bottom:1.5rem;border-bottom:1.5px dashed var(--ink12);}
+
+.sec-num{font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.5rem;}
+
+.sec-title{font-family:var(--fd);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1;letter-spacing:-.025em;}
+
+.sec-intro{font-size:1rem;line-height:1.75;color:var(--ink5);max-width:520px;margin-top:.65rem;}
+
+.sec-dl{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border:1.5px solid var(--ink12);border-radius:2px;font-size:.875rem;font-weight:600;color:var(--ink);white-space:nowrap;margin-top:.25rem;transition:background .2s,border-color .2s,color .2s,transform .15s;}
+
+.sec-dl:hover{background:var(--ink);border-color:var(--ink);color:var(--bg);transform:translateY(-1px);}
+
+
+
+/* ================================================================
+
+   PROJECT CARDS
+
+================================================================ */
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.4rem;}
+
+.card{
+
+  background:var(--white);border:1.5px solid var(--ink12);border-radius:3px;
+
+  display:flex;flex-direction:column;box-shadow:var(--sh1);position:relative;
+
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+
+}
+
+.card::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%) rotate(-1.5deg);width:50px;height:14px;border-radius:1px;z-index:2;background:rgba(232,176,0,.5);}
+
+.card:nth-child(3n+2)::before{background:rgba(24,80,168,.2);transform:translateX(-50%) rotate(1.2deg);}
+
+.card:nth-child(3n+3)::before{background:rgba(217,48,32,.18);transform:translateX(-50%) rotate(-.7deg);}
+
+.card:nth-child(4n+1){transform:rotate(-.5deg);}
+
+.card:nth-child(4n+2){transform:rotate(.4deg);}
+
+.card:nth-child(4n+3){transform:rotate(-.3deg);}
+
+.card:nth-child(4n+4){transform:rotate(.6deg);}
+
+.card:hover{transform:rotate(0) translateY(-8px)!important;box-shadow:var(--sh3);}
+
+
+
+.card-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surf);border-bottom:1.5px solid var(--ink12);}
+
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+
+.card:hover .card-img img{transform:scale(1.05);}
+
+.ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--ink5);}
+
+.ph-i{width:38px;height:38px;border-radius:2px;background:var(--ink07);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+
+.ph-t{font-size:.8125rem;color:var(--ink5);}
+
+.badge{position:absolute;top:.65rem;left:.65rem;padding:.22rem .65rem;border-radius:2px;font-size:.75rem;font-weight:600;box-shadow:1px 2px 0 rgba(17,16,9,.15);max-width:calc(100% - 1.3rem);}
+
+.by{background:var(--yel);color:var(--ink);transform:rotate(-.5deg);}
+
+.bs{background:linear-gradient(135deg,var(--yel),#C08800);color:var(--ink);transform:rotate(-.5deg);}
+
+.ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(17,16,9,.8) 0%,transparent 50%);opacity:0;transition:opacity .25s;display:flex;align-items:flex-end;padding:.85rem;}
+
+.card:hover .ov{opacity:1;}
+
+.ov-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;background:var(--white);border-radius:2px;font-size:.8125rem;font-weight:600;color:var(--ink);border:1.5px solid var(--ink12);}
+
+.card-body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.28rem;flex:1;}
+
+.card-yr{font-size:.75rem;color:var(--ink5);font-weight:500;}
+
+.card-name{font-family:var(--fd);font-size:1.05rem;font-weight:600;line-height:1.15;color:var(--ink);}
+
+.card-role{font-size:.875rem;color:var(--ink5);line-height:1.55;}
+
+.card-tools{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem;}
+
+.tool{font-size:.75rem;font-weight:500;padding:.1rem .48rem;background:var(--surf);border:1px solid var(--ink12);border-radius:2px;color:var(--ink5);}
+
+
+
+/* ================================================================
+
+   ABOUT
+
+================================================================ */
+
+.about{padding:6rem 0;background:var(--ink);color:var(--bg);}
+
+.about-g{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+
+.about-label{font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--yel);margin-bottom:1rem;}
+
+.about-h{font-family:var(--fd);font-size:clamp(2.25rem,4.5vw,3.75rem);font-weight:700;line-height:.98;margin-bottom:1.5rem;}
+
+.about-h em{font-style:normal;color:#3A6FD8;}
+
+.about-p{font-size:1rem;line-height:1.78;color:rgba(250,248,244,.65);}
+
+.facts{margin-top:2rem;}
+
+.fact{display:flex;align-items:baseline;gap:1rem;padding:.6rem 0;border-bottom:1px dashed rgba(250,248,244,.1);}
+
+.f-em{font-size:.9rem;flex-shrink:0;}
+
+.f-lbl{font-size:.75rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:rgba(250,248,244,.35);min-width:85px;flex-shrink:0;}
+
+.f-val{font-size:.9375rem;color:rgba(250,248,244,.78);}
+
+.awards{margin-top:1.75rem;padding:1.4rem;background:rgba(250,248,244,.05);border:1px dashed rgba(250,248,244,.12);border-radius:2px;}
+
+.awards-h{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--yel);margin-bottom:1rem;}
+
+.aw{display:flex;gap:.75rem;padding:.6rem 0;border-bottom:1px solid rgba(250,248,244,.06);}
+
+.aw:last-child{border-bottom:none;padding-bottom:0;}
+
+.aw-i{width:30px;height:30px;border-radius:2px;background:rgba(232,176,0,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+
+.aw-t{font-size:.875rem;line-height:1.6;color:rgba(250,248,244,.65);}
+
+.aw-n{font-weight:600;color:var(--bg);display:block;margin-bottom:.1rem;}
+
+.about-photo{border-radius:3px;overflow:hidden;aspect-ratio:3/4;max-width:280px;background:rgba(250,248,244,.06);border:1.5px dashed rgba(250,248,244,.12);display:flex;align-items:center;justify-content:center;}
+
+.ab-ph-t{font-size:.875rem;color:rgba(250,248,244,.2);}
+
+
+
+/* ================================================================
+
+   CONTACT
+
+================================================================ */
+
+.contact{padding:6rem 0;background:var(--bg);}
+
+.contact-g{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+
+.contact-h{font-family:var(--fd);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1;letter-spacing:-.025em;margin-bottom:1.25rem;}
+
+.contact-email{display:inline-block;font-family:var(--fd);font-size:1.15rem;font-weight:600;color:var(--blue);margin-bottom:2rem;position:relative;}
+
+.contact-email::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease);}
+
+.contact-email:hover::after{transform:scaleX(1);transform-origin:left;}
+
+.soc-list{display:flex;flex-direction:column;gap:.55rem;}
+
+.soc{display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem;border:1.5px solid var(--ink12);border-radius:2px;font-size:.9375rem;font-weight:500;color:var(--ink);background:var(--white);box-shadow:var(--sh1);transition:border-color .2s,background .2s,transform .2s var(--ease);}
+
+.soc:hover{border-color:var(--blue);background:rgba(24,80,168,.05);transform:translateX(3px);}
+
+.soc-i{width:28px;height:28px;border-radius:2px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+
+.form{display:flex;flex-direction:column;gap:1.2rem;background:#FEF49A;padding:2.5rem;box-shadow:3px 6px 18px rgba(0,0,0,0.1), inset 0 0 40px rgba(0,0,0,0.03);transform:rotate(1.5deg);border-radius:2px 3px 12px 2px;position:relative;color:#111009;}
+
+.form::after{content:'';position:absolute;bottom:0;right:0;border-width:0 0 25px 25px;border-style:solid;border-color:transparent transparent rgba(0,0,0,0.05) transparent;border-bottom-right-radius:12px;}
+
+.fg{display:flex;flex-direction:column;gap:.35rem;}
+
+.flbl{font-size:.8125rem;font-weight:700;color:rgba(17,16,9,0.7);text-transform:uppercase;letter-spacing:0.02em;}
+
+.finp,.ftxt{padding:.5rem 0;background:transparent;border:none;border-bottom:2px dashed rgba(17,16,9,0.2);border-radius:0;font-size:1.1rem;color:#111009;outline:none;resize:none;transition:border-color .2s;font-family:var(--fb);}
+
+.finp::placeholder,.ftxt::placeholder{color:rgba(17,16,9,0.3);}
+
+.finp:focus,.ftxt:focus{border-color:#111009;box-shadow:none;}
+
+.ftxt{height:100px;line-height:1.6;}
+
+.fsub{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.8rem;background:#111009;color:#FEF49A;border:2px solid #111009;border-radius:2px;font-size:1rem;font-weight:600;align-self:flex-end;cursor:none;transition:background .2s,transform .15s;font-family:var(--fb);box-shadow:3px 3px 0 rgba(0,0,0,0.15);}
+
+.fsub:hover{background:#D93020;border-color:#D93020;color:#fff;transform:translateY(-2px);box-shadow:5px 5px 0 rgba(0,0,0,0.15);}
+
+
+
+/* ================================================================
+
+   FOOTER
+
+================================================================ */
+
+.foot{padding:1.5rem 0;background:var(--ink);color:rgba(250,248,244,.38);}
+
+.foot-in{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+
+.foot-logo{font-family:var(--fd);font-size:.9rem;font-weight:700;color:var(--bg);}
+
+.foot-copy{font-size:.8125rem;}
+
+.foot-back{font-size:.8125rem;font-weight:600;color:rgba(250,248,244,.38);transition:color .2s;}
+
+.foot-back:hover{color:var(--yel);}
+
+
+
+/* ================================================================
+
+   REVEAL
+
+================================================================ */
+
+.js-on .rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+
+.js-on .rv.d1{transition-delay:.08s;}.js-on .rv.d2{transition-delay:.16s;}.js-on .rv.d3{transition-delay:.24s;}
+
+.rv.show{opacity:1!important;transform:translateY(0)!important;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================================================================
+
+   RESPONSIVE
+
+================================================================ */
+
+@media(max-width:960px){
+
+  .hero-body{grid-template-columns:1fr;padding-top:2.5rem;gap:3rem;}
+
+  .hero-vis{order:-1;}
+
+  .ch2,.ch3{display:none;}
+
+  .about-g,.contact-g{grid-template-columns:1fr;gap:3rem;}
+
+  .about-photo{max-width:200px;}
+
+  .dl-feat{grid-template-columns:1fr;}
+
+}
+
+@media(max-width:680px){
+
+  .nav-in { padding: 0 1.25rem; gap: 1rem; }
+
+  .nav-logo { font-size: .85rem; }
+
+  .nav-links { gap: 1rem; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-links a { font-size: .8rem; white-space: nowrap; }
+
+  .nav-cta { padding: .3rem .8rem; font-size: .75rem; }
+
+  .sec-hd{grid-template-columns:1fr;}
+
+  .grid{grid-template-columns:1fr;}
+
+  .ov { opacity: 1; background: linear-gradient(to top,rgba(17,16,9,.9) 0%,transparent 70%); padding: .75rem; }
+
+  .ov-btn { padding: .3rem .7rem; font-size: .75rem; }
+
+  .hero-foot{flex-direction:column;gap:1rem; align-items:flex-start;}
+
+  .foot-in{flex-direction:column;text-align:center;}
+
+  .metrics{gap:1.25rem;}
+
+}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}html{scroll-behavior:auto;}}
+
+</style>
+
+</head>
+
+<body>
+
+<script>document.body.classList.add('js-on');</script>
+
+
+
+<!-- Cursor & Canvas Background -->
+
+<canvas id="bg-c"></canvas>
+
+<div id="cur">
+
+  <svg id="csq" width="30" height="30" viewBox="0 0 30 30">
+
+    <defs>
+
+      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+
+        <line x1="0" y1="0" x2="3" y2="3" stroke="var(--ink)" stroke-width="0.4" stroke-opacity="0.25"/>
+
+        <line x1="3" y1="0" x2="0" y2="3" stroke="var(--ink)" stroke-width="0.3" stroke-opacity="0.12"/>
+
+      </pattern>
+
+      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
+
+    </defs>
+
+    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="var(--ink)" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="var(--ink)" stroke-width="0.6" stroke-opacity="0.28" filter="url(#rf)"/>
+
+  </svg>
+
+</div>
+
+
+
+<!-- NAV -->
+
+<nav class="nav" id="nav">
+
+  <div class="nav-in">
+
+    <a href="index.html" class="nav-logo">Annmary Saji</a>
+
+    <ul class="nav-links">
+
+      <li><a href="#animation">Work</a></li>
+
+      <li><a href="#about">About</a></li>
+
+      <li><a href="#contact">Contact</a></li>
+
+      <li><a href="assets/downloads/AnnMarySaji_Resume.pdf" class="nav-cta" download>Resume</a></li>
+
+      <li><button class="music-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music" style="background:none;border:none;font-size:1.1rem;cursor:none;color:var(--ink);">🎵</button></li>
+
+      <li><button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode">☀️</button></li>
+
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+<audio id="bg-music" src="assets/music.mp3" loop preload="none"></audio>
+
+<audio id="warp-sfx" src="assets/warp.mp3" preload="none"></audio>
+
+
+
+
+
+<div id="wrap">
+
+
+
+<!-- HERO -->
+
+<section class="hero" id="hero">
+
+  <div class="hero-body">
+
+    <!-- Text left -->
+
+    <div>
+
+      <h1 class="hero-name rv">Annmary<br>Saji.</h1>
+
+      <p class="hero-role rv d1">Interdisciplinary Visual Storyteller</p>
+
+      <p class="hero-bio rv d2">I animate, illustrate, shoot video, design brand systems, and compose music. I love creating fun things in a nutshell! Based in Singapore, graduating June 2026 from NTU's School of Art, Design and Media.</p>
+
+      <div class="disc-row rv d2">
+
+        <span class="disc">Animation</span>
+
+        <span class="disc">Illustration</span>
+
+        <span class="disc">Videography</span>
+
+        <span class="disc">Graphic Design</span>
+
+        <span class="disc">Music Production</span>
+
+      </div>
+
+      <div class="metrics rv d3">
+
+        <div class="metric">
+
+          <span class="metric-num">2025</span>
+
+          <span class="metric-lbl">Annecy IAFF, Paris Lyon Singapore programme</span>
+
+        </div>
+
+        <div class="metric-sep"></div>
+
+        <div class="metric">
+
+          <span class="metric-num">50+</span>
+
+          <span class="metric-lbl">International commissions, 5-star satisfaction</span>
+
+        </div>
+
+        <div class="metric-sep"></div>
+
+        <div class="metric">
+
+          <span class="metric-num">2nd</span>
+
+          <span class="metric-lbl">NTU — Imperial Design-a-thon, ReKindle</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Video right -->
+
+    <div class="hero-vis rv d1">
+
+      <div class="hero-vid">
+
+        <img src="assets/hero-collage.gif" alt="Hero Animation" loading="lazy" />
+
+      </div>
+
+      <span class="chip ch1">Annecy 2025</span>
+
+      <span class="chip ch2">50+ Commissions</span>
+
+      <span class="chip ch3">BFA Animation</span>
+
+    </div>
+
+  </div>
+
+  <div class="hero-foot">
+
+    <span><strong>Available</strong> for freelance and full-time roles</span>
+
+    <span><strong>Singapore</strong> based</span>
+
+    <span><strong>English</strong>, Malayalam, Hindi</span>
+
+    <span class="scroll-cue">Scroll to explore ↓</span>
+
+  </div>
+
+</section>
+
+
+
+<!-- DOWNLOADS -->
+
+<div class="dl-sec" id="downloads">
+
+  <div class="dl-in">
+
+    <h2 class="dl-h">Need a quick look? <em>Download the portfolio.</em></h2>
+
+    <div class="dl-grid">
+
+      <a href="assets/downloads/AnnMarySaji_Portfolio_Animation.pdf" class="dl-btn" download><span class="dl-ico ib">✨</span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Animation &amp; Visual Dev</span></a>
+
+      <a href="assets/downloads/AnnMarySaji_Portfolio_Illustration.pdf" class="dl-btn" download><span class="dl-ico ir">🖍️</span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Illustration &amp; Comics</span></a>
+
+      <a href="assets/downloads/AnnMarySaji_Portfolio_Videography.pdf" class="dl-btn" download><span class="dl-ico ib">🎬</span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Videography &amp; Motion</span></a>
+
+      <a href="assets/downloads/AnnMarySaji_Portfolio_GraphicDesign.pdf" class="dl-btn" download><span class="dl-ico ir">🎨</span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Graphic Design &amp; Brand</span></a>
+
+      <a href="assets/downloads/AnnMarySaji_Portfolio_Music.pdf" class="dl-btn" download><span class="dl-ico iy">🎵</span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Music Production</span></a>
+
+    </div>
+
+    <div class="dl-feat">
+
+      <a href="assets/downloads/AnnMarySaji_FullPortfolio.pdf" class="dl-btn" download><span class="dl-ico iy">📂</span><span class="dl-txt"><span class="dl-lbl">Combined PDF</span>Full Portfolio</span></a>
+
+      <a href="assets/downloads/AnnMarySaji_Resume.pdf" class="dl-btn" download><span class="dl-ico ib">📄</span><span class="dl-txt"><span class="dl-lbl">CV</span>Download Resume</span></a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- 01 ANIMATION -->
+
+<section class="sec" id="animation">
+
+ <div class="con">
+
+  <div class="sec-hd">
+
+   <div>
+
+    <p class="sec-num rv">01 — Animation &amp; Visual Development</p>
+
+    <h2 class="sec-title rv d1">Animation &amp;<br>Visual Development</h2>
+
+    <p class="sec-intro rv d2">I make animated work that starts with a question I cannot let go of. Each project runs a full pipeline from concept to final film, and every discipline feeds the next.</p>
+
+   </div>
+
+   <a href="assets/downloads/AnnMarySaji_Portfolio_Animation.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+
+  </div>
+
+  <div class="grid">
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=keep-yourself-safe" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge bs">Annecy IAFF 2025 — Paris Lyon Singapore</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025 · Self-directed</div><h3 class="card-name">Keep Yourself Safe</h3><p class="card-role">Solo produced from script to final sound. Writing, animation, and sound design handled in one pipeline.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Rough Animator</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=a-stray-dog" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023 · Group Project</div><h3 class="card-name">A Stray Dog</h3><p class="card-role">Stop-motion short with puppets and sets built entirely from waste materials. Post-production and prop design.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">CapCut</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=dear-friend" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · Self-directed</div><h3 class="card-name">Dear Friend</h3><p class="card-role">Period gothic 2D animated short. Full pipeline from rough character sketches through finished designs to environment shots.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=jasmine" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge bs">Capstone</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025—2026 · Final Year Capstone</div><h3 class="card-name">Jasmine — Visual Development</h3><p class="card-role">Character design, environment concept art, and world-building for an Indo-jazz fusion multimedia project.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=chase" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023 · Academic</div><h3 class="card-name">Chase — Storyboard</h3><p class="card-role">Kinetic chase sequence across bridge, motorbike, and boat. Focused on spatial continuity and tempo.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=digital-paintings" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">Ongoing · Personal Practice</div><h3 class="card-name">Digital Painting Studies</h3><p class="card-role">Environment and figure studies including interior doorway lighting and Egyptian temple statues.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- 02 ILLUSTRATION -->
+
+<section class="sec" id="illustration">
+
+ <div class="con">
+
+  <div class="sec-hd">
+
+   <div>
+
+    <p class="sec-num rv">02 — Illustration &amp; Comics</p>
+
+    <h2 class="sec-title rv d1">Illustration<br>&amp; Comics</h2>
+
+    <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
+
+   </div>
+
+   <a href="assets/downloads/AnnMarySaji_Portfolio_Illustration.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+
+  </div>
+
+  <div class="grid">
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=wellbeing-planner" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge by">33,000 students · 7 Days</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · NTU</div><h3 class="card-name">Campus Wellbeing Comic Planner</h3><p class="card-role">Multi-episode comic planner and campaign depicting everyday moments of inclusion, distributed to 33,000 students.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Adobe Illustrator</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=internship-comics" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023 · NTU Career and Attachment Office</div><h3 class="card-name">Internship Experience Comic Series</h3><p class="card-role">6-part comic series depicting student internship experiences, deployed campus-wide as an engagement campaign.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=jasmine" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge bs">Capstone</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025—2026 · Final Year Capstone</div><h3 class="card-name">Jasmine — Illustration and Comics</h3><p class="card-role">Comic and illustration work within the Jasmine world — character portraits, sequential comic panels, and world-building spreads.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=freelance-commissions" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge bs">50+ Commissions · 5-star</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2020 to Present · International Clients</div><h3 class="card-name">Character and Concept Art, Global Clients</h3><p class="card-role">Over 50 personalised character commissions delivered across five years with consistent five-star satisfaction.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span><span class="tool">Procreate</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=nangele" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · Personal</div><h3 class="card-name">Nangeli</h3><p class="card-role">Black-and-white narrative comic about a 19th-century Kerala woman who cut off her breast as a protest against the breast tax. A story of bodily autonomy and resistance.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+
+   </article>
+
+
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- 03 VIDEOGRAPHY -->
+
+<section class="sec" id="videography">
+
+ <div class="con">
+
+  <div class="sec-hd">
+
+   <div>
+
+    <p class="sec-num rv">03 — Videography &amp; Motion</p>
+
+    <h2 class="sec-title rv d1">Videography<br>&amp; Motion</h2>
+
+    <p class="sec-intro rv d2">Video brings all my disciplines into one frame. I direct, film, edit, and sometimes appear on screen, across explainer videos, documentary shorts, and social content.</p>
+
+   </div>
+
+   <a href="assets/downloads/AnnMarySaji_Portfolio_Videography.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+
+  </div>
+
+  <div class="grid">
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=gcf-documentary" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">May 2024 — Oct 2025 · NTU OIE</div><h3 class="card-name">Global Connect Fellowship — Documentary</h3><p class="card-role">Conceptualised and produced a 4-minute documentary for the Global Connect Fellowship Programme 2024. Also covered event photography across 3 OIE events.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">Lightroom</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=socrat-ai" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · SOCRAT AI, Freelance</div><h3 class="card-name">SOCRAT AI — Animated Explainer</h3><p class="card-role">Designed, produced, edited, and appeared in a 3-minute animated explainer for a startup launch, using motion graphics and data visualisation.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span><span class="tool">Illustrator</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=vipcolor-video" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge by">17+ Videos</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">May—Jul 2025 · VIPColor, Venture Corporation</div><h3 class="card-name">VIPCOLOR — How-To Video Series</h3><p class="card-role">Produced and filmed 17 tutorial and product videos for the company website and social channels.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">CapCut</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=music-district-video" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024—2026 · Music District NTU ADM</div><h3 class="card-name">Music District — Event Videos</h3><p class="card-role">Valentine's performance opening teaser and full event highlights reel as Publicity Director.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span></div></div>
+
+   </article>
+
+
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- 04 GRAPHIC DESIGN -->
+
+<section class="sec" id="graphic-design">
+
+ <div class="con">
+
+  <div class="sec-hd">
+
+   <div>
+
+    <p class="sec-num rv">04 — Graphic Design &amp; Brand</p>
+
+    <h2 class="sec-title rv d1">Graphic Design<br>&amp; Brand</h2>
+
+    <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
+
+   </div>
+
+   <a href="assets/downloads/AnnMarySaji_Portfolio_GraphicDesign.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+
+  </div>
+
+  <div class="grid">
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=elevandi" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge by">Point Zero Forum</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">May—Jul 2024 · Elevandi, Internship</div><h3 class="card-name">Elevandi — PR and Marketing Collateral</h3><p class="card-role">10 marketing posters and visual assets for external PR, plus presentation materials for the Point Zero Forum.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span><span class="tool">InDesign</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=rekindle" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge" style="background:var(--yel);color:var(--ink);">Award-Winning</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">App Design Concept</div><h3 class="card-name">ReKindle</h3><p class="card-role">Award-winning app design concept for NTU — Imperial College London Sustainability Designathon. Connects seniors with youngsters with a swipe-to-match feature and gamified interaction.</p><div class="card-tools"><span class="tool">UI/UX</span><span class="tool">Figma</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=vipcolor-campaign" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge by">17 Social Assets</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">May—Jul 2025 · Venture Corporation</div><h3 class="card-name">VIPCOLOR — "Color That Captivates" Campaign</h3><p class="card-role">17 illustrated social media assets including banners, product shots, and feature call-outs. 3 marketing strategies contributed to team planning.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span><span class="tool">Canva</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=ntu-banners" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023—2024 · NTU</div><h3 class="card-name">NTU — Web and Social Banners</h3><p class="card-role">WSS portal banners, Global Conference for Women Leaders in Materials Science, and "World's Best Young University" recruitment banner.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=ntu-fest" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023—2024 · NTUSU</div><h3 class="card-name">NTU FEST — Full Design Output</h3><p class="card-role">Publicity and Publications Director. All posters, social visuals, and merchandise. Managed design sub-committee.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span><span class="tool">InDesign</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=obesity-infographic" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · Academic</div><h3 class="card-name">Obesity — Information Visualisation</h3><p class="card-role">WHO and World Obesity Federation statistics translated into a structured visual explainer bridging design and data visualisation.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Figma</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=music-district-design" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025—2026 · Music District NTU ADM</div><h3 class="card-name">Music District — Social Media Assets</h3><p class="card-role">Sunset Jams poster, Makeout Drive Recap, Melody of the Drowned Halloween recap, and drum-kit sign-up poster as Publicity Director.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=gobunny" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025 · Brand Identity</div><h3 class="card-name">GoBunny</h3><p class="card-role">High-protein yogurt drinks and snacks for people who refuse to choose between "good for you" and "actually good." Quick, sweet, and a little cheeky.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=green-arrow" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge" style="background:var(--ink07);color:var(--ink5);">Speculative</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · Personal, Speculative</div><h3 class="card-name">Green Arrow — Mock Brand Identity</h3><p class="card-role">Full mock brand system — logo lockups in three colourways, event poster, tote bag mockup, and teaser ad.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=mock-posters" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge" style="background:var(--ink07);color:var(--ink5);">Speculative</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">Personal, Speculative</div><h3 class="card-name">Mock Event Poster Series</h3><p class="card-role">"TimeSync," "Little Hope," "Do You Have Broken Crayons?," "You Are Lost?," "Unknown," "Feeling Bored— — corporate to moody.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+
+   </article>
+
+
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- 05 MUSIC -->
+
+<section class="sec" id="music">
+
+ <div class="con">
+
+  <div class="sec-hd">
+
+   <div>
+
+    <p class="sec-num rv">05 — Music Production</p>
+
+    <h2 class="sec-title rv d1">Music<br>Production</h2>
+
+    <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
+
+   </div>
+
+   <a href="assets/downloads/AnnMarySaji_Portfolio_Music.pdf" class="sec-dl rv d2" download>↓ PDF</a>
+
+  </div>
+
+  <div class="grid">
+
+
+
+   <article class="card rv">
+
+    <a href="project.html?id=jasmine-album" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <span class="badge bs">Capstone</span>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2025—2026 · Final Year Capstone</div><h3 class="card-name">Jasmine — Concept Album</h3><p class="card-role">Original Indo-jazz fusion EP composed, produced, and directed for physical and streaming release. Tracks: "Welcome to the Jasmine," "Home Pt. 1 and 2," "Night Time," "Kopi."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d1">
+
+    <a href="project.html?id=short-film-score" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2024 · Collaborative</div><h3 class="card-name">Short Film Score</h3><p class="card-role">Original score for a friend's short film, written to serve the narrative without overpowering the image.</p><div class="card-tools"><span class="tool">GarageBand</span></div></div>
+
+   </article>
+
+
+
+   <article class="card rv d2">
+
+    <a href="project.html?id=original-tracks" target="_blank" class="card-img">
+
+     <div class="ph"><div class="ph-i">✦</div><span class="ph-t">Image coming soon</span></div>
+
+     <div class="ov"><span class="ov-btn">View Project →</span></div>
+
+    </a>
+
+    <div class="card-body"><div class="card-yr">2023—2025 · Personal</div><h3 class="card-name">Original Tracks</h3><p class="card-role">Standalone compositions: "Cloudy Days," "Club Got Boots," and the instrumental demo "Paradise."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
+
+   </article>
+
+
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+ <div class="con">
+
+  <div class="about-g">
+
+   <div class="rv">
+
+    <p class="about-label">About</p>
+
+    <h2 class="about-h rv d1">One person.<br><em>Many mediums.</em></h2>
+
+    <p class="about-p">I am Annmary Saji, a BFA Animation graduate from NTU's School of Art, Design and Media, class of June 2026. Over five years I built a creative practice that refuses to stay in one lane. I animate, illustrate, shoot video, design brand systems, and produce music — often all within a single project.</p>
+
+    <br/><p class="about-p">My work has screened at Annecy as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other.</p>
+
+    <div class="facts">
+
+     <div class="fact"><span class="f-em">🧰</span><span class="f-lbl">Tools</span><span class="f-val">Adobe Photoshop, Adobe Illustrator, Adobe Premiere Pro, Cavalry, Affinity, Canva, Rough Animator, MS Office Suite, CapCut, and AI tools (Antigravity, Claude, Gemini)</span></div>
+
+     <div class="fact"><span class="f-em">💬</span><span class="f-lbl">Languages</span><span class="f-val">English, Malayalam, Hindi</span></div>
+
+     <div class="fact"><span class="f-em">📍</span><span class="f-lbl">Based</span><span class="f-val">Singapore</span></div>
+
+     <div class="fact"><span class="f-em">🎓</span><span class="f-lbl">Education</span><span class="f-val">BFA Animation, NTU School of Art, Design and Media</span></div>
+
+    </div>
+
+    <div class="awards">
+
+     <div class="awards-h">Awards and Recognition</div>
+
+     <div class="aw"><div class="aw-i">🏆</div><div class="aw-t"><span class="aw-n">Annecy International Animation Film Festival 2025</span>Keep Yourself Safe selected for the Paris Lyon Singapore programme</div></div>
+
+     <div class="aw"><div class="aw-i">🥈</div><div class="aw-t"><span class="aw-n">NTU — Imperial College London Design-a-thon</span>2nd Place for ReKindle, an intergenerational connection app</div></div>
+
+     <div class="aw"><div class="aw-i">📜</div><div class="aw-t"><span class="aw-n">Marketing Certifications via Coursera, 2026</span>IE Business School (IMC, Brand Identity and Strategy) · University of Virginia (AI in Marketing)</div></div>
+
+     <div class="aw"><div class="aw-i">🌟</div><div class="aw-t"><span class="aw-n">Leadership</span>VP and Publicity Director, Music District NTU ADM · Publicity and Publications Director, NTU FEST, NTUSU</div></div>
+
+    </div>
+
+   </div>
+
+   <div class="rv d2">
+
+    <div class="about-photo"><span class="ab-ph-t">Photo coming soon</span></div>
+
+   </div>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+ <div class="con">
+
+  <div class="contact-g">
+
+   <div class="rv">
+
+    <h2 class="contact-h rv d1">Let's make something together.</h2>
+
+    <a href="mailto:annie10302004@gmail.com" class="contact-email">annie10302004@gmail.com</a>
+
+    <div class="soc-list">
+
+     <a href="https://www.linkedin.com/in/annmary-saji/" target="_blank" rel="noopener" class="soc"><span class="soc-i">💼</span>LinkedIn — annmary-saji</a>
+
+     <a href="https://www.instagram.com/loudarmybombs/" target="_blank" rel="noopener" class="soc"><span class="soc-i">📱</span>Instagram — @loudarmybombs</a>
+
+     <a href="assets/downloads/AnnMarySaji_Resume.pdf" class="soc" download><span class="soc-i">📄</span>Download Resume</a>
+
+    </div>
+
+   </div>
+
+   <div class="rv d2">
+
+    <form class="form" id="contactForm" onsubmit="sub(event)">
+
+     <div class="fg"><label class="flbl" for="fn">Your Name *</label><input id="fn" class="finp" type="text" placeholder="Jane Smith" required/></div>
+
+     <div class="fg"><label class="flbl" for="fe">Email *</label><input id="fe" class="finp" type="email" placeholder="jane@studio.com" required/></div>
+
+     <div class="fg"><label class="flbl" for="fm">Message *</label><textarea id="fm" class="ftxt" placeholder="Tell me about your project" required></textarea></div>
+
+     <button type="submit" class="fsub" id="fsb">
+
+       <span>Send Message</span>
+
+       <svg id="plane-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.4s ease;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+
+     </button>
+
+    </form>
+
+   </div>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+
+<footer class="foot">
+
+ <div class="foot-in">
+
+  <span class="foot-logo">Annmary Saji</span>
+
+  <span class="foot-copy">2026 · BFA Animation, NTU ADM</span>
+
+  <a href="game.html" class="foot-egg">Curious what happens when you go offline?</a>
+
+  <a href="index.html" class="foot-back">Back to start</a>
+
+ </div>
+
+</footer>
+
+
+
+</div><!-- #wrap -->
+
+
+
+<script>
+
+document.body.classList.add('js-on');
+
+
+
+// CURSOR
+
+const cur=document.getElementById('cur');
+
+const sf=document.getElementById('sf');
+
+const csq=document.getElementById('csq');
+
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lx=mx,ly=my,ang=0;
+
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+
+(function loop(){
+
+  cx+=(mx-cx)*.16;cy+=(my-cy)*.16;
+
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+
+  const spd=Math.hypot(mx-lx,my-ly);lx=mx;ly=my;
+
+  ang+=1.5+spd*.8;csq.style.transform='rotate('+ang+'deg)';
+
+  requestAnimationFrame(loop);
+
+})();
+
+document.addEventListener('mouseover',e=>{
+
+  const h=!!e.target.closest('a,button,.card,.soc,.dl-btn');
+
+  const d=!!e.target.closest('.about,.foot,.dl-sec');
+
+  cur.classList.toggle('hov',h);
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  sf.setAttribute('fill',d?'#E8B000':h?'#D93020':(isDark?'#F0EEF5':'#111009'));
+
+});
+
+
+
+// CANVAS STARS
+
+const bgC=document.getElementById('bg-c');
+
+if(bgC){
+
+  const bgX=bgC.getContext('2d');
+
+  let bW,bH;
+
+  const HUES=[0,210,45];
+
+  function rsz(){bW=bgC.width=innerWidth;bH=bgC.height=innerHeight;}
+
+  window.addEventListener('resize',rsz);rsz();
+
+
+
+  function drawStar(ctx,x,y,r,rot,color){
+
+    ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+
+    ctx.beginPath();
+
+    for(let i=0;i<10;i++){
+
+      const a=(i*Math.PI/5)-Math.PI/2;
+
+      const rad=i%2===0?r:r*.42;
+
+      i===0?ctx.moveTo(Math.cos(a)*rad,Math.sin(a)*rad):ctx.lineTo(Math.cos(a)*rad,Math.sin(a)*rad);
+
+    }
+
+    ctx.closePath();
+
+    ctx.fillStyle=color;ctx.fill();
+
+    ctx.restore();
+
+  }
+
+
+
+  const STARS=Array.from({length:45},()=>({
+
+    x:Math.random()*window.innerWidth,
+
+    y:Math.random()*window.innerHeight,
+
+    r:2.5+Math.random()*5,
+
+    speed:.35+Math.random()*.55,
+
+    drift:(Math.random()-.5)*.28,
+
+    rot:Math.random()*Math.PI*2,
+
+    spin:(Math.random()-.5)*.018,
+
+    alpha:.08+Math.random()*.1,
+
+    hue:HUES[Math.floor(Math.random()*3)],
+
+    lit:0
+
+  }));
+
+
+
+  const isDark=()=>document.documentElement.getAttribute('data-theme')==='dark';
+
+
+
+  function bgFrame(){
+
+    bgX.clearRect(0,0,bW,bH);
+
+    STARS.forEach(s=>{
+
+      s.y+=s.speed;s.x+=s.drift;s.rot+=s.spin;
+
+      if(s.y>bH+20){s.y=-20;s.x=Math.random()*bW;}
+
+
+
+      const dist=Math.hypot(cx-s.x,cy-s.y);
+
+      const prox=Math.max(0,1-dist/110);
+
+      s.lit=Math.max(s.lit*.94,prox);
+
+
+
+      const sz=s.r+(s.lit*6.5);
+
+      const a=s.alpha+(s.lit*.6);
+
+      const isDarkNow=isDark();
+
+      const color=s.lit>.04
+
+        ?`hsla(${s.hue},88%,52%,${a})`
+
+        :isDarkNow?`rgba(240,238,245,${s.alpha})`:`rgba(17,16,9,${s.alpha})`;
+
+
+
+      drawStar(bgX,s.x,s.y,sz,s.rot,color);
+
+    });
+
+    requestAnimationFrame(bgFrame);
+
+  }
+
+  bgFrame();
+
+}
+
+
+
+// DARK MODE
+
+(function initTheme(){
+
+  const saved=localStorage.getItem('theme')||'light';
+
+  document.documentElement.setAttribute('data-theme',saved);
+
+  const btn=document.getElementById('themeBtn');
+
+  if(btn)btn.textContent=saved==='dark'?'☀':'🌙';
+
+})();
+
+window.toggleTheme=function(){
+
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+
+  const next=dark?'light':'dark';
+
+  document.documentElement.setAttribute('data-theme',next);
+
+  localStorage.setItem('theme',next);
+
+  const btn=document.getElementById('themeBtn');
+
+  if(btn)btn.textContent=next==='dark'?'☀':'🌙';
+
+  const sf=document.getElementById('sf');
+
+  if(sf&&!document.querySelector('#cur').classList.contains('hov')) {
+
+    sf.setAttribute('fill',next==='dark'?'#F0EEF5':'#111009');
+
+  }
+
+};
+
+
+
+window.toggleMusic=function(){
+
+  const m=document.getElementById('bg-music');
+
+  const b=document.getElementById('musicBtn');
+
+  if(m.paused){
+
+    m.play().catch(e=>console.log('Music play prevented:',e));
+
+    if(b)b.textContent='🔈';
+
+  } else {
+
+    m.pause();
+
+    if(b)b.textContent='🔈';
+
+  }
+
+};
+
+
+
+// NAV
+
+const nav=document.getElementById('nav');
+
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{passive:true});
+
+
+
+// Zoom entry
+
+const f=new URLSearchParams(location.search).get('f');
+
+if(f) document.body.classList.add('from-warp');
+
+if(f==='about'){window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('about')?.scrollIntoView({behavior:'smooth'}),900);});}
+
+if(f&&f!=='all'&&f!=='about'){
+
+  const m={anim:['animation','illustration'],brand:['graphic-design','videography']};
+
+  const ids=m[f]||[];
+
+  if(ids.length) document.querySelectorAll('.sec[id]').forEach(s=>{if(!ids.includes(s.id))s.style.display='none';});
+
+}
+
+
+
+// Reveal
+
+const rvs=document.querySelectorAll('.rv');
+
+if('IntersectionObserver' in window){
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.08});
+
+  rvs.forEach(el=>io.observe(el));
+
+}else{rvs.forEach(el=>el.classList.add('show'));}
+
+requestAnimationFrame(()=>document.querySelectorAll('#hero .rv').forEach(el=>el.classList.add('show')));
+
+
+
+// Smooth scroll
+
+document.addEventListener('click',e=>{
+
+  const a=e.target.closest('a[href^="#"]');
+
+  if(!a)return;e.preventDefault();
+
+  document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+
+});
+
+
+
+// Page Transitions
+
+document.addEventListener('click', e => {
+
+  const a = e.target.closest('a[href]');
+
+  if(a && !a.href.includes('#') && a.target !== '_blank' && a.hostname === location.hostname && !a.hasAttribute('download') && !a.getAttribute('href').startsWith('javascript:')){
+
+    e.preventDefault();
+
+    document.body.classList.add('page-exit');
+
+    setTimeout(() => { window.location.href = a.href; }, 350);
+
+  }
+
+});
+
+
+
+// Parallax Chips
+
+const chips = document.querySelectorAll('.chip[data-speed]');
+
+window.addEventListener('scroll', () => {
+
+  const y = window.scrollY;
+
+  chips.forEach(c => {
+
+    const s = parseFloat(c.getAttribute('data-speed'));
+
+    c.style.setProperty('--py', (y * s) + 'px');
+
+  });
+
+}, {passive:true});
+
+
+
+// 3D Card Tilts
+
+document.querySelectorAll('.card').forEach(card => {
+
+  card.addEventListener('mousemove', e => {
+
+    const rect = card.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -4;
+
+    const rotateY = ((x - centerX) / centerX) * 4;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+
+  });
+
+  card.addEventListener('mouseleave', () => {
+
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+
+    card.style.transition = `transform 0.4s ease`;
+
+  });
+
+  card.addEventListener('mouseenter', () => {
+
+    card.style.transition = `none`;
+
+  });
+
+});
+
+
+
+// Magnetic Buttons
+
+document.querySelectorAll('.magnetic').forEach(btn => {
+
+  btn.addEventListener('mousemove', e => {
+
+    const rect = btn.getBoundingClientRect();
+
+    const x = e.clientX - rect.left - rect.width / 2;
+
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+
+  });
+
+  btn.addEventListener('mouseleave', () => {
+
+    btn.style.transform = `translate(0px, 0px)`;
+
+  });
+
+});
+
+
+
+// Form
+
+window.sub=function(e){
+
+  e.preventDefault();
+
+  const b=document.getElementById('fsb');
+
+  const p=document.getElementById('plane-icon');
+
+  
+
+  p.style.transform = 'translate(60px, -60px) scale(0.5)';
+
+  p.style.opacity = '0';
+
+  
+
+  b.querySelector('span').textContent='Sent!';
+
+  b.style.background='#1850A8';b.style.borderColor='#1850A8';b.style.color='#fff';
+
+  
+
+  setTimeout(()=>{
+
+    b.querySelector('span').textContent='Send Message';
+
+    b.style.background='';b.style.borderColor='';b.style.color='';
+
+    p.style.transition = 'none';
+
+    p.style.transform = 'translate(-30px, 30px) scale(0.5)';
+
+    setTimeout(()=>{
+
+      p.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease';
+
+      p.style.transform = 'translate(0,0) scale(1)';
+
+      p.style.opacity = '1';
+
+    }, 50);
+
+  },3000);
+
+};
+
+</script>
+
+</body>
+
+</html>
+

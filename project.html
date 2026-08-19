@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8"/>
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+<title>Project — Annmary Saji</title>
+
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+
+<noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
+
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+html{scroll-behavior:smooth;}
+
+:root{
+
+  --ink:#111009;--ink5:rgba(17,16,9,.5);--ink12:rgba(17,16,9,.12);--ink07:rgba(17,16,9,.07);
+
+  --bg:#FAF8F4;--surf:#F0EAE0;--white:#FFFDF9;
+
+  --blue:#1850A8;--red:#D93020;--yel:#E8B000;
+
+  --fd:'Clash Display',Georgia,serif;
+
+  --fb:'General Sans',system-ui,sans-serif;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+
+}
+
+[data-theme="dark"]{
+
+  --ink:#F0EEF5;--ink5:rgba(240,238,245,.5);--ink12:rgba(240,238,245,.12);--ink07:rgba(240,238,245,.07);
+
+  --bg:#0D0C11;--surf:#1A1828;--white:#13111C;
+
+  --blue:#6088E0;--red:#E84030;--yel:#F0B800;
+
+}
+
+[data-theme="dark"] body{background-image:radial-gradient(circle,rgba(240,238,245,.05) 1px,transparent 1px);}
+
+[data-theme="dark"] .nav.sc{background:rgba(13,12,17,.94)!important;}
+
+body{
+
+  font-family:var(--fb);color:var(--ink);font-size:16px;line-height:1.6;
+
+  background-color:var(--bg);
+
+  background-image:radial-gradient(circle,rgba(17,16,9,.09) 1px,transparent 1px);
+
+  background-size:24px 24px;
+
+  cursor:none;
+
+  transition:background-color .4s ease, color .4s ease;
+
+}
+
+body::before{
+
+  content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;
+
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+
+  opacity:.035;mix-blend-mode:multiply;
+
+}
+
+a{color:inherit;text-decoration:none;}
+
+img{display:block;max-width:100%;}
+
+
+
+/* CURSOR & CANVAS */
+
+#cur{position:fixed;top:0;left:0;width:28px;height:28px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;}
+
+#cur.hov{transform:translate(-50%,-50%) scale(2);}
+
+#bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+
+
+
+/* NAV */
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.2rem 0;transition:background .3s,box-shadow .3s,padding .3s;}
+
+.nav.sc{background:rgba(250,248,244,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1px 0 var(--ink12);padding:.75rem 0;}
+
+.nav-in{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+
+.nav-logo{font-family:var(--fd);font-size:.95rem;font-weight:700;}
+
+.nav-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:600;color:var(--ink5);transition:color .2s;}
+
+.nav-back:hover{color:var(--ink);}
+
+.nav-back svg{transition:transform .2s;}
+
+.nav-back:hover svg{transform:translateX(-3px);}
+
+
+
+/* MAIN LAYOUT */
+
+.con{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+
+
+
+/* PROJECT HEADER */
+
+.proj-header{
+
+  padding:calc(80px + 3rem) 0 3rem;
+
+  border-bottom:1.5px dashed var(--ink12);
+
+  margin-bottom:3rem;
+
+}
+
+.proj-disc-tag{
+
+  display:inline-flex;align-items:center;gap:.5rem;
+
+  font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+
+  color:var(--blue);margin-bottom:1rem;
+
+}
+
+.proj-title{
+
+  font-family:var(--fd);
+
+  font-size:clamp(2.5rem,6vw,5.5rem);
+
+  font-weight:700;line-height:.97;letter-spacing:-.03em;
+
+  margin-bottom:1rem;
+
+}
+
+.proj-badge{
+
+  display:inline-block;padding:.28rem .75rem;border-radius:2px;
+
+  font-size:.8rem;font-weight:600;
+
+  background:linear-gradient(135deg,var(--yel),#C08800);color:var(--ink);
+
+  box-shadow:1px 2px 0 rgba(17,16,9,.15);
+
+  margin-bottom:1.5rem;
+
+}
+
+.proj-meta-row{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;}
+
+.proj-meta-item{font-size:.875rem;color:var(--ink5);}
+
+.proj-meta-item strong{color:var(--ink);font-weight:600;}
+
+.proj-meta-sep{width:1px;height:16px;background:var(--ink12);}
+
+
+
+/* MAIN GRID */
+
+.proj-grid{
+
+  display:grid;grid-template-columns:1fr 300px;gap:3.5rem;
+
+  margin-bottom:4rem;
+
+  align-items:start;
+
+}
+
+.proj-overview{font-size:1.05rem;line-height:1.8;color:var(--ink5);margin-bottom:1.5rem;}
+
+.proj-overview strong{color:var(--ink);font-weight:600;}
+
+.proj-process{
+
+  padding:1.5rem;background:var(--white);border:1.5px solid var(--ink12);border-radius:2px;
+
+}
+
+.proc-h{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.75rem;}
+
+.proc-p{font-size:.9375rem;line-height:1.7;color:var(--ink5);}
+
+
+
+/* SIDEBAR */
+
+.proj-sidebar{display:flex;flex-direction:column;gap:1.2rem;}
+
+.sidebar-block{padding:1.1rem 1.25rem;background:var(--white);border:1.5px solid var(--ink12);border-radius:2px;position:relative;}
+
+.sidebar-block::before{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(-1.2deg);width:42px;height:13px;background:rgba(232,176,0,.5);border-radius:1px;}
+
+.sidebar-block:nth-child(even)::before{background:rgba(24,80,168,.2);transform:translateX(-50%) rotate(1deg);}
+
+.sb-lbl{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);margin-bottom:.4rem;}
+
+.sb-val{font-size:.9375rem;font-weight:500;color:var(--ink);line-height:1.5;}
+
+.sb-val.small{font-size:.875rem;}
+
+.tools-list{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.2rem;}
+
+.tool-tag{font-size:.75rem;font-weight:500;padding:.1rem .5rem;background:var(--surf);border:1px solid var(--ink12);border-radius:2px;color:var(--ink5);}
+
+
+
+/* IMAGE GALLERY */
+
+.gallery-h{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);margin-bottom:1.25rem;}
+
+.gallery-hero{
+
+  aspect-ratio:16/9;background:var(--surf);border:1.5px solid var(--ink12);
+
+  border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+
+  gap:.75rem;margin-bottom:1rem;position:relative;overflow:hidden;
+
+}
+
+.gallery-hero::before{
+
+  content:'';position:absolute;inset:0;
+
+  background-image:radial-gradient(circle,rgba(17,16,9,.08) 1px,transparent 1px);
+
+  background-size:18px 18px;
+
+}
+
+.ph-icon{font-size:2.2rem;position:relative;z-index:1;}
+
+.ph-label{font-size:.875rem;color:var(--ink5);position:relative;z-index:1;text-align:center;padding:0 2rem;}
+
+.gallery-row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+
+.gallery-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:3rem;}
+
+.gallery-img{
+
+  aspect-ratio:4/3;background:var(--surf);border:1.5px solid var(--ink12);
+
+  border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+
+  gap:.5rem;position:relative;overflow:hidden;
+
+  transition:transform .25s var(--ease),box-shadow .25s;
+
+}
+
+.gallery-img:hover{transform:translateY(-3px);box-shadow:3px 5px 0 rgba(17,16,9,.1),0 10px 24px rgba(17,16,9,.1);}
+
+.gallery-img::before{
+
+  content:'';position:absolute;inset:0;
+
+  background-image:radial-gradient(circle,rgba(17,16,9,.07) 1px,transparent 1px);
+
+  background-size:16px 16px;
+
+}
+
+.gallery-img .ph-icon{font-size:1.5rem;}
+
+.gallery-img .ph-label{font-size:.75rem;padding:0 1rem;text-align:center;}
+
+.gallery-img-sq{aspect-ratio:1/1;}
+
+
+
+.tape{
+
+  position:absolute;z-index:2;
+
+  width:50px;height:14px;border-radius:1px;opacity:.7;
+
+}
+
+.tape-tl{top:-4px;left:1.5rem;background:rgba(232,176,0,.55);transform:rotate(-1.5deg);}
+
+.tape-tr{top:-4px;right:1.5rem;background:rgba(24,80,168,.22);transform:rotate(1.2deg);}
+
+
+
+/* BOTTOM NAV */
+
+.proj-footer{
+
+  border-top:1.5px dashed var(--ink12);
+
+  padding:2.5rem 0;margin-top:1rem;
+
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+
+}
+
+.back-btn{
+
+  display:inline-flex;align-items:center;gap:.6rem;
+
+  padding:.65rem 1.3rem;border:1.5px solid var(--ink12);border-radius:2px;
+
+  font-size:.9rem;font-weight:600;background:var(--white);
+
+  transition:border-color .2s,background .2s,transform .15s;
+
+}
+
+.back-btn:hover{border-color:var(--ink);background:var(--surf);transform:translateX(-3px);}
+
+.portfolio-btn{
+
+  display:inline-flex;align-items:center;gap:.5rem;
+
+  padding:.65rem 1.3rem;background:var(--ink);color:var(--bg);border-radius:2px;
+
+  font-size:.9rem;font-weight:600;border:1.5px solid var(--ink);
+
+  transition:background .2s,transform .15s;
+
+}
+
+.portfolio-btn:hover{background:var(--blue);border-color:var(--blue);transform:translateX(3px);}
+
+
+
+/* foot */
+
+.foot{padding:1.5rem 0;background:var(--ink);color:rgba(250,248,244,.38);}
+
+.foot-in{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+
+.foot-logo{font-family:var(--fd);font-size:.9rem;font-weight:700;color:var(--bg);}
+
+.foot-copy{font-size:.8125rem;}
+
+
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+  .proj-grid{grid-template-columns:1fr;}
+
+  .proj-sidebar{flex-direction:row;flex-wrap:wrap;}
+
+  .sidebar-block{flex:1;min-width:140px;}
+
+  .gallery-row3{grid-template-columns:1fr 1fr;}
+
+}
+
+@media(max-width:500px){
+
+  .gallery-row2{grid-template-columns:1fr;}
+
+  .gallery-row3{grid-template-columns:1fr;}
+
+}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<canvas id="bg-c"></canvas>
+
+<div id="cur">
+
+  <svg id="csq" width="28" height="28" viewBox="0 0 30 30">
+
+    <defs>
+
+      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+
+        <line x1="0" y1="0" x2="3" y2="3" stroke="var(--ink)" stroke-width="0.4" stroke-opacity="0.25"/>
+
+        <line x1="3" y1="0" x2="0" y2="3" stroke="var(--ink)" stroke-width="0.3" stroke-opacity="0.12"/>
+
+      </pattern>
+
+      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
+
+    </defs>
+
+    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="var(--ink)" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="var(--ink)" stroke-width="0.6" stroke-opacity="0.28" filter="url(#rf)"/>
+
+  </svg>
+
+</div>
+
+
+
+<nav class="nav" id="nav">
+
+  <div class="nav-in">
+
+    <a href="portfolio.html" class="nav-logo">Annmary Saji</a>
+
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+
+      <button class="music-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music" style="background:none;border:none;font-size:1.1rem;cursor:none;color:var(--ink);">🎵</button>
+
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode">☀️</button>
+
+      <a href="javascript:window.close()" class="nav-back" onclick="if(history.length>1){history.back();return false;}">
+
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+        Back to Portfolio
+
+      </a>
+
+    </div>
+
+  </div>
+
+</nav>
+
+
+
+<audio id="bg-music" src="assets/music.mp3" loop preload="none"></audio>
+
+<audio id="warp-sfx" src="assets/warp.mp3" preload="none"></audio>
+
+
+
+
+
+<main id="main"></main>
+
+
+
+<footer class="foot">
+
+  <div class="foot-in">
+
+    <span class="foot-logo">Annmary Saji</span>
+
+    <span class="foot-copy">2026 · BFA Animation, NTU ADM</span>
+
+  </div>
+
+</footer>
+
+
+
+<script>
+
+// CURSOR
+
+const cur=document.getElementById('cur');
+
+const sf=document.getElementById('sf');
+
+const csq=document.getElementById('csq');
+
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lx=mx,ly=my,ang=0;
+
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+
+(function loop(){
+
+  cx+=(mx-cx)*.16;cy+=(my-cy)*.16;
+
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+
+  const spd=Math.hypot(mx-lx,my-ly);lx=mx;ly=my;
+
+  ang+=1.5+spd*.8;csq.style.transform='rotate('+ang+'deg)';
+
+  requestAnimationFrame(loop);
+
+})();
+
+document.addEventListener('mouseover',e=>{
+
+  cur.classList.toggle('hov',!!e.target.closest('a,button,.gallery-img,.back-btn,.portfolio-btn'));
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  sf.setAttribute('fill',cur.classList.contains('hov') ? '#D93020' : (isDark ? '#F0EEF5' : '#111009'));
+
+});
+
+
+
+// CANVAS STARS
+
+const bgC=document.getElementById('bg-c');
+
+if(bgC){
+
+  const bgX=bgC.getContext('2d');
+
+  let bW,bH;
+
+  const HUES=[0,210,45];
+
+  function rsz(){bW=bgC.width=innerWidth;bH=bgC.height=innerHeight;}
+
+  window.addEventListener('resize',rsz);rsz();
+
+
+
+  function drawStar(ctx,x,y,r,rot,color){
+
+    ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+
+    ctx.beginPath();
+
+    for(let i=0;i<10;i++){
+
+      const a=(i*Math.PI/5)-Math.PI/2;
+
+      const rad=i%2===0 ? r : r*.42;
+
+      i===0 ? ctx.moveTo(Math.cos(a)*rad,Math.sin(a)*rad):ctx.lineTo(Math.cos(a)*rad,Math.sin(a)*rad);
+
+    }
+
+    ctx.closePath();
+
+    ctx.fillStyle=color;ctx.fill();
+
+    ctx.restore();
+
+  }
+
+
+
+  const STARS=Array.from({length:45},()=>({
+
+    x:Math.random()*window.innerWidth,
+
+    y:Math.random()*window.innerHeight,
+
+    r:2.5+Math.random()*5,
+
+    speed:.35+Math.random()*.55,
+
+    drift:(Math.random()-.5)*.28,
+
+    rot:Math.random()*Math.PI*2,
+
+    spin:(Math.random()-.5)*.018,
+
+    alpha:.08+Math.random()*.1,
+
+    hue:HUES[Math.floor(Math.random()*3)],
+
+    lit:0
+
+  }));
+
+
+
+  function bgFrame(){
+
+    bgX.clearRect(0,0,bW,bH);
+
+    STARS.forEach(s=>{
+
+      s.y+=s.speed;s.x+=s.drift;s.rot+=s.spin;
+
+      if(s.y>bH+20){s.y=-20;s.x=Math.random()*bW;}
+
+
+
+      const dist=Math.hypot(cx-s.x,cy-s.y);
+
+      const prox=Math.max(0,1-dist/110);
+
+      s.lit=Math.max(s.lit*.94,prox);
+
+
+
+      const sz=s.r+(s.lit*6.5);
+
+      const a=s.alpha+(s.lit*.6);
+
+      const color=s.lit>.04
+
+        ?`hsla(${s.hue},88%,52%,${a})`
+
+        :`rgba(17,16,9,${s.alpha})`;
+
+
+
+      drawStar(bgX,s.x,s.y,sz,s.rot,color);
+
+    });
+
+    requestAnimationFrame(bgFrame);
+
+  }
+
+  bgFrame();
+
+}
+
+
+
+window.toggleTheme=function(){
+
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+
+  const next=dark ? 'light' : 'dark';
+
+  document.documentElement.setAttribute('data-theme',next);
+
+  localStorage.setItem('theme',next);
+
+  const btn=document.getElementById('themeBtn');
+
+  if(btn)btn.textContent=next==='dark' ? '☀️' : '🌙';
+
+  const sf=document.getElementById('sf');
+
+  if(sf&&!document.querySelector('#cur').classList.contains('hov')) {
+
+    sf.setAttribute('fill',next==='dark'?'#F0EEF5':'#111009');
+
+  }
+
+};
+
+
+
+window.toggleMusic=function(){
+
+  const m=document.getElementById('bg-music');
+
+  const b=document.getElementById('musicBtn');
+
+  if(m.paused){
+
+    m.play().catch(e=>console.log('Music play prevented:',e));
+
+    if(b)b.textContent='✦Š';
+
+  } else {
+
+    m.pause();
+
+    if(b)b.textContent='✦ˆ';
+
+  }
+
+};
+
+
+
+// NAV scroll
+
+const nav=document.getElementById('nav');
+
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{passive:true});
+
+
+
+// PROJECT DATA
+
+const PROJECTS = {
+
+  'keep-yourself-safe':{
+
+    title:'Keep Yourself Safe',
+
+    year:'2025',
+
+    discipline:'Animation',
+
+    context:'Self-directed short film',
+
+    badge:'Selected for the Paris Lyon Singapore programme, Annecy IAFF 2025',
+
+    role:'Solo Producer — Writing, Animation, Sound Design',
+
+    tools:['Clip Studio Paint','Rough Animator'],
+
+    overview:`Keep Yourself Safe is a self-directed animated short produced entirely solo from script to final sound. The film begins with a question I could not let go of, and builds a visual language around it through character animation, hand-drawn environments, and an original sound design. Every stage of production — writing, storyboarding, animation, background art, and audio — was handled in a single pipeline.`,
+
+    process:`The production started with thumbnail storyboards before moving into character design passes. Backgrounds were painted digitally, layered to allow parallax motion. Sound was approached as another visual layer rather than an afterthought.`,
+
+    images:[
+
+      {emoji:'✦',label:'Film still — opening sequence'},
+
+      {emoji:'✦',label:'Character design sheets'},
+
+      {emoji:'✦',label:'Film still — mid sequence'},
+
+      {emoji:'✦',label:'Background environment studies'},
+
+      {emoji:'✦',label:'Storyboard panels, key moments'},
+
+      {emoji:'✦',label:'Film still — closing sequence'}
+
+    ]
+
+  },
+
+  'dear-friend':{
+
+    title:'Dear Friend',
+
+    year:'2024',
+
+    discipline:'Animation',
+
+    context:'Self-directed 2D animated short',
+
+    badge:null,
+
+    role:'Solo Producer — Writing, Concept, Animation, Environment Art',
+
+    tools:['Clip Studio Paint','Adobe Photoshop'],
+
+    overview:`Dear Friend is a period gothic 2D animated short produced as a solo self-directed project. The film draws on gothic literature aesthetics and period costume reference to build a visually dense world. The production pipeline ran from rough character sketches through finished character designs, then into completed environment shots.`,
+
+    process:`Character design went through multiple passes to land on a period-accurate yet stylised look. Environments were built as layered paintings that could hold both static and animated elements. The gothic atmosphere is achieved through colour palette and framing rather than explicit horror.`,
+
+    images:[
+
+      {emoji:'✦',label:'Film still — interior scene'},
+
+      {emoji:'✦',label:'Character sketch exploration, early passes'},
+
+      {emoji:'✦',label:'Film still — exterior, night'},
+
+      {emoji:'✦',label:'Environment painting — gothic interior'},
+
+      {emoji:'✦',label:'Costume reference and detail studies'},
+
+      {emoji:'✦',label:'Film still — character close-up'}
+
+    ]
+
+  },
+
+  'jasmine':{
+
+    title:'Jasmine — Visual Development',
+
+    year:'2025–2026',
+
+    discipline:'Animation / Illustration',
+
+    context:'Final Year Capstone Project',
+
+    badge:'Capstone — Multimedia World',
+
+    role:'Director — World-building, Character Design, Environment Concept Art',
+
+    tools:['Clip Studio Paint','Adobe Photoshop'],
+
+    overview:`Jasmine is the visual and musical world at the centre of my final year capstone project. The visual development work spans full character design, environment concept art, and a world-building system for an Indo-jazz fusion multimedia setting. The project brings together animation visual development, a comic illustration component, and an original concept album.`,
+
+    process:`The world was built starting from cultural and architectural research into the intersection of Indian classical aesthetics and mid-century jazz settings. Character designs went through exploration of silhouette, costume, and expression before landing on final palettes. Environments range from intimate indoor spaces to larger atmospheric vistas.`,
+
+    images:[
+
+      {emoji:'✦',label:'World overview — key location studies'},
+
+      {emoji:'✦',label:'Character design — lead figure, full turnaround'},
+
+      {emoji:'✦',label:'Environment concept — main venue interior'},
+
+      {emoji:'✦',label:'Supporting character designs'},
+
+      {emoji:'✦',label:'Environment concept — exterior establishing shot'},
+
+      {emoji:'✦',label:'Colour palette and texture explorations'}
+
+    ]
+
+  },
+
+  'a-stray-dog':{
+
+    title:'A-Stray-Dog',
+
+    year:'2023',
+
+    discipline:'Animation',
+
+    context:'Group project — Stop-motion short',
+
+    badge:null,
+
+    role:'Post-Production and Props — Puppet and Set Construction',
+
+    tools:['Adobe Premiere Pro','CapCut'],
+
+    overview:`A-Stray-Dog is a stop-motion short produced as a group project using puppets and sets built entirely from waste materials and scrap. The film explores the experience of displacement through the lens of a stray dog navigating an urban environment. My role covered prop and puppet construction as well as the full post-production edit.`,
+
+    process:`All materials were sourced from recycling and offcuts. Puppet armatures were built from wire and covered with textile and paper. Sets were constructed at small scale with lighting positioned for maximum atmosphere. Post-production involved frame-by-frame cleanup and colour grading.`,
+
+    images:[
+
+      {emoji:'✦',label:'Film still — protagonist puppet, hero shot'},
+
+      {emoji:'✦',label:'Puppet construction in progress'},
+
+      {emoji:'✦',label:'Set design — urban street environment'},
+
+      {emoji:'✦',label:'Film still — environmental scene'},
+
+      {emoji:'✦',label:'Storyboard panels — key narrative beats'},
+
+      {emoji:'✦',label:'Film still — closing moment'}
+
+    ]
+
+  },
+
+  'chase':{
+
+    title:'Chase — Storyboard',
+
+    year:'2023',
+
+    discipline:'Animation',
+
+    context:'Academic storyboard exercise',
+
+    badge:null,
+
+    role:'Storyboard Artist',
+
+    tools:['Clip Studio Paint'],
+
+    overview:`Chase is a storyboard exercise for a kinetic chase sequence spanning three distinct environments: a bridge, a motorbike, and a boat. The project focused on spatial continuity across rapid environment changes, maintaining clear screen direction and building tempo through panel rhythm and staging choices.`,
+
+    process:`The sequence was planned from a bird's-eye flow diagram before moving into thumbnail panels. Key beats were identified for pacing — the shift from bridge to bike required a continuity solution that preserved urgency without spatial confusion. Boat sequences used low angles to emphasise speed.`,
+
+    images:[
+
+      {emoji:'✦',label:'Storyboard — bridge sequence, opening'},
+
+      {emoji:'✦',label:'Storyboard — motorbike transition panels'},
+
+      {emoji:'✦',label:'Storyboard — speed/motion staging study'},
+
+      {emoji:'✦',label:'Storyboard — boat sequence, key beats'},
+
+      {emoji:'✦',label:'Spatial diagram — screen direction planning'},
+
+      {emoji:'✦',label:'Final storyboard — closing sequence'}
+
+    ]
+
+  },
+
+  'digital-paintings':{
+
+    title:'Digital Painting Studies',
+
+    year:'Ongoing',
+
+    discipline:'Animation / Illustration',
+
+    context:'Personal practice',
+
+    badge:null,
+
+    role:'Artist',
+
+    tools:['Clip Studio Paint','Adobe Photoshop'],
+
+    overview:`An ongoing series of environment and figure studies maintained as personal practice alongside academic and professional work. Studies include an interior doorway with complex backlit lighting conditions and Egyptian temple statue reference studies focusing on surface material and light behaviour on stone.`,
+
+    process:`Each study begins with a value block-in before introducing colour temperature. Lighting studies are approached as problems with specific light sources and conditions. The goal is building a library of painted environments that inform animated background work.`,
+
+    images:[
+
+      {emoji:'✦',label:'Painting study — interior doorway, backlit'},
+
+      {emoji:'✦',label:'Painting study — Egyptian temple statue reference'},
+
+      {emoji:'✦',label:'Value study — lighting condition analysis'},
+
+      {emoji:'✦',label:'Colour study — warm to cool light transitions'},
+
+      {emoji:'✦',label:'Environment study — architectural detail'},
+
+      {emoji:'✦',label:'Figure study — material and texture'}
+
+    ]
+
+  },
+
+  'internship-comics':{
+
+    title:'Internship Experience Comic Series',
+
+    year:'2023',
+
+    discipline:'Illustration',
+
+    context:'NTU Career and Attachment Office',
+
+    badge:null,
+
+    role:'Comic Artist Intern',
+
+    tools:['Clip Studio Paint'],
+
+    overview:`A 6-part comic series produced during an internship with the NTU Career and Attachment Office, depicting real student internship experiences across different industries. Each episode followed a student character through challenges and discoveries in their placement, designed to feel relatable and encourage engagement with the office's resources.`,
+
+    process:`Each episode was scripted in collaboration with the communications team before moving to thumbnail roughs. Character consistency across 6 episodes required a clear style guide. The visual tone was kept approachable and slightly humorous to match the campus audience.`,
+
+    images:[
+
+      {emoji:'✦',label:'Episode 1 — cover page and opening spread'},
+
+      {emoji:'✦',label:'Episode 2 — narrative panels'},
+
+      {emoji:'✦',label:'Character design sheet — recurring cast'},
+
+      {emoji:'✦',label:'Episode 4 — key narrative sequence'},
+
+      {emoji:'✦',label:'Episode spread — typography and lettering detail'},
+
+      {emoji:'✦',label:'Full episode page — completed panel layout'}
+
+    ]
+
+  },
+
+  'wellbeing-planner':{
+
+    title:'Campus Wellbeing Comic Planner & Campus for All',
+
+    year:'2024',
+
+    discipline:'Illustration',
+
+    context:'NTU University Wellbeing Office',
+
+    badge:'33,000 students · Produced in 7 Days',
+
+    role:'Illustrator',
+
+    tools:['Clip Studio Paint','Adobe Illustrator'],
+
+    overview:`A multi-episode comic planner and campaign depicting everyday moments of inclusion across campus life. It was produced under a tight 7-day timeline and distributed to the entire NTU student body of 33,000. The project combined comic narrative pages with functional planner spreads to make self-care and wellbeing content engaging. It also highlighted accessibility practices — such as sign language interpreters, inclusive sports, and alternative formats — designed to normalise these moments rather than frame them as exceptional.`,
+
+    process:`The tight timeline required a clear visual system established on day one. Recurring characters were designed simply enough to draw quickly at volume, keeping the framing human and warm. Pages alternated between comic narrative beats and functional planner templates with illustrated borders and prompts. Research into accessibility practices informed which scenarios would resonate most with students.`,
+
+    images:[
+
+      {emoji:'✦',label:'Campus Wellbeing Planner & Campus For All — Key Illustration'}
+
+    ]
+
+  },
+
+  'nangele':{
+
+    title:'Nangeli',
+
+    year:'2024',
+
+    discipline:'Illustration',
+
+    context:'Personal — narrative comic',
+
+    badge:null,
+
+    role:'Comic Artist',
+
+    tools:['Clip Studio Paint'],
+
+    overview:`Nangeli is a black-and-white narrative comic exploring the story of a lower-caste woman in 19th-century Kerala who cut off her own breast as an act of defiance against the breast tax — a levy that required lower-caste women to pay to cover their bodies above the waist. The comic approaches this historical act of protest with deliberate restraint, using stark black-and-white graphic language and measured pacing to honour the act without sensationalising it. It is a story about bodily autonomy, systemic violence, and resistance.`,
+
+    process:`The visual language was kept deliberately sparse — few lines, high contrast, minimal background detail — to keep focus on body and gesture. Reference research covered 19th-century Kerala architecture, dress, and domestic life to ground the comic in its historical context while allowing the graphic style to carry the emotional weight.`,
+
+    images:[
+
+      {emoji:'✦',label:'Opening spread — establishing scene'},
+
+      {emoji:'✦',label:'Panel sequence — daily life before'},
+
+      {emoji:'✦',label:'Key panel — pivotal moment'},
+
+      {emoji:'✦',label:'Character study — Nangeli, figure and expression'},
+
+      {emoji:'✦',label:'Panel — architectural reference integration'},
+
+      {emoji:'✦',label:'Closing sequence — final panels'}
+
+    ]
+
+  },
+
+  'freelance-commissions':{
+
+    title:'Character and Concept Art — International Clients',
+
+    year:'2020 to present',
+
+    discipline:'Illustration',
+
+    context:'Freelance',
+
+    badge:'50+ commissions · 5-star satisfaction',
+
+    role:'Freelance Illustrator — Character Design, Concept Art',
+
+    tools:['Clip Studio Paint','Adobe Photoshop','Procreate'],
+
+    overview:`Over 50 personalised character illustration commissions completed for international clients across five years, maintaining consistent five-star satisfaction ratings. Work spans original character design from client briefs, fan art commissions, concept art development, and character turnarounds. Clients come from across North America, Europe, and Southeast Asia.`,
+
+    process:`Each commission begins with a brief intake, reference gathering, and a rough concept stage before moving to linework and final rendering. Turnaround times are kept tight. Communication at each stage is treated as part of the deliverable.`,
+
+    images:[
+
+      {emoji:'✦',label:'Character commission — original design, full render'},
+
+      {emoji:'✦',label:'Character commission — sketch stage'},
+
+      {emoji:'✦',label:'Character commission — colour render'},
+
+      {emoji:'✦',label:'Concept art — environment and character'},
+
+      {emoji:'✦',label:'Character commission — dynamic pose'},
+
+      {emoji:'✦',label:'Character commission — portrait render'}
+
+    ]
+
+  },
+
+  'socrat-ai':{
+
+    title:'SOCRAT AI — Animated Explainer',
+
+    year:'2024',
+
+    discipline:'Videography',
+
+    context:'SOCRAT AI — Freelance',
+
+    badge:null,
+
+    role:'Designer, Producer, Editor, On-Screen Talent',
+
+    tools:['Adobe Premiere Pro','After Effects','Adobe Illustrator'],
+
+    overview:`A 3-minute animated explainer video produced for the launch of SOCRAT AI, a startup in the educational AI space. I designed all motion graphics, produced and directed the shoot, appeared on screen as talent, and completed the full edit. The video needed to translate complex AI concepts to a non-technical audience using data visualisation and motion graphics.`,
+
+    process:`The script was worked through with the client to ensure technical accuracy without jargon. Motion graphics were built in After Effects with assets from Illustrator. On-screen segments were filmed and cut against the animated content to maintain pacing and clarity throughout.`,
+
+    images:[
+
+      {emoji:'✦',label:'Motion graphic — AI concept visualisation'},
+
+      {emoji:'✦',label:'On-screen segment — presenter framing'},
+
+      {emoji:'✦',label:'Data visualisation — animated chart sequence'},
+
+      {emoji:'✦',label:'Motion graphic — product feature breakdown'},
+
+      {emoji:'✦',label:'Composite — presenter with motion overlay'},
+
+      {emoji:'✦',label:'Graphic design — title card and lower thirds'}
+
+    ]
+
+  },
+
+  'vipcolor-video':{
+
+    title:'VIPCOLOR — How-To Video Series',
+
+    year:'2025',
+
+    discipline:'Videography',
+
+    context:'VIPColor Technologies, Venture Corporation — Internship',
+
+    badge:'17+ Videos Produced',
+
+    role:'Producer and Videographer',
+
+    tools:['Adobe Premiere Pro','CapCut'],
+
+    overview:`A series of 17 tutorial and product demonstration videos produced during an internship at Venture Corporation for the VIPColor Technologies product line. Videos cover printhead installation, setup procedures, and troubleshooting guides for the VP750 and VP700 printers, distributed across the company website and social media channels.`,
+
+    process:`Each video was planned with a step-by-step script before filming. On-set lighting was set to ensure print quality and hardware details were visible. Edit style was kept clean and practical with clear on-screen callouts for key steps.`,
+
+    images:[
+
+      {emoji:'✦',label:'Product shot — VP750 hero frame'},
+
+      {emoji:'✦',label:'Tutorial still — printhead installation step'},
+
+      {emoji:'✦',label:'Product shot — VP700 close detail'},
+
+      {emoji:'✦',label:'Tutorial still — setup walkthrough'},
+
+      {emoji:'✦',label:'Social media cut — 30-second feature highlight'},
+
+      {emoji:'✦',label:'Tutorial still — final quality check step'}
+
+    ]
+
+  },
+
+  'gcf-documentary':{
+
+    title:'Global Connect Fellowship — Documentary',
+
+    year:'2024–2025',
+
+    discipline:'Videography',
+
+    context:'NTU Office of International Engagement',
+
+    badge:null,
+
+    role:'Conceptualised and Produced · Event Photography',
+
+    tools:['Adobe Premiere Pro','Lightroom'],
+
+    overview:`A 4-minute documentary conceptualised and produced for the NTU Global Connect Fellowship Programme 2024, targeting an international digital audience. The film traces the arc of the fellowship — from participant selection through the programme experience to its lasting impact on participants. I also covered event photography across 3 OIE events throughout the engagement.`,
+
+    process:`The documentary structure was planned around three emotional beats: anticipation, immersion, and reflection. Participant interviews were conducted and edited for narrative clarity. B-roll was shot to work across both the 4-minute full version and shorter social media cuts.`,
+
+    images:[
+
+      {emoji:'✦',label:'Documentary still — participant interview setup'},
+
+      {emoji:'✦',label:'Event photography — programme launch'},
+
+      {emoji:'✦',label:'Documentary still — programme activity sequence'},
+
+      {emoji:'✦',label:'Event photography — participant group'},
+
+      {emoji:'✦',label:'Documentary still — reflection interview'},
+
+      {emoji:'✦',label:'Event photography — closing ceremony'}
+
+    ]
+
+  },
+
+  'music-district-video':{
+
+    title:'Music District — Event Videos',
+
+    year:'2024–2026',
+
+    discipline:'Videography',
+
+    context:'Music District NTU ADM',
+
+    badge:null,
+
+    role:'Publicity Director — Video Production',
+
+    tools:['Adobe Premiere Pro','After Effects'],
+
+    overview:`Event videos produced in my role as Publicity Director of Music District NTU ADM. Work includes a Valentine's Day performance opening teaser and a full event highlights reel, designed to capture the energy of live performance and drive attendance and engagement for future events.`,
+
+    process:`Opening teasers were designed to work as short standalone pieces with strong hooks. The highlights reel balanced performance footage with candid crowd moments. Both were produced to feel high-energy while maintaining the intimate character of Music District's events.`,
+
+    images:[
+
+      {emoji:'✦',label:'Teaser still — Valentine\'s performance open'},
+
+      {emoji:'✦',label:'Highlights reel — performance footage'},
+
+      {emoji:'✦',label:'Teaser still — atmosphere and detail'},
+
+      {emoji:'✦',label:'Highlights reel — audience engagement'},
+
+      {emoji:'✦',label:'Motion graphic — title card design'},
+
+      {emoji:'✦',label:'Highlights reel — closing moment'}
+
+    ]
+
+  },
+
+  'gobunny':{
+
+    title:'GoBunny',
+
+    year:'2025',
+
+    discipline:'Graphic Design',
+
+    context:'Brand Identity',
+
+    badge:null,
+
+    role:'Brand Designer',
+
+    tools:['Adobe Illustrator','Adobe Photoshop'],
+
+    overview:`GoBunny is a brand identity created for a line of high-protein yogurt drinks and snacks targeting people who refuse to choose between "good for you" and "actually good." The products—including protein snacks and cider drinks—are quick, sweet, a little cheeky, and built to be grabbed on the hop.`,
+
+    process:`The branding system was designed to balance the energetic, playful tone of a lifestyle beverage with the clean credibility expected of a protein product. Bright, punchy colours and bold typography were chosen to ensure the packaging stands out on shelves and communicates the brand's vibrant, cheeky personality instantly.`,
+
+    images:[
+
+      {emoji:'✦',label:'GoBunny Logo Lockup'},
+
+      {emoji:'✦',label:'High-Protein Yogurt Drink Packaging Mockup'},
+
+      {emoji:'✦',label:'Protein Snack Wrapper Design'},
+
+      {emoji:'✦',label:'Cider Drink Can Design'},
+
+      {emoji:'✦',label:'Brand Color Palette and Typography'},
+
+      {emoji:'✦',label:'Social Media Ad Mockups'}
+
+    ]
+
+  },
+
+  'elevandi':{
+
+    title:'Elevandi — PR and Marketing Collateral',
+
+    year:'2024',
+
+    discipline:'Graphic Design',
+
+    context:'Elevandi — Internship',
+
+    badge:'Point Zero Forum, International Fintech',
+
+    role:'PR and Communications Intern — Marketing Design',
+
+    tools:['Adobe Illustrator','Adobe Photoshop','InDesign'],
+
+    overview:`PR and marketing collateral produced during an internship at Elevandi, a fintech event organisation that produces the Point Zero Forum — one of the leading international fintech events. Output includes 10 marketing posters and visual assets for external PR campaigns, plus presentation materials and visual assets for the Point Zero Forum itself.`,
+
+    process:`All work was produced within Elevandi's existing brand system. Poster concepts went through quick ideation rounds before client review and production. Presentation assets required careful attention to hierarchy and legibility across slide formats.`,
+
+    images:[
+
+      {emoji:'✦',label:'Marketing poster — Point Zero Forum key visual'},
+
+      {emoji:'✦',label:'PR poster series — social and print variants'},
+
+      {emoji:'✦',label:'Presentation asset — data slide layout'},
+
+      {emoji:'✦',label:'Marketing poster — speaker feature'},
+
+      {emoji:'✦',label:'Banner design — event signage'},
+
+      {emoji:'✦',label:'Collateral overview — full campaign spread'}
+
+    ]
+
+  },
+
+  'vipcolor-campaign':{
+
+    title:'VIPCOLOR — "Color That Captivates" Campaign',
+
+    year:'2025',
+
+    discipline:'Graphic Design',
+
+    context:'Venture Corporation — Internship',
+
+    badge:'17 Social Media Assets',
+
+    role:'Marketing Intern — Campaign Design',
+
+    tools:['Adobe Illustrator','Adobe Photoshop','Canva'],
+
+    overview:`A full social media campaign designed for VIPColor Technologies during a marketing internship at Venture Corporation. The "Color That Captivates" campaign produced 17 illustrated social media assets including product feature banners, comparison shots, and promotional graphics. I also contributed 3 marketing strategies incorporated into the team's content planning.`,
+
+    process:`Campaign visual language was developed around the core message of print vibrancy. Assets were designed to work across Instagram, LinkedIn, and the website. Each asset was templated for efficient production across the full 17-piece output.`,
+
+    images:[
+
+      {emoji:'✦',label:'Campaign banner — hero product shot'},
+
+      {emoji:'✦',label:'Social asset — feature call-out, Instagram format'},
+
+      {emoji:'✦',label:'Campaign banner — colour story visual'},
+
+      {emoji:'✦',label:'Social asset — comparison graphic'},
+
+      {emoji:'✦',label:'Asset overview — full campaign spread'},
+
+      {emoji:'✦',label:'Product promotional graphic — detail shot'}
+
+    ]
+
+  },
+
+  'green-arrow':{
+
+    title:'Green Arrow — Mock Brand Identity',
+
+    year:'2024',
+
+    discipline:'Graphic Design',
+
+    context:'Personal, Speculative',
+
+    badge:'Speculative Project',
+
+    role:'Brand Designer',
+
+    tools:['Adobe Illustrator','Adobe Photoshop'],
+
+    overview:`A full speculative brand identity system designed for a fictional eco-focused organisation called Green Arrow. The project covers logo design across three colourways, an event poster for an Eco Future competition, a tote bag product mockup, and a calendar-style teaser advertising format.`,
+
+    process:`Brand exploration started with mark-making and wordmark experiments before settling on a direction. The identity was then extended across touchpoints to test its versatility. Mockups were built to demonstrate real-world application.`,
+
+    images:[
+
+      {emoji:'✦',label:'Logo lockup — primary colourway'},
+
+      {emoji:'✦',label:'Logo lockup — secondary and tertiary colourways'},
+
+      {emoji:'✦',label:'Event poster — Eco Future competition'},
+
+      {emoji:'✦',label:'Product mockup — tote bag application'},
+
+      {emoji:'✦',label:'Teaser ad — calendar format'},
+
+      {emoji:'✦',label:'Brand overview — identity system spread'}
+
+    ]
+
+  },
+
+  'ntu-fest':{
+
+    title:'NTU FEST — Full Design Output',
+
+    year:'2023–2024',
+
+    discipline:'Graphic Design',
+
+    context:'NTUSU',
+
+    badge:null,
+
+    role:'Publicity and Publications Director',
+
+    tools:['Adobe Illustrator','Adobe Photoshop','InDesign'],
+
+    overview:`Served as Publicity and Publications Director for NTU FEST, the annual flagship student festival organised by NTUSU. Responsible for all design output across the event including event posters, social media visuals, and merchandise design. Also managed and directed a design sub-committee across the production period.`,
+
+    process:`Creative direction was established early in the planning cycle to give the sub-committee a consistent brief. Work was reviewed and refined through iterations, with final assets produced across print and digital formats.`,
+
+    images:[
+
+      {emoji:'✦',label:'Event poster — main key visual'},
+
+      {emoji:'✦',label:'Social media set — announcement graphics'},
+
+      {emoji:'✦',label:'Merchandise design — apparel mockup'},
+
+      {emoji:'✦',label:'Event poster — alternate format'},
+
+      {emoji:'✦',label:'Publications — event programme layout'},
+
+      {emoji:'✦',label:'Design overview — full campaign spread'}
+
+    ]
+
+  },
+
+  'music-district-design':{
+
+    title:'Music District — Social Media Assets',
+
+    year:'2025–2026',
+
+    discipline:'Graphic Design',
+
+    context:'Music District NTU ADM',
+
+    badge:null,
+
+    role:'Publicity Director',
+
+    tools:['Adobe Illustrator','Adobe Photoshop'],
+
+    overview:`Social media and event design produced as Publicity Director of Music District NTU ADM. Assets include the Sunset Jams event poster, the Makeout Drive Recap post, the Melody of the Drowned Halloween recap, and a drum-kit sign-up poster.`,
+
+    process:`Each asset was designed to fit Music District's visual identity while having enough individuality to stand out. Event-specific posters were designed to drive attendance. Recap posts were produced quickly after events to maintain momentum.`,
+
+    images:[
+
+      {emoji:'✦',label:'Event poster — Sunset Jams'},
+
+      {emoji:'✦',label:'Recap post — Makeout Drive'},
+
+      {emoji:'✦',label:'Recap post — Melody of the Drowned Halloween'},
+
+      {emoji:'✦',label:'Sign-up poster — drum kit open sessions'},
+
+      {emoji:'✦',label:'Social set — story and feed formats'},
+
+      {emoji:'✦',label:'Design overview — assets spread'}
+
+    ]
+
+  },
+
+  'ntu-banners':{
+
+    title:'NTU — Web and Social Banners',
+
+    year:'2023–2024',
+
+    discipline:'Graphic Design',
+
+    context:'NTU',
+
+    badge:null,
+
+    role:'Web Banner Designer',
+
+    tools:['Adobe Illustrator','Adobe Photoshop'],
+
+    overview:`High-visibility banner design produced for NTU's digital presence. Assets include NTU WSS portal navigation banners, a Global Conference for Women Leaders in Materials Science event banner, and the "World's Best Young University" international recruitment banner.`,
+
+    process:`Banner design at institutional scale requires working within strict brand guidelines while finding space for visual clarity and impact. Each banner was designed for its specific digital context — portal navigation requires clarity at small size, recruitment banners need immediate visual presence.`,
+
+    images:[
+
+      {emoji:'✦',label:'WSS portal banner — navigation strip'},
+
+      {emoji:'✦',label:'Conference banner — Women Leaders in Materials Science'},
+
+      {emoji:'✦',label:'Recruitment banner — World\'s Best Young University'},
+
+      {emoji:'✦',label:'Banner design — format and sizing variations'},
+
+      {emoji:'✦',label:'Portal banner — alt design variation'},
+
+      {emoji:'✦',label:'Asset overview — banner family'}
+
+    ]
+
+  },
+
+  'mock-posters':{
+
+    title:'Mock Event Poster Series',
+
+    year:'Personal, ongoing',
+
+    discipline:'Graphic Design',
+
+    context:'Personal, Speculative',
+
+    badge:'Speculative',
+
+    role:'Designer',
+
+    tools:['Adobe Illustrator','Adobe Photoshop'],
+
+    overview:`A series of speculative event posters produced as personal design practice, each exploring a different tonal register. Posters in the series: "TimeSync," "Little Hope," "Do You Have Broken Crayons?," "You Are Lost?," "Unknown," and "Feeling Bored— The series spans corporate, editorial, playful, and moody.`,
+
+    process:`Each poster starts with the feeling before the concept — what emotion should the viewer walk away with? The tone dictates every decision from type choice to colour to imagery. The series functions as a range test across different visual modes.`,
+
+    images:[
+
+      {emoji:'✦',label:'Poster — TimeSync'},
+
+      {emoji:'✦',label:'Poster — Little Hope'},
+
+      {emoji:'✦',label:'Poster — Do You Have Broken Crayons?'},
+
+      {emoji:'✦',label:'Poster — You Are Lost?'},
+
+      {emoji:'✦',label:'Poster — Unknown'},
+
+      {emoji:'✦',label:'Poster — Feeling Bored?'}
+
+    ]
+
+  },
+
+  'obesity-infographic':{
+
+    title:'Obesity — Information Visualisation',
+
+    year:'2024',
+
+    discipline:'Graphic Design',
+
+    context:'Academic',
+
+    badge:null,
+
+    role:'Designer',
+
+    tools:['Adobe Illustrator','Figma'],
+
+    overview:`A structured visual explainer translating WHO and World Obesity Federation statistics into a designed information visualisation. The project bridges graphic design and data visualisation, making complex epidemiological data legible and compelling for a general audience without sacrificing accuracy.`,
+
+    process:`Data was sourced and verified before any visual decisions were made. The information architecture was planned to guide the reader from global scale down to individual impact. Chart types were chosen to serve the data rather than for visual novelty.`,
+
+    images:[
+
+      {emoji:'✦',label:'Infographic — global statistics overview'},
+
+      {emoji:'✦',label:'Data visualisation — chart sequence'},
+
+      {emoji:'✦',label:'Infographic — regional breakdown'},
+
+      {emoji:'✦',label:'Data visualisation — comparative chart'},
+
+      {emoji:'✦',label:'Typography and hierarchy study'},
+
+      {emoji:'✦',label:'Full infographic — final layout'}
+
+    ]
+
+  },
+
+  'rekindle':{
+
+    title:'ReKindle - App Design Concept',
+
+    year:'2023',
+
+    discipline:'UI/UX Design',
+
+    context:'NTU x Imperial College London Sustainability Designathon',
+
+    badge:'Award-Winning (2nd Place)',
+
+    role:'UI/UX Designer',
+
+    tools:['Figma', 'Prototyping', 'UI/UX'],
+
+    overview:`ReKindle is an award-winning app design concept developed for the NTU x Imperial College London Sustainability Designathon, securing 2nd Place. The application aims to combat social isolation and foster intergenerational connections by pairing seniors with younger generations.`,
+
+    process:`The core experience was built around a familiar, accessible "swipe-to-match" interface. Gamified interaction systems were integrated to keep both demographic groups engaged and encourage consistent communication. The interface prioritised accessibility with clear typography, high contrast, and intuitive navigation suited for older users.`,
+
+    images:[
+
+      {emoji:'✦',label:'ReKindle App Screen - Home Dashboard'},
+
+      {emoji:'✦',label:'Swipe-to-Match Interface'},
+
+      {emoji:'✦',label:'Gamified Chat and Interaction System'},
+
+      {emoji:'✦',label:'UI Component Library and Accessibility Standards'},
+
+      {emoji:'✦',label:'Designathon Pitch Deck and Presentation'}
+
+    ]
+
+  },
+
+  'jasmine-album':{
+
+    title:'Jasmine — Concept Album',
+
+    year:'2025–2026',
+
+    discipline:'Music Production',
+
+    context:'Final Year Capstone Project',
+
+    badge:'Capstone',
+
+    role:'Composer, Producer, Director',
+
+    tools:['GarageBand','Splice'],
+
+    overview:`An original Indo-jazz fusion concept album produced as part of the Jasmine capstone project, developed alongside its visual development counterpart. The EP is designed for both physical and streaming release and acts as the sonic world of the Jasmine multimedia project. Tracks include "Welcome to the Jasmine," "Home Pt. 1 and 2," "Night Time," and "Kopi."`,
+
+    process:`Each track was built to function independently while contributing to a coherent world. Indian classical melodic structures were brought into dialogue with jazz harmony and rhythm. Splice was used extensively for layering and sound design elements alongside original recorded material in GarageBand.`,
+
+    images:[
+
+      {emoji:'✦',label:'Studio session — production in progress'},
+
+      {emoji:'✦',label:'Track structure — Welcome to the Jasmine'},
+
+      {emoji:'✦',label:'Session screenshot — layering process'},
+
+      {emoji:'✦',label:'Track structure — Home Pt. 1 and 2'},
+
+      {emoji:'✦',label:'Album artwork development'},
+
+      {emoji:'✦',label:'Track listing and EP overview'}
+
+    ]
+
+  },
+
+  'short-film-score':{
+
+    title:'Short Film Score',
+
+    year:'2024',
+
+    discipline:'Music Production',
+
+    context:'Collaborative',
+
+    badge:null,
+
+    role:'Composer',
+
+    tools:['GarageBand'],
+
+    overview:`Original score composed for a friend's short film. The challenge of film scoring is writing music that serves the narrative without drawing attention to itself — the score should be felt before it is heard. The composition process worked from picture lock to ensure the music was shaped by the edit.`,
+
+    process:`Spotting notes were prepared to identify the emotional function of each music moment. Themes were kept simple enough to be varied and developed across the short runtime. Instrumentation was kept sparse to leave room for dialogue and sound design.`,
+
+    images:[
+
+      {emoji:'✦',label:'Film still — scored sequence A'},
+
+      {emoji:'✦',label:'Score notation — main theme'},
+
+      {emoji:'✦',label:'Film still — scored sequence B'},
+
+      {emoji:'✦',label:'Session view — GarageBand composition'},
+
+      {emoji:'✦',label:'Film still — climax sequence'},
+
+      {emoji:'✦',label:'Session view — final mix'}
+
+    ]
+
+  },
+
+  'original-tracks':{
+
+    title:'Original Tracks',
+
+    year:'2023–2025',
+
+    discipline:'Music Production',
+
+    context:'Personal',
+
+    badge:null,
+
+    role:'Composer and Producer',
+
+    tools:['GarageBand','Splice'],
+
+    overview:`Standalone original compositions produced as personal creative practice. Current tracks: "Cloudy Days," "Club Got Boots," and the instrumental demo "Paradise." Each track explores a different genre and mood while sharing a consistent attention to texture and atmosphere.`,
+
+    process:`Tracks start from a single sound or feeling — a chord shape, a rhythmic idea, or an atmosphere. Production is built outward from there. Splice is used to find and manipulate samples that sit alongside original material without dominating it.`,
+
+    images:[
+
+      {emoji:'✦',label:'Session — Cloudy Days, arrangement view'},
+
+      {emoji:'✦',label:'Session — Club Got Boots, production layers'},
+
+      {emoji:'✦',label:'Session — Paradise, instrumental demo'},
+
+      {emoji:'✦',label:'Splice board — sample selection process'},
+
+      {emoji:'✦',label:'GarageBand session — mixing stage'},
+
+      {emoji:'✦',label:'Track overview — all three productions'}
+
+    ]
+
+  }
+
+};
+
+
+
+// RENDER
+
+const id = new URLSearchParams(location.search).get('id');
+
+const p = PROJECTS[id];
+
+const main = document.getElementById('main');
+
+
+
+if(!p){
+
+  main.innerHTML=`<div class="con" style="padding:6rem 0;text-align:center;"><p style="font-size:1rem;color:var(--ink5);">Project not found.</p><a href="portfolio.html" style="display:inline-block;margin-top:1rem;font-size:.9rem;font-weight:600;color:var(--blue);">Back to portfolio</a></div>`;
+
+} else {
+
+  document.title = p.title + ' — Annmary Saji';
+
+
+
+  function imgSlot(size,idx){
+
+    // for projects with 1 image
+
+    if(!p.images[idx]) return ''; 
+
+    const im=p.images[idx];
+
+    const cls=size==='sq' ? 'gallery-img gallery-img-sq' : 'gallery-img';
+
+    return `<div class="${cls}"><span class="ph-icon">${im.emoji}</span><span class="ph-label">${im.label}</span></div>`;
+
+  }
+
+
+
+  // Determine gallery rows to hide if no images
+
+  const r2 = imgSlot('med',1) + imgSlot('med',2);
+
+  const r3 = imgSlot('sq',3) + imgSlot('sq',4) + imgSlot('sq',5);
+
+
+
+  main.innerHTML=`
+
+<div class="con">
+
+  <div class="proj-header">
+
+    <div class="proj-disc-tag">${p.discipline}${p.context?' · '+p.context:''}</div>
+
+    <h1 class="proj-title">${p.title}</h1>
+
+    ${p.badge ? `<div class=\"proj-badge\">${p.badge}</div>` : ''}
+
+    <div class="proj-meta-row">
+
+      <span class="proj-meta-item"><strong>Year</strong> &nbsp;${p.year}</span>
+
+      <div class="proj-meta-sep"></div>
+
+      <span class="proj-meta-item"><strong>Discipline</strong> &nbsp;${p.discipline}</span>
+
+      <div class="proj-meta-sep"></div>
+
+      <span class="proj-meta-item"><strong>Role</strong> &nbsp;${p.role}</span>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="proj-grid">
+
+    <div>
+
+      <p class="proj-overview">${p.overview}</p>
+
+      <div class="proj-process">
+
+        <div class="proc-h">Process and Approach</div>
+
+        <p class="proc-p">${p.process}</p>
+
+      </div>
+
+    </div>
+
+    <div class="proj-sidebar">
+
+      <div class="sidebar-block">
+
+        <div class="sb-lbl">Role</div>
+
+        <div class="sb-val small">${p.role}</div>
+
+      </div>
+
+      <div class="sidebar-block">
+
+        <div class="sb-lbl">Tools</div>
+
+        <div class="tools-list">${p.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>
+
+      </div>
+
+      <div class="sidebar-block">
+
+        <div class="sb-lbl">Year</div>
+
+        <div class="sb-val">${p.year}</div>
+
+      </div>
+
+      <div class="sidebar-block">
+
+        <div class="sb-lbl">Discipline</div>
+
+        <div class="sb-val">${p.discipline}</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div>
+
+    <div class="gallery-h">Visual Development / Output</div>
+
+    <div class="gallery-hero">
+
+      <div class="tape tape-tl"></div>
+
+      <div class="tape tape-tr"></div>
+
+      <span class="ph-icon">${(p.images[0]||{emoji:'✦'}).emoji}</span>
+
+      <span class="ph-label">${(p.images[0]||{label:'Image / footage coming soon'}).label}</span>
+
+    </div>
+
+    ${r2 ? `<div class=\"gallery-row2\">${r2}</div>` : ''}
+
+    ${r3 ? `<div class=\"gallery-row3\">${r3}</div>` : ''}
+
+  </div>
+
+
+
+  <div class="proj-footer">
+
+    <a href="portfolio.html" class="back-btn">← Back to Portfolio</a>
+
+    <a href="portfolio.html" class="portfolio-btn">View All Work →</a>
+
+  </div>
+
+</div>`;
+
+}
+
+</script>
+
+</body>
+
+</html>
+

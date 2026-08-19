@@ -1,0 +1,382 @@
+{
+  "meta": {
+    "name": "Ann Mary Saji",
+    "title": "Ann Mary Saji — Interdisciplinary Visual Storyteller",
+    "description": "Portfolio of Ann Mary Saji — illustrator, animator, videographer, graphic designer, and music producer. BFA Animation, NTU ADM. Annecy 2025 selection.",
+    "email": "annmary@email.com",
+    "favicon": "assets/favicon.png",
+    "resumePDF": "assets/downloads/AnnMarySaji_Resume.pdf",
+    "fullPortfolioPDF": "assets/downloads/AnnMarySaji_FullPortfolio.pdf"
+  },
+  "hero": {
+    "headline": "Interdisciplinary\nVisual Storyteller.",
+    "subheadline": "Illustrator · Animator · Videographer · Designer · Composer",
+    "tagline": "One person. Many mediums. One cohesive vision.",
+    "trustSignals": [
+      { "label": "Annecy International Animation Film Festival", "detail": "Selected & Screened — 2025" },
+      { "label": "50+ Freelance Commissions", "detail": "5-star client satisfaction" },
+      { "label": "NTU × Imperial College Design-a-thon", "detail": "2nd Place — ReKindle App" },
+      { "label": "Graduating May 2026", "detail": "BFA Animation, NTU ADM" }
+    ],
+    "demoReelPlaceholder": "assets/demo-reel-placeholder.mp4",
+    "collageImage": "assets/hero-collage.png"
+  },
+  "downloads": {
+    "animation": "assets/downloads/AnnMarySaji_Portfolio_Animation.pdf",
+    "illustration": "assets/downloads/AnnMarySaji_Portfolio_Illustration.pdf",
+    "videography": "assets/downloads/AnnMarySaji_Portfolio_Videography.pdf",
+    "graphicDesign": "assets/downloads/AnnMarySaji_Portfolio_GraphicDesign.pdf",
+    "musicProduction": "assets/downloads/AnnMarySaji_Portfolio_MusicProduction.pdf",
+    "fullPortfolio": "assets/downloads/AnnMarySaji_FullPortfolio.pdf",
+    "resume": "assets/downloads/AnnMarySaji_Resume.pdf"
+  },
+  "sections": [
+    {
+      "id": "animation",
+      "label": "Animation & Visual Development",
+      "shortLabel": "Animation",
+      "color": "#1850A8",
+      "intro": "From self-directed animated shorts to full world-building, my animation practice is rooted in personal storytelling and emotional specificity. Each project begins with a question I haven't been able to let go of — and ends with a film that holds the answer.",
+      "projects": [
+        {
+          "id": "keep-yourself-safe",
+          "title": "Keep Yourself Safe",
+          "year": "2025",
+          "role": "Solo Producer — Writing, Animation, Sound",
+          "tools": ["Clip Studio Paint", "Rough Animator"],
+          "client": "Self-directed",
+          "tags": ["animation", "2D", "short film", "annecy"],
+          "highlight": "Selected & Screened — Annecy International Animation Film Festival 2025",
+          "description": "A self-directed 2D animated short exploring mental health and digital culture. Fully solo-produced from script to final sound.",
+          "image": "assets/projects/keep-yourself-safe.jpg",
+          "link": ""
+        },
+        {
+          "id": "dear-friend",
+          "title": "Dear Friend",
+          "year": "2024",
+          "role": "Self-Produced",
+          "tools": ["Clip Studio Paint", "Adobe Photoshop"],
+          "client": "Self-directed",
+          "tags": ["animation", "2D", "short film", "gothic", "period"],
+          "description": "A period/gothic 2D animation short. Features a rich concept-to-final pipeline: rough character sketches → finished designs → environment art.",
+          "image": "assets/projects/dear-friend.jpg",
+          "link": ""
+        },
+        {
+          "id": "jasmine-vd",
+          "title": "Jasmine — Visual Development",
+          "year": "2025–2026",
+          "role": "Director — Illustration, World-Building, Character Design",
+          "tools": ["Clip Studio Paint", "Adobe Photoshop"],
+          "client": "Final Year Capstone Project",
+          "tags": ["animation", "visual development", "character design", "world-building", "capstone"],
+          "highlight": "Flagship Project — Dedicated Case Study",
+          "description": "Character and environment concept art for an Indo-jazz fusion world built around the Jasmine multimedia concept album. Spans illustration, animation, comics, and music.",
+          "image": "assets/projects/jasmine-vd.jpg",
+          "link": "jasmine.html",
+          "isFlagship": true
+        },
+        {
+          "id": "a-stray-dog",
+          "title": "A-Stray-Dog",
+          "year": "2023",
+          "role": "Post-Production, Props",
+          "tools": ["Adobe Premiere Pro", "CapCut"],
+          "client": "Group Project",
+          "tags": ["animation", "stop-motion", "post-production"],
+          "description": "Stop-motion group project. Puppets and sets built from waste materials and scrap. Handled full post-production and prop design.",
+          "image": "assets/projects/a-stray-dog.jpg",
+          "link": ""
+        },
+        {
+          "id": "chase",
+          "title": "Chase",
+          "year": "2023",
+          "role": "Storyboard Artist",
+          "tools": ["Clip Studio Paint"],
+          "client": "Academic",
+          "tags": ["animation", "storyboard"],
+          "description": "Storyboard exercise for a chase sequence spanning a bridge, motorbike, and boat — exploring kinetic pacing and spatial continuity.",
+          "image": "assets/projects/chase.jpg",
+          "link": ""
+        }
+      ]
+    },
+    {
+      "id": "illustration",
+      "label": "Illustration & Comics",
+      "shortLabel": "Illustration",
+      "color": "#E8392A",
+      "intro": "My illustration practice moves between narrative comic-making, character design, and freelance commissions — always with an eye for storytelling that transcends medium. Whether for a campus of 33,000 or a single client, every mark has an intention.",
+      "projects": [
+        {
+          "id": "ntu-career-comics",
+          "title": "Internship Experience Comics",
+          "year": "2023",
+          "role": "Comic Artist Intern",
+          "tools": ["Clip Studio Paint"],
+          "client": "NTU Career & Attachment Office",
+          "tags": ["illustration", "comics", "institutional"],
+          "description": "6+ part comic series depicting student internship experiences, deployed across a campus-wide engagement campaign.",
+          "image": "assets/projects/ntu-career-comics.jpg",
+          "link": ""
+        },
+        {
+          "id": "wellbeing-planner",
+          "title": "Campus Wellbeing Comic Planner",
+          "year": "2024",
+          "role": "Illustrator",
+          "tools": ["Clip Studio Paint", "Adobe Illustrator"],
+          "client": "NTU University Wellbeing Office",
+          "tags": ["illustration", "comics", "institutional"],
+          "highlight": "Produced in 7 days · Audience of 33,000 students",
+          "description": "Multi-episode campus-wide comic planner series produced in 7 days for a student community of 33,000.",
+          "image": "assets/projects/wellbeing-planner.jpg",
+          "link": ""
+        },
+        {
+          "id": "campus-for-all",
+          "title": "Campus for All: Everyday Moments of Inclusion",
+          "year": "2024",
+          "role": "Illustrator",
+          "tools": ["Clip Studio Paint"],
+          "client": "NTU",
+          "tags": ["illustration", "comics", "accessibility"],
+          "description": "Comic illustrating accessibility and inclusion practices on campus — sign language interpreters, inclusive sports, accessible formats.",
+          "image": "assets/projects/campus-for-all.jpg",
+          "link": ""
+        },
+        {
+          "id": "duct-tapes",
+          "title": "They All Came Wearing Duct Tapes on Their Mouths",
+          "year": "2024",
+          "role": "Comic Artist",
+          "tools": ["Clip Studio Paint"],
+          "client": "Personal",
+          "tags": ["illustration", "comics", "narrative", "black-and-white"],
+          "description": "Black-and-white narrative comic panel work exploring silence and suppression through bold graphic language.",
+          "image": "assets/projects/duct-tapes.jpg",
+          "link": ""
+        },
+        {
+          "id": "freelance-commissions",
+          "title": "Character & Concept Art — Global Clients",
+          "year": "2020–Present",
+          "role": "Freelance Character Illustrator",
+          "tools": ["Clip Studio Paint", "Adobe Photoshop", "Procreate"],
+          "client": "Various (International)",
+          "tags": ["illustration", "character design", "freelance"],
+          "highlight": "50+ commissions · Consistent 5-star rating",
+          "description": "50+ personalised character illustration and concept art commissions across 5 years, with consistent 5-star client satisfaction.",
+          "image": "assets/projects/freelance.jpg",
+          "link": ""
+        }
+      ]
+    },
+    {
+      "id": "videography",
+      "label": "Videography & Motion",
+      "shortLabel": "Videography",
+      "color": "#1850A8",
+      "intro": "Video is where all my disciplines converge — design, narrative, motion, and performance all in one frame. I'm as comfortable directing a product tutorial series as I am producing a documentary or motion graphics explainer.",
+      "projects": [
+        {
+          "id": "socrat-ai",
+          "title": "SOCRAT AI — Animated Explainer",
+          "year": "2024",
+          "role": "Designer, Producer, Editor, On-Screen Talent",
+          "tools": ["Adobe Premiere Pro", "After Effects", "Illustrator"],
+          "client": "SOCRAT AI (Freelance)",
+          "tags": ["videography", "motion graphics", "data visualisation", "freelance"],
+          "description": "3-minute animated explainer video communicating complex AI platform concepts using motion graphics and data visualisation, produced for a startup launch.",
+          "image": "assets/projects/socrat-ai.jpg",
+          "link": ""
+        },
+        {
+          "id": "vipcolor",
+          "title": "VIPCOLOR — How-To Video Series",
+          "year": "2025",
+          "role": "Producer, Videographer",
+          "tools": ["Adobe Premiere Pro", "CapCut"],
+          "client": "VIPColor Technologies / Venture Corporation",
+          "tags": ["videography", "product video", "tutorial", "internship"],
+          "highlight": "17+ tutorial and product videos produced",
+          "description": "17+ produced, filmed, and edited tutorial and product videos for VIPColor Technologies' website and social media channels.",
+          "image": "assets/projects/vipcolor.jpg",
+          "link": ""
+        },
+        {
+          "id": "oie-documentary",
+          "title": "Global Connect Fellowship — Documentary",
+          "year": "2024",
+          "role": "Conceptualised & Produced",
+          "tools": ["Adobe Premiere Pro", "Lightroom"],
+          "client": "NTU Office of International Engagement",
+          "tags": ["videography", "documentary", "institutional"],
+          "description": "4-minute documentary-style video for the Global Connect Fellowship Programme 2024, targeting an international digital audience. Additional event photography across 3 OIE events.",
+          "image": "assets/projects/oie-documentary.jpg",
+          "link": ""
+        },
+        {
+          "id": "music-district-video",
+          "title": "Music District NTU ADM — Event Videos",
+          "year": "2024–2026",
+          "role": "Publicity Director — Video Production",
+          "tools": ["Adobe Premiere Pro", "After Effects"],
+          "client": "Music District NTU ADM",
+          "tags": ["videography", "event", "social media"],
+          "description": "Valentine's performance opening teaser and event highlights reel for Music District NTU ADM.",
+          "image": "assets/projects/music-district-video.jpg",
+          "link": ""
+        }
+      ]
+    },
+    {
+      "id": "graphic-design",
+      "label": "Graphic Design & Brand Collateral",
+      "shortLabel": "Design",
+      "color": "#E8392A",
+      "intro": "Design is my sharpest client-facing tool — from fintech PR collateral to full brand systems, I work at the intersection of strategy and craft. Every piece is built to communicate clearly at a glance and hold up under scrutiny.",
+      "projects": [
+        {
+          "id": "elevandi",
+          "title": "Elevandi — PR & Marketing Collateral",
+          "year": "2024",
+          "role": "PR & Communications Intern",
+          "tools": ["Adobe Illustrator", "Photoshop", "InDesign"],
+          "client": "Elevandi",
+          "tags": ["graphic design", "PR", "marketing", "internship"],
+          "highlight": "Point Zero Forum — International Fintech Event",
+          "description": "10 marketing posters and visual collateral for external PR/communications, plus presentation assets for the Point Zero Forum (international fintech event).",
+          "image": "assets/projects/elevandi.jpg",
+          "link": ""
+        },
+        {
+          "id": "venture-corp",
+          "title": "VIPCOLOR — Social Media Campaign",
+          "year": "2025",
+          "role": "Marketing Intern",
+          "tools": ["Adobe Illustrator", "Photoshop", "Canva"],
+          "client": "Venture Corporation Limited",
+          "tags": ["graphic design", "social media", "brand", "internship"],
+          "description": "17 video and illustrated social media assets for the 'Color That Captivates / Labels That Sell' VIPCOLOR campaign. 3 marketing strategies incorporated into team content planning.",
+          "image": "assets/projects/venture-corp.jpg",
+          "link": ""
+        },
+        {
+          "id": "green-arrow",
+          "title": "Green Arrow — Mock Brand Identity",
+          "year": "2024",
+          "role": "Brand Designer",
+          "tools": ["Adobe Illustrator", "Photoshop"],
+          "client": "Speculative / Personal Project",
+          "tags": ["graphic design", "branding", "logo", "speculative"],
+          "description": "Full mock brand system: logo lockups in 3 colourways, event poster (\"Eco Future — Sustainability & Innovation Competition\"), tote bag mockup, and calendar-style teaser ad.",
+          "image": "assets/projects/green-arrow.jpg",
+          "link": ""
+        },
+        {
+          "id": "ntu-fest",
+          "title": "NTU FEST — Full Design Output",
+          "year": "2023–2024",
+          "role": "Publicity & Publications Director",
+          "tools": ["Adobe Illustrator", "Photoshop", "InDesign"],
+          "client": "NTUSU",
+          "tags": ["graphic design", "event", "social media", "leadership"],
+          "description": "Full design output — posters, social visuals, merchandise — for NTU FEST. Managed a design sub-committee.",
+          "image": "assets/projects/ntu-fest.jpg",
+          "link": ""
+        },
+        {
+          "id": "music-district-design",
+          "title": "Music District NTU ADM — Social Assets",
+          "year": "2025–2026",
+          "role": "Publicity Director",
+          "tools": ["Adobe Illustrator", "Photoshop"],
+          "client": "Music District NTU ADM",
+          "tags": ["graphic design", "social media", "event"],
+          "description": "Sunset Jams event poster, Makeout Drive Recap post, Melody of the Drowned Halloween recap, and drum-kit signup poster.",
+          "image": "assets/projects/music-district-design.jpg",
+          "link": ""
+        },
+        {
+          "id": "obesity-infographic",
+          "title": "Obesity — Information Visualisation",
+          "year": "2024",
+          "role": "Designer",
+          "tools": ["Adobe Illustrator", "Figma"],
+          "client": "Academic",
+          "tags": ["graphic design", "data visualisation", "infographic"],
+          "description": "Data-driven infographic translating WHO/World Obesity Federation statistics into a structured visual explainer. Bridges graphic design and marketing/data-viz skills.",
+          "image": "assets/projects/obesity-infographic.jpg",
+          "link": ""
+        }
+      ]
+    },
+    {
+      "id": "music",
+      "label": "Music Production",
+      "shortLabel": "Music",
+      "color": "#C49A00",
+      "intro": "Music is both process and output — I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of this loop: a jazz-fusion album inseparable from its art.",
+      "projects": [
+        {
+          "id": "jasmine-ep",
+          "title": "Jasmine — Capstone Concept Album",
+          "year": "2025–2026",
+          "role": "Composer, Producer, Director",
+          "tools": ["Logic Pro", "Ableton Live"],
+          "client": "Final Year Capstone",
+          "tags": ["music", "jazz", "fusion", "EP", "capstone"],
+          "highlight": "Flagship Project — Dedicated Case Study",
+          "description": "Original jazz-fusion EP directing the full project lifecycle for physical and streaming release. Tracks: 'Welcome to the Jasmine,' 'Home Pt. 1 & 2,' 'Night Time,' 'Kopi.'",
+          "image": "assets/projects/jasmine-ep.jpg",
+          "link": "jasmine.html",
+          "isFlagship": true
+        },
+        {
+          "id": "short-film-score",
+          "title": "Short Film Score",
+          "year": "2024",
+          "role": "Composer",
+          "tools": ["Logic Pro"],
+          "client": "Collaborative",
+          "tags": ["music", "score", "film"],
+          "description": "Original score composed for a friend's short film — an exercise in writing music that serves narrative without overpowering image.",
+          "image": "assets/projects/short-film-score.jpg",
+          "link": ""
+        },
+        {
+          "id": "original-tracks",
+          "title": "Original Tracks",
+          "year": "2023–2025",
+          "role": "Composer, Producer",
+          "tools": ["Logic Pro", "Ableton Live"],
+          "client": "Personal",
+          "tags": ["music", "original", "personal"],
+          "description": "Standalone original compositions: 'Cloudy Days,' 'Club Got Boots,' and the instrumental demo 'Paradise.'",
+          "image": "assets/projects/original-tracks.jpg",
+          "link": ""
+        }
+      ]
+    }
+  ],
+  "about": {
+    "bio": "I'm Ann Mary Saji — a BFA Animation student at NTU's School of Art, Design & Media, graduating May 2026. Over the last five years, I've built a practice that refuses to stay in one lane: I animate, illustrate, shoot video, design brand systems, and compose music, often all within a single project. My work has screened at Annecy, reached audiences of 33,000 on campus, and shipped for clients from fintech firms to indie startups.\n\nI'm multilingual, internationally minded, and deeply interested in what happens when disciplines stop being separate categories and start talking to each other. My capstone project, Jasmine, is the fullest expression of that — a jazz-fusion multimedia world spanning animation, illustration, comics, and original music.",
+    "funFacts": [
+      { "emoji": "🎨", "label": "Favourite tools", "value": "Clip Studio Paint, Logic Pro" },
+      { "emoji": "🌏", "label": "Languages", "value": "English, Malayalam, Tamil, Hindi" },
+      { "emoji": "🎞️", "label": "Inspired by", "value": "Studio Ghibli, Satoshi Kon, Wes Anderson" },
+      { "emoji": "🏆", "label": "Most proud of", "value": "Keep Yourself Safe — Annecy 2025 selection" },
+      { "emoji": "📍", "label": "Based in", "value": "Singapore" }
+    ],
+    "photo": "assets/about-photo.jpg"
+  },
+  "contact": {
+    "email": "annmarysaji@email.com",
+    "linkedin": "https://www.linkedin.com/in/annmary-saji/",
+    "instagram": "https://www.instagram.com/loudarmybombs/",
+    "resumePDF": "assets/downloads/AnnMarySaji_Resume.pdf"
+  }
+}

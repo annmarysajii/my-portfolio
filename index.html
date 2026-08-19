@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8"/>
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+<title>Annmary Saji — Portfolio</title>
+
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+
+<noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
+
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+
+  --ink:#111009;--ink5:rgba(17,16,9,.5);--ink12:rgba(17,16,9,.12);
+
+  --bg:#FAF8F4;
+
+  --red:#D93020;--blue:#1850A8;--yel:#E8B000;
+
+  --fd:'Clash Display',Georgia,serif;
+
+  --fb:'General Sans',system-ui,sans-serif;
+
+}
+
+html,body{height:100%;overflow:hidden;}
+
+body{
+
+  background:var(--bg);font-family:var(--fb);color:var(--ink);cursor:none;
+
+  background-image:radial-gradient(circle,rgba(17,16,9,.1) 1px,transparent 1px);
+
+  background-size:24px 24px;
+
+}
+
+body::after{
+
+  content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;
+
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+
+  opacity:.038;mix-blend-mode:multiply;
+
+}
+
+
+
+/* ── CURSOR ── */
+
+#cur{
+
+  position:fixed;top:0;left:0;width:30px;height:30px;
+
+  pointer-events:none;z-index:9999;
+
+  transform:translate(-50%,-50%);transition:transform .1s;
+
+}
+
+#cur.hov{transform:translate(-50%,-50%) scale(2.2);}
+
+
+
+/* ── FALLING STARS canvas ── */
+
+#bg-c{position:fixed;inset:0;z-index:1;pointer-events:none;}
+
+
+
+/* ── WARP canvas ── */
+
+#wc{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:0;transition:opacity .25s;}
+
+#wc.on{opacity:1;pointer-events:all;}
+
+
+
+/* ── GATEWAY ── */
+
+#gw{
+
+  position:fixed;inset:0;z-index:10;
+
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+
+  transition:opacity .5s ease;
+
+}
+
+#gw.out{opacity:0;pointer-events:none;}
+
+
+
+.gw-header{
+
+  position:fixed;top:2.5rem;left:50%;transform:translateX(-50%);z-index:11;
+
+  font-size:.78rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink5);
+
+}
+
+.gw-q{
+
+  font-family:var(--fd);
+
+  font-size:clamp(2rem,5.5vw,5rem);
+
+  font-weight:700;color:var(--ink);
+
+  text-align:center;line-height:1.06;letter-spacing:-.025em;
+
+  margin-bottom:3.5rem;padding:0 clamp(1.5rem,6vw,5rem);
+
+  max-width:780px;
+
+}
+
+.gw-opts{display:flex;flex-direction:column;gap:1.1rem;align-items:center;}
+
+.gw-opt{
+
+  font-family:var(--fd);
+
+  font-size:clamp(.95rem,2.2vw,1.3rem);
+
+  font-weight:600;color:var(--ink);background:none;border:none;cursor:none;
+
+  padding:.28rem 0;position:relative;transition:color .2s;letter-spacing:-.01em;
+
+}
+
+.gw-opt::after{
+
+  content:'';position:absolute;bottom:-1px;left:0;
+
+  width:0;height:2px;background:currentColor;
+
+  transition:width .3s cubic-bezier(.4,0,.2,1);
+
+}
+
+.gw-opt:hover::after{width:100%;}
+
+.gw-opt:hover{color:var(--ink5);}
+
+.gw-opt .arr{
+
+  margin-left:.45rem;display:inline-block;opacity:0;
+
+  transform:translateX(-6px);
+
+  transition:opacity .22s,transform .22s;
+
+}
+
+.gw-opt:hover .arr{opacity:1;transform:translateX(0);}
+
+
+
+/* ── AFFIRM ── */
+
+#affirm{
+
+  position:fixed;inset:0;z-index:18;
+
+  display:flex;align-items:center;justify-content:center;
+
+  pointer-events:none;opacity:0;transition:opacity .5s ease;
+
+}
+
+#affirm.show{opacity:1;}
+
+#affirm-txt{
+
+  font-family:var(--fd);
+
+  font-size:clamp(2.5rem,6vw,5.5rem);
+
+  font-weight:700;color:var(--ink);
+
+  letter-spacing:-.025em;text-align:center;padding:0 2rem;
+
+}
+
+
+
+/* corner marks */
+
+.c{position:fixed;width:22px;height:22px;opacity:.16;z-index:12;}
+
+.c-tl{top:2rem;left:2rem;border-top:1.5px solid var(--ink);border-left:1.5px solid var(--ink);}
+
+.c-tr{top:2rem;right:2rem;border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);}
+
+.c-bl{bottom:2rem;left:2rem;border-bottom:1.5px solid var(--ink);border-left:1.5px solid var(--ink);}
+
+.c-br{bottom:2rem;right:2rem;border-bottom:1.5px solid var(--ink);border-right:1.5px solid var(--ink);}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div id="cur">
+
+  <svg id="csq" width="30" height="30" viewBox="0 0 30 30">
+
+    <defs>
+
+      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+
+        <line x1="0" y1="0" x2="3" y2="3" stroke="rgba(17,16,9,0.25)" stroke-width="0.4"/>
+
+        <line x1="3" y1="0" x2="0" y2="3" stroke="rgba(17,16,9,0.12)" stroke-width="0.3"/>
+
+      </pattern>
+
+      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
+
+    </defs>
+
+    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
+
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="rgba(17,16,9,0.28)" stroke-width="0.6" filter="url(#rf)"/>
+
+  </svg>
+
+</div>
+
+
+
+<canvas id="bg-c"></canvas>
+
+<canvas id="wc"></canvas>
+
+<div id="affirm"><div id="affirm-txt">You're at the right place.</div></div>
+
+
+
+<div class="c c-tl"></div><div class="c c-tr"></div>
+
+<div class="c c-bl"></div><div class="c c-br"></div>
+
+<p class="gw-header">Annmary Saji - Portfolio 2026</p>
+
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music" style="position:fixed;top:2.5rem;right:2.5rem;z-index:11;background:none;border:none;font-size:1.1rem;cursor:none;color:var(--ink);">🔈</button>
+
+
+
+<audio id="bg-music" src="assets/music.mp3" loop preload="none"></audio>
+
+<audio id="warp-sfx" src="assets/warp.mp3" preload="none"></audio>
+
+
+
+<section id="gw">
+
+  <h1 class="gw-q">What are you looking for?</h1>
+
+  <div class="gw-opts">
+
+    <button class="gw-opt" onclick="go('anim')">A visual storyteller.<span class="arr">→</span></button>
+
+    <button class="gw-opt" onclick="go('brand')">Someone to elevate our branding.<span class="arr">→</span></button>
+
+    <button class="gw-opt" onclick="go('all')">A multidisciplinary creative.<span class="arr">→</span></button>
+
+    <button class="gw-opt" onclick="go('about')">I want to get to know Annmary.<span class="arr">→</span></button>
+
+  </div>
+
+</section>
+
+
+
+<script>
+
+/* ── CURSOR — paper star, speed-reactive ── */
+
+const cur=document.getElementById('cur');
+
+const sf=document.getElementById('sf');
+
+const csq=document.getElementById('csq');
+
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lx=mx,ly=my,ang=0;
+
+sf.setAttribute('fill','#111009');
+
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+
+(function curLoop(){
+
+  cx+=(mx-cx)*.16;cy+=(my-cy)*.16;
+
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+
+  const spd=Math.hypot(mx-lx,my-ly);lx=mx;ly=my;
+
+  ang+=1.5+spd*.8;
+
+  csq.style.transform='rotate('+ang+'deg)';
+
+  requestAnimationFrame(curLoop);
+
+})();
+
+document.addEventListener('mouseover',e=>{
+
+  const h=!!e.target.closest('button,a');
+
+  cur.classList.toggle('hov',h);
+
+  sf.setAttribute('fill',h ? '#D93020':'#111009');
+
+});
+
+
+
+/* ── FALLING STARS — colored, bigger, cursor-reactive ── */
+
+const bgC=document.getElementById('bg-c');
+
+const bgX=bgC.getContext('2d');
+
+let bW,bH;
+
+const HUES=[0,210,45]; // red, blue, yellow
+
+function rsz(){bW=bgC.width=innerWidth;bH=bgC.height=innerHeight;}
+
+window.addEventListener('resize',rsz);rsz();
+
+
+
+function drawStar(ctx,x,y,r,rot,color){
+
+  ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+
+  ctx.beginPath();
+
+  for(let i=0;i<10;i++){
+
+    const a=(i*Math.PI/5)-Math.PI/2;
+
+    const rad=i%2===0 ? r : r*.42;
+
+    i===0 ? ctx.moveTo(Math.cos(a)*rad,Math.sin(a)*rad):ctx.lineTo(Math.cos(a)*rad,Math.sin(a)*rad);
+
+  }
+
+  ctx.closePath();
+
+  ctx.fillStyle=color;ctx.fill();
+
+  ctx.restore();
+
+}
+
+
+
+const STARS=Array.from({length:45},()=>({
+
+  x:Math.random()*window.innerWidth,
+
+  y:Math.random()*window.innerHeight,
+
+  r:2.5+Math.random()*5, // slightly bigger base size
+
+  speed:.35+Math.random()*.55,
+
+  drift:(Math.random()-.5)*.28,
+
+  rot:Math.random()*Math.PI*2,
+
+  spin:(Math.random()-.5)*.018,
+
+  alpha:.08+Math.random()*.1,
+
+  hue:HUES[Math.floor(Math.random()*3)],
+
+  lit:0
+
+}));
+
+
+
+function bgFrame(){
+
+  bgX.clearRect(0,0,bW,bH);
+
+  STARS.forEach(s=>{
+
+    s.y+=s.speed;s.x+=s.drift;s.rot+=s.spin;
+
+    if(s.y>bH+20){s.y=-20;s.x=Math.random()*bW;}
+
+
+
+    const dist=Math.hypot(cx-s.x,cy-s.y);
+
+    const prox=Math.max(0,1-dist/110);
+
+    s.lit=Math.max(s.lit*.94,prox);
+
+
+
+    const sz=s.r+(s.lit*6.5); // scales up more when hovered
+
+    const a=s.alpha+(s.lit*.6);
+
+    const color=s.lit>.04 ? `hsla(${s.hue},88%,52%,${a})`
+
+      :`rgba(17,16,9,${s.alpha})`;
+
+
+
+    drawStar(bgX,s.x,s.y,sz,s.rot,color);
+
+  });
+
+  requestAnimationFrame(bgFrame);
+
+}
+
+bgFrame();
+
+
+
+/* ── WARP — white paper, black lines ── */
+
+const wc=document.getElementById('wc');
+
+const ctx=wc.getContext('2d');
+
+let W,H,wStars=[],prog=0,dest='';
+
+function rszW(){W=wc.width=innerWidth;H=wc.height=innerHeight;}
+
+window.addEventListener('resize',rszW);rszW();
+
+const pref=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+
+
+window.toggleMusic=function(){
+
+  const m=document.getElementById('bg-music');
+
+  const b=document.getElementById('musicBtn');
+
+  if(m.paused){
+
+    m.play().catch(e=>console.log('Music play prevented:',e));
+
+    if(b)b.textContent='🔊';
+
+  } else {
+
+    m.pause();
+
+    if(b)b.textContent='🔈';
+
+  }
+
+};
+
+
+
+window.go=function(filter){
+
+  dest='portfolio.html?f='+filter;
+
+  if(pref){location.href=dest;return;}
+
+  const sfx = document.getElementById('warp-sfx');
+
+  if(sfx) sfx.play().catch(e=>console.log('SFX play prevented:',e));
+
+  document.getElementById('gw').classList.add('out');
+
+  setTimeout(()=>document.getElementById('affirm').classList.add('show'),150);
+
+  setTimeout(()=>{
+
+    document.getElementById('affirm').style.opacity='0';
+
+    wc.classList.add('on');
+
+    ctx.fillStyle='#FAF8F4';ctx.fillRect(0,0,W,H);
+
+    wStars=Array.from({length:380},()=>({
+
+      x:(Math.random()-.5)*W,y:(Math.random()-.5)*H,z:Math.random()*W,pz:0
+
+    }));
+
+    wStars.forEach(s=>s.pz=s.z);prog=0;
+
+    (function frame(){
+
+      const spd=10+prog*180;
+
+      ctx.fillStyle=`rgba(250,248,244,${.2+prog*.22})`;
+
+      ctx.fillRect(0,0,W,H);
+
+      wStars.forEach(s=>{
+
+        s.pz=s.z;s.z-=spd;
+
+        if(s.z<=0){s.x=(Math.random()-.5)*W;s.y=(Math.random()-.5)*H;s.z=W;s.pz=s.z;}
+
+        const sx=(s.x/s.z)*W+W/2,sy=(s.y/s.z)*H+H/2;
+
+        const px=(s.x/s.pz)*W+W/2,py=(s.y/s.pz)*H+H/2;
+
+        const br=1-s.z/W;
+
+        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);
+
+        ctx.strokeStyle=`rgba(17,16,9,${.07+br*.88})`;
+
+        ctx.lineWidth=Math.max(.25,br*2.2);ctx.stroke();
+
+      });
+
+      prog+=.009+prog*.018; // ease-in acceleration (cubic feel)
+
+      if(prog<1)requestAnimationFrame(frame);
+
+      else{ctx.fillStyle='#FAF8F4';ctx.fillRect(0,0,W,H);setTimeout(()=>location.href=dest,40);}
+
+    })();
+
+  },1500);
+
+};
+
+</script>
+
+</body>
+
+</html>
+

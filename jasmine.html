@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jasmine — Case Study · Ann Mary Saji</title>
+  <meta name="description" content="Jasmine: an Indo-jazz fusion multimedia world spanning animation, illustration, comics, and original music. Final Year Capstone by Ann Mary Saji." />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=cabinet-grotesk@400,500,600,700,800&f[]=general-sans@400,500,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Jasmine page accent overrides */
+    :root {
+      --page-accent: #C49A00;
+      --page-accent-sat: #F5C518;
+    }
+    .section__eyebrow { color: var(--page-accent); }
+
+    .discipline-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .discipline-pill {
+      padding: 0.4rem 1rem;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(250,250,247,0.8);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .discipline-pill:hover { border-color: var(--page-accent-sat); color: var(--page-accent-sat); }
+
+    .jasmine-quote {
+      border-left: 3px solid var(--page-accent-sat);
+      padding: 1.5rem 2rem;
+      background: rgba(245,197,24,0.05);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--ink);
+      margin: 2rem 0;
+    }
+
+    .world-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .world-card {
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1.5px solid var(--ink-20);
+      border-radius: var(--radius-lg);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .world-card:hover { border-color: var(--page-accent); transform: translateY(-4px); }
+    .world-card__icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .world-card__title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .world-card__desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--ink-60);
+      line-height: 1.6;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(250,250,247,0.7);
+      margin-bottom: 2.5rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .back-btn:hover { border-color: var(--page-accent-sat); color: var(--page-accent-sat); }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="custom-cursor" id="customCursor">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path d="M14 2L15.8 10.2L24 12L15.8 13.8L14 22L12.2 13.8L4 12L12.2 10.2L14 2Z" fill="currentColor"/>
+      <path d="M6 4L6.8 7.2L10 8L6.8 8.8L6 12L5.2 8.8L2 8L5.2 7.2L6 4Z" fill="currentColor" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav" id="mainNav">
+    <div class="container nav__inner">
+      <a href="portfolio.html" class="nav__logo">Ann Mary <span>Saji</span></a>
+      <ul class="nav__links" role="list">
+        <li><a href="portfolio.html#home">Home</a></li>
+        <li><a href="portfolio.html#animation">Work</a></li>
+        <li><a href="jasmine.html" style="color:var(--yellow)">Jasmine ★</a></li>
+        <li><a href="portfolio.html#about">About</a></li>
+        <li><a href="portfolio.html#contact">Contact</a></li>
+        <li>
+          <a href="assets/downloads/AnnMarySaji_Resume.pdf" class="nav__cta" download>↓ Resume</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Case Study Hero -->
+  <header class="case-hero">
+    <div class="container">
+      <a href="portfolio.html" class="back-btn">← Back to Portfolio</a>
+      <div class="case-hero__eyebrow">Flagship Case Study · Final Year Capstone</div>
+      <h1 class="case-hero__title">Jasmine</h1>
+      <p class="case-hero__subtitle">
+        An Indo-jazz fusion multimedia world spanning animation, illustration, comics, and original music — built as a capstone that refuses to stay in one discipline.
+      </p>
+      <div class="discipline-pills">
+        <span class="discipline-pill">🎬 Animation</span>
+        <span class="discipline-pill">🎨 Visual Development</span>
+        <span class="discipline-pill">📖 Comics</span>
+        <span class="discipline-pill">🎵 Music Production</span>
+        <span class="discipline-pill">🌍 World-Building</span>
+      </div>
+      <div class="case-meta">
+        <div class="case-meta__item">
+          <span class="case-meta__label">Year</span>
+          <span class="case-meta__value">2025–2026</span>
+        </div>
+        <div class="case-meta__item">
+          <span class="case-meta__label">Role</span>
+          <span class="case-meta__value">Director · Composer · Illustrator</span>
+        </div>
+        <div class="case-meta__item">
+          <span class="case-meta__label">Context</span>
+          <span class="case-meta__value">NTU ADM Final Year Project</span>
+        </div>
+        <div class="case-meta__item">
+          <span class="case-meta__label">Status</span>
+          <span class="case-meta__value">Ongoing · Graduating May 2026</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Case Study Body -->
+  <main class="case-content">
+    <div class="container">
+
+      <!-- Overview -->
+      <div class="case-section reveal">
+        <p class="case-section__label">Overview</p>
+        <h2 class="case-section__title">What is Jasmine?</h2>
+        <p class="case-section__body">
+          Jasmine is a multimedia world built around the concept of an Indo-jazz fusion bar called "Jazzmine" — a space where Indian classical music traditions meet the improvisational language of jazz. The project began as a music EP and grew into a full-spectrum creative world: character designs, environment concept art, comic panels, and a planned animated short, all orbiting the same fictional universe.
+        </p>
+        <blockquote class="jasmine-quote">
+          "A place where every note remembers where it came from."
+        </blockquote>
+      </div>
+
+      <!-- The World -->
+      <div class="case-section reveal">
+        <p class="case-section__label">World-Building</p>
+        <h2 class="case-section__title">The Jasmine Universe</h2>
+        <p class="case-section__body">
+          Every element of the Jasmine world is designed to be self-consistent — from the architecture of the bar to the instruments the characters play. Each discipline feeds the others: the music informs the character moods, the character designs influence the comic layouts, and the comic panels map scenes for the eventual animation.
+        </p>
+        <div class="world-grid">
+          <div class="world-card">
+            <div class="world-card__icon">🏛️</div>
+            <h3 class="world-card__title">Jazzmine Bar</h3>
+            <p class="world-card__desc">Jazz bar exterior and interior concept art. Indo-fusion architecture, warm amber lighting, hand-painted signage.</p>
+          </div>
+          <div class="world-card">
+            <div class="world-card__icon">👤</div>
+            <h3 class="world-card__title">Character Lineups</h3>
+            <p class="world-card__desc">Full character design sheets with colour palette studies — the regulars of Jazzmine, each with a musical role.</p>
+          </div>
+          <div class="world-card">
+            <div class="world-card__icon">🎨</div>
+            <h3 class="world-card__title">Colour Studies</h3>
+            <p class="world-card__desc">Palette studies for each track mood — warm amber for "Kopi," midnight blue for "Night Time," golden-hour haze for "Home."</p>
+          </div>
+          <div class="world-card">
+            <div class="world-card__icon">📖</div>
+            <h3 class="world-card__title">Comic Panels</h3>
+            <p class="world-card__desc">"Welcome Back Jasmine" — comic-style sample panels introducing the world. Sequential art bridging music and animation.</p>
+          </div>
+          <div class="world-card">
+            <div class="world-card__icon">🎴</div>
+            <h3 class="world-card__title">Cover Art Series</h3>
+            <p class="world-card__desc">Individual cover art for each track: Welcome to the Jasmine, Track 01, Home Pt. 1 & 2, Night Time, Kopi.</p>
+          </div>
+          <div class="world-card">
+            <div class="world-card__icon">🎬</div>
+            <h3 class="world-card__title">Planned Animation</h3>
+            <p class="world-card__desc">A short animated sequence set in the Jazzmine bar — bringing the world from illustration into motion.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="case-section reveal">
+        <p class="case-section__label">Visual Development</p>
+        <h2 class="case-section__title">Art Direction</h2>
+        <p class="case-section__body">
+          Placeholder gallery — art assets will populate here once uploaded. Each slot below represents one key visual development piece.
+        </p>
+        <div class="case-gallery">
+          <div class="case-gallery__item">🏛️ Jazzmine Bar Exterior</div>
+          <div class="case-gallery__item">👤 Character Lineup Sheet</div>
+          <div class="case-gallery__item">🎨 Colour Palette Studies</div>
+          <div class="case-gallery__item">🎴 "Welcome to the Jasmine" Cover</div>
+          <div class="case-gallery__item">🌙 "Night Time" Cover Art</div>
+          <div class="case-gallery__item">☕ "Kopi" Cover Art</div>
+        </div>
+      </div>
+
+      <!-- Music -->
+      <div class="case-section reveal">
+        <p class="case-section__label">The Music</p>
+        <h2 class="case-section__title">Jasmine EP — Tracklist</h2>
+        <p class="case-section__body">
+          An original jazz-fusion EP directed from composition to physical and streaming release. Each track is tied to a mood, a character, and a scene in the Jasmine world.
+        </p>
+        <div class="tracks-list">
+          <div class="track-item">
+            <span class="track-num">01</span>
+            <div>
+              <div class="track-title">Welcome to the Jasmine</div>
+              <div class="track-desc">The opening — an invitation into the world. Up-tempo, percussive, layered with sitar and bass.</div>
+            </div>
+          </div>
+          <div class="track-item">
+            <span class="track-num">02</span>
+            <div>
+              <div class="track-title">Track 01</div>
+              <div class="track-desc">Instrumental. The bar before it opens — quiet, anticipatory, morning light.</div>
+            </div>
+          </div>
+          <div class="track-item">
+            <span class="track-num">03</span>
+            <div>
+              <div class="track-title">Home Pt. 1 (Instrumental)</div>
+              <div class="track-desc">A gentle, melodic meditation. Solo piano over soft tabla.</div>
+            </div>
+          </div>
+          <div class="track-item">
+            <span class="track-num">04</span>
+            <div>
+              <div class="track-title">Home Pt. 2</div>
+              <div class="track-desc">The vocal counterpart to Pt. 1. Memory and belonging, sung softly.</div>
+            </div>
+          </div>
+          <div class="track-item">
+            <span class="track-num">05</span>
+            <div>
+              <div class="track-title">Night Time</div>
+              <div class="track-desc">Late-bar energy. Saxophone-led, driving, a little dangerous.</div>
+            </div>
+          </div>
+          <div class="track-item">
+            <span class="track-num">06</span>
+            <div>
+              <div class="track-title">Kopi</div>
+              <div class="track-desc">The closer — warm, unhurried, the feeling of the last cup of coffee before closing time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Process -->
+      <div class="case-section reveal">
+        <p class="case-section__label">Process & Reflection</p>
+        <h2 class="case-section__title">How the disciplines talk to each other</h2>
+        <p class="case-section__body">
+          Jasmine started as a music question: what would a jazz fusion EP sound like if it was rooted in Indian classical music rather than American blues? Once the first two tracks existed, I realised I couldn't hear the world without seeing it. The characters arrived next — regulars of the bar, each tied to a different instrument and a different narrative thread. The comic panels came from the need to show time passing between tracks. The animation is where all of it will finally move.<br><br>
+          The project is the fullest answer I have to why I don't want to pick one medium. Each discipline here is doing something the others cannot.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__logo">Ann Mary Saji</span>
+      <span class="footer__copy">© 2026 · Jasmine Case Study</span>
+      <a href="portfolio.html" class="footer__back">← All Work</a>
+    </div>
+  </footer>
+
+  <script src="js/cursor.js"></script>
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+    }, { threshold: 0.1 });
+    reveals.forEach(el => obs.observe(el));
+    setTimeout(() => reveals[0] && reveals[0].classList.add('visible'), 100);
+  </script>
+</body>
+</html>
