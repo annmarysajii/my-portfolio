@@ -106,23 +106,13 @@
 
     // 5. Thematic Falling Backgrounds
     const bgObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (entry.target.classList.contains('hero')) {
-                    window.currentCanvasTheme = 'star';
-                } else if (entry.target.id === 'animation') {
-                    window.currentCanvasTheme = 'animation';
-                } else if (entry.target.id === 'illustration') {
-                    window.currentCanvasTheme = 'illustration';
-                } else if (entry.target.id === 'videography') {
-                    window.currentCanvasTheme = 'videography';
-                } else if (entry.target.id === 'graphic-design') {
-                    window.currentCanvasTheme = 'graphic-design';
-                } else if (entry.target.id === 'music') {
-                    window.currentCanvasTheme = 'music';
-                }
-            }
-        });
-    }, { threshold: 0.15 });
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id;
+            if (entry.target.classList.contains('hero')) window.currentCanvasTheme = 'star';
+            else if (id) window.currentCanvasTheme = id;
+        }
+    });
+}, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
     
     document.querySelectorAll('.sec, .hero').forEach(el => bgObserver.observe(el));

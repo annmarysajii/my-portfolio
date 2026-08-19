@@ -1874,8 +1874,8 @@ if(bgC){
     const isDarkNow = isDark();
     
     if (theme === 'graphic-design') {
-        bgX.strokeStyle = isDarkNow ? 'rgba(240,238,245,0.25)' : 'rgba(17,16,9,0.25)';
-        bgX.lineWidth = 2;
+        bgX.strokeStyle = isDarkNow ? 'rgba(240,238,245,0.12)' : 'rgba(17,16,9,0.1)';
+        bgX.lineWidth = 1;
         for(let i=0; i<STARS.length; i++) {
             for(let j=i+1; j<STARS.length; j++) {
                 const dx = STARS[i].x - STARS[j].x;
@@ -1886,8 +1886,8 @@ if(bgC){
             }
         }
     } else if (theme === 'illustration') {
-        bgX.strokeStyle = isDarkNow ? 'rgba(217,48,32,0.2)' : 'rgba(217,48,32,0.3)';
-        bgX.lineWidth = 2;
+        bgX.strokeStyle = isDarkNow ? 'rgba(217,48,32,0.12)' : 'rgba(217,48,32,0.15)';
+        bgX.lineWidth = 1;
         for(let i=0; i<STARS.length-2; i+=3) {
             bgX.beginPath();
             bgX.moveTo(STARS[i].x, STARS[i].y);
@@ -1912,9 +1912,9 @@ if(bgC){
 
 
 
-      const sz=s.r+(s.lit*6.5);
+      const sz=(s.r*0.55)+(s.lit*3);
 
-      const a=s.alpha+(s.lit*.6);
+      const a=(s.alpha*0.5)+(s.lit*.3);
 
       const isDarkNow=isDark();
 
