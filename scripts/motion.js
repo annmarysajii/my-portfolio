@@ -114,10 +114,10 @@
                     window.currentCanvasTheme = 'animation';
                 } else if (entry.target.id === 'illustration') {
                     window.currentCanvasTheme = 'illustration';
-                } else if (entry.target.id === 'motion') {
-                    window.currentCanvasTheme = 'motion';
-                } else if (entry.target.id === 'brand') {
-                    window.currentCanvasTheme = 'brand';
+                } else if (entry.target.id === 'videography') {
+                    window.currentCanvasTheme = 'videography';
+                } else if (entry.target.id === 'graphic-design') {
+                    window.currentCanvasTheme = 'graphic-design';
                 } else if (entry.target.id === 'music') {
                     window.currentCanvasTheme = 'music';
                 }
