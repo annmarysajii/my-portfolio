@@ -2220,11 +2220,13 @@ window.sub=function(e){
 
 </script>
 
+  <script src="scripts/data.js"></script>
   <script src="scripts/motion.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>lucide.createIcons();</script>
 <script>
-fetch('assets/portfolio-data.json').then(r=>r.json()).then(data => {
+setTimeout(() => {
+const data = window.PORTFOLIO_DATA; if(data) {
   document.querySelectorAll('a.card-img').forEach(a => {
     const href = a.getAttribute('href');
     if (href && href.includes('id=')) {
@@ -2246,7 +2248,8 @@ fetch('assets/portfolio-data.json').then(r=>r.json()).then(data => {
     }
   });
   if(window.lucide) window.lucide.createIcons();
-});
+}
+}, 50);
 </script>
 </body>
 
