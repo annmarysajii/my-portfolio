@@ -4,13 +4,13 @@ body {
 }
 
 @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0;  }
+    to { opacity: 1;  }
 }
 
 body.fade-out {
     opacity: 0 !important;
-    transform: translateY(-10px) !important;
+    
     transition: opacity 0.4s ease, transform 0.4s ease !important;
 }
 
@@ -24,7 +24,7 @@ body.fade-out {
 
 .reveal.visible {
     opacity: 1;
-    transform: translateY(0);
+    
 }
 
 /* 3D Tilt for Cards */
@@ -36,4 +36,50 @@ body.fade-out {
 
 .card-img:hover, .gw-opt:hover {
     z-index: 10;
+}
+
+/* Icon sizing */
+.lucide { width: 1.2em; height: 1.2em; stroke-width: 2; }
+.pill-toggle .lucide { width: 1em; height: 1em; }
+
+/* Stadium Pill Toggle */
+.pill-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: none;
+    color: var(--ink);
+    padding: 0.2rem 0;
+}
+
+.pill-track {
+    width: 32px;
+    height: 18px;
+    background: rgba(120, 120, 120, 0.3);
+    border-radius: 20px;
+    position: relative;
+    transition: background 0.3s;
+}
+
+.pill-knob {
+    width: 14px;
+    height: 14px;
+    background: var(--bg);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pill-toggle.on .pill-track {
+    background: var(--ink);
+}
+
+.pill-toggle.on .pill-knob {
+    transform: translateX(14px);
+    background: var(--bg);
 }

@@ -17,7 +17,7 @@
     });
 
     // 2. Smooth Page Transitions
-    const links = document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"])');
+    const links = document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"]):not([download])');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');

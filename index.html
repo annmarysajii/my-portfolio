@@ -261,7 +261,7 @@ body::after{
 
 <p class="gw-header">Annmary Saji - Portfolio 2026</p>
 
-<button class="music-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music" style="position:fixed;top:2.5rem;right:2.5rem;z-index:11;background:none;border:none;font-size:1.1rem;cursor:none;color:var(--ink);">🔈</button>
+<button class="music-toggle pill-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music"><i data-lucide="music" class="icon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
 
 
 
@@ -558,6 +558,8 @@ window.go=function(filter){
 </script>
 
   <script src="scripts/motion.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
 </body>
 
 </html>

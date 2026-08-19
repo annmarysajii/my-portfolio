@@ -431,9 +431,9 @@ img{display:block;max-width:100%;}
 
     <div style="display:flex;align-items:center;gap:1.5rem;">
 
-      <button class="music-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music" style="background:none;border:none;font-size:1.1rem;cursor:none;color:var(--ink);">🎵</button>
+      <button class="music-toggle pill-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music"><i data-lucide="music" class="icon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
 
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode">☀️</button>
+      <button class="theme-toggle pill-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode"><i data-lucide="moon" class="icon" id="themeIcon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
 
       <a href="javascript:window.close()" class="nav-back" onclick="if(history.length>1){history.back();return false;}">
 
@@ -669,13 +669,13 @@ window.toggleMusic=function(){
 
     m.play().catch(e=>console.log('Music play prevented:',e));
 
-    if(b)b.textContent='✦Š';
+    if(b)b.textContent='<i data-lucide="image"></i>Š';
 
   } else {
 
     m.pause();
 
-    if(b)b.textContent='✦ˆ';
+    if(b)b.textContent='<i data-lucide="image"></i>ˆ';
 
   }
 
@@ -717,17 +717,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Film still — opening sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — opening sequence'},
 
-      {emoji:'✦',label:'Character design sheets'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character design sheets'},
 
-      {emoji:'✦',label:'Film still — mid sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — mid sequence'},
 
-      {emoji:'✦',label:'Background environment studies'},
+      {emoji:'<i data-lucide="image"></i>',label:'Background environment studies'},
 
-      {emoji:'✦',label:'Storyboard panels, key moments'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard panels, key moments'},
 
-      {emoji:'✦',label:'Film still — closing sequence'}
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — closing sequence'}
 
     ]
 
@@ -755,17 +755,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Film still — interior scene'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — interior scene'},
 
-      {emoji:'✦',label:'Character sketch exploration, early passes'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character sketch exploration, early passes'},
 
-      {emoji:'✦',label:'Film still — exterior, night'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — exterior, night'},
 
-      {emoji:'✦',label:'Environment painting — gothic interior'},
+      {emoji:'<i data-lucide="image"></i>',label:'Environment painting — gothic interior'},
 
-      {emoji:'✦',label:'Costume reference and detail studies'},
+      {emoji:'<i data-lucide="image"></i>',label:'Costume reference and detail studies'},
 
-      {emoji:'✦',label:'Film still — character close-up'}
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — character close-up'}
 
     ]
 
@@ -793,17 +793,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'World overview — key location studies'},
+      {emoji:'<i data-lucide="image"></i>',label:'World overview — key location studies'},
 
-      {emoji:'✦',label:'Character design — lead figure, full turnaround'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character design — lead figure, full turnaround'},
 
-      {emoji:'✦',label:'Environment concept — main venue interior'},
+      {emoji:'<i data-lucide="image"></i>',label:'Environment concept — main venue interior'},
 
-      {emoji:'✦',label:'Supporting character designs'},
+      {emoji:'<i data-lucide="image"></i>',label:'Supporting character designs'},
 
-      {emoji:'✦',label:'Environment concept — exterior establishing shot'},
+      {emoji:'<i data-lucide="image"></i>',label:'Environment concept — exterior establishing shot'},
 
-      {emoji:'✦',label:'Colour palette and texture explorations'}
+      {emoji:'<i data-lucide="image"></i>',label:'Colour palette and texture explorations'}
 
     ]
 
@@ -831,17 +831,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Film still — protagonist puppet, hero shot'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — protagonist puppet, hero shot'},
 
-      {emoji:'✦',label:'Puppet construction in progress'},
+      {emoji:'<i data-lucide="image"></i>',label:'Puppet construction in progress'},
 
-      {emoji:'✦',label:'Set design — urban street environment'},
+      {emoji:'<i data-lucide="image"></i>',label:'Set design — urban street environment'},
 
-      {emoji:'✦',label:'Film still — environmental scene'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — environmental scene'},
 
-      {emoji:'✦',label:'Storyboard panels — key narrative beats'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard panels — key narrative beats'},
 
-      {emoji:'✦',label:'Film still — closing moment'}
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — closing moment'}
 
     ]
 
@@ -869,17 +869,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Storyboard — bridge sequence, opening'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — bridge sequence, opening'},
 
-      {emoji:'✦',label:'Storyboard — motorbike transition panels'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — motorbike transition panels'},
 
-      {emoji:'✦',label:'Storyboard — speed/motion staging study'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — speed/motion staging study'},
 
-      {emoji:'✦',label:'Storyboard — boat sequence, key beats'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — boat sequence, key beats'},
 
-      {emoji:'✦',label:'Spatial diagram — screen direction planning'},
+      {emoji:'<i data-lucide="image"></i>',label:'Spatial diagram — screen direction planning'},
 
-      {emoji:'✦',label:'Final storyboard — closing sequence'}
+      {emoji:'<i data-lucide="image"></i>',label:'Final storyboard — closing sequence'}
 
     ]
 
@@ -907,17 +907,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Painting study — interior doorway, backlit'},
+      {emoji:'<i data-lucide="image"></i>',label:'Painting study — interior doorway, backlit'},
 
-      {emoji:'✦',label:'Painting study — Egyptian temple statue reference'},
+      {emoji:'<i data-lucide="image"></i>',label:'Painting study — Egyptian temple statue reference'},
 
-      {emoji:'✦',label:'Value study — lighting condition analysis'},
+      {emoji:'<i data-lucide="image"></i>',label:'Value study — lighting condition analysis'},
 
-      {emoji:'✦',label:'Colour study — warm to cool light transitions'},
+      {emoji:'<i data-lucide="image"></i>',label:'Colour study — warm to cool light transitions'},
 
-      {emoji:'✦',label:'Environment study — architectural detail'},
+      {emoji:'<i data-lucide="image"></i>',label:'Environment study — architectural detail'},
 
-      {emoji:'✦',label:'Figure study — material and texture'}
+      {emoji:'<i data-lucide="image"></i>',label:'Figure study — material and texture'}
 
     ]
 
@@ -945,17 +945,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Episode 1 — cover page and opening spread'},
+      {emoji:'<i data-lucide="image"></i>',label:'Episode 1 — cover page and opening spread'},
 
-      {emoji:'✦',label:'Episode 2 — narrative panels'},
+      {emoji:'<i data-lucide="image"></i>',label:'Episode 2 — narrative panels'},
 
-      {emoji:'✦',label:'Character design sheet — recurring cast'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character design sheet — recurring cast'},
 
-      {emoji:'✦',label:'Episode 4 — key narrative sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Episode 4 — key narrative sequence'},
 
-      {emoji:'✦',label:'Episode spread — typography and lettering detail'},
+      {emoji:'<i data-lucide="image"></i>',label:'Episode spread — typography and lettering detail'},
 
-      {emoji:'✦',label:'Full episode page — completed panel layout'}
+      {emoji:'<i data-lucide="image"></i>',label:'Full episode page — completed panel layout'}
 
     ]
 
@@ -983,7 +983,7 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Campus Wellbeing Planner & Campus For All — Key Illustration'}
+      {emoji:'<i data-lucide="image"></i>',label:'Campus Wellbeing Planner & Campus For All — Key Illustration'}
 
     ]
 
@@ -1011,17 +1011,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Opening spread — establishing scene'},
+      {emoji:'<i data-lucide="image"></i>',label:'Opening spread — establishing scene'},
 
-      {emoji:'✦',label:'Panel sequence — daily life before'},
+      {emoji:'<i data-lucide="image"></i>',label:'Panel sequence — daily life before'},
 
-      {emoji:'✦',label:'Key panel — pivotal moment'},
+      {emoji:'<i data-lucide="image"></i>',label:'Key panel — pivotal moment'},
 
-      {emoji:'✦',label:'Character study — Nangeli, figure and expression'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character study — Nangeli, figure and expression'},
 
-      {emoji:'✦',label:'Panel — architectural reference integration'},
+      {emoji:'<i data-lucide="image"></i>',label:'Panel — architectural reference integration'},
 
-      {emoji:'✦',label:'Closing sequence — final panels'}
+      {emoji:'<i data-lucide="image"></i>',label:'Closing sequence — final panels'}
 
     ]
 
@@ -1049,17 +1049,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Character commission — original design, full render'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character commission — original design, full render'},
 
-      {emoji:'✦',label:'Character commission — sketch stage'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character commission — sketch stage'},
 
-      {emoji:'✦',label:'Character commission — colour render'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character commission — colour render'},
 
-      {emoji:'✦',label:'Concept art — environment and character'},
+      {emoji:'<i data-lucide="image"></i>',label:'Concept art — environment and character'},
 
-      {emoji:'✦',label:'Character commission — dynamic pose'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character commission — dynamic pose'},
 
-      {emoji:'✦',label:'Character commission — portrait render'}
+      {emoji:'<i data-lucide="image"></i>',label:'Character commission — portrait render'}
 
     ]
 
@@ -1087,17 +1087,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Motion graphic — AI concept visualisation'},
+      {emoji:'<i data-lucide="image"></i>',label:'Motion graphic — AI concept visualisation'},
 
-      {emoji:'✦',label:'On-screen segment — presenter framing'},
+      {emoji:'<i data-lucide="image"></i>',label:'On-screen segment — presenter framing'},
 
-      {emoji:'✦',label:'Data visualisation — animated chart sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Data visualisation — animated chart sequence'},
 
-      {emoji:'✦',label:'Motion graphic — product feature breakdown'},
+      {emoji:'<i data-lucide="image"></i>',label:'Motion graphic — product feature breakdown'},
 
-      {emoji:'✦',label:'Composite — presenter with motion overlay'},
+      {emoji:'<i data-lucide="image"></i>',label:'Composite — presenter with motion overlay'},
 
-      {emoji:'✦',label:'Graphic design — title card and lower thirds'}
+      {emoji:'<i data-lucide="image"></i>',label:'Graphic design — title card and lower thirds'}
 
     ]
 
@@ -1125,17 +1125,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Product shot — VP750 hero frame'},
+      {emoji:'<i data-lucide="image"></i>',label:'Product shot — VP750 hero frame'},
 
-      {emoji:'✦',label:'Tutorial still — printhead installation step'},
+      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — printhead installation step'},
 
-      {emoji:'✦',label:'Product shot — VP700 close detail'},
+      {emoji:'<i data-lucide="image"></i>',label:'Product shot — VP700 close detail'},
 
-      {emoji:'✦',label:'Tutorial still — setup walkthrough'},
+      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — setup walkthrough'},
 
-      {emoji:'✦',label:'Social media cut — 30-second feature highlight'},
+      {emoji:'<i data-lucide="image"></i>',label:'Social media cut — 30-second feature highlight'},
 
-      {emoji:'✦',label:'Tutorial still — final quality check step'}
+      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — final quality check step'}
 
     ]
 
@@ -1163,17 +1163,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Documentary still — participant interview setup'},
+      {emoji:'<i data-lucide="image"></i>',label:'Documentary still — participant interview setup'},
 
-      {emoji:'✦',label:'Event photography — programme launch'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event photography — programme launch'},
 
-      {emoji:'✦',label:'Documentary still — programme activity sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Documentary still — programme activity sequence'},
 
-      {emoji:'✦',label:'Event photography — participant group'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event photography — participant group'},
 
-      {emoji:'✦',label:'Documentary still — reflection interview'},
+      {emoji:'<i data-lucide="image"></i>',label:'Documentary still — reflection interview'},
 
-      {emoji:'✦',label:'Event photography — closing ceremony'}
+      {emoji:'<i data-lucide="image"></i>',label:'Event photography — closing ceremony'}
 
     ]
 
@@ -1201,17 +1201,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Teaser still — Valentine\'s performance open'},
+      {emoji:'<i data-lucide="image"></i>',label:'Teaser still — Valentine\'s performance open'},
 
-      {emoji:'✦',label:'Highlights reel — performance footage'},
+      {emoji:'<i data-lucide="image"></i>',label:'Highlights reel — performance footage'},
 
-      {emoji:'✦',label:'Teaser still — atmosphere and detail'},
+      {emoji:'<i data-lucide="image"></i>',label:'Teaser still — atmosphere and detail'},
 
-      {emoji:'✦',label:'Highlights reel — audience engagement'},
+      {emoji:'<i data-lucide="image"></i>',label:'Highlights reel — audience engagement'},
 
-      {emoji:'✦',label:'Motion graphic — title card design'},
+      {emoji:'<i data-lucide="image"></i>',label:'Motion graphic — title card design'},
 
-      {emoji:'✦',label:'Highlights reel — closing moment'}
+      {emoji:'<i data-lucide="image"></i>',label:'Highlights reel — closing moment'}
 
     ]
 
@@ -1239,17 +1239,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'GoBunny Logo Lockup'},
+      {emoji:'<i data-lucide="image"></i>',label:'GoBunny Logo Lockup'},
 
-      {emoji:'✦',label:'High-Protein Yogurt Drink Packaging Mockup'},
+      {emoji:'<i data-lucide="image"></i>',label:'High-Protein Yogurt Drink Packaging Mockup'},
 
-      {emoji:'✦',label:'Protein Snack Wrapper Design'},
+      {emoji:'<i data-lucide="image"></i>',label:'Protein Snack Wrapper Design'},
 
-      {emoji:'✦',label:'Cider Drink Can Design'},
+      {emoji:'<i data-lucide="image"></i>',label:'Cider Drink Can Design'},
 
-      {emoji:'✦',label:'Brand Color Palette and Typography'},
+      {emoji:'<i data-lucide="image"></i>',label:'Brand Color Palette and Typography'},
 
-      {emoji:'✦',label:'Social Media Ad Mockups'}
+      {emoji:'<i data-lucide="image"></i>',label:'Social Media Ad Mockups'}
 
     ]
 
@@ -1277,17 +1277,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Marketing poster — Point Zero Forum key visual'},
+      {emoji:'<i data-lucide="image"></i>',label:'Marketing poster — Point Zero Forum key visual'},
 
-      {emoji:'✦',label:'PR poster series — social and print variants'},
+      {emoji:'<i data-lucide="image"></i>',label:'PR poster series — social and print variants'},
 
-      {emoji:'✦',label:'Presentation asset — data slide layout'},
+      {emoji:'<i data-lucide="image"></i>',label:'Presentation asset — data slide layout'},
 
-      {emoji:'✦',label:'Marketing poster — speaker feature'},
+      {emoji:'<i data-lucide="image"></i>',label:'Marketing poster — speaker feature'},
 
-      {emoji:'✦',label:'Banner design — event signage'},
+      {emoji:'<i data-lucide="image"></i>',label:'Banner design — event signage'},
 
-      {emoji:'✦',label:'Collateral overview — full campaign spread'}
+      {emoji:'<i data-lucide="image"></i>',label:'Collateral overview — full campaign spread'}
 
     ]
 
@@ -1315,17 +1315,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Campaign banner — hero product shot'},
+      {emoji:'<i data-lucide="image"></i>',label:'Campaign banner — hero product shot'},
 
-      {emoji:'✦',label:'Social asset — feature call-out, Instagram format'},
+      {emoji:'<i data-lucide="image"></i>',label:'Social asset — feature call-out, Instagram format'},
 
-      {emoji:'✦',label:'Campaign banner — colour story visual'},
+      {emoji:'<i data-lucide="image"></i>',label:'Campaign banner — colour story visual'},
 
-      {emoji:'✦',label:'Social asset — comparison graphic'},
+      {emoji:'<i data-lucide="image"></i>',label:'Social asset — comparison graphic'},
 
-      {emoji:'✦',label:'Asset overview — full campaign spread'},
+      {emoji:'<i data-lucide="image"></i>',label:'Asset overview — full campaign spread'},
 
-      {emoji:'✦',label:'Product promotional graphic — detail shot'}
+      {emoji:'<i data-lucide="image"></i>',label:'Product promotional graphic — detail shot'}
 
     ]
 
@@ -1353,17 +1353,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Logo lockup — primary colourway'},
+      {emoji:'<i data-lucide="image"></i>',label:'Logo lockup — primary colourway'},
 
-      {emoji:'✦',label:'Logo lockup — secondary and tertiary colourways'},
+      {emoji:'<i data-lucide="image"></i>',label:'Logo lockup — secondary and tertiary colourways'},
 
-      {emoji:'✦',label:'Event poster — Eco Future competition'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event poster — Eco Future competition'},
 
-      {emoji:'✦',label:'Product mockup — tote bag application'},
+      {emoji:'<i data-lucide="image"></i>',label:'Product mockup — tote bag application'},
 
-      {emoji:'✦',label:'Teaser ad — calendar format'},
+      {emoji:'<i data-lucide="image"></i>',label:'Teaser ad — calendar format'},
 
-      {emoji:'✦',label:'Brand overview — identity system spread'}
+      {emoji:'<i data-lucide="image"></i>',label:'Brand overview — identity system spread'}
 
     ]
 
@@ -1391,17 +1391,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Event poster — main key visual'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event poster — main key visual'},
 
-      {emoji:'✦',label:'Social media set — announcement graphics'},
+      {emoji:'<i data-lucide="image"></i>',label:'Social media set — announcement graphics'},
 
-      {emoji:'✦',label:'Merchandise design — apparel mockup'},
+      {emoji:'<i data-lucide="image"></i>',label:'Merchandise design — apparel mockup'},
 
-      {emoji:'✦',label:'Event poster — alternate format'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event poster — alternate format'},
 
-      {emoji:'✦',label:'Publications — event programme layout'},
+      {emoji:'<i data-lucide="image"></i>',label:'Publications — event programme layout'},
 
-      {emoji:'✦',label:'Design overview — full campaign spread'}
+      {emoji:'<i data-lucide="image"></i>',label:'Design overview — full campaign spread'}
 
     ]
 
@@ -1429,17 +1429,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Event poster — Sunset Jams'},
+      {emoji:'<i data-lucide="image"></i>',label:'Event poster — Sunset Jams'},
 
-      {emoji:'✦',label:'Recap post — Makeout Drive'},
+      {emoji:'<i data-lucide="image"></i>',label:'Recap post — Makeout Drive'},
 
-      {emoji:'✦',label:'Recap post — Melody of the Drowned Halloween'},
+      {emoji:'<i data-lucide="image"></i>',label:'Recap post — Melody of the Drowned Halloween'},
 
-      {emoji:'✦',label:'Sign-up poster — drum kit open sessions'},
+      {emoji:'<i data-lucide="image"></i>',label:'Sign-up poster — drum kit open sessions'},
 
-      {emoji:'✦',label:'Social set — story and feed formats'},
+      {emoji:'<i data-lucide="image"></i>',label:'Social set — story and feed formats'},
 
-      {emoji:'✦',label:'Design overview — assets spread'}
+      {emoji:'<i data-lucide="image"></i>',label:'Design overview — assets spread'}
 
     ]
 
@@ -1467,17 +1467,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'WSS portal banner — navigation strip'},
+      {emoji:'<i data-lucide="image"></i>',label:'WSS portal banner — navigation strip'},
 
-      {emoji:'✦',label:'Conference banner — Women Leaders in Materials Science'},
+      {emoji:'<i data-lucide="image"></i>',label:'Conference banner — Women Leaders in Materials Science'},
 
-      {emoji:'✦',label:'Recruitment banner — World\'s Best Young University'},
+      {emoji:'<i data-lucide="image"></i>',label:'Recruitment banner — World\'s Best Young University'},
 
-      {emoji:'✦',label:'Banner design — format and sizing variations'},
+      {emoji:'<i data-lucide="image"></i>',label:'Banner design — format and sizing variations'},
 
-      {emoji:'✦',label:'Portal banner — alt design variation'},
+      {emoji:'<i data-lucide="image"></i>',label:'Portal banner — alt design variation'},
 
-      {emoji:'✦',label:'Asset overview — banner family'}
+      {emoji:'<i data-lucide="image"></i>',label:'Asset overview — banner family'}
 
     ]
 
@@ -1505,17 +1505,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Poster — TimeSync'},
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — TimeSync'},
 
-      {emoji:'✦',label:'Poster — Little Hope'},
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — Little Hope'},
 
-      {emoji:'✦',label:'Poster — Do You Have Broken Crayons?'},
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — Do You Have Broken Crayons?'},
 
-      {emoji:'✦',label:'Poster — You Are Lost?'},
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — You Are Lost?'},
 
-      {emoji:'✦',label:'Poster — Unknown'},
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — Unknown'},
 
-      {emoji:'✦',label:'Poster — Feeling Bored?'}
+      {emoji:'<i data-lucide="image"></i>',label:'Poster — Feeling Bored?'}
 
     ]
 
@@ -1543,17 +1543,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Infographic — global statistics overview'},
+      {emoji:'<i data-lucide="image"></i>',label:'Infographic — global statistics overview'},
 
-      {emoji:'✦',label:'Data visualisation — chart sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Data visualisation — chart sequence'},
 
-      {emoji:'✦',label:'Infographic — regional breakdown'},
+      {emoji:'<i data-lucide="image"></i>',label:'Infographic — regional breakdown'},
 
-      {emoji:'✦',label:'Data visualisation — comparative chart'},
+      {emoji:'<i data-lucide="image"></i>',label:'Data visualisation — comparative chart'},
 
-      {emoji:'✦',label:'Typography and hierarchy study'},
+      {emoji:'<i data-lucide="image"></i>',label:'Typography and hierarchy study'},
 
-      {emoji:'✦',label:'Full infographic — final layout'}
+      {emoji:'<i data-lucide="image"></i>',label:'Full infographic — final layout'}
 
     ]
 
@@ -1581,15 +1581,15 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'ReKindle App Screen - Home Dashboard'},
+      {emoji:'<i data-lucide="image"></i>',label:'ReKindle App Screen - Home Dashboard'},
 
-      {emoji:'✦',label:'Swipe-to-Match Interface'},
+      {emoji:'<i data-lucide="image"></i>',label:'Swipe-to-Match Interface'},
 
-      {emoji:'✦',label:'Gamified Chat and Interaction System'},
+      {emoji:'<i data-lucide="image"></i>',label:'Gamified Chat and Interaction System'},
 
-      {emoji:'✦',label:'UI Component Library and Accessibility Standards'},
+      {emoji:'<i data-lucide="image"></i>',label:'UI Component Library and Accessibility Standards'},
 
-      {emoji:'✦',label:'Designathon Pitch Deck and Presentation'}
+      {emoji:'<i data-lucide="image"></i>',label:'Designathon Pitch Deck and Presentation'}
 
     ]
 
@@ -1617,17 +1617,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Studio session — production in progress'},
+      {emoji:'<i data-lucide="image"></i>',label:'Studio session — production in progress'},
 
-      {emoji:'✦',label:'Track structure — Welcome to the Jasmine'},
+      {emoji:'<i data-lucide="image"></i>',label:'Track structure — Welcome to the Jasmine'},
 
-      {emoji:'✦',label:'Session screenshot — layering process'},
+      {emoji:'<i data-lucide="image"></i>',label:'Session screenshot — layering process'},
 
-      {emoji:'✦',label:'Track structure — Home Pt. 1 and 2'},
+      {emoji:'<i data-lucide="image"></i>',label:'Track structure — Home Pt. 1 and 2'},
 
-      {emoji:'✦',label:'Album artwork development'},
+      {emoji:'<i data-lucide="image"></i>',label:'Album artwork development'},
 
-      {emoji:'✦',label:'Track listing and EP overview'}
+      {emoji:'<i data-lucide="image"></i>',label:'Track listing and EP overview'}
 
     ]
 
@@ -1655,17 +1655,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Film still — scored sequence A'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — scored sequence A'},
 
-      {emoji:'✦',label:'Score notation — main theme'},
+      {emoji:'<i data-lucide="image"></i>',label:'Score notation — main theme'},
 
-      {emoji:'✦',label:'Film still — scored sequence B'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — scored sequence B'},
 
-      {emoji:'✦',label:'Session view — GarageBand composition'},
+      {emoji:'<i data-lucide="image"></i>',label:'Session view — GarageBand composition'},
 
-      {emoji:'✦',label:'Film still — climax sequence'},
+      {emoji:'<i data-lucide="image"></i>',label:'Film still — climax sequence'},
 
-      {emoji:'✦',label:'Session view — final mix'}
+      {emoji:'<i data-lucide="image"></i>',label:'Session view — final mix'}
 
     ]
 
@@ -1693,17 +1693,17 @@ const PROJECTS = {
 
     images:[
 
-      {emoji:'✦',label:'Session — Cloudy Days, arrangement view'},
+      {emoji:'<i data-lucide="image"></i>',label:'Session — Cloudy Days, arrangement view'},
 
-      {emoji:'✦',label:'Session — Club Got Boots, production layers'},
+      {emoji:'<i data-lucide="image"></i>',label:'Session — Club Got Boots, production layers'},
 
-      {emoji:'✦',label:'Session — Paradise, instrumental demo'},
+      {emoji:'<i data-lucide="image"></i>',label:'Session — Paradise, instrumental demo'},
 
-      {emoji:'✦',label:'Splice board — sample selection process'},
+      {emoji:'<i data-lucide="image"></i>',label:'Splice board — sample selection process'},
 
-      {emoji:'✦',label:'GarageBand session — mixing stage'},
+      {emoji:'<i data-lucide="image"></i>',label:'GarageBand session — mixing stage'},
 
-      {emoji:'✦',label:'Track overview — all three productions'}
+      {emoji:'<i data-lucide="image"></i>',label:'Track overview — all three productions'}
 
     ]
 
@@ -1853,7 +1853,7 @@ if(!p){
 
       <div class="tape tape-tr"></div>
 
-      <span class="ph-icon">${(p.images[0]||{emoji:'✦'}).emoji}</span>
+      <span class="ph-icon">${(p.images[0]||{emoji:'<i data-lucide="image"></i>'}).emoji}</span>
 
       <span class="ph-label">${(p.images[0]||{label:'Image / footage coming soon'}).label}</span>
 
@@ -1882,6 +1882,8 @@ if(!p){
 </script>
 
   <script src="scripts/motion.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
 </body>
 
 </html>
