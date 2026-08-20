@@ -87,6 +87,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Internship experience comic series/pg 6 f.png"
   ],
   "jasmine-comic": [
+    "assets/portfolio-data/Jasmine_music_concept album/jasmine cover album.jpg",
     "assets/portfolio-data/jasmine comic full/Jasmine final doc.pdf",
     "assets/portfolio-data/jasmine comic full/What_we_could_have_been_screenplay chapter.pdf"
   ],

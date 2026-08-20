@@ -471,13 +471,23 @@ window.toggleMusic=function(){
 
     m.play().catch(e=>console.log('Music play prevented:',e));
 
-    if(b)b.textContent='🔊';
+    if(b) b.classList.toggle('on', !m.paused);
+      const mIcon = b.querySelector('.icon');
+      if(mIcon) {
+        mIcon.setAttribute('data-lucide', m.paused ? 'music' : 'volume-2');
+        if(window.lucide) window.lucide.createIcons();
+      }
 
   } else {
 
     m.pause();
 
-    if(b)b.textContent='🔈';
+    if(b) b.classList.toggle('on', !m.paused);
+      const mIcon = b.querySelector('.icon');
+      if(mIcon) {
+        mIcon.setAttribute('data-lucide', m.paused ? 'music' : 'volume-2');
+        if(window.lucide) window.lucide.createIcons();
+      }
 
   }
 
