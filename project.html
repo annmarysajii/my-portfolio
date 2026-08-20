@@ -1843,11 +1843,12 @@ const data = window.PORTFOLIO_DATA; if(data) {
         
         
           if (id === 'jasmine-album') {
-              const imgs = media.filter(f => f.match(/\.(png|jpe?g)$/i));
+              const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort(); // Matches 1.png, 2.png, etc.
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
               let albumHtml = '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}</style><div class="album-grid">';
-              for(let i=0; i<Math.max(imgs.length, audios.length); i++) {
+              const count = Math.min(imgs.length, audios.length);
+              for(let i=0; i<count; i++) {
                   let img = imgs[i] ? `<img src="${imgs[i]}" style="width:100%; height:auto; border-radius:4px 4px 0 0; display:block;">` : '';
                   let aud = audios[i] ? `<audio src="${audios[i]}" controls style="width:100%; outline:none; height:40px;"></audio>` : '';
                   let title = audios[i] ? audios[i].split('/').pop().replace(/\.(wav|mp3|m4a)$/i, '') : `Track ${i+1}`;
