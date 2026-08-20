@@ -232,7 +232,7 @@ img{display:block;max-width:100%;}
 
 .gallery-hero{
 
-  aspect-ratio:16/9;background:var(--surf);border:1.5px solid var(--ink12);
+  background:var(--surf);border:1.5px solid var(--ink12);
 
   border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 
@@ -260,7 +260,7 @@ img{display:block;max-width:100%;}
 
 .gallery-img{
 
-  aspect-ratio:4/3;background:var(--surf);border:1.5px solid var(--ink12);
+  background:var(--surf);border:1.5px solid var(--ink12);
 
   border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 
@@ -286,7 +286,7 @@ img{display:block;max-width:100%;}
 
 .gallery-img .ph-label{font-size:.75rem;padding:0 1rem;text-align:center;}
 
-.gallery-img-sq{aspect-ratio:1/1;}
+.gallery-img-sq{}
 
 
 
@@ -771,7 +771,44 @@ const PROJECTS = {
 
   },
 
-  'jasmine':{
+  'jasmine-visdev':{
+
+    title:'Jasmine — Visual Development',
+
+    year:'2025–2026',
+
+    discipline:'Animation / Illustration',
+
+    context:'Final Year Capstone Project',
+
+    badge:'Capstone — Multimedia World',
+
+    role:'Director — World-building, Character Design, Environment Concept Art',
+
+    tools:['Clip Studio Paint','Adobe Photoshop'],
+
+    overview:`Jasmine is the visual and musical world at the centre of my final year capstone project. The visual development work spans full character design, environment concept art, and a world-building system for an Indo-jazz fusion multimedia setting. The project brings together animation visual development, a comic illustration component, and an original concept album.`,
+
+    process:`The world was built starting from cultural and architectural research into the intersection of Indian classical aesthetics and mid-century jazz settings. Character designs went through exploration of silhouette, costume, and expression before landing on final palettes. Environments range from intimate indoor spaces to larger atmospheric vistas.`,
+
+    images:[
+
+      {emoji:'<i data-lucide="image"></i>',label:'World overview — key location studies'},
+
+      {emoji:'<i data-lucide="image"></i>',label:'Character design — lead figure, full turnaround'},
+
+      {emoji:'<i data-lucide="image"></i>',label:'Environment concept — main venue interior'},
+
+      {emoji:'<i data-lucide="image"></i>',label:'Supporting character designs'},
+
+      {emoji:'<i data-lucide="image"></i>',label:'Environment concept — exterior establishing shot'},
+
+      {emoji:'<i data-lucide="image"></i>',label:'Colour palette and texture explorations'}
+
+    ]
+
+  },
+  'jasmine-comic':{
 
     title:'Jasmine — Visual Development',
 
@@ -1801,11 +1838,11 @@ const data = window.PORTFOLIO_DATA; if(data) {
             const isAudio = !!file.match(/\.(m4a|mp3|wav)$/i);
             
             if (isVideo) {
-                el = `<video src="${file}" controls style="width:100%; height:100%; object-fit:cover; background:var(--surf); border-radius:4px;"></video>`;
+                el = `<video src="${file}" controls style="width:100%; height:auto; display:block; background:var(--surf); border-radius:4px;"></video>`;
             } else if (isAudio) {
                 el = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:var(--surf); padding:2rem;"><audio src="${file}" controls style="width:100%;"></audio></div>`;
             } else {
-                el = `<img src="${file}" alt="" style="width:100%; height:100%; object-fit:cover; background:var(--surf); border-radius:4px;">`;
+                el = `<img src="${file}" alt="" style="width:100%; height:auto; display:block; background:var(--surf); border-radius:4px;">`;
             }
             
             // Layout: First item is hero, next 2 are medium row, next are square grid
