@@ -280,3 +280,25 @@ body.fade-out {
     75% { transform: translate(-1px, 0px); text-shadow: -2px 0 red, 2px 0 cyan; }
     100% { transform: translate(0); text-shadow: none; }
 }
+
+/* --- MOBILE & TOUCH OPTIMIZATIONS --- */
+@media (hover: none), (max-width: 768px) {
+    body, button, a, .dl-btn, .fsub, .pill-toggle {
+        cursor: auto !important;
+    }
+    #cur {
+        display: none !important;
+    }
+    #bg-c {
+        display: none !important;
+    }
+    .sec#graphic-design::before,
+    .sec#illustration::before {
+        display: none !important;
+        animation: none !important;
+    }
+    /* Revert to simple colors without hover transitions to prevent mobile tap lag */
+    .sec#animation .sec-title:active { transform: none; color: inherit; }
+    .sec#graphic-design .sec-title:active { -webkit-text-stroke: 0; color: inherit; text-shadow: none; }
+    .sec#videography .sec-title:active { animation: none; }
+}
