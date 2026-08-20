@@ -2253,6 +2253,33 @@ const data = window.PORTFOLIO_DATA; if(data) {
   if(window.lucide) window.lucide.createIcons();
 }
 }, 50);
+
+// Advanced Typography Mograph Splitter
+document.querySelectorAll('.sec-title').forEach(title => {
+  const text = title.textContent;
+  title.innerHTML = '';
+  title.classList.add('split-text');
+  
+  // Wrap each character
+  [...text].forEach((char, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.style.setProperty('--char-index', i);
+    span.textContent = char;
+    
+    // Add hover listener specifically for the squash and stretch per letter
+    span.addEventListener('mouseenter', () => {
+      span.style.animation = 'none';
+      span.offsetHeight; // trigger reflow
+      span.style.animation = null;
+      span.classList.add('hovered');
+    });
+    span.addEventListener('animationend', () => span.classList.remove('hovered'));
+    
+    title.appendChild(span);
+  });
+});
+
 </script>
 </body>
 

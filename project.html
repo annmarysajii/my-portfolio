@@ -1904,7 +1904,7 @@ const data = window.PORTFOLIO_DATA; if(data) {
                   const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
                   if (ytMatch && ytMatch[1]) {
                       const ytId = ytMatch[1];
-                      if (window.location.protocol === 'file:') {
+                      if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                           const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
                           const thumbUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
                           el = `<div style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:4px; overflow:hidden;">
@@ -1915,7 +1915,7 @@ const data = window.PORTFOLIO_DATA; if(data) {
                               </a>
                           </div>`;
                       } else {
-                          embedUrl = `https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1`;
+                          embedUrl = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
                           el = `<iframe src="${embedUrl}" style="width:100%; aspect-ratio:16/9; display:block; border-radius:4px; border:none;" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
                       }
                   }

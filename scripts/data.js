@@ -139,6 +139,7 @@ window.PORTFOLIO_DATA = {
     "https://youtu.be/T9ksoqWrJBs"
   ],
   "nangele": [
+    "assets/portfolio-data/Nangeli/nangeli starting page.png",
     "assets/portfolio-data/Nangeli/nangeli pg 2.png",
     "assets/portfolio-data/Nangeli/nangeli pg 3.png",
     "assets/portfolio-data/Nangeli/nangeli pg 4.png",
@@ -157,8 +158,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Nangeli/nangeli pg 17.png",
     "assets/portfolio-data/Nangeli/nangeli pg 18.png",
     "assets/portfolio-data/Nangeli/nangeli pg 19.png",
-    "assets/portfolio-data/Nangeli/nangeli pg 20.png",
-    "assets/portfolio-data/Nangeli/nangeli starting page.png"
+    "assets/portfolio-data/Nangeli/nangeli pg 20.png"
   ],
   "ntu-fest": [
     "https://youtu.be/5aHRfGrV92o",
