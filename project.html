@@ -3,6 +3,15 @@
 <html lang="en">
 
 <head>
+  <meta property="og:site_name" content="Annmary Saji — Portfolio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Annmary Saji — Animation, Brand Design & Visual Storytelling" />
+  <meta property="og:description" content="Portfolio of Annmary Saji — 2D Animator, Brand Designer, Graphic Storyteller, and Audio Producer based in Singapore." />
+  <meta property="og:image" content="https://annmarysajii.github.io/my-portfolio/assets/portfolio-data/GoBunny_brand/GO%20BUNNY.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Annmary Saji — Portfolio" />
+  <meta name="twitter:description" content="2D Animation, Visual Development, Brand Design, and Audio Production." />
+  <meta name="twitter:image" content="https://annmarysajii.github.io/my-portfolio/assets/portfolio-data/GoBunny_brand/GO%20BUNNY.png" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -1784,6 +1793,7 @@ const PROJECTS = {
 // RENDER
   const id = new URLSearchParams(location.search).get('id');
   const p = PROJECTS[id];
+  if (p) { document.title = `${p.title} — Annmary Saji`; window.scrollTo(0, 0); }
   const main = document.getElementById('main');
   
   if (p) {
@@ -1939,6 +1949,10 @@ const PROJECTS = {
           
           let styleBlock = `<style>
             /* Masonry Grid */
+
+            .media-el img { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s; }
+            .media-el:hover img { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    
             .masonry-container {
                 column-count: 3;
                 column-gap: 1.5rem;
