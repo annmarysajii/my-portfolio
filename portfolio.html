@@ -1750,6 +1750,7 @@ button{cursor:none;font-family:inherit;}
    <div class="rv d2">
 
     <form class="form" id="contactForm" action="https://formsubmit.co/annie10302004@gmail.com" method="POST">
+       <input type="hidden" name="_next" value="https://annmarysajii.github.io/my-portfolio/">
 
      <div class="fg"><label class="flbl" for="fn">Your Name *</label><input id="fn" name="name" class="finp" type="text" placeholder="Jane Smith" required/></div>
 
@@ -2444,7 +2445,7 @@ const data = window.PORTFOLIO_DATA; if(data) {
           } else if (file.match(/\.(mp4|mov|webm)$/i)) {
             a.innerHTML = `<video src="${file}" autoplay loop muted playsinline style="width:100%;height:auto;border-radius:2px;display:block;"></video>`;
           } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
-            a.innerHTML = `<img src="${file}" alt="" style="width:100%;height:auto;border-radius:2px;display:block;">`;
+            a.innerHTML = `<img src="${file}" alt="" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:2px;display:block;">`;
           } else if (file.match(/\.(pdf)$/i)) {
             a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
           } else if (file.match(/\.(mp3|wav|m4a)$/i)) {
