@@ -1916,7 +1916,13 @@ const PROJECTS = {
           clearInterval(checkData);
           const data = window.PORTFOLIO_DATA;
           
-          if (id === 'green-arrow') {
+          if (id === 'gobunny') {
+              document.documentElement.style.setProperty('--bg', '#FFEBF0');
+              document.documentElement.style.setProperty('--surf', '#FFF5F7');
+              document.documentElement.style.setProperty('--ink', '#D02F5A');
+              document.documentElement.style.setProperty('--line', 'rgba(208, 47, 90, 0.2)');
+              (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
+          } else if (id === 'green-arrow') {
               document.documentElement.style.setProperty('--bg', '#EBF4ED');
               document.documentElement.style.setProperty('--surf', '#F4F9F5');
               document.documentElement.style.setProperty('--ink', '#2B5E39');
@@ -2035,36 +2041,37 @@ const PROJECTS = {
             const findFiles = (str) => media.filter(f => f.includes(str));
           if (id === 'gobunny' || id === 'green-arrow' || id === 'nangele' || id === 'original-tracks' || id === 'wellbeing-planner' || id === 'ntu-fest') {
                 let htmlStr = styleBlock;
-                  if (id === 'gobunny') {
-                      const brandColorSvg = findFile('BRANDCOLOR_GOBUNNY.svg');
-                      const logoPrimary = findFile('GO BUNNY.png');
-                      const artDirection = findFiles('ART DIRECTION PORTFOLIO');
-                      const otherAssets = media.filter(f => 
-                          !f.includes('BRANDCOLOR_GOBUNNY') && 
-                          !f.includes('GO BUNNY.png') && 
-                          !f.includes('ART DIRECTION PORTFOLIO')
-                      );
-                      
-                      htmlStr += `<div class="cs-section">
-                          <h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd); margin-bottom: 2rem;">Brand Colors</h2>`;
-                      if (brandColorSvg) {
-                          htmlStr += renderMedia(brandColorSvg).replace('masonry-item', 'masonry-item full-width');
-                      }
-                      htmlStr += `</div>`;
-                      
-                      if (logoPrimary || artDirection.length > 0) {
-                          htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Logo & Art Direction</h2><div class="masonry-container">`;
-                          if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
-                          artDirection.forEach(f => { htmlStr += renderMedia(f); });
-                          htmlStr += `</div></div>`;
-                      }
-  
-                      if (otherAssets.length > 0) {
-                          htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Brand Assets & Collateral</h2><div class="masonry-container">`;
-                          otherAssets.forEach(f => { htmlStr += renderMedia(f); });
-                          htmlStr += `</div></div>`;
-                      }
-                  } else if (id === 'green-arrow') {
+                
+                if (id === 'gobunny') {
+                    const brandColorSvg = findFile('BRANDCOLOR_GOBUNNY.svg');
+                    const logoPrimary = findFile('GO BUNNY.png');
+                    const artDirection = findFiles('ART DIRECTION PORTFOLIO');
+                    const otherAssets = media.filter(f => 
+                        !f.includes('BRANDCOLOR_GOBUNNY') && 
+                        !f.includes('GO BUNNY.png') && 
+                        !f.includes('ART DIRECTION PORTFOLIO')
+                    );
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd); margin-bottom: 2rem;">Brand Colors</h2>`;
+                    if (brandColorSvg) {
+                        htmlStr += renderMedia(brandColorSvg).replace('masonry-item', 'masonry-item full-width');
+                    }
+                    htmlStr += `</div>`;
+                    
+                    if (logoPrimary || artDirection.length > 0) {
+                        htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Logo & Art Direction</h2><div class="masonry-container">`;
+                        if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
+                        artDirection.forEach(f => { htmlStr += renderMedia(f); });
+                        htmlStr += `</div></div>`;
+                    }
+
+                    if (otherAssets.length > 0) {
+                        htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Brand Assets & Collateral</h2><div class="masonry-container">`;
+                        otherAssets.forEach(f => { htmlStr += renderMedia(f); });
+                        htmlStr += `</div></div>`;
+                    }
+                } else if (id === 'green-arrow') {
                     const logo = findFile('LOGO GREEN ARROW');
                     const posters = findFiles('3.png').concat(findFiles('presents'));
                     const digital = findFiles('4.png').concat(findFiles('5.png'));
@@ -2124,6 +2131,162 @@ const PROJECTS = {
                       <div id="nangeli-reader"></div>
                     </div>
                     `;
+                } else if (id === 'ntu-fest') {
+                    const video = findFile('youtu.be');
+                    const cover = findFile('ntu fest cover');
+                    const banner = findFile('ntufest_banner');
+                    const performers = findFiles('performer images');
+                    const vendor = findFile('SIGN UP');
+                    const sundown = findFile('SunDown');
+                    
+                    htmlStr += `<div class="cs-section">
+                        <div style="background:var(--surf); padding: 3rem; border-radius:12px; margin-bottom: 2rem; border: 1px solid var(--line);">
+                            <h2 style="font-family:'Clash Display'; font-size:2.2rem; margin-bottom:1rem; margin-top:0;">Stepping up for NTU Fest</h2>
+                            <p style="font-size:1.1rem; line-height:1.7; color:var(--ink5); margin-bottom:1.5rem;">
+                                <strong>Fun fact:</strong> I originally joined the committee in a different role, but when the original Publicity Director unexpectedly stepped down, I took over the position to ensure the festival's branding and outreach didn't skip a beat. All the production elements were primarily created using Canva and CapCut.
+                            </p>
+                            <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                                <div style="background:var(--bg); padding:0.8rem 1.5rem; border-radius:8px; border:1px solid var(--line); font-weight:600; font-size:0.95rem;">
+                                    🔗 View the live 2024 graphics at <a href="https://instagram.com/ntufest" target="_blank" style="color:var(--blue); text-decoration:none;">@ntufest</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Promotional Video</h2><div class="masonry-container">`;
+                    if (video) htmlStr += renderMedia(video).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Hero & Banners</h2><div class="masonry-container">`;
+                    if (cover) htmlStr += renderMedia(cover).replace('masonry-item', 'masonry-item full-width');
+                    if (banner) htmlStr += renderMedia(banner).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Performer Features</h2><div class="masonry-container">`;
+                    performers.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Event Collaterals</h2><div class="masonry-container">`;
+                    if (vendor) htmlStr += renderMedia(vendor);
+                    if (sundown) htmlStr += renderMedia(sundown);
+                    htmlStr += `</div></div>`;
+                } else if (id === 'wellbeing-planner') {
+                    const finalImg = media[0];
+                    const drafts = media.slice(1);
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 2rem; border-bottom: 2px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Final Published Design</h2>
+                        <div class="masonry-container">`;
+                    if (finalImg) htmlStr += renderMedia(finalImg).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 1.75rem; margin-top: 2rem; border-bottom: 1px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Ideation & Concept Drafts</h2>
+                        <div class="masonry-container">`;
+                    drafts.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+                } else if (id === 'original-tracks') {
+                    htmlStr += `
+                    <style>
+                      .track-btn { display:flex; align-items:center; gap:1.5rem; padding:1.25rem 1.5rem; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.1); border-radius:12px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align:left; box-shadow:0 4px 15px rgba(0,0,0,0.02); }
+                      .track-btn:hover { background:#fff; transform:translateX(8px); box-shadow:0 8px 25px rgba(0,0,0,0.08); }
+                      .track-btn.active { border-color:var(--ink); background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
+                      .track-icon { width:48px; height:48px; border-radius:50%; background:var(--ink); color:var(--bg); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s; }
+                      .track-btn:hover .track-icon { transform:scale(1.1); }
+                      .track-btn.active .track-icon { animation: pulse 2s infinite; }
+                      @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(var(--ink-rgb), 0.4); } 70% { box-shadow:0 0 0 15px rgba(var(--ink-rgb), 0); } 100% { box-shadow:0 0 0 0 rgba(var(--ink-rgb), 0); } }
+                      #vinyl-player-section { position:relative; min-height:85vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; border-radius:16px; overflow:hidden; margin-bottom:4rem; background:#111; transition: background 1s ease; }
+                      #audio-viz { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+                      .vp-content { display:flex; flex-wrap:wrap; gap:5rem; align-items:center; justify-content:center; width:100%; max-width:1100px; z-index:1; }
+                      
+                      .turntable-base { position:relative; width:380px; height:320px; background: linear-gradient(145deg, #e6e6e6, #ffffff); border-radius:24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; border: 1px solid #d1d1d1; }
+                      .platter { position:absolute; left:20px; width:280px; height:280px; border-radius:50%; background: radial-gradient(circle, #555 0%, #222 90%); box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; border:4px solid #b3b3b3; }
+                      .spindle { position:absolute; width:14px; height:14px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff, #999); z-index:20; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+                      .slider { position:absolute; right:20px; top:40px; width:10px; height:120px; background:#222; border-radius:5px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+                      .slider-knob { position:absolute; top:50%; left:-10px; width:30px; height:15px; background: linear-gradient(to bottom, #ddd, #999); border-radius:2px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transform:translateY(-50%); border-top:1px solid #fff; border-bottom:1px solid #555; }
+                      .dial { position:absolute; right:20px; bottom:40px; width:30px; height:30px; border-radius:50%; background: linear-gradient(145deg, #ccc, #fff); box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,1); }
+                      .dial::after { content:''; position:absolute; top:4px; left:14px; width:2px; height:8px; background:#444; }
+                      
+                      #vinyl-disc { width:260px; height:260px; border-radius:50%; background: conic-gradient(from 45deg, #111 0%, #333 25%, #111 50%, #333 75%, #111 100%); position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; }
+                      .groove { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,0.08); }
+                      #vinyl-label { width:35%; height:35%; border-radius:50%; background:#FAF8F4; transition: background 0.5s; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+                      
+                      #tonearm { position:absolute; top:20px; right:40px; width:20px; height:180px; background:linear-gradient(to right, #ccc, #eee, #ccc); transform-origin: 10px 20px; transform: rotate(15deg); border-radius:10px; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow:-5px 10px 15px rgba(0,0,0,0.3); z-index:10; }
+                      .ta-base { position:absolute; top:0; left:-15px; width:50px; height:50px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #555, #222); box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.2); }
+                      .ta-head { position:absolute; bottom:-10px; left:-12px; width:30px; height:55px; background: linear-gradient(to bottom, #333, #111); border-radius:4px; transform: rotate(25deg); box-shadow: -2px 4px 8px rgba(0,0,0,0.4); border-top:1px solid #555; }
+                      
+                      .track-list-container { flex:1; min-width:320px; background:rgba(255,255,255,0.85); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5); }
+                    </style>
+                    <div id="vinyl-player-section">
+                      <canvas id="audio-viz"></canvas>
+                      <div class="vp-content">
+                        
+                        <!-- Premium Turntable -->
+                        <div class="turntable-base">
+                            <div class="platter">
+                                <div id="vinyl-disc">
+                                    <div class="groove" style="inset:8%;"></div>
+                                    <div class="groove" style="inset:16%;"></div>
+                                    <div class="groove" style="inset:24%;"></div>
+                                    <div class="groove" style="inset:32%;"></div>
+                                    <div class="groove" style="inset:40%;"></div>
+                                    <div id="vinyl-label"></div>
+                                </div>
+                                <div class="spindle"></div>
+                            </div>
+                            
+                            <div class="slider" id="vol-slider" style="cursor:pointer;"><div class="slider-knob" id="vol-knob" style="pointer-events:none;"></div></div>
+                            <div class="dial"></div>
+                            
+                            <div id="tonearm">
+                                <div class="ta-base"></div>
+                                <div class="ta-head"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tracklist -->
+                        <div class="track-list-container">
+                           <h2 style="margin-top:0; font-family:'Clash Display'; font-size:2.5rem; margin-bottom:0.5rem; letter-spacing:-1px;">The DJ Booth</h2>
+                           <p style="color:var(--ink5); margin-bottom:2rem; font-size:1.05rem;">Select a track to start the experience.</p>
+                           <div id="track-list" style="display:flex; flex-direction:column; gap:1.25rem;">
+                              <!-- Tracks injected here -->
+                           </div>
+                           <audio id="main-audio"></audio>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    `;
+                }
+                
+                gal.innerHTML = htmlStr;
+                
+                if (id === 'nangele') {
+                    const nangeliMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
+                    let curPage = 0;
+                    const renderBook = (direction) => {
+                        const r = document.getElementById('nangeli-reader');
+                        if(!r) return;
+                        let p1 = nangeliMedia[curPage] ? `<img src="${nangeliMedia[curPage]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
+                        let p2 = nangeliMedia[curPage+1] ? `<img src="${nangeliMedia[curPage+1]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
+                        let animClass = direction === 'next' ? 'flip-next' : (direction === 'prev' ? 'flip-prev' : '');
+                        
+                        r.innerHTML = `
+                        <div class="book-container ${animClass}">
+                          <button class="page-flip-btn prev" id="n-prev" ${curPage===0?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                          <div class="book-page left">${p1}</div>
+                          <div class="book-page right">${p2}</div>
+                          <button class="page-flip-btn next" id="n-next" ${curPage>=nangeliMedia.length-2?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+                        </div>
+                        <div style="text-align:center; margin-top:1.5rem; font-size:0.95rem; font-weight:500; color:var(--ink5);">Spread ${Math.floor(curPage/2)+1} of ${Math.ceil(nangeliMedia.length/2)}</div>
+                        `;
+                        
+                        const pBtn = document.getElementById('n-prev');
+                        if (pBtn) pBtn.onclick = () => { curPage = Math.max(0, curPage-2); renderBook('prev'); };
+                        const nBtn = document.getElementById('n-next');
+                        if (nBtn) nBtn.onclick = () => { curPage = Math.min(nangeliMedia.length-1, curPage+2); renderBook('next'); };
+                    };
+                    renderBook('');
                 } else if (id === 'ntu-fest') {
                     const video = findFile('youtu.be');
                     const cover = findFile('ntu fest cover');
