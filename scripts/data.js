@@ -50,6 +50,7 @@ window.PORTFOLIO_DATA = {
   "gobunny": [
     "assets/portfolio-data/GoBunny_brand/3.png",
     "assets/portfolio-data/GoBunny_brand/4.png",
+    "assets/portfolio-data/GoBunny_brand/BRANDCOLOR_GOBUNNY.svg",
     "assets/portfolio-data/GoBunny_brand/ART DIRECTION PORTFOLIO (1).png",
     "assets/portfolio-data/GoBunny_brand/ART DIRECTION PORTFOLIO.png",
     "assets/portfolio-data/GoBunny_brand/Copy of ART DIRECTION PORTFOLIO (3).png",
