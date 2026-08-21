@@ -144,6 +144,7 @@ window.PORTFOLIO_DATA = {
     "https://youtu.be/T9ksoqWrJBs"
   ],
   "nangele": [
+      "assets/portfolio-data/Nangeli/nangeli cover image.png",
     "assets/portfolio-data/Nangeli/nangeli starting page.png",
     "assets/portfolio-data/Nangeli/nangeli pg 2.png",
     "assets/portfolio-data/Nangeli/nangeli pg 3.png",
@@ -165,8 +166,14 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Nangeli/nangeli pg 19.png",
     "assets/portfolio-data/Nangeli/nangeli pg 20.png"
   ],
-  "ntu-fest": [
+    "ntu-fest": [
+    "assets/portfolio-data/Ntu fest assets/ntufest_portfoliogif.gif.mp4",
     "https://youtu.be/5aHRfGrV92o",
+    "assets/portfolio-data/Ntu fest assets/ntufest_banner.png",
+    "assets/portfolio-data/Ntu fest assets/ntu fest cover.png",
+    "assets/portfolio-data/Ntu fest assets/performer images (1).png",
+    "assets/portfolio-data/Ntu fest assets/performer images (2).png",
+    "assets/portfolio-data/Ntu fest assets/performer images (3).png",
     "assets/portfolio-data/Ntu fest assets/SIGN UP AS A STUDENT VENDOR HERE (1).png",
     "assets/portfolio-data/Ntu fest assets/SunDown.png"
   ],

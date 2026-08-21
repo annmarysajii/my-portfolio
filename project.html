@@ -385,9 +385,27 @@ img{display:block;max-width:100%;}
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
+
+<style>
+/* Smooth Page Load Overlay */
+#page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 999999;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.loaded #page-transition-overlay {
+    opacity: 0;
+}
+</style>
+
 </head>
 
 <body>
+<div id="page-transition-overlay"></div>
 
 
 
@@ -431,7 +449,7 @@ img{display:block;max-width:100%;}
 
     <div style="display:flex;align-items:center;gap:1.5rem;">
 
-      <button class="music-toggle pill-toggle" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music"><i data-lucide="music" class="icon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
+      
 
       <button class="theme-toggle pill-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode"><i data-lucide="moon" class="icon" id="themeIcon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
 
@@ -451,7 +469,7 @@ img{display:block;max-width:100%;}
 
 
 
-<audio id="bg-music" src="assets/music.mp3" loop preload="none"></audio>
+
 
 <audio id="warp-sfx" src="assets/warp.mp3" preload="none"></audio>
 
@@ -1316,7 +1334,7 @@ const PROJECTS = {
 
     role:'PR and Communications Intern — Marketing Design',
 
-    tools:['Adobe Illustrator','Adobe Photoshop','InDesign'],
+    tools:['Canva','CapCut'],
 
     overview:`PR and marketing collateral produced during an internship at Elevandi, a fintech event organisation that produces the Point Zero Forum — one of the leading international fintech events. Output includes 10 marketing posters and visual assets for external PR campaigns, plus presentation materials and visual assets for the Point Zero Forum itself.`,
 
@@ -1430,7 +1448,7 @@ const PROJECTS = {
 
     role:'Publicity and Publications Director',
 
-    tools:['Adobe Illustrator','Adobe Photoshop','InDesign'],
+    tools:['Canva','CapCut'],
 
     overview:`Served as Publicity and Publications Director for NTU FEST, the annual flagship student festival organised by NTUSU. Responsible for all design output across the event including event posters, social media visuals, and merchandise design. Also managed and directed a design sub-committee across the production period.`,
 
@@ -1682,7 +1700,7 @@ const PROJECTS = {
 
   'short-film-score':{
 
-    title:'Short Film Score',
+    title:'Solace — Short Film Score',
 
     year:'2024',
 
@@ -1802,7 +1820,21 @@ const PROJECTS = {
       
       let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
       
-      const overrides = {
+              const overrides = {
+          '1': 'Brand Exploration',
+          '2': 'Visual System',
+          'credit1': 'End Credits',
+          'rain7': 'Rain Sequence',
+          'staticshot_4': 'Establishing Shot',
+          'ver1': 'Concept Version 1',
+          'version2': 'Concept Version 2',
+          'Home pt 1': 'Home (Part 1)',
+          'character designs': 'Character Designs',
+          'fusion jazz pg2': 'Fusion Jazz',
+          'final_therapyscene': 'Therapy Scene',
+          'pg1': 'Page 1',
+          'ph2': 'Phase 2',
+          'shot2': 'Shot 2',
           'Your paragraph text (35)': 'Badge Logo',
           'Your paragraph text (36)': 'Logo Inverse',
           'Your paragraph text (33)': 'Logo Secondary',
@@ -1872,7 +1904,7 @@ const PROJECTS = {
           el = `<img class="media-el" src="${file}" alt="${name}" style="width:100%; height:auto; display:block; background:var(--surf); border-radius:4px;">`;
       }
       
-      const captionHtml = (isYouTube || isPDF || isAudio || isComic) ? '' : `<div class="media-caption">${name}</div>`;
+      const captionHtml = (isYouTube || isPDF || isAudio || isComic || id === 'freelance-commissions') ? '' : `<div class="media-caption">${name}</div>`;
       
       const fwClass = (isYouTube || isVideo || isPDF) ? 'full-width' : '';
         return `<div class="masonry-item ${isComic ? 'comic-item' : ''} ${fwClass}">${el}${captionHtml}</div>`;
@@ -2005,99 +2037,486 @@ const PROJECTS = {
           }
 
           // Native Case Studies
-          if (id === 'gobunny' || id === 'green-arrow') {
-              let htmlStr = styleBlock;
-              
-              const findFile = (keyword) => media.find(f => f.toLowerCase().includes(keyword.toLowerCase()));
-              const findFiles = (keyword) => media.filter(f => f.toLowerCase().includes(keyword.toLowerCase()));
-              const notFound = (list) => media.filter(f => !list.includes(f));
-              
-              if (id === 'gobunny') {
-                  const logoPrimary = findFile('GO BUNNY');
-                  const logoSecondary = findFiles('Your paragraph text').filter(f => f.includes('35') || f.includes('36') || f.includes('33')); 
-                  const pack1 = findFile('3.png');
-                  const pack2 = findFile('4.png');
-                  const apps = findFiles('ART DIRECTION PORTFOLIO').concat(findFiles('Your paragraph text (37)')).concat(findFiles('Your paragraph text (30)'));
-                  const inContext = findFiles('It is time for some strawberries');
-                  
-                  // Palette
-                  htmlStr += `
-                  <div class="cs-section">
-                      <h2 class="cs-heading">Concept / Mood</h2>
-                      <div class="masonry-container">
-                  `;
-                  // We can infer mood from other unlisted files if any, but let's just group leftovers here if they fit, else skip
-                  const otherConcept = notFound([logoPrimary, ...logoSecondary, pack1, pack2, ...apps, ...inContext].filter(Boolean));
-                  otherConcept.forEach(f => { htmlStr += renderMedia(f); });
-                  htmlStr += `</div></div>`;
+            const findFile = (str) => media.find(f => f.includes(str));
+            const findFiles = (str) => media.filter(f => f.includes(str));
+          if (id === 'gobunny' || id === 'green-arrow' || id === 'nangele' || id === 'original-tracks' || id === 'wellbeing-planner' || id === 'ntu-fest') {
+                let htmlStr = styleBlock;
+                
+                if (id === 'gobunny') {
+                    const logoPrimary = findFile('GO BUNNY');
+                    const logoSecondary = findFiles('Your paragraph text').filter(f => f.includes('35') || f.includes('36') || f.includes('33')); 
+                    const colors = findFiles('Your paragraph text').filter(f => f.includes('27') || f.includes('37'));
+                    const guidelines = findFiles('Brand identity');
+                    const mockups = findFiles('Your paragraph text').filter(f => f.includes('29') || f.includes('30') || f.includes('28') || f.includes('38') || f.includes('23') || f.includes('24'));
+                    
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Color Palette</h2>
+                        <div class="cs-palettes">
+                            <div class="cs-color"><div class="cs-swatch" style="background:#D02F5A;"></div><span class="cs-hex">#D02F5A</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#FF9A9E;"></div><span class="cs-hex">#FF9A9E</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#FFF5F7;"></div><span class="cs-hex">#FFF5F7</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#2A2A2A;"></div><span class="cs-hex">#2A2A2A</span></div>
+                        </div>
+                    </div>`;
+                    
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo Variations</h2><div class="masonry-container">`;
+                    if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
+                    logoSecondary.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
 
-                  htmlStr += `
-                  <div class="cs-section">
-                      <h2 class="cs-heading">Color Palette</h2>
-                      <div class="cs-palettes">
-                          <div class="cs-color"><div class="cs-swatch" style="background:#FF3522;"></div><span class="cs-hex">#FF3522</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#FF7076;"></div><span class="cs-hex">#FF7076</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#FFB6D9;"></div><span class="cs-hex">#FFB6D9</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#FFE6F0;"></div><span class="cs-hex">#FFE6F0</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#FFFFFF;"></div><span class="cs-hex">#FFFFFF</span></div>
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Typography & Colors</h2><div class="masonry-container">`;
+                    colors.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Brand Guidelines</h2><div class="masonry-container">`;
+                    guidelines.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Applications</h2><div class="masonry-container">`;
+                    mockups.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+                } else if (id === 'green-arrow') {
+                    const logo = findFile('LOGO GREEN ARROW');
+                    const posters = findFiles('3.png').concat(findFiles('presents'));
+                    const digital = findFiles('4.png').concat(findFiles('5.png'));
+                    const merch = findFiles('6.png').concat(findFiles('7.png'));
+                    
+                    htmlStr += `
+                    <div class="cs-section">
+                        <h2 class="cs-heading">Color Palette</h2>
+                        <div class="cs-palettes">
+                            <div class="cs-color"><div class="cs-swatch" style="background:#243E36;"></div><span class="cs-hex">#243E36</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#7CA982;"></div><span class="cs-hex">#7CA982</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#E0EEC6;"></div><span class="cs-hex">#E0EEC6</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#C2A83E;"></div><span class="cs-hex">#C2A83E</span></div>
+                            <div class="cs-color"><div class="cs-swatch" style="background:#F1F7ED;"></div><span class="cs-hex">#F1F7ED</span></div>
+                        </div>
+                    </div>`;
+                    
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Identity</h2><div class="masonry-container">`;
+                    if(logo) htmlStr += renderMedia(logo).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Posters & Events</h2><div class="masonry-container">`;
+                    posters.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Digital & Web</h2><div class="masonry-container">`;
+                    digital.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading">Merchandise</h2><div class="masonry-container">`;
+                    merch.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+                } else if (id === 'nangele') {
+                    htmlStr += `
+                    <style>
+                    .book-container { position:relative; width:100%; max-width:1000px; margin:0 auto; aspect-ratio: 1.4; background:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.1); border-radius:4px; display:flex; perspective:2000px; }
+                    .book-page { flex:1; width:50%; height:100%; position:relative; background:#fff; border:1px solid #eee; border-left:none; transform-origin: left center; transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; }
+                    .book-page.left { border-left:1px solid #eee; border-right:1px solid #ddd; transform-origin: right center; }
+                    .book-page img { width:100%; height:100%; object-fit:contain; position:absolute; inset:0; background:#fff; backface-visibility: hidden; }
+                    .page-flip-btn { position:absolute; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--bg); border:none; width:50px; height:50px; border-radius:50%; cursor:pointer; z-index:10; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform 0.2s, background 0.2s; }
+                    .page-flip-btn:hover { background:var(--blue); transform:translateY(-50%) scale(1.1); }
+                    .page-flip-btn:disabled { opacity:0.3; cursor:not-allowed; }
+                    .page-flip-btn.prev { left:-25px; }
+                    .page-flip-btn.next { right:-25px; }
+                    @media(max-width:768px) {
+                      .book-container { aspect-ratio: 0.7; flex-direction: column; }
+                      .book-page { width:100%; border-left:1px solid #eee; }
+                      .book-page.left { border-bottom:1px solid #ddd; border-right:1px solid #eee; }
+                      .page-flip-btn { width:40px; height:40px; }
+                      .page-flip-btn.prev { left:10px; top:10px; transform:none; }
+                      .page-flip-btn.next { right:10px; top:10px; transform:none; }
+                      .page-flip-btn:hover { transform:scale(1.1); }
+                    }
+                    </style>
+                    <div class="cs-section">
+                      <h2 class="cs-heading" style="text-align:center; margin-bottom:2rem;">Nangeli — Reading View</h2>
+                      <div id="nangeli-reader"></div>
+                    </div>
+                    `;
+                } else if (id === 'ntu-fest') {
+                    const video = findFile('youtu.be');
+                    const cover = findFile('ntu fest cover');
+                    const banner = findFile('ntufest_banner');
+                    const performers = findFiles('performer images');
+                    const vendor = findFile('SIGN UP');
+                    const sundown = findFile('SunDown');
+                    
+                    htmlStr += `<div class="cs-section">
+                        <div style="background:var(--surf); padding: 3rem; border-radius:12px; margin-bottom: 2rem; border: 1px solid var(--line);">
+                            <h2 style="font-family:'Clash Display'; font-size:2.2rem; margin-bottom:1rem; margin-top:0;">Stepping up for NTU Fest</h2>
+                            <p style="font-size:1.1rem; line-height:1.7; color:var(--ink5); margin-bottom:1.5rem;">
+                                <strong>Fun fact:</strong> I originally joined the committee in a different role, but when the original Publicity Director unexpectedly stepped down, I took over the position to ensure the festival's branding and outreach didn't skip a beat. All the production elements were primarily created using Canva and CapCut.
+                            </p>
+                            <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                                <div style="background:var(--bg); padding:0.8rem 1.5rem; border-radius:8px; border:1px solid var(--line); font-weight:600; font-size:0.95rem;">
+                                    🔗 View the live 2024 graphics at <a href="https://instagram.com/ntufest" target="_blank" style="color:var(--blue); text-decoration:none;">@ntufest</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Promotional Video</h2><div class="masonry-container">`;
+                    if (video) htmlStr += renderMedia(video).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Hero & Banners</h2><div class="masonry-container">`;
+                    if (cover) htmlStr += renderMedia(cover).replace('masonry-item', 'masonry-item full-width');
+                    if (banner) htmlStr += renderMedia(banner).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Performer Features</h2><div class="masonry-container">`;
+                    performers.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Event Collaterals</h2><div class="masonry-container">`;
+                    if (vendor) htmlStr += renderMedia(vendor);
+                    if (sundown) htmlStr += renderMedia(sundown);
+                    htmlStr += `</div></div>`;
+                } else if (id === 'wellbeing-planner') {
+                    const finalImg = media[0];
+                    const drafts = media.slice(1);
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 2rem; border-bottom: 2px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Final Published Design</h2>
+                        <div class="masonry-container">`;
+                    if (finalImg) htmlStr += renderMedia(finalImg).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 1.75rem; margin-top: 2rem; border-bottom: 1px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Ideation & Concept Drafts</h2>
+                        <div class="masonry-container">`;
+                    drafts.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+                } else if (id === 'original-tracks') {
+                    htmlStr += `
+                    <style>
+                      .track-btn { display:flex; align-items:center; gap:1.5rem; padding:1.25rem 1.5rem; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.1); border-radius:12px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align:left; box-shadow:0 4px 15px rgba(0,0,0,0.02); }
+                      .track-btn:hover { background:#fff; transform:translateX(8px); box-shadow:0 8px 25px rgba(0,0,0,0.08); }
+                      .track-btn.active { border-color:var(--ink); background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
+                      .track-icon { width:48px; height:48px; border-radius:50%; background:var(--ink); color:var(--bg); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s; }
+                      .track-btn:hover .track-icon { transform:scale(1.1); }
+                      .track-btn.active .track-icon { animation: pulse 2s infinite; }
+                      @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(var(--ink-rgb), 0.4); } 70% { box-shadow:0 0 0 15px rgba(var(--ink-rgb), 0); } 100% { box-shadow:0 0 0 0 rgba(var(--ink-rgb), 0); } }
+                      #vinyl-player-section { position:relative; min-height:85vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; border-radius:16px; overflow:hidden; margin-bottom:4rem; background:#111; transition: background 1s ease; }
+                      #audio-viz { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+                      .vp-content { display:flex; flex-wrap:wrap; gap:5rem; align-items:center; justify-content:center; width:100%; max-width:1100px; z-index:1; }
+                      
+                      .turntable-base { position:relative; width:380px; height:320px; background: linear-gradient(145deg, #e6e6e6, #ffffff); border-radius:24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; border: 1px solid #d1d1d1; }
+                      .platter { position:absolute; left:20px; width:280px; height:280px; border-radius:50%; background: radial-gradient(circle, #555 0%, #222 90%); box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; border:4px solid #b3b3b3; }
+                      .spindle { position:absolute; width:14px; height:14px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff, #999); z-index:20; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+                      .slider { position:absolute; right:20px; top:40px; width:10px; height:120px; background:#222; border-radius:5px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+                      .slider-knob { position:absolute; top:50%; left:-10px; width:30px; height:15px; background: linear-gradient(to bottom, #ddd, #999); border-radius:2px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transform:translateY(-50%); border-top:1px solid #fff; border-bottom:1px solid #555; }
+                      .dial { position:absolute; right:20px; bottom:40px; width:30px; height:30px; border-radius:50%; background: linear-gradient(145deg, #ccc, #fff); box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,1); }
+                      .dial::after { content:''; position:absolute; top:4px; left:14px; width:2px; height:8px; background:#444; }
+                      
+                      #vinyl-disc { width:260px; height:260px; border-radius:50%; background: conic-gradient(from 45deg, #111 0%, #333 25%, #111 50%, #333 75%, #111 100%); position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; }
+                      .groove { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,0.08); }
+                      #vinyl-label { width:35%; height:35%; border-radius:50%; background:#FAF8F4; transition: background 0.5s; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+                      
+                      #tonearm { position:absolute; top:20px; right:40px; width:20px; height:180px; background:linear-gradient(to right, #ccc, #eee, #ccc); transform-origin: 10px 20px; transform: rotate(15deg); border-radius:10px; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow:-5px 10px 15px rgba(0,0,0,0.3); z-index:10; }
+                      .ta-base { position:absolute; top:0; left:-15px; width:50px; height:50px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #555, #222); box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.2); }
+                      .ta-head { position:absolute; bottom:-10px; left:-12px; width:30px; height:55px; background: linear-gradient(to bottom, #333, #111); border-radius:4px; transform: rotate(25deg); box-shadow: -2px 4px 8px rgba(0,0,0,0.4); border-top:1px solid #555; }
+                      
+                      .track-list-container { flex:1; min-width:320px; background:rgba(255,255,255,0.85); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5); }
+                    </style>
+                    <div id="vinyl-player-section">
+                      <canvas id="audio-viz"></canvas>
+                      <div class="vp-content">
+                        
+                        <!-- Premium Turntable -->
+                        <div class="turntable-base">
+                            <div class="platter">
+                                <div id="vinyl-disc">
+                                    <div class="groove" style="inset:8%;"></div>
+                                    <div class="groove" style="inset:16%;"></div>
+                                    <div class="groove" style="inset:24%;"></div>
+                                    <div class="groove" style="inset:32%;"></div>
+                                    <div class="groove" style="inset:40%;"></div>
+                                    <div id="vinyl-label"></div>
+                                </div>
+                                <div class="spindle"></div>
+                            </div>
+                            
+                            <div class="slider" id="vol-slider" style="cursor:pointer;"><div class="slider-knob" id="vol-knob" style="pointer-events:none;"></div></div>
+                            <div class="dial"></div>
+                            
+                            <div id="tonearm">
+                                <div class="ta-base"></div>
+                                <div class="ta-head"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tracklist -->
+                        <div class="track-list-container">
+                           <h2 style="margin-top:0; font-family:'Clash Display'; font-size:2.5rem; margin-bottom:0.5rem; letter-spacing:-1px;">The DJ Booth</h2>
+                           <p style="color:var(--ink5); margin-bottom:2rem; font-size:1.05rem;">Select a track to start the experience.</p>
+                           <div id="track-list" style="display:flex; flex-direction:column; gap:1.25rem;">
+                              <!-- Tracks injected here -->
+                           </div>
+                           <audio id="main-audio"></audio>
+                        </div>
+                        
                       </div>
-                  </div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Mark</h2><div class="masonry-container">`;
-                  if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width'); // Make primary lockup prominent
-                  logoSecondary.forEach(f => { htmlStr += renderMedia(f); });
-                  htmlStr += `</div></div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Packaging / Product Design</h2><div class="masonry-container">`;
-                  if(pack1) htmlStr += renderMedia(pack1);
-                  if(pack2) htmlStr += renderMedia(pack2);
-                  htmlStr += `</div></div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Applications</h2><div class="masonry-container">`;
-                  apps.forEach(f => { htmlStr += renderMedia(f); });
-                  htmlStr += `</div></div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">In Context</h2><div class="masonry-container">`;
-                  inContext.forEach(f => { htmlStr += renderMedia(f).replace('masonry-item', 'masonry-item in-context-img'); });
-                  htmlStr += `</div></div>`;
-              } else if (id === 'green-arrow') {
-                  const logo = findFile('LOGO GREEN ARROW');
-                  const posters = findFiles('3.png').concat(findFiles('presents'));
-                  const digital = findFiles('4.png').concat(findFiles('5.png'));
-                  const merch = findFiles('6.png').concat(findFiles('7.png'));
-                  
-                  htmlStr += `
-                  <div class="cs-section">
-                      <h2 class="cs-heading">Color Palette</h2>
-                      <div class="cs-palettes">
-                          <div class="cs-color"><div class="cs-swatch" style="background:#243E36;"></div><span class="cs-hex">#243E36</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#7CA982;"></div><span class="cs-hex">#7CA982</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#E0EEC6;"></div><span class="cs-hex">#E0EEC6</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#C2A83E;"></div><span class="cs-hex">#C2A83E</span></div>
-                          <div class="cs-color"><div class="cs-swatch" style="background:#F1F7ED;"></div><span class="cs-hex">#F1F7ED</span></div>
-                      </div>
-                  </div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Identity</h2><div class="masonry-container">`;
-                  if(logo) htmlStr += renderMedia(logo).replace('masonry-item', 'masonry-item full-width');
-                  htmlStr += `</div></div>`;
+                    </div>
+                    `;
+                }
+                
+                gal.innerHTML = htmlStr;
+                
+                if (id === 'nangele') {
+                    const nangeliMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
+                    let curPage = 0;
+                    const renderBook = (direction) => {
+                        const r = document.getElementById('nangeli-reader');
+                        if(!r) return;
+                        let p1 = nangeliMedia[curPage] ? `<img src="${nangeliMedia[curPage]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
+                        let p2 = nangeliMedia[curPage+1] ? `<img src="${nangeliMedia[curPage+1]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
+                        let animClass = direction === 'next' ? 'flip-next' : (direction === 'prev' ? 'flip-prev' : '');
+                        
+                        r.innerHTML = `
+                        <div class="book-container ${animClass}">
+                          <button class="page-flip-btn prev" id="n-prev" ${curPage===0?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                          <div class="book-page left">${p1}</div>
+                          <div class="book-page right">${p2}</div>
+                          <button class="page-flip-btn next" id="n-next" ${curPage>=nangeliMedia.length-2?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+                        </div>
+                        <div style="text-align:center; margin-top:1.5rem; font-size:0.95rem; font-weight:500; color:var(--ink5);">Spread ${Math.floor(curPage/2)+1} of ${Math.ceil(nangeliMedia.length/2)}</div>
+                        `;
+                        
+                        const pBtn = document.getElementById('n-prev');
+                        if (pBtn) pBtn.onclick = () => { curPage = Math.max(0, curPage-2); renderBook('prev'); };
+                        const nBtn = document.getElementById('n-next');
+                        if (nBtn) nBtn.onclick = () => { curPage = Math.min(nangeliMedia.length-1, curPage+2); renderBook('next'); };
+                    };
+                    renderBook('');
+                } else if (id === 'ntu-fest') {
+                    const video = findFile('youtu.be');
+                    const cover = findFile('ntu fest cover');
+                    const banner = findFile('ntufest_banner');
+                    const performers = findFiles('performer images');
+                    const vendor = findFile('SIGN UP');
+                    const sundown = findFile('SunDown');
+                    
+                    htmlStr += `<div class="cs-section">
+                        <div style="background:var(--surf); padding: 3rem; border-radius:12px; margin-bottom: 2rem; border: 1px solid var(--line);">
+                            <h2 style="font-family:'Clash Display'; font-size:2.2rem; margin-bottom:1rem; margin-top:0;">Stepping up for NTU Fest</h2>
+                            <p style="font-size:1.1rem; line-height:1.7; color:var(--ink5); margin-bottom:1.5rem;">
+                                <strong>Fun fact:</strong> I originally joined the committee in a different role, but when the original Publicity Director unexpectedly stepped down, I took over the position to ensure the festival's branding and outreach didn't skip a beat. All the production elements were primarily created using Canva and CapCut.
+                            </p>
+                            <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                                <div style="background:var(--bg); padding:0.8rem 1.5rem; border-radius:8px; border:1px solid var(--line); font-weight:600; font-size:0.95rem;">
+                                    🔗 View the live 2024 graphics at <a href="https://instagram.com/ntufest" target="_blank" style="color:var(--blue); text-decoration:none;">@ntufest</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Posters & Events</h2><div class="masonry-container">`;
-                  posters.forEach(f => { htmlStr += renderMedia(f); });
-                  htmlStr += `</div></div>`;
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Promotional Video</h2><div class="masonry-container">`;
+                    if (video) htmlStr += renderMedia(video).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
 
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Digital & Social Media</h2><div class="masonry-container">`;
-                  digital.forEach(f => { htmlStr += renderMedia(f); });
-                  htmlStr += `</div></div>`;
-                  
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Merchandise</h2><div class="masonry-container">`;
-                  merch.forEach(f => { htmlStr += renderMedia(f).replace('masonry-item', 'masonry-item in-context-img'); });
-                  htmlStr += `</div></div>`;
-              }
-              
-              gal.innerHTML = htmlStr;
-              return;
-          }
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Hero & Banners</h2><div class="masonry-container">`;
+                    if (cover) htmlStr += renderMedia(cover).replace('masonry-item', 'masonry-item full-width');
+                    if (banner) htmlStr += renderMedia(banner).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Performer Features</h2><div class="masonry-container">`;
+                    performers.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+
+                    htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-size:1.8rem; margin-bottom:1.5rem; border-bottom:1px solid var(--ink12); padding-bottom:0.5rem;">Event Collaterals</h2><div class="masonry-container">`;
+                    if (vendor) htmlStr += renderMedia(vendor);
+                    if (sundown) htmlStr += renderMedia(sundown);
+                    htmlStr += `</div></div>`;
+                } else if (id === 'wellbeing-planner') {
+                    const finalImg = media[0];
+                    const drafts = media.slice(1);
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 2rem; border-bottom: 2px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Final Published Design</h2>
+                        <div class="masonry-container">`;
+                    if (finalImg) htmlStr += renderMedia(finalImg).replace('masonry-item', 'masonry-item full-width');
+                    htmlStr += `</div></div>`;
+                    
+                    htmlStr += `<div class="cs-section">
+                        <h2 class="cs-heading" style="font-size: 1.75rem; margin-top: 2rem; border-bottom: 1px solid var(--ink12); padding-bottom: 0.5rem; margin-bottom: 2rem;">Ideation & Concept Drafts</h2>
+                        <div class="masonry-container">`;
+                    drafts.forEach(f => { htmlStr += renderMedia(f); });
+                    htmlStr += `</div></div>`;
+                } else if (id === 'original-tracks') {
+                    const tracks = [
+                      { file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', name: 'Club Got Boots', genre: 'club', color: '#FF0055' },
+                      { file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', name: 'Cloudy Days', genre: 'experimental', color: '#00D2FF' },
+                      { file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', name: 'Paradise', genre: 'pop', color: '#FF9A9E' }
+                    ];
+                    
+                    const list = document.getElementById('track-list');
+                    tracks.forEach((t, i) => {
+                        list.innerHTML += `
+                        <button class="track-btn" id="tbtn-${i}">
+                            <div class="track-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                            <div>
+                                <div style="font-weight:700; font-size:1.2rem; font-family:'Clash Display';">${t.name}</div>
+                                <div style="font-size:0.85rem; color:var(--ink5); text-transform:uppercase; letter-spacing:1.5px; margin-top:4px; font-weight:600;">${t.genre} Mix</div>
+                            </div>
+                        </button>
+                        `;
+                    });
+                    
+                    const audio = document.getElementById('main-audio');
+                    const vinyl = document.getElementById('vinyl-disc');
+                    const tonearm = document.getElementById('tonearm');
+                    const label = document.getElementById('vinyl-label');
+                    const canvas = document.getElementById('audio-viz');
+                    const ctx = canvas ? canvas.getContext('2d') : null;
+                    const section = document.getElementById('vinyl-player-section');
+                    
+                    let vRot = 0;
+                    let currentIdx = -1;
+                    
+                    function getSimulatedFreqs(genre, time) {
+                        let arr = new Array(32).fill(0);
+                        let vol = audio.volume; 
+                        let beat = (time * (genre === 'club' ? 2.2 : 1.2)) % 1; 
+                        let kick = beat < 0.1 ? 1 : Math.max(0, 1 - beat * 3);
+                        let snare = (beat > 0.45 && beat < 0.55) ? 1 : 0;
+                        
+                        for(let i=0; i<32; i++) {
+                            if (genre === 'club') {
+                                let base = Math.sin(time * 3 + i) * 0.5 + 0.5;
+                                if (i < 4) arr[i] = kick * 255 * vol;
+                                else if (i > 10 && i < 14) arr[i] = snare * 180 * vol;
+                                else arr[i] = (base * 100) * vol;
+                            } else if (genre === 'experimental') {
+                                // Smooth, moody, slow rolling waves without glitchy noise
+                                let wave = Math.sin(time * 1.5 + i * 0.15) * 0.5 + 0.5;
+                                let wave2 = Math.cos(time * 0.8 - i * 0.1) * 0.5 + 0.5;
+                                arr[i] = (wave * 120 + wave2 * 80) * vol;
+                            } else {
+                                // Pop: bouncy but smooth
+                                let wave = Math.sin(time * 2 - i * 0.2) * 0.5 + 0.5;
+                                arr[i] = (wave * 100 + kick * 60) * vol;
+                            }
+                        }
+                        return arr;
+                    }
+                    
+                    // Volume Slider Logic
+                    const slider = document.getElementById('vol-slider');
+                    const knob = document.getElementById('vol-knob');
+                    if (slider && knob) {
+                        let isDragging = false;
+                        const updateVol = (e) => {
+                            const rect = slider.getBoundingClientRect();
+                            let y = e.clientY - rect.top;
+                            y = Math.max(0, Math.min(y, rect.height));
+                            let vol = 1 - (y / rect.height);
+                            audio.volume = vol;
+                            knob.style.top = y + 'px';
+                        };
+                        slider.onmousedown = (e) => { isDragging = true; updateVol(e); };
+                        window.onmousemove = (e) => { if(isDragging) updateVol(e); };
+                        window.onmouseup = () => { isDragging = false; };
+                    }
+                    
+                    function drawViz() {
+                        requestAnimationFrame(drawViz);
+                        if(!ctx || currentIdx === -1) return;
+                        
+                        canvas.width = section.offsetWidth;
+                        canvas.height = section.offsetHeight;
+                        const W = canvas.width;
+                        const H = canvas.height;
+                        
+                        const track = tracks[currentIdx];
+                        let isPlaying = !audio.paused && !audio.ended;
+                        
+                        let dataArray = getSimulatedFreqs(track.genre, audio.currentTime);
+                        let sum = 0;
+                        for(let i=0; i<32; i++) sum += dataArray[i];
+                        let avg = sum / 32;
+                        
+                        if (isPlaying) {
+                            vRot += 1.0; 
+                            let pulse = 1 + (avg/255) * 0.02 * audio.volume;
+                            vinyl.style.transform = `scale(${pulse}) rotate(${vRot}deg)`;
+                            tonearm.style.transform = `rotate(36deg)`;
+                        } else {
+                            tonearm.style.transform = `rotate(15deg)`;
+                        }
+                        
+                        ctx.clearRect(0, 0, W, H);
+                        
+                        if (track.genre === 'club') {
+                            section.style.background = '#08080a';
+                            let bass = isPlaying ? dataArray[1]/255 : 0;
+                            
+                            ctx.fillStyle = `rgba(255, 0, 85, ${bass * 0.4})`;
+                            ctx.fillRect(0, 0, W, H);
+                            
+                            let barW = (W / 32) - 4;
+                            for(let i=0; i<32; i++) {
+                                let barH = isPlaying ? (dataArray[i] / 255) * (H * 0.7) : 10;
+                                ctx.fillStyle = `rgba(0, 255, 255, ${0.4 + (dataArray[i]/255)*0.6})`;
+                                ctx.beginPath();
+                                ctx.roundRect(i * (barW + 4), H - barH, barW, barH, [4, 4, 0, 0]);
+                                ctx.fill();
+                            }
+                        } else if (track.genre === 'experimental') {
+                            section.style.background = '#e6f2ff';
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(0, H/2);
+                            for(let i=0; i<64; i++) {
+                                let sim = isPlaying ? (Math.sin(audio.currentTime * 3 + i * 0.2) * 0.5 + 0.5) : 0.5;
+                                let y = H/2 + (sim - 0.5) * H/2;
+                                ctx.lineTo(i * (W/64), y);
+                            }
+                            ctx.lineTo(W, H/2);
+                            ctx.strokeStyle = `rgba(0, 150, 255, 0.8)`;
+                            ctx.lineWidth = 8;
+                            ctx.stroke();
+                            
+                            let r = isPlaying ? 100 + avg*0.8 : 100;
+                            ctx.beginPath();
+                            ctx.arc(W/2, H/2, r, 0, Math.PI*2);
+                            ctx.fillStyle = `rgba(0, 150, 255, 0.15)`;
+                            ctx.fill();
+                        } else if (track.genre === 'pop') {
+                            section.style.background = '#FFF0F5';
+                            
+                            for(let i=0; i<15; i++) {
+                                let val = isPlaying ? dataArray[i*2]/255 : 0;
+                                let r = 20 + val * 120;
+                                ctx.beginPath();
+                                ctx.arc(W * (i+1)/16, H/2 + Math.sin(Date.now()*0.002 + i) * 150, r, 0, Math.PI*2);
+                                ctx.fillStyle = `hsla(${340 + i*6}, 100%, 65%, 0.6)`;
+                                ctx.fill();
+                            }
+                        }
+                    }
+                    drawViz();
+                    
+                    tracks.forEach((t, i) => {
+                        document.getElementById(`tbtn-${i}`).onclick = () => {
+                            document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+                            document.getElementById(`tbtn-${i}`).classList.add('active');
+                            
+                            if (currentIdx === i) {
+                                if (audio.paused) audio.play();
+                                else audio.pause();
+                            } else {
+                                currentIdx = i;
+                                audio.src = t.file;
+                                audio.play();
+                                label.style.background = t.color;
+                            }
+                        };
+                    });
+                }
+                return;
+            }
 
           // Default handling for other galleries
           const isComic = id === 'nangele' || id === 'internship-comics' || id === 'wellbeing-planner' || id === 'jasmine-comic';
@@ -2118,6 +2537,10 @@ const PROJECTS = {
   <script src="scripts/motion.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>lucide.createIcons();</script>
+<script>
+window.addEventListener('load', () => document.body.classList.add('loaded'));
+setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
+</script>
 </body>
 
 </html>

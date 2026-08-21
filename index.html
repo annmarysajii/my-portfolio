@@ -36,7 +36,7 @@ html,body{height:100%;overflow:hidden;}
 
 body{
 
-  background:var(--bg);font-family:var(--fb);color:var(--ink);cursor:none;
+  background:var(--bg);font-family:var(--fb);color: #111009;cursor:none;
 
   background-image:radial-gradient(circle,rgba(17,16,9,.1) 1px,transparent 1px);
 
@@ -106,7 +106,7 @@ body::after{
 
   position:fixed;top:2.5rem;left:0;width:100%;text-align:center;z-index:11;
 
-  font-size:.78rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink5);
+  font-size:.78rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color: rgba(17,16,9,0.7);
 
 }
 
@@ -116,7 +116,7 @@ body::after{
 
   font-size:clamp(2rem,5.5vw,5rem);
 
-  font-weight:700;color:var(--ink);
+  font-weight:700;color: #111009;
 
   text-align:center;line-height:1.06;letter-spacing:-.025em;
 
@@ -134,7 +134,7 @@ body::after{
 
   font-size:clamp(.95rem,2.2vw,1.3rem);
 
-  font-weight:600;color:var(--ink);background:none;border:none;cursor:none;
+  font-weight:600;color: #111009;background:none;border:none;cursor:none;
 
   padding:.28rem 0;position:relative;transition:color .2s;letter-spacing:-.01em;
 
@@ -152,7 +152,7 @@ body::after{
 
 .gw-opt:hover::after{width:100%;}
 
-.gw-opt:hover{color:var(--ink5);}
+.gw-opt:hover{color: rgba(17,16,9,0.7);}
 
 .gw-opt .arr{
 
@@ -188,7 +188,7 @@ body::after{
 
   font-size:clamp(2.5rem,6vw,5.5rem);
 
-  font-weight:700;color:var(--ink);
+  font-weight:700;color: #111009;
 
   letter-spacing:-.025em;text-align:center;padding:0 2rem;
 
@@ -208,12 +208,123 @@ body::after{
 
 .c-br{bottom:2rem;right:2rem;border-bottom:1.5px solid var(--ink);border-right:1.5px solid var(--ink);}
 
+
+/* --- PREMIUM AWARDS SECTION --- */
+.awards {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: linear-gradient(145deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05));
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+    position: relative;
+    overflow: hidden;
+}
+[data-theme="dark"] .awards {
+    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.awards::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--blue), var(--red), var(--yel));
+}
+.awards-h {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #111009;
+    margin-bottom: 2rem;
+}
+.aw {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="dark"] .aw {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.aw:hover {
+    transform: translateX(8px);
+}
+.aw:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.aw-i {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111009;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    transition: all 0.3s;
+}
+[data-theme="dark"] .aw-i {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.aw:hover .aw-i {
+    background: var(--ink);
+    color: #FFF;
+    transform: scale(1.05) rotate(5deg);
+}
+.aw-t {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(17,16,9,0.7);
+}
+.aw-n {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #111009;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+
+[data-theme="dark"] .awards-h, [data-theme="dark"] .aw-n { color: #F0EEF5 !important; }
+[data-theme="dark"] .aw-t { color: rgba(240,238,245,0.7) !important; }
+[data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
+
+<style>
+/* Smooth Page Load Overlay */
+#page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 999999;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.loaded #page-transition-overlay {
+    opacity: 0;
+}
+
+[data-theme="dark"] .awards-h, [data-theme="dark"] .aw-n { color: #F0EEF5 !important; }
+[data-theme="dark"] .aw-t { color: rgba(240,238,245,0.7) !important; }
+[data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
+</style>
+
 </head>
 
 <body>
+<div id="page-transition-overlay"></div>
 
 
 
@@ -265,7 +376,7 @@ body::after{
 
 
 
-<audio id="bg-music" src="assets/music.mp3" loop preload="none"></audio>
+
 
 <audio id="warp-sfx" src="assets/warp.mp3" preload="none"></audio>
 
@@ -515,7 +626,7 @@ window.go=function(filter){
 
     wc.classList.add('on');
 
-    ctx.fillStyle='#FAF8F4';ctx.fillRect(0,0,W,H);
+    const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);
 
     wStars=Array.from({length:380},()=>({
 
@@ -529,7 +640,7 @@ window.go=function(filter){
 
       const spd=10+prog*180;
 
-      ctx.fillStyle=`rgba(250,248,244,${.2+prog*.22})`;
+      const bgRGB = (document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark') ? '17,16,9' : '250,248,244'; ctx.fillStyle=`rgba(${bgRGB},${.2+prog*.22})`;
 
       ctx.fillRect(0,0,W,H);
 
@@ -557,7 +668,7 @@ window.go=function(filter){
 
       if(prog<1)requestAnimationFrame(frame);
 
-      else{ctx.fillStyle='#FAF8F4';ctx.fillRect(0,0,W,H);setTimeout(()=>location.href=dest,40);}
+      else{const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);setTimeout(()=>location.href=dest,40);}
 
     })();
 
@@ -570,6 +681,57 @@ window.go=function(filter){
   <script src="scripts/motion.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>lucide.createIcons();</script>
+<script>
+window.addEventListener('load', () => document.body.classList.add('loaded'));
+setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
+</script>
+
+<style>
+/* ABSOLUTE FOOLPROOF AWARDS FIX */
+.awards {
+    background: #0D0C11 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 30px !important;
+    border-radius: 16px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 200px !important;
+}
+.awards-h {
+    color: #FFFFFF !important;
+    font-size: 24px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.aw {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.aw-n {
+    color: #FFFFFF !important;
+    font-size: 18px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.aw-t {
+    color: #AAAAAA !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.aw-i {
+    color: #FFFFFF !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+</style>
+
 </body>
 
 </html>
