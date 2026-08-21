@@ -739,7 +739,7 @@ const PROJECTS = {
 
     tools:['Clip Studio Paint','Rough Animator'],
 
-    overview:`Keep Yourself Safe is a self-directed animated short produced entirely solo from script to final sound. The film begins with a question I could not let go of, and builds a visual language around it through character animation, hand-drawn environments, and an original sound design. Every stage of production — writing, storyboarding, animation, background art, and audio — was handled in a single pipeline.`,
+    overview:`Keep Yourself Safe is a self-directed animated short produced entirely solo from script to final sound. This story is about a frazzled young girl who gets clickbaited by a therapy center online.`,
 
     process:`The production started with thumbnail storyboards before moving into character design passes. Backgrounds were painted digitally, layered to allow parallax motion. Sound was approached as another visual layer rather than an afterthought.`,
 
@@ -1822,6 +1822,21 @@ const PROJECTS = {
       let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
       
       const overrides = {
+          // Keep Yourself Safe
+          'shots (1)': 'Film Still — Establishing Scene',
+          'shots (2)': 'Film Still — Therapy Center Interaction',
+          'shots (3)': 'Film Still — Narrative Climax',
+          'shots (4)': 'Film Still — Story Sequence',
+          'shots (5)': 'Film Still — Final Sequence',
+          'exploration (1)': 'Character Concept Exploration 1',
+          'exploration (2)': 'Character Concept Exploration 2',
+          'exploration (3)': 'Environment Design 1',
+          'exploration (4)': 'Environment Design 2',
+          'exploration (5)': 'Color & Tone Key 1',
+          'exploration (6)': 'Color & Tone Key 2',
+          'exploration (7)': 'Visual Development 1',
+          'exploration (8)': 'Visual Development 2',
+          
           // GoBunny
           'GO BUNNY': 'Primary Logo Lockup',
           'Your paragraph text (33)': 'Brand Pattern',
@@ -1845,8 +1860,10 @@ const PROJECTS = {
           'EcoFuture Color Pallette': 'Color Palette',
           
           // NTU Web & Social Banners
-          'NTU GLOW POSTER': 'NTU Glow Campaign Poster',
-          'GLOW Web Ad Square (300 x 250 px)': 'Digital Campaign Web Ad',
+          'GLOW SQUARE poster': 'Campaign Square Poster',
+          'GLOW Web Ad Square (300 x 250 px)': 'Digital Web Campaign Ad',
+          'GLOW PRESENTATION Backdrop': 'Presentation Stage Backdrop',
+          'GLOW PPT SLIDE': 'Presentation Slide Deck',
           'ntu banner': 'NTU Campus Web Banner',
           'wssbanner': 'WSS Event Web Banner',
           
@@ -2033,7 +2050,37 @@ const PROJECTS = {
           const findFile = (str) => media.find(f => f.includes(str));
           const findFiles = (str) => media.filter(f => f.includes(str));
 
-          // 1. GOBUNNY CASE STUDY
+          // 1. KEEP YOURSELF SAFE (ANIMATION SHORT FILM + VISUAL DEVELOPMENT)
+          if (id === 'keep-yourself-safe') {
+              const video = findFile('youtu.be');
+              const filmShots = media.filter(f => f.includes('/shots'));
+              const conceptArts = media.filter(f => f.includes('concept images') || f.includes('/exploration'));
+              
+              let htmlStr = styleBlock;
+              
+              if (video) {
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Animated Short Film</h2><div class="masonry-container">`;
+                  htmlStr += renderMedia(video).replace('masonry-item', 'masonry-item full-width');
+                  htmlStr += `</div></div>`;
+              }
+              
+              if (filmShots.length > 0) {
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Final Film Stills & Sequence</h2><div class="masonry-container">`;
+                  filmShots.forEach(f => { htmlStr += renderMedia(f); });
+                  htmlStr += `</div></div>`;
+              }
+              
+              if (conceptArts.length > 0) {
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Visual Development & Concept Exploration</h2><div class="masonry-container">`;
+                  conceptArts.forEach(f => { htmlStr += renderMedia(f); });
+                  htmlStr += `</div></div>`;
+              }
+              
+              gal.innerHTML = htmlStr;
+              return;
+          }
+
+          // 2. GOBUNNY CASE STUDY
           if (id === 'gobunny') {
               const logoPrimary = findFile('GO BUNNY.png');
               const pattern = findFile('Your paragraph text (33).png');
@@ -2091,7 +2138,7 @@ const PROJECTS = {
               return;
           }
 
-          // 2. GREEN ARROW CASE STUDY
+          // 3. GREEN ARROW CASE STUDY
           if (id === 'green-arrow') {
               const logo = findFile('LOGO GREEN ARROW');
               const posters = findFiles('3.png').concat(findFiles('presents'));
@@ -2131,10 +2178,12 @@ const PROJECTS = {
               return;
           }
 
-          // 3. NTU WEB AND SOCIAL BANNERS
+          // 4. NTU WEB AND SOCIAL BANNERS
           if (id === 'ntu-banners') {
-              const poster = findFile('NTU GLOW POSTER.png');
+              const poster = findFile('GLOW SQUARE poster');
               const squareAd = findFile('GLOW Web Ad Square');
+              const backdrop = findFile('GLOW PRESENTATION Backdrop');
+              const ppt = findFile('GLOW PPT SLIDE');
               const ntuBanner = findFile('ntu banner.png');
               const wssBanner = findFile('wssbanner.png');
               
@@ -2143,6 +2192,13 @@ const PROJECTS = {
               if (poster) htmlStr += renderMedia(poster);
               if (squareAd) htmlStr += renderMedia(squareAd);
               htmlStr += `</div></div>`;
+
+              if (backdrop || ppt) {
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Presentation & Event Collaterals</h2><div class="masonry-container">`;
+                  if (backdrop) htmlStr += renderMedia(backdrop);
+                  if (ppt) htmlStr += renderMedia(ppt);
+                  htmlStr += `</div></div>`;
+              }
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Web & Social Banners</h2><div class="masonry-container">`;
               if (ntuBanner) htmlStr += renderMedia(ntuBanner).replace('masonry-item', 'masonry-item full-width');
@@ -2153,7 +2209,7 @@ const PROJECTS = {
               return;
           }
 
-          // 4. CAO INTERNSHIP COMIC SERIES
+          // 5. CAO INTERNSHIP COMIC SERIES
           if (id === 'internship-comics') {
               let htmlStr = styleBlock;
               htmlStr += `
@@ -2224,7 +2280,7 @@ const PROJECTS = {
               return;
           }
 
-          // 5. NANGELI COMIC READER
+          // 6. NANGELI COMIC READER
           if (id === 'nangele') {
               let htmlStr = styleBlock;
               htmlStr += `
@@ -2284,7 +2340,7 @@ const PROJECTS = {
               return;
           }
 
-          // 6. NTU FEST CASE STUDY
+          // 7. NTU FEST CASE STUDY
           if (id === 'ntu-fest') {
               const video = findFile('youtu.be');
               const cover = findFile('ntu fest cover');
@@ -2330,7 +2386,7 @@ const PROJECTS = {
               return;
           }
 
-          // 7. WELLBEING PLANNER
+          // 8. WELLBEING PLANNER
           if (id === 'wellbeing-planner') {
               const finalImg = media[0];
               const drafts = media.slice(1);
@@ -2354,7 +2410,7 @@ const PROJECTS = {
               return;
           }
 
-          // 8. ORIGINAL TRACKS (TURNTABLE / DJ PLAYER)
+          // 9. ORIGINAL TRACKS (TURNTABLE / DJ PLAYER)
           if (id === 'original-tracks') {
               let htmlStr = styleBlock;
               htmlStr += `
@@ -2584,7 +2640,7 @@ const PROJECTS = {
               return;
           }
 
-          // 9. JASMINE ALBUM
+          // 10. JASMINE ALBUM
           if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
@@ -2608,7 +2664,7 @@ const PROJECTS = {
               return;
           }
 
-          // 10. DEFAULT / ALL OTHER GALLERIES
+          // 11. DEFAULT / ALL OTHER GALLERIES
           const isComic = id === 'nangele' || id === 'internship-comics' || id === 'wellbeing-planner' || id === 'jasmine-comic';
           let htmlStr = styleBlock + `<div class="${isComic ? 'comic-grid' : 'masonry-container'}">`;
           

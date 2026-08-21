@@ -127,13 +127,19 @@ window.PORTFOLIO_DATA = {
   ],
   "keep-yourself-safe": [
     "https://youtu.be/gGdk8_vq0Mk",
-    "assets/portfolio-data/Keep yourself safe/final_therapyscene.png",
-    "assets/portfolio-data/Keep yourself safe/firstend.png",
-    "assets/portfolio-data/Keep yourself safe/pg1.png",
-    "assets/portfolio-data/Keep yourself safe/ph2.png",
-    "assets/portfolio-data/Keep yourself safe/popop.png",
-    "assets/portfolio-data/Keep yourself safe/shot2.png",
-    "assets/portfolio-data/Keep yourself safe/shotee.png"
+    "assets/portfolio-data/Keep yourself safe/shots (1).png",
+    "assets/portfolio-data/Keep yourself safe/shots (2).png",
+    "assets/portfolio-data/Keep yourself safe/shots (3).png",
+    "assets/portfolio-data/Keep yourself safe/shots (4).png",
+    "assets/portfolio-data/Keep yourself safe/shots (5).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (1).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (2).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (3).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (4).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (5).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (6).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (7).png",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (8).png"
   ],
   "music-district-video": [
     "https://youtu.be/Z98oacHxtM8",
@@ -175,8 +181,10 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Ntu fest assets/SunDown.png"
   ],
   "ntu-banners": [
-    "assets/portfolio-data/NTU web and social banners/NTU GLOW POSTER.png",
+    "assets/portfolio-data/NTU web and social banners/GLOW SQUARE poster.png",
     "assets/portfolio-data/NTU web and social banners/GLOW Web Ad Square (300 x 250 px).png",
+    "assets/portfolio-data/NTU web and social banners/GLOW PRESENTATION Backdrop (1).png",
+    "assets/portfolio-data/NTU web and social banners/GLOW PPT SLIDE.jpg",
     "assets/portfolio-data/NTU web and social banners/ntu banner.png",
     "assets/portfolio-data/NTU web and social banners/wssbanner.png"
   ],
