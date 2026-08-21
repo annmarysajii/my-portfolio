@@ -2035,8 +2035,36 @@ const PROJECTS = {
             const findFiles = (str) => media.filter(f => f.includes(str));
           if (id === 'gobunny' || id === 'green-arrow' || id === 'nangele' || id === 'original-tracks' || id === 'wellbeing-planner' || id === 'ntu-fest') {
                 let htmlStr = styleBlock;
-                
-                if (id === 'green-arrow') {
+                  if (id === 'gobunny') {
+                      const brandColorSvg = findFile('BRANDCOLOR_GOBUNNY.svg');
+                      const logoPrimary = findFile('GO BUNNY.png');
+                      const artDirection = findFiles('ART DIRECTION PORTFOLIO');
+                      const otherAssets = media.filter(f => 
+                          !f.includes('BRANDCOLOR_GOBUNNY') && 
+                          !f.includes('GO BUNNY.png') && 
+                          !f.includes('ART DIRECTION PORTFOLIO')
+                      );
+                      
+                      htmlStr += `<div class="cs-section">
+                          <h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd); margin-bottom: 2rem;">Brand Colors</h2>`;
+                      if (brandColorSvg) {
+                          htmlStr += renderMedia(brandColorSvg).replace('masonry-item', 'masonry-item full-width');
+                      }
+                      htmlStr += `</div>`;
+                      
+                      if (logoPrimary || artDirection.length > 0) {
+                          htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Logo & Art Direction</h2><div class="masonry-container">`;
+                          if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
+                          artDirection.forEach(f => { htmlStr += renderMedia(f); });
+                          htmlStr += `</div></div>`;
+                      }
+  
+                      if (otherAssets.length > 0) {
+                          htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Brand Assets & Collateral</h2><div class="masonry-container">`;
+                          otherAssets.forEach(f => { htmlStr += renderMedia(f); });
+                          htmlStr += `</div></div>`;
+                      }
+                  } else if (id === 'green-arrow') {
                     const logo = findFile('LOGO GREEN ARROW');
                     const posters = findFiles('3.png').concat(findFiles('presents'));
                     const digital = findFiles('4.png').concat(findFiles('5.png'));
