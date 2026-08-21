@@ -2040,61 +2040,29 @@ if(bgC){
 
   function bgFrame(){
     bgX.clearRect(0,0,bW,bH);
-    const theme = window.currentCanvasTheme;
     const isDarkNow = (document.documentElement.getAttribute('data-theme') === 'dark');
-    
-    if (theme === 'graphic-design') {
-        bgX.strokeStyle = isDarkNow ? 'rgba(240,238,245,0.12)' : 'rgba(17,16,9,0.1)';
-        bgX.lineWidth = 1;
-        for(let i=0; i<STARS.length; i++) {
-            for(let j=i+1; j<STARS.length; j++) {
-                const dx = STARS[i].x - STARS[j].x;
-                const dy = STARS[i].y - STARS[j].y;
-                if (dx*dx + dy*dy < 25000) {
-                    bgX.beginPath(); bgX.moveTo(STARS[i].x, STARS[i].y); bgX.lineTo(STARS[j].x, STARS[j].y); bgX.stroke();
-                }
-            }
-        }
-    } else if (theme === 'illustration') {
-        // removed messy lines as requested
-    }
 
     STARS.forEach(s=>{
+      s.y += s.speed;
+      s.x += s.drift;
+      s.rot += s.spin;
 
-      s.y+=s.speed;s.x+=s.drift;s.rot+=s.spin;
+      if(s.y > bH+20){ s.y = -20; s.x = Math.random()*bW; }
 
-      if(s.y>bH+20){s.y=-20;s.x=Math.random()*bW;}
+      const dist = Math.hypot(cx - s.x, cy - s.y);
+      const prox = Math.max(0, 1 - dist/110);
+      s.lit = Math.max(s.lit * 0.92, prox);
 
+      const sz = (s.r * 0.55) + (s.lit * 3);
+      const a = (s.alpha * 0.5) + (s.lit * 0.3);
+      const color = s.lit > 0.04
+        ? `hsla(${s.hue},88%,52%,${a})`
+        : isDarkNow ? `rgba(240,238,245,${s.alpha})` : `rgba(17,16,9,${s.alpha})`;
 
-
-      const dist=Math.hypot(cx-s.x,cy-s.y);
-
-      const prox=Math.max(0,1-dist/110);
-
-      s.lit=Math.max(s.lit*.94,prox);
-
-
-
-      const sz=(s.r*0.55)+(s.lit*3);
-
-      const a=(s.alpha*0.5)+(s.lit*.3);
-
-      const isDarkNow=(document.documentElement.getAttribute('data-theme') === 'dark');
-
-      const color=s.lit>.04
-
-        ?`hsla(${s.hue},88%,52%,${a})`
-
-        :isDarkNow?`rgba(240,238,245,${s.alpha})`:`rgba(17,16,9,${s.alpha})`;
-
-
-
-      drawShape(bgX,s.x,s.y,sz,s.rot,color);
-
+      drawShape(bgX, s.x, s.y, sz, s.rot, color);
     });
 
     requestAnimationFrame(bgFrame);
-
   }
 
   bgFrame();

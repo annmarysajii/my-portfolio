@@ -1789,21 +1789,29 @@ const PROJECTS = {
           const bs = Array.isArray(p.badge) ? p.badge : [p.badge];
           bs.forEach(b => badges += `<span class="badge bs">${b}</span>`);
       }
-      const tools = (p.tools || []).map(t => `<span class="tool">${t}</span>`).join('');
       
       main.innerHTML = `
     <div class="con">
       <div class="proj-header">
-        <div class="proj-disc-tag">${p.discipline}${p.context?' &bull; '+p.context:''}</div>
+        <div class="proj-disc-tag">${p.discipline}${p.context ? ' &bull; ' + p.context : ''}</div>
         <h1 class="proj-title">${p.title}</h1>
-        ${p.badge ? `<div class="proj-badge">${p.badge}</div>` : ''}
-        <div class="proj-meta-row">
-          <span class="proj-meta-item"><strong>Year</strong> &nbsp;${p.year}</span>
+        ${badges ? `<div class="proj-badges" style="margin-top:0.75rem;">${badges}</div>` : ''}
+        
+        <div class="proj-meta-row" style="margin-top:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:1rem;">
+          <span class="proj-meta-item"><strong>Year:</strong> &nbsp;${p.year}</span>
           <div class="proj-meta-sep"></div>
-          <span class="proj-meta-item"><strong>Role</strong> &nbsp;${p.role}</span>
+          <span class="proj-meta-item"><strong>Role:</strong> &nbsp;${p.role}</span>
         </div>
-        ${p.tools && p.tools.length ? `<div class="proj-tools" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:2rem;">
-            ${p.tools.map(t=>`<span class="tool">${t}</span>`).join('')}
+        
+        ${p.overview ? `
+        <div class="proj-overview-box" style="margin-top:2rem; max-width:820px;">
+          <p style="font-size:1.15rem; line-height:1.75; color:var(--ink); opacity:0.9; margin:0;">${p.overview}</p>
+        </div>` : ''}
+        
+        ${p.tools && p.tools.length ? `
+        <div class="proj-tools-wrap" style="margin-top:1.75rem; display:flex; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+          <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink5); margin-right:0.25rem;">Apps / Tools Used:</span>
+          ${p.tools.map(t => `<span class="tool" style="font-size:0.85rem; font-weight:600;">${t}</span>`).join('')}
         </div>` : ''}
       </div>
       <div id="dynamic-gallery"></div>
@@ -1816,28 +1824,8 @@ const PROJECTS = {
 
   // Format string for captions and alt text
   function formatName(str) {
-      const isGoBunny = str.includes('GoBunny') || str.includes('gobunny');
-      const isGreenArrow = str.includes('Green arrow') || str.includes('green-arrow');
-      
       let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
-      
       const overrides = {
-          // Keep Yourself Safe
-          'shots (1)': 'Film Still — Establishing Scene',
-          'shots (2)': 'Film Still — Therapy Center Interaction',
-          'shots (3)': 'Film Still — Narrative Climax',
-          'shots (4)': 'Film Still — Story Sequence',
-          'shots (5)': 'Film Still — Final Sequence',
-          'exploration (1)': 'Character Concept Exploration 1',
-          'exploration (2)': 'Character Concept Exploration 2',
-          'exploration (3)': 'Environment Design 1',
-          'exploration (4)': 'Environment Design 2',
-          'exploration (5)': 'Color & Tone Key 1',
-          'exploration (6)': 'Color & Tone Key 2',
-          'exploration (7)': 'Visual Development 1',
-          'exploration (8)': 'Visual Development 2',
-          
-          // GoBunny
           'GO BUNNY': 'Primary Logo Lockup',
           'Your paragraph text (33)': 'Brand Pattern',
           'Your paragraph text (35)': 'Badge Logo',
@@ -1848,54 +1836,26 @@ const PROJECTS = {
           'ART DIRECTION PORTFOLIO (1)': 'Billboard Mockup',
           'ART DIRECTION PORTFOLIO': 'Gift Box Packaging',
           'Copy of ART DIRECTION PORTFOLIO (3)': 'Cider Beverage Cans',
-          '3': isGoBunny ? 'Packaging Design' : (isGreenArrow ? 'Event Poster' : 'Concept 1'),
-          '4': isGoBunny ? 'Packaging Details' : (isGreenArrow ? 'Instagram Campaign' : 'Concept 2'),
-          
-          // Green Arrow
-          '5': 'Website Mockup',
-          '6': 'Merchandise (T-Shirt)',
-          '7': 'Merchandise (Tote Bag)',
-          'presents': 'Competition Poster',
           'LOGO GREEN ARROW': 'Primary Lockup',
           'EcoFuture Color Pallette': 'Color Palette',
-          
-          // NTU Web & Social Banners
           'GLOW SQUARE poster': 'Campaign Square Poster',
           'GLOW Web Ad Square (300 x 250 px)': 'Digital Web Campaign Ad',
-          'GLOW PRESENTATION Backdrop': 'Presentation Stage Backdrop',
+          'GLOW PRESENTATION Backdrop (1)': 'Presentation Stage Backdrop',
           'GLOW PPT SLIDE': 'Presentation Slide Deck',
           'ntu banner': 'NTU Campus Web Banner',
-          'wssbanner': 'WSS Event Web Banner',
-          
-          // General overrides
-          '1': 'Brand Exploration',
-          '2': 'Visual System',
-          'credit1': 'End Credits',
-          'rain7': 'Rain Sequence',
-          'staticshot_4': 'Establishing Shot',
-          'ver1': 'Concept Version 1',
-          'version2': 'Concept Version 2',
-          'Home pt 1': 'Home (Part 1)',
-          'character designs': 'Character Designs',
-          'fusion jazz pg2': 'Fusion Jazz',
-          'final_therapyscene': 'Therapy Scene',
-          'pg1': 'Page 1',
-          'ph2': 'Phase 2',
-          'shot2': 'Shot 2'
+          'wssbanner': 'WSS Event Web Banner'
       };
-      
       if (overrides[rawName]) return overrides[rawName];
-      
       let name = rawName.replace(/[-_]/g, ' ').replace(/\s*\(\d+\)\s*/g, ' ').trim();
       return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
-  function renderMedia(file, isComic = false) {
+  function renderMedia(file, isComic = false, explicitCaption = '') {
       const isVideo = !!file.match(/\.(mp4|mov|webm)$/i);
       const isAudio = !!file.match(/\.(m4a|mp3|wav)$/i);
       const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
       const isPDF = !!file.match(/\.pdf$/i);
-      const name = formatName(file);
+      const name = explicitCaption || '';
       
       let el = '';
       if (isYouTube) {
@@ -1905,29 +1865,29 @@ const PROJECTS = {
               if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                   const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
                   const thumbUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-                  el = `<div class="media-el full-width yt-fallback" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:4px; overflow:hidden; break-inside: avoid; margin-bottom: 2rem;">
-                      <img src="${thumbUrl}" alt="${name}" style="width:100%; height:100%; object-fit:cover; opacity:0.5;" onerror="this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg'">
+                  el = `<div class="media-el full-width yt-fallback" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:8px; overflow:hidden; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
+                      <img src="${thumbUrl}" alt="Video preview" style="width:100%; height:100%; object-fit:cover; opacity:0.6;" onerror="this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg'">
                       <a href="${watchUrl}" target="_blank" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; color:white; transition:transform 0.2s;">
                           <svg width="68" height="48" viewBox="0 0 68 48"><path fill="#FF0000" d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 .13 34 .13s-21.79 0-27.1.14c-2.93.78-4.64 3.26-5.42 6.19C1.34 11.55 1.34 24 1.34 24s0 12.45.14 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 47.87 34 47.87s21.79 0 27.1-.14c2.93-.78 4.64-3.26 5.42-6.19C66.66 36.45 66.66 24 66.66 24s0-12.45-.14-16.26z"/><path fill="#FFFFFF" d="M45 24 27 14v20z"/></svg>
-                          <div style="margin-top:1rem; font-family:'Clash Display',sans-serif; font-size:1.2rem; background:rgba(0,0,0,0.7); padding:0.5rem 1rem; border-radius:4px; text-align:center;">Watch on YouTube<br><span style="font-size:0.9rem; font-family:'General Sans',sans-serif; font-weight:normal; color:#ccc;">(Local preview mode)</span></div>
+                          <div style="margin-top:1rem; font-family:'Clash Display',sans-serif; font-size:1.2rem; background:rgba(0,0,0,0.75); padding:0.5rem 1.25rem; border-radius:6px; text-align:center;">Watch on YouTube<br><span style="font-size:0.85rem; font-family:'General Sans',sans-serif; font-weight:normal; color:#ddd;">(Click to open)</span></div>
                       </a>
                   </div>`;
               } else {
                   const embedUrl = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
-                  el = `<iframe class="media-el full-width" src="${embedUrl}" style="width:100%; aspect-ratio:16/9; display:block; border-radius:4px; border:none; break-inside: avoid; margin-bottom: 2rem;" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+                  el = `<iframe class="media-el full-width" src="${embedUrl}" style="width:100%; aspect-ratio:16/9; display:block; border-radius:8px; border:none; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
               }
           }
       } else if (isVideo) {
-          el = `<video class="media-el full-width" src="${file}" controls style="width:100%; height:auto; display:block; background:var(--surf); border-radius:4px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
+          el = `<video class="media-el full-width" src="${file}" controls style="width:100%; height:auto; display:block; background:var(--surf); border-radius:8px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
       } else if (isAudio) {
-          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:4px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
-            <div style="width:100px; height:100px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
+          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
+            <div style="width:90px; height:90px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
             </div>
             <audio src="${file}" controls style="width:100%; outline:none; height:40px;"></audio>
           </div>`;
       } else if (isPDF) {
-          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:4px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
+          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
             <div style="width:80px; height:80px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             </div>
@@ -1935,13 +1895,14 @@ const PROJECTS = {
           </div>`;
       } else {
           el = `<div class="media-el" style="break-inside: avoid; margin-bottom: 2rem; position: relative;">
-            <img src="${file}" alt="${name}" loading="lazy" style="width:100%; height:auto; display:block; border-radius:4px; border:1px solid var(--line);">
+            <img src="${file}" alt="" loading="lazy" style="width:100%; height:auto; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 4px 15px rgba(0,0,0,0.04);">
           </div>`;
       }
       
+      const captionHtml = name ? `<div class="media-caption">${name}</div>` : '';
       return `<div class="masonry-item ${isYouTube || isVideo ? 'full-width' : ''}">
           ${el}
-          <div class="media-caption">${name}</div>
+          ${captionHtml}
       </div>`;
   }
 
@@ -1965,8 +1926,6 @@ const PROJECTS = {
           }
 
           let rawMedia = data[id] || [];
-          
-          // Filter out missing image placeholders
           const media = rawMedia.filter(f => !f.toLowerCase().includes('image coming soon') && !f.toLowerCase().includes('placeholder'));
 
           const gal = document.getElementById('dynamic-gallery');
@@ -1976,7 +1935,7 @@ const PROJECTS = {
           }
           
           let styleBlock = `<style>
-            /* Sitewide CSS Columns Masonry */
+            /* Masonry Grid */
             .masonry-container {
                 column-count: 3;
                 column-gap: 1.5rem;
@@ -1984,7 +1943,7 @@ const PROJECTS = {
             }
             .masonry-item {
                 break-inside: avoid;
-                margin-bottom: 2.5rem;
+                margin-bottom: 2rem;
                 position: relative;
             }
             .masonry-item.full-width {
@@ -1992,33 +1951,33 @@ const PROJECTS = {
             }
             .media-caption {
                 font-size: 0.75rem;
-                font-weight: 500;
-                letter-spacing: 0.04em;
+                font-weight: 600;
+                letter-spacing: 0.05em;
                 text-transform: uppercase;
-                color: rgba(120, 120, 120, 0.8);
-                margin-top: 0.75rem;
+                color: var(--ink5);
+                margin-top: 0.6rem;
                 text-align: left;
             }
             
             /* Comic styling */
-            .comic-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0rem; }
-            .comic-item { margin-bottom: 0; }
-            .comic-item img { border-radius: 0 !important; }
+            .comic-grid { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+            .comic-item img { border-radius: 6px; width:100%; }
             
-            /* Responsive Masonry */
+            /* Responsive */
             @media (max-width: 900px) { .masonry-container { column-count: 2; } }
             @media (max-width: 600px) { .masonry-container { column-count: 1; } }
 
             /* Case Study Sections */
-            .cs-section { margin-top: 4rem; margin-bottom: 2rem; break-inside: avoid; column-span: all; }
+            .cs-section { margin-top: 4rem; margin-bottom: 2.5rem; break-inside: avoid; column-span: all; }
             .cs-heading {
                 font-family: var(--fd);
-                font-size: clamp(2rem, 4vw, 2.5rem);
+                font-size: clamp(1.8rem, 3.5vw, 2.4rem);
                 font-weight: 700;
-                line-height: 1;
+                line-height: 1.1;
                 margin-bottom: 1.5rem;
                 border-bottom: 2px solid var(--line);
                 padding-bottom: 0.5rem;
+                color: var(--ink);
             }
             .cs-palettes { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
             .cs-color {
@@ -2029,7 +1988,7 @@ const PROJECTS = {
             }
             .cs-swatch {
                 aspect-ratio: 1;
-                border-radius: 4px;
+                border-radius: 6px;
                 box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
             }
             .cs-hex {
@@ -2038,23 +1997,16 @@ const PROJECTS = {
                 color: var(--ink);
                 text-transform: uppercase;
             }
-            .in-context-img img {
-                box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-                transform: scale(1.02);
-            }
-            
-            [data-theme='dark'] .media-caption { color: rgba(250,248,244,.5); }
-            [data-theme='dark'] .cs-swatch { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
           </style>`;
 
-          const findFile = (str) => media.find(f => f.includes(str));
-          const findFiles = (str) => media.filter(f => f.includes(str));
+          const findFile = (str) => media.find(f => f.toLowerCase().includes(str.toLowerCase()));
+          const findFiles = (str) => media.filter(f => f.toLowerCase().includes(str.toLowerCase()));
 
           // 1. KEEP YOURSELF SAFE (ANIMATION SHORT FILM + VISUAL DEVELOPMENT)
           if (id === 'keep-yourself-safe') {
               const video = findFile('youtu.be');
-              const filmShots = media.filter(f => f.includes('/shots'));
-              const conceptArts = media.filter(f => f.includes('concept images') || f.includes('/exploration'));
+              const filmShots = media.filter(f => f.includes('shots ('));
+              const conceptArts = media.filter(f => f.includes('concept images') || f.includes('exploration ('));
               
               let htmlStr = styleBlock;
               
@@ -2086,13 +2038,10 @@ const PROJECTS = {
               const pattern = findFile('Your paragraph text (33).png');
               const badge = findFile('Your paragraph text (35).png');
               const inverse = findFile('Your paragraph text (36).png');
-              
               const mobileUI = findFile('It is time for some strawberries');
               const social = findFile('Your paragraph text (37).png');
-              
               const billboard = findFile('ART DIRECTION PORTFOLIO (1).png');
               const cafeFront = findFile('Your paragraph text (30).png');
-              
               const cans = findFile('Copy of ART DIRECTION PORTFOLIO (3).png');
               const box = findFile('ART DIRECTION PORTFOLIO.png');
               const packBlue = findFile('3.png');
@@ -2111,27 +2060,27 @@ const PROJECTS = {
               </div>`;
               
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Brand Identity</h2><div class="masonry-container">`;
-              if (logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
-              if (pattern) htmlStr += renderMedia(pattern);
-              if (badge) htmlStr += renderMedia(badge);
-              if (inverse) htmlStr += renderMedia(inverse);
+              if (logoPrimary) htmlStr += renderMedia(logoPrimary, false, 'Primary Logo Lockup').replace('masonry-item', 'masonry-item full-width');
+              if (pattern) htmlStr += renderMedia(pattern, false, 'Brand Pattern');
+              if (badge) htmlStr += renderMedia(badge, false, 'Badge Logo');
+              if (inverse) htmlStr += renderMedia(inverse, false, 'Logo Inverse');
               htmlStr += `</div></div>`;
               
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Digital & App Mockups</h2><div class="masonry-container">`;
-              if (mobileUI) htmlStr += renderMedia(mobileUI);
+              if (mobileUI) htmlStr += renderMedia(mobileUI, false, 'Mobile Ordering UI');
               htmlStr += `</div></div>`;
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Posters & Advertising</h2><div class="masonry-container">`;
-              if (social) htmlStr += renderMedia(social);
-              if (billboard) htmlStr += renderMedia(billboard);
-              if (cafeFront) htmlStr += renderMedia(cafeFront);
+              if (social) htmlStr += renderMedia(social, false, 'Social Media Campaign Ad');
+              if (billboard) htmlStr += renderMedia(billboard, false, 'Billboard Mockup');
+              if (cafeFront) htmlStr += renderMedia(cafeFront, false, 'Cafe Frontage Mockup');
               htmlStr += `</div></div>`;
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Packaging & Products</h2><div class="masonry-container">`;
-              if (cans) htmlStr += renderMedia(cans).replace('masonry-item', 'masonry-item full-width');
-              if (box) htmlStr += renderMedia(box);
-              if (packBlue) htmlStr += renderMedia(packBlue);
-              if (packOrange) htmlStr += renderMedia(packOrange);
+              if (cans) htmlStr += renderMedia(cans, false, 'Cider Beverage Cans').replace('masonry-item', 'masonry-item full-width');
+              if (box) htmlStr += renderMedia(box, false, 'Gift Box Packaging');
+              if (packBlue) htmlStr += renderMedia(packBlue, false, 'Packaging Design');
+              if (packOrange) htmlStr += renderMedia(packOrange, false, 'Packaging Details');
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
@@ -2159,19 +2108,19 @@ const PROJECTS = {
               </div>`;
               
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Identity</h2><div class="masonry-container">`;
-              if (logo) htmlStr += renderMedia(logo).replace('masonry-item', 'masonry-item full-width');
+              if (logo) htmlStr += renderMedia(logo, false, 'Primary Lockup').replace('masonry-item', 'masonry-item full-width');
               htmlStr += `</div></div>`;
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Posters & Events</h2><div class="masonry-container">`;
-              posters.forEach(f => { htmlStr += renderMedia(f); });
+              posters.forEach(f => { htmlStr += renderMedia(f, false, formatName(f)); });
               htmlStr += `</div></div>`;
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Digital & Web</h2><div class="masonry-container">`;
-              digital.forEach(f => { htmlStr += renderMedia(f); });
+              digital.forEach(f => { htmlStr += renderMedia(f, false, formatName(f)); });
               htmlStr += `</div></div>`;
 
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Merchandise</h2><div class="masonry-container">`;
-              merch.forEach(f => { htmlStr += renderMedia(f); });
+              merch.forEach(f => { htmlStr += renderMedia(f, false, formatName(f)); });
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
@@ -2209,138 +2158,119 @@ const PROJECTS = {
               return;
           }
 
-          // 5. CAO INTERNSHIP COMIC SERIES
-          if (id === 'internship-comics') {
+          // 5. CAO INTERNSHIP COMIC SERIES & NANGELI COMIC READER
+          if (id === 'internship-comics' || id === 'nangele') {
+              const isNangeli = (id === 'nangele');
+              const comicMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
+              
               let htmlStr = styleBlock;
-              htmlStr += `
-              <div class="cs-section">
-                <div style="background:var(--surf); padding: 2.5rem; border-radius:12px; margin-bottom: 2rem; border: 1px solid var(--line);">
-                    <h2 style="font-family:'Clash Display'; font-size:2.2rem; margin-bottom:1rem; margin-top:0;">CAO Internship Comic Series</h2>
-                    <p style="font-size:1.1rem; line-height:1.7; color:var(--ink5); margin-bottom:1.5rem;">
-                        <strong>Project Description:</strong> How to tackle internships social media comic project (2023). Illustrated a series of 6+ original comics depicting student internship experiences, producing publication-ready artwork aligned with the office's student engagement brief.
-                    </p>
-                    <div style="display:flex; flex-wrap:wrap; gap:1rem;">
-                        <div style="background:var(--bg); padding:0.8rem 1.5rem; border-radius:8px; border:1px solid var(--line); font-weight:600; font-size:0.95rem;">
-                            ⭐ View the series on Instagram: <a href="https://www.instagram.com/p/CxfW4dyvDy_/?hl=en" target="_blank" style="color:var(--blue); text-decoration:none;">@ntucao</a>
+              if (!isNangeli) {
+                  htmlStr += `
+                  <div class="cs-section">
+                    <div style="background:var(--surf); padding: 2.5rem; border-radius:12px; margin-bottom: 2.5rem; border: 1px solid var(--line);">
+                        <h2 style="font-family:'Clash Display'; font-size:2.2rem; margin-bottom:1rem; margin-top:0;">CAO Internship Comic Series</h2>
+                        <p style="font-size:1.1rem; line-height:1.7; color:var(--ink5); margin-bottom:1.5rem;">
+                            <strong>Project Description:</strong> How to tackle internships social media comic project (2023). Illustrated a series of 6+ original comics depicting student internship experiences, producing publication-ready artwork aligned with the office's student engagement brief.
+                        </p>
+                        <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                            <div style="background:var(--bg); padding:0.8rem 1.5rem; border-radius:8px; border:1px solid var(--line); font-weight:600; font-size:0.95rem;">
+                                ⭐ View the series on Instagram: <a href="https://www.instagram.com/p/CxfW4dyvDy_/?hl=en" target="_blank" style="color:var(--blue); text-decoration:none;">@ntucao</a>
+                            </div>
                         </div>
                     </div>
+                  </div>`;
+              }
+              
+              htmlStr += `
+              <div class="cs-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                    <h2 class="cs-heading" style="margin-bottom:0; border-bottom:none;">${isNangeli ? 'Nangeli' : 'CAO Internship Comics'} — Reading View</h2>
+                    <div style="display:flex; gap:0.75rem;">
+                        <button id="view-mode-book" style="background:var(--ink); color:var(--bg); border:none; padding:0.6rem 1.2rem; border-radius:20px; font-weight:600; cursor:pointer; font-size:0.85rem;">📖 Two-Page Spread</button>
+                        <button id="view-mode-scroll" style="background:var(--surf); color:var(--ink); border:1px solid var(--line); padding:0.6rem 1.2rem; border-radius:20px; font-weight:600; cursor:pointer; font-size:0.85rem;">📜 Full Strip View</button>
+                    </div>
                 </div>
-                <h2 class="cs-heading" style="text-align:center; margin-bottom:2rem;">Reading View</h2>
-                <div id="internship-reader"></div>
+                <div id="comic-reader-container"></div>
+                <div id="comic-scroll-container" style="display:none; max-width:850px; margin:2rem auto 0 auto; display:none; flex-direction:column; gap:1.5rem;">
+                    ${comicMedia.map((f, i) => `<div style="border-radius:6px; overflow:hidden; border:1px solid var(--line); background:#fff;"><img src="${f}" alt="Page ${i+1}" style="width:100%; height:auto; display:block;"></div>`).join('')}
+                </div>
               </div>`;
               
               gal.innerHTML = htmlStr;
               
-              const comicMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
               let curPage = 0;
               const renderBook = (direction) => {
-                  const r = document.getElementById('internship-reader');
+                  const r = document.getElementById('comic-reader-container');
                   if(!r) return;
-                  let p1 = comicMedia[curPage] ? `<img src="${comicMedia[curPage]}" alt="Page ${curPage+1}" style="width:100%; height:100%; object-fit:contain; padding:1.5rem;">` : '';
-                  let p2 = comicMedia[curPage+1] ? `<img src="${comicMedia[curPage+1]}" alt="Page ${curPage+2}" style="width:100%; height:100%; object-fit:contain; padding:1.5rem;">` : '';
+                  let p1 = comicMedia[curPage] ? `<img src="${comicMedia[curPage]}" alt="Page ${curPage+1}" style="width:100%; height:100%; object-fit:contain; padding:1rem;">` : '';
+                  let p2 = comicMedia[curPage+1] ? `<img src="${comicMedia[curPage+1]}" alt="Page ${curPage+2}" style="width:100%; height:100%; object-fit:contain; padding:1rem;">` : '';
                   let animClass = direction === 'next' ? 'flip-next' : (direction === 'prev' ? 'flip-prev' : '');
                   
                   const isLastSpread = (curPage + 2 >= comicMedia.length);
                   
                   r.innerHTML = `
                   <style>
-                  .book-container { position:relative; width:100%; max-width:1000px; margin:0 auto; aspect-ratio: 1.4; background:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.1); border-radius:4px; display:flex; perspective:2000px; }
+                  .book-container { position:relative; width:100%; max-width:1000px; margin:0 auto; aspect-ratio: 1.45; background:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.12); border-radius:6px; display:flex; perspective:2000px; }
                   .book-page { flex:1; width:50%; height:100%; position:relative; background:#fff; border:1px solid #eee; border-left:none; transform-origin: left center; transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; }
                   .book-page.left { border-left:1px solid #eee; border-right:1px solid #ddd; transform-origin: right center; }
                   .book-page img { width:100%; height:100%; object-fit:contain; position:absolute; inset:0; background:#fff; backface-visibility: hidden; }
-                  .page-flip-btn { position:absolute; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--bg); border:none; width:50px; height:50px; border-radius:50%; cursor:pointer; z-index:10; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform 0.2s, background 0.2s; }
+                  .page-flip-btn { position:absolute; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--bg); border:none; width:50px; height:50px; border-radius:50%; cursor:pointer; z-index:10; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.25); transition:transform 0.2s, background 0.2s; }
                   .page-flip-btn:hover { background:var(--blue); transform:translateY(-50%) scale(1.1); }
-                  .page-flip-btn:disabled { opacity:0.3; cursor:not-allowed; }
+                  .page-flip-btn:disabled { opacity:0.25; cursor:not-allowed; }
                   .page-flip-btn.prev { left:-25px; }
                   .page-flip-btn.next { right:-25px; }
                   @media(max-width:768px) {
-                    .book-container { aspect-ratio: 0.7; flex-direction: column; }
-                    .book-page { width:100%; border-left:1px solid #eee; }
-                    .book-page.left { border-bottom:1px solid #ddd; border-right:1px solid #eee; }
-                    .page-flip-btn { width:40px; height:40px; }
-                    .page-flip-btn.prev { left:10px; top:10px; transform:none; }
-                    .page-flip-btn.next { right:10px; top:10px; transform:none; }
+                    .book-container { aspect-ratio: 1.45; width:100%; }
+                    .page-flip-btn { width:38px; height:38px; }
+                    .page-flip-btn.prev { left:-10px; }
+                    .page-flip-btn.next { right:-10px; }
                   }
                   </style>
                   <div class="book-container ${animClass}">
-                    <button class="page-flip-btn prev" id="i-prev" ${curPage===0?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                    <button class="page-flip-btn prev" id="c-prev" ${curPage===0?'disabled':''}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
                     <div class="book-page left">${p1}</div>
                     <div class="book-page right">${p2}</div>
-                    <button class="page-flip-btn next" id="i-next" ${isLastSpread?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+                    <button class="page-flip-btn next" id="c-next" ${isLastSpread?'disabled':''}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
                   </div>
-                  <div style="text-align:center; margin-top:1.5rem; font-size:0.95rem; font-weight:500; color:var(--ink5);">Spread ${Math.floor(curPage/2)+1} of ${Math.ceil(comicMedia.length/2)}</div>
+                  <div style="text-align:center; margin-top:1.5rem; font-size:0.95rem; font-weight:600; color:var(--ink5);">
+                    Spread ${Math.floor(curPage/2)+1} of ${Math.ceil(comicMedia.length/2)} &nbsp;&bull;&nbsp; Pages ${curPage+1}–${Math.min(curPage+2, comicMedia.length)} of ${comicMedia.length}
+                  </div>
                   `;
                   
-                  const pBtn = document.getElementById('i-prev');
+                  const pBtn = document.getElementById('c-prev');
                   if (pBtn) pBtn.onclick = () => { curPage = Math.max(0, curPage-2); renderBook('prev'); };
-                  const nBtn = document.getElementById('i-next');
+                  const nBtn = document.getElementById('c-next');
                   if (nBtn) nBtn.onclick = () => { curPage = Math.min(comicMedia.length - (comicMedia.length%2===0?2:1), curPage+2); renderBook('next'); };
               };
               renderBook('');
+              
+              const btnBook = document.getElementById('view-mode-book');
+              const btnScroll = document.getElementById('view-mode-scroll');
+              const rCont = document.getElementById('comic-reader-container');
+              const sCont = document.getElementById('comic-scroll-container');
+              
+              if (btnBook && btnScroll && rCont && sCont) {
+                  btnBook.onclick = () => {
+                      rCont.style.display = 'block';
+                      sCont.style.display = 'none';
+                      btnBook.style.background = 'var(--ink)';
+                      btnBook.style.color = 'var(--bg)';
+                      btnScroll.style.background = 'var(--surf)';
+                      btnScroll.style.color = 'var(--ink)';
+                  };
+                  btnScroll.onclick = () => {
+                      rCont.style.display = 'none';
+                      sCont.style.display = 'flex';
+                      btnScroll.style.background = 'var(--ink)';
+                      btnScroll.style.color = 'var(--bg)';
+                      btnBook.style.background = 'var(--surf)';
+                      btnBook.style.color = 'var(--ink)';
+                  };
+              }
               return;
           }
 
-          // 6. NANGELI COMIC READER
-          if (id === 'nangele') {
-              let htmlStr = styleBlock;
-              htmlStr += `
-              <div class="cs-section">
-                <h2 class="cs-heading" style="text-align:center; margin-bottom:2rem;">Nangeli — Reading View</h2>
-                <div id="nangeli-reader"></div>
-              </div>`;
-              
-              gal.innerHTML = htmlStr;
-              
-              const nangeliMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
-              let curPage = 0;
-              const renderBook = (direction) => {
-                  const r = document.getElementById('nangeli-reader');
-                  if(!r) return;
-                  let p1 = nangeliMedia[curPage] ? `<img src="${nangeliMedia[curPage]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
-                  let p2 = nangeliMedia[curPage+1] ? `<img src="${nangeliMedia[curPage+1]}" style="width:100%; height:100%; object-fit:contain; padding:2rem;">` : '';
-                  let animClass = direction === 'next' ? 'flip-next' : (direction === 'prev' ? 'flip-prev' : '');
-                  
-                  const isLastSpread = (curPage + 2 >= nangeliMedia.length);
-                  
-                  r.innerHTML = `
-                  <style>
-                  .book-container { position:relative; width:100%; max-width:1000px; margin:0 auto; aspect-ratio: 1.4; background:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.1); border-radius:4px; display:flex; perspective:2000px; }
-                  .book-page { flex:1; width:50%; height:100%; position:relative; background:#fff; border:1px solid #eee; border-left:none; transform-origin: left center; transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; }
-                  .book-page.left { border-left:1px solid #eee; border-right:1px solid #ddd; transform-origin: right center; }
-                  .book-page img { width:100%; height:100%; object-fit:contain; position:absolute; inset:0; background:#fff; backface-visibility: hidden; }
-                  .page-flip-btn { position:absolute; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--bg); border:none; width:50px; height:50px; border-radius:50%; cursor:pointer; z-index:10; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform 0.2s, background 0.2s; }
-                  .page-flip-btn:hover { background:var(--blue); transform:translateY(-50%) scale(1.1); }
-                  .page-flip-btn:disabled { opacity:0.3; cursor:not-allowed; }
-                  .page-flip-btn.prev { left:-25px; }
-                  .page-flip-btn.next { right:-25px; }
-                  @media(max-width:768px) {
-                    .book-container { aspect-ratio: 0.7; flex-direction: column; }
-                    .book-page { width:100%; border-left:1px solid #eee; }
-                    .book-page.left { border-bottom:1px solid #ddd; border-right:1px solid #eee; }
-                    .page-flip-btn { width:40px; height:40px; }
-                    .page-flip-btn.prev { left:10px; top:10px; transform:none; }
-                    .page-flip-btn.next { right:10px; top:10px; transform:none; }
-                  }
-                  </style>
-                  <div class="book-container ${animClass}">
-                    <button class="page-flip-btn prev" id="n-prev" ${curPage===0?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
-                    <div class="book-page left">${p1}</div>
-                    <div class="book-page right">${p2}</div>
-                    <button class="page-flip-btn next" id="n-next" ${isLastSpread?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-                  </div>
-                  <div style="text-align:center; margin-top:1.5rem; font-size:0.95rem; font-weight:500; color:var(--ink5);">Spread ${Math.floor(curPage/2)+1} of ${Math.ceil(nangeliMedia.length/2)}</div>
-                  `;
-                  
-                  const pBtn = document.getElementById('n-prev');
-                  if (pBtn) pBtn.onclick = () => { curPage = Math.max(0, curPage-2); renderBook('prev'); };
-                  const nBtn = document.getElementById('n-next');
-                  if (nBtn) nBtn.onclick = () => { curPage = Math.min(nangeliMedia.length - (nangeliMedia.length%2===0?2:1), curPage+2); renderBook('next'); };
-              };
-              renderBook('');
-              return;
-          }
-
-          // 7. NTU FEST CASE STUDY
+          // 6. NTU FEST CASE STUDY
           if (id === 'ntu-fest') {
               const video = findFile('youtu.be');
               const cover = findFile('ntu fest cover');
@@ -2386,7 +2316,7 @@ const PROJECTS = {
               return;
           }
 
-          // 8. WELLBEING PLANNER
+          // 7. WELLBEING PLANNER
           if (id === 'wellbeing-planner') {
               const finalImg = media[0];
               const drafts = media.slice(1);
@@ -2402,7 +2332,7 @@ const PROJECTS = {
                   <h2 class="cs-heading">Ideation & Concept Drafts</h2>
                   <div class="masonry-container">`;
               drafts.forEach((f, i) => { 
-                  htmlStr += renderMedia(f).replace(/<div class="media-caption">.*?<\/div>/, '<div class="media-caption">Concept ' + (i+1) + '</div>'); 
+                  htmlStr += renderMedia(f, false, 'Concept ' + (i+1)); 
               });
               htmlStr += `</div></div>`;
               
@@ -2410,7 +2340,7 @@ const PROJECTS = {
               return;
           }
 
-          // 9. ORIGINAL TRACKS (TURNTABLE / DJ PLAYER)
+          // 8. ORIGINAL TRACKS (THE 3D DJ BOOTH / TURNTABLE)
           if (id === 'original-tracks') {
               let htmlStr = styleBlock;
               htmlStr += `
@@ -2419,56 +2349,73 @@ const PROJECTS = {
                 .track-btn:hover { background:#fff; transform:translateX(8px); box-shadow:0 8px 25px rgba(0,0,0,0.08); }
                 .track-btn.active { border-color:var(--ink); background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
                 .track-icon { width:48px; height:48px; border-radius:50%; background:var(--ink); color:var(--bg); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s; }
-                .track-btn.active .track-icon { transform:scale(1.1) rotate(180deg); }
-                [data-theme='dark'] .track-btn { background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08); }
-                [data-theme='dark'] .track-btn:hover, [data-theme='dark'] .track-btn.active { background:rgba(255,255,255,0.08); }
-                [data-theme='dark'] .track-icon { background:var(--ink); color:var(--bg); }
+                .track-btn:hover .track-icon { transform:scale(1.1); }
+                
+                #vinyl-player-section { position:relative; min-height:550px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; border-radius:24px; overflow:hidden; margin-bottom:4rem; background:#111; transition: background 1s ease; border: 1px solid var(--line); }
+                #audio-viz { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+                .vp-content { display:flex; flex-wrap:wrap; gap:4rem; align-items:center; justify-content:center; width:100%; max-width:1050px; z-index:1; }
+                
+                .turntable-base { position:relative; width:380px; height:320px; background: linear-gradient(145deg, #e6e6e6, #ffffff); border-radius:24px; box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; border: 1px solid #d1d1d1; flex-shrink:0; }
+                .platter { position:absolute; left:20px; width:280px; height:280px; border-radius:50%; background: radial-gradient(circle, #555 0%, #222 90%); box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; border:4px solid #b3b3b3; }
+                .spindle { position:absolute; width:14px; height:14px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff, #999); z-index:20; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+                .slider { position:absolute; right:20px; top:40px; width:10px; height:120px; background:#222; border-radius:5px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+                .slider-knob { position:absolute; top:50%; left:-10px; width:30px; height:15px; background: linear-gradient(to bottom, #ddd, #999); border-radius:2px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transform:translateY(-50%); border-top:1px solid #fff; border-bottom:1px solid #555; }
+                .dial { position:absolute; right:20px; bottom:40px; width:30px; height:30px; border-radius:50%; background: linear-gradient(145deg, #ccc, #fff); box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,1); }
+                .dial::after { content:''; position:absolute; top:4px; left:14px; width:2px; height:8px; background:#444; }
+                
+                #vinyl-disc { width:260px; height:260px; border-radius:50%; background: conic-gradient(from 45deg, #111 0%, #333 25%, #111 50%, #333 75%, #111 100%); position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; }
+                .groove { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,0.08); }
+                #vinyl-label { width:35%; height:35%; border-radius:50%; background:#FAF8F4; transition: background 0.5s; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+                
+                #tonearm { position:absolute; top:20px; right:40px; width:20px; height:180px; background:linear-gradient(to right, #ccc, #eee, #ccc); transform-origin: 10px 20px; transform: rotate(15deg); border-radius:10px; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow:-5px 10px 15px rgba(0,0,0,0.3); z-index:10; }
+                .ta-base { position:absolute; top:0; left:-15px; width:50px; height:50px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #555, #222); box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.2); }
+                .ta-head { position:absolute; bottom:-10px; left:-12px; width:30px; height:55px; background: linear-gradient(to bottom, #333, #111); border-radius:4px; transform: rotate(25deg); box-shadow: -2px 4px 8px rgba(0,0,0,0.4); border-top:1px solid #555; }
+                
+                .track-list-container { flex:1; min-width:300px; background:rgba(255,255,255,0.85); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5); }
+                [data-theme='dark'] .track-list-container { background:rgba(20,20,25,0.85); border-color:rgba(255,255,255,0.1); }
+                [data-theme='dark'] .track-btn { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.08); }
+                [data-theme='dark'] .track-btn:hover, [data-theme='dark'] .track-btn.active { background:rgba(255,255,255,0.12); }
               </style>
               
               <div class="cs-section" style="margin-top:2rem;">
-                <div style="background:var(--surf); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.06);">
-                  
-                  <div id="vinyl-player-section" style="position:relative; width:100%; min-height:480px; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:3rem 1rem; transition:background 0.8s ease;">
-                    <canvas id="audio-viz" style="position:absolute; inset:0; width:100%; height:100%; opacity:0.45; pointer-events:none;"></canvas>
+                <div id="vinyl-player-section">
+                  <canvas id="audio-viz"></canvas>
+                  <div class="vp-content">
                     
-                    <div style="position:relative; z-index:2; display:flex; align-items:center; justify-content:center; width:300px; height:300px;">
-                      <div id="vinyl-disc" style="width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, #0a0a0a 0%, #1a1a1a 40%, #0d0d0d 45%, #222 50%, #111 60%, #1f1f1f 70%, #050505 100%); box-shadow:0 15px 40px rgba(0,0,0,0.4), inset 0 0 0 2px rgba(255,255,255,0.1), inset 0 0 0 6px rgba(0,0,0,0.8), inset 0 0 0 8px rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; transition:transform 0.1s linear;">
-                        <div id="vinyl-label" style="width:105px; height:105px; border-radius:50%; background:#FF0055; box-shadow:0 0 0 4px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.3); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-family:'Clash Display'; font-size:0.75rem; text-align:center; padding:0.5rem; transition:background 0.5s;">
-                          <div style="font-weight:700; letter-spacing:1px;">ANNMARY</div>
-                          <div style="font-size:0.6rem; opacity:0.8; margin-top:2px;">ORIGINALS</div>
-                          <div style="width:12px; height:12px; border-radius:50%; background:#0a0a0a; margin-top:6px; box-shadow:0 0 0 2px rgba(255,255,255,0.2);"></div>
+                    <!-- 3D Turntable -->
+                    <div class="turntable-base">
+                        <div class="platter">
+                            <div id="vinyl-disc">
+                                <div class="groove" style="inset:8%;"></div>
+                                <div class="groove" style="inset:16%;"></div>
+                                <div class="groove" style="inset:24%;"></div>
+                                <div class="groove" style="inset:32%;"></div>
+                                <div class="groove" style="inset:40%;"></div>
+                                <div id="vinyl-label" style="font-family:'Clash Display'; font-size:0.65rem; font-weight:700; text-align:center; color:#111;">ORIGINAL</div>
+                            </div>
+                            <div class="spindle"></div>
                         </div>
-                      </div>
-                      
-                      <div id="tonearm" style="position:absolute; top:-20px; right:-20px; width:120px; height:200px; transform-origin:85% 15%; transform:rotate(15deg); transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); pointer-events:none; z-index:3;">
-                        <div style="position:absolute; top:20px; right:20px; width:40px; height:40px; border-radius:50%; background:#333; box-shadow:0 4px 10px rgba(0,0,0,0.3); border:2px solid #555;"></div>
-                        <div style="position:absolute; top:38px; right:38px; width:6px; height:140px; background:linear-gradient(to right, #bbb, #eee, #888); border-radius:3px; transform:rotate(-20deg); transform-origin:top center;">
-                          <div style="position:absolute; bottom:-10px; left:-5px; width:16px; height:28px; background:#111; border-radius:2px; box-shadow:0 2px 6px rgba(0,0,0,0.4); border-top:2px solid #e84030;"></div>
+                        
+                        <div class="slider" id="vol-slider" style="cursor:pointer;"><div class="slider-knob" id="vol-knob" style="pointer-events:none;"></div></div>
+                        <div class="dial"></div>
+                        
+                        <div id="tonearm">
+                            <div class="ta-base"></div>
+                            <div class="ta-head"></div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                  
-                  <div style="padding:2.5rem; background:var(--bg); border-top:1px solid var(--line);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
-                      <div>
-                        <h3 style="font-family:'Clash Display'; font-size:1.6rem; margin:0 0 0.25rem 0;">Track Selection</h3>
-                        <p style="margin:0; font-size:0.95rem; color:var(--ink5);">Click any original track to drop the needle & play</p>
-                      </div>
-                      <div style="display:flex; align-items:center; gap:0.75rem; background:var(--surf); padding:0.6rem 1.25rem; border-radius:30px; border:1px solid var(--line);">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                        <div id="vol-slider" style="position:relative; width:80px; height:6px; background:var(--ink12); border-radius:3px; cursor:pointer;">
-                          <div id="vol-knob" style="position:absolute; top:-5px; right:0; width:16px; height:16px; border-radius:50%; background:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,0.2);"></div>
-                        </div>
-                      </div>
+
+                    <!-- Tracklist -->
+                    <div class="track-list-container">
+                       <h2 style="margin-top:0; font-family:'Clash Display'; font-size:2.2rem; margin-bottom:0.5rem; letter-spacing:-1px;">The DJ Booth</h2>
+                       <p style="color:var(--ink5); margin-bottom:2rem; font-size:1.05rem;">Select a track to start the experience.</p>
+                       <div id="track-list" style="display:flex; flex-direction:column; gap:1.25rem;"></div>
+                       <audio id="main-audio"></audio>
                     </div>
                     
-                    <div id="track-list" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;"></div>
                   </div>
-                  
                 </div>
               </div>
-              <audio id="main-audio" style="display:none;"></audio>
               `;
               
               gal.innerHTML = htmlStr;
@@ -2502,6 +2449,7 @@ const PROJECTS = {
               
               let vRot = 0;
               let currentIdx = -1;
+              let animRunning = false;
               
               function getSimulatedFreqs(genre, time) {
                   let arr = new Array(32).fill(0);
@@ -2535,112 +2483,124 @@ const PROJECTS = {
                   let isDragging = false;
                   const updateVol = (e) => {
                       const rect = slider.getBoundingClientRect();
-                      let x = e.clientX - rect.left;
-                      x = Math.max(0, Math.min(x, rect.width));
-                      let vol = x / rect.width;
+                      let y = e.clientY - rect.top;
+                      y = Math.max(0, Math.min(y, rect.height));
+                      let vol = 1 - (y / rect.height);
                       audio.volume = vol;
-                      knob.style.left = (x - 8) + 'px';
+                      knob.style.top = y + 'px';
                   };
                   slider.onmousedown = (e) => { isDragging = true; updateVol(e); };
                   window.onmousemove = (e) => { if(isDragging) updateVol(e); };
                   window.onmouseup = () => { isDragging = false; };
               }
               
-              function drawViz() {
-                  requestAnimationFrame(drawViz);
-                  if(!ctx || currentIdx === -1) return;
+              function startVizLoop() {
+                  if (animRunning) return;
+                  animRunning = true;
                   
-                  canvas.width = section.offsetWidth;
-                  canvas.height = section.offsetHeight;
-                  const W = canvas.width;
-                  const H = canvas.height;
-                  
-                  const track = tracks[currentIdx];
-                  let isPlaying = !audio.paused && !audio.ended;
-                  
-                  let dataArray = getSimulatedFreqs(track.genre, audio.currentTime);
-                  let sum = 0;
-                  for(let i=0; i<32; i++) sum += dataArray[i];
-                  let avg = sum / 32;
-                  
-                  if (isPlaying) {
-                      vRot += 1.0; 
-                      let pulse = 1 + (avg/255) * 0.02 * audio.volume;
-                      vinyl.style.transform = `scale(${pulse}) rotate(${vRot}deg)`;
-                      tonearm.style.transform = `rotate(36deg)`;
-                  } else {
-                      tonearm.style.transform = `rotate(15deg)`;
-                  }
-                  
-                  ctx.clearRect(0, 0, W, H);
-                  
-                  if (track.genre === 'club') {
-                      section.style.background = '#08080a';
-                      let bass = isPlaying ? dataArray[1]/255 : 0;
-                      ctx.fillStyle = `rgba(255, 0, 85, ${bass * 0.4})`;
-                      ctx.fillRect(0, 0, W, H);
+                  function drawViz() {
+                      if(!ctx || currentIdx === -1) {
+                          animRunning = false;
+                          return;
+                      }
                       
-                      let barW = (W / 32) - 4;
-                      for(let i=0; i<32; i++) {
-                          let barH = isPlaying ? (dataArray[i] / 255) * (H * 0.7) : 10;
-                          ctx.fillStyle = `rgba(0, 255, 255, ${0.4 + (dataArray[i]/255)*0.6})`;
-                          ctx.beginPath();
-                          ctx.roundRect(i * (barW + 4), H - barH, barW, barH, [4, 4, 0, 0]);
-                          ctx.fill();
-                      }
-                  } else if (track.genre === 'experimental') {
-                      section.style.background = '#e6f2ff';
-                      ctx.beginPath();
-                      ctx.moveTo(0, H/2);
-                      for(let i=0; i<64; i++) {
-                          let sim = isPlaying ? (Math.sin(audio.currentTime * 3 + i * 0.2) * 0.5 + 0.5) : 0.5;
-                          let y = H/2 + (sim - 0.5) * H/2;
-                          ctx.lineTo(i * (W/64), y);
-                      }
-                      ctx.lineTo(W, H/2);
-                      ctx.strokeStyle = `rgba(0, 150, 255, 0.8)`;
-                      ctx.lineWidth = 8;
-                      ctx.stroke();
+                      canvas.width = section.offsetWidth;
+                      canvas.height = section.offsetHeight;
+                      const W = canvas.width;
+                      const H = canvas.height;
                       
-                      let r = isPlaying ? 100 + avg*0.8 : 100;
-                      ctx.beginPath();
-                      ctx.arc(W/2, H/2, r, 0, Math.PI*2);
-                      ctx.fillStyle = `rgba(0, 150, 255, 0.15)`;
-                      ctx.fill();
-                  } else if (track.genre === 'pop') {
-                      section.style.background = '#FFF0F5';
-                      for(let i=0; i<15; i++) {
-                          let val = isPlaying ? dataArray[i*2]/255 : 0;
-                          let r = 20 + val * 120;
-                          ctx.beginPath();
-                          ctx.arc(W * (i+1)/16, H/2 + Math.sin(Date.now()*0.002 + i) * 150, r, 0, Math.PI*2);
-                          ctx.fillStyle = `hsla(${340 + i*6}, 100%, 65%, 0.6)`;
-                          ctx.fill();
+                      const track = tracks[currentIdx];
+                      let isPlaying = !audio.paused && !audio.ended;
+                      
+                      if (isPlaying) {
+                          vRot += 1.5; 
+                          vinyl.style.transform = `rotate(${vRot}deg)`;
+                          tonearm.style.transform = `rotate(36deg)`;
+                      } else {
+                          tonearm.style.transform = `rotate(15deg)`;
+                      }
+                      
+                      ctx.clearRect(0, 0, W, H);
+                      
+                      if (isPlaying) {
+                          let dataArray = getSimulatedFreqs(track.genre, audio.currentTime);
+                          let sum = 0;
+                          for(let i=0; i<32; i++) sum += dataArray[i];
+                          let avg = sum / 32;
+                          
+                          if (track.genre === 'club') {
+                              section.style.background = '#08080a';
+                              let bass = dataArray[1]/255;
+                              ctx.fillStyle = `rgba(255, 0, 85, ${bass * 0.35})`;
+                              ctx.fillRect(0, 0, W, H);
+                              
+                              let barW = (W / 32) - 4;
+                              for(let i=0; i<32; i++) {
+                                  let barH = (dataArray[i] / 255) * (H * 0.65);
+                                  ctx.fillStyle = `rgba(0, 255, 255, ${0.35 + (dataArray[i]/255)*0.65})`;
+                                  ctx.beginPath();
+                                  ctx.roundRect(i * (barW + 4), H - barH, barW, barH, [4, 4, 0, 0]);
+                                  ctx.fill();
+                              }
+                          } else if (track.genre === 'experimental') {
+                              section.style.background = '#0b192c';
+                              ctx.beginPath();
+                              ctx.moveTo(0, H/2);
+                              for(let i=0; i<64; i++) {
+                                  let sim = Math.sin(audio.currentTime * 3 + i * 0.2) * 0.5 + 0.5;
+                                  let y = H/2 + (sim - 0.5) * H * 0.5;
+                                  ctx.lineTo(i * (W/64), y);
+                              }
+                              ctx.lineTo(W, H/2);
+                              ctx.strokeStyle = `rgba(0, 210, 255, 0.8)`;
+                              ctx.lineWidth = 6;
+                              ctx.stroke();
+                          } else if (track.genre === 'pop') {
+                              section.style.background = '#201018';
+                              for(let i=0; i<15; i++) {
+                                  let val = dataArray[i*2]/255;
+                                  let r = 20 + val * 100;
+                                  ctx.beginPath();
+                                  ctx.arc(W * (i+1)/16, H/2 + Math.sin(Date.now()*0.002 + i) * 120, r, 0, Math.PI*2);
+                                  ctx.fillStyle = `hsla(${340 + i*6}, 100%, 65%, 0.5)`;
+                                  ctx.fill();
+                              }
+                          }
+                          requestAnimationFrame(drawViz);
+                      } else {
+                          animRunning = false;
                       }
                   }
+                  drawViz();
               }
-              drawViz();
               
               tracks.forEach((t, i) => {
                   document.getElementById(`tbtn-${i}`).onclick = () => {
                       document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
-                      document.getElementById(`tbtn-${i}`).classList.add('active');
                       
                       if (currentIdx === i) {
-                          if (audio.paused) audio.play();
-                          else audio.pause();
+                          if (audio.paused) {
+                              audio.play();
+                              document.getElementById(`tbtn-${i}`).classList.add('active');
+                              startVizLoop();
+                          } else {
+                              audio.pause();
+                          }
                       } else {
                           currentIdx = i;
+                          document.getElementById(`tbtn-${i}`).classList.add('active');
                           audio.src = t.file;
-                          audio.play();
-                          label.style.background = t.color;
+                          audio.play().then(() => {
+                              label.style.background = t.color;
+                              startVizLoop();
+                          }).catch(e => console.log('Audio playback:', e));
                       }
                   };
               });
               return;
           }
 
-          // 10. JASMINE ALBUM
+          // 9. JASMINE ALBUM
           if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
@@ -2648,13 +2608,13 @@ const PROJECTS = {
               let albumHtml = styleBlock + '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}</style><div class="album-grid">';
               const count = Math.min(imgs.length, audios.length);
               for(let i=0; i<count; i++) {
-                  let img = imgs[i] ? `<img src="${imgs[i]}" alt="Track ${i+1}" style="width:100%; height:auto; border-radius:4px 4px 0 0; display:block;">` : '';
+                  let img = imgs[i] ? `<img src="${imgs[i]}" alt="Track ${i+1}" style="width:100%; height:auto; border-radius:6px 6px 0 0; display:block;">` : '';
                   let aud = audios[i] ? `<audio src="${audios[i]}" controls style="width:100%; outline:none; height:40px;"></audio>` : '';
                   let title = audios[i] ? audios[i].split('/').pop().replace(/\.(wav|mp3|m4a)$/i, '') : `Track ${i+1}`;
-                  albumHtml += `<div style="background:var(--surf); border:1px solid var(--line); border-radius:4px; overflow:hidden;">
+                  albumHtml += `<div style="background:var(--surf); border:1px solid var(--line); border-radius:6px; overflow:hidden;">
                       ${img}
-                      <div style="padding:1rem;">
-                        <div style="font-weight:600; font-family:'Clash Display', sans-serif; margin-bottom:0.5rem; font-size:1.1rem;">${title}</div>
+                      <div style="padding:1.25rem;">
+                        <div style="font-weight:600; font-family:'Clash Display', sans-serif; margin-bottom:0.75rem; font-size:1.15rem;">${title}</div>
                         ${aud}
                       </div>
                   </div>`;
@@ -2664,8 +2624,8 @@ const PROJECTS = {
               return;
           }
 
-          // 11. DEFAULT / ALL OTHER GALLERIES
-          const isComic = id === 'nangele' || id === 'internship-comics' || id === 'wellbeing-planner' || id === 'jasmine-comic';
+          // 10. DEFAULT / ALL OTHER GALLERIES
+          const isComic = id === 'wellbeing-planner' || id === 'jasmine-comic';
           let htmlStr = styleBlock + `<div class="${isComic ? 'comic-grid' : 'masonry-container'}">`;
           
           media.forEach((file) => {
