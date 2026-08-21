@@ -2540,6 +2540,55 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
     });
     </script>
     
+<script>
+  // Contact Form AJAX Handler & Return Navigation
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+      contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = document.getElementById('fsb');
+          const plane = document.getElementById('plane-icon');
+          if (btn) {
+              btn.disabled = true;
+              btn.querySelector('span').textContent = 'Sending...';
+          }
+          if (plane) {
+              plane.style.transform = 'translate(35px, -35px) scale(0.4)';
+              plane.style.opacity = '0';
+          }
+          
+          try {
+              const formData = new FormData(contactForm);
+              await fetch('https://formsubmit.co/ajax/annie10302004@gmail.com', {
+                  method: 'POST',
+                  headers: { 'Accept': 'application/json' },
+                  body: formData
+              });
+          } catch(err) {
+              console.log('Form submission:', err);
+          }
+          
+          // Post-it note success confirmation card
+          contactForm.innerHTML = `
+            <div style="text-align:center; padding: 2rem 1rem; animation: fadeIn 0.4s ease;">
+              <div style="font-size: 2.4rem; margin-bottom: 0.5rem;">✨</div>
+              <h4 style="font-family:'Caveat', cursive, sans-serif; font-size: 2.2rem; color:#111009; margin-bottom:0.4rem; font-weight:700;">Note Delivered!</h4>
+              <p style="font-family:'Caveat', cursive, sans-serif; font-size: 1.3rem; color:rgba(17,16,9,0.85); line-height:1.4; margin-bottom:1.8rem;">
+                Thank you for reaching out! I'll get back to your message soon.
+              </p>
+              <div style="display:flex; flex-direction:column; gap:0.65rem; align-items:center;">
+                <button type="button" class="fsub" style="border:none; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; padding:0.65rem 1.4rem; font-size:1.15rem; width:100%; max-width:240px; cursor:pointer;" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                  ↑ Back to Top / Work
+                </button>
+                <button type="button" class="fsub" style="background:transparent; border:1.5px solid rgba(17,16,9,0.3); color:#111009; font-size:1rem; cursor:pointer; padding:0.45rem 1rem; width:100%; max-width:240px;" onclick="location.reload()">
+                  Write Another Note
+                </button>
+              </div>
+            </div>
+          `;
+      });
+  }
+</script>
 </body>
 
 </html>
