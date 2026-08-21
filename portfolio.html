@@ -813,6 +813,44 @@ button{cursor:none;font-family:inherit;}
 [data-theme="dark"] .awards-h, [data-theme="dark"] .aw-n { color: #F0EEF5 !important; }
 [data-theme="dark"] .aw-t { color: rgba(240,238,245,0.7) !important; }
 [data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
+
+/* Secret Easter Egg Game Link in About Section */
+.secret-easter-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--ink);
+    opacity: 0.85;
+    font-style: italic;
+    text-decoration: none;
+    border-bottom: 1.5px dashed var(--line);
+    padding-bottom: 2px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.secret-easter-link .easter-icon {
+    display: inline-block;
+    font-style: normal;
+    font-size: 1rem;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0.75;
+}
+.secret-easter-link:hover {
+    opacity: 1;
+    color: var(--red);
+    border-bottom-color: var(--red);
+    transform: translateY(-1px);
+}
+.secret-easter-link:hover .easter-icon {
+    transform: scale(1.3) rotate(12deg);
+    opacity: 1;
+}
+[data-theme='dark'] .secret-easter-link:hover {
+    color: #00D2FF;
+    border-bottom-color: #00D2FF;
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
@@ -1689,7 +1727,7 @@ button{cursor:none;font-family:inherit;}
 
     <p class="about-p">I am Annmary Saji, a BFA Animation graduate from NTU's School of Art, Design and Media, class of June 2026. Over five years I built a creative practice that refuses to stay in one lane. I animate, illustrate, shoot video, design brand systems, and produce music — often all within a single project.</p>
 
-    <br/><p class="about-p">My work has screened at Annecy as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other. <span style="opacity:0.8; font-style:italic;">Bored? There might be something to do about that.</span></p>
+    <br/><p class="about-p">My work has screened at Annecy as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other. <a href="game.html" class="secret-easter-link" title="Play hidden mini-game 🎮">Bored? There might be something to do about that. <span class="easter-icon">🎮</span></a></p>
 
     <div class="facts">
 
