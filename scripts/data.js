@@ -175,9 +175,9 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Ntu fest assets/SunDown.png"
   ],
   "ntu-banners": [
+    "assets/portfolio-data/NTU web and social banners/NTU GLOW POSTER.png",
     "assets/portfolio-data/NTU web and social banners/GLOW Web Ad Square (300 x 250 px).png",
     "assets/portfolio-data/NTU web and social banners/ntu banner.png",
-    "assets/portfolio-data/NTU web and social banners/NTU GLOW POSTER.pdf",
     "assets/portfolio-data/NTU web and social banners/wssbanner.png"
   ],
   "obesity-infographic": [
