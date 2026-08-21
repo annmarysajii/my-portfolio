@@ -2348,10 +2348,11 @@ const PROJECTS = {
                 .track-btn { display:flex; align-items:center; gap:1.5rem; padding:1.25rem 1.5rem; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.1); border-radius:12px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align:left; box-shadow:0 4px 15px rgba(0,0,0,0.02); }
                 .track-btn:hover { background:#fff; transform:translateX(8px); box-shadow:0 8px 25px rgba(0,0,0,0.08); }
                 .track-btn.active { border-color:var(--ink); background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
-                .track-icon { width:48px; height:48px; border-radius:50%; background:var(--ink); color:var(--bg); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s; }
+                .track-icon { width:48px; height:48px; border-radius:50%; background:var(--ink); color:var(--bg); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s; flex-shrink:0; }
                 .track-btn:hover .track-icon { transform:scale(1.1); }
+                .track-btn.active .track-icon { transform:scale(1.1) rotate(180deg); }
                 
-                #vinyl-player-section { position:relative; min-height:550px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; border-radius:24px; overflow:hidden; margin-bottom:4rem; background:#111; transition: background 1s ease; border: 1px solid var(--line); }
+                #vinyl-player-section { position:relative; min-height:560px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 4rem 2rem; border-radius:24px; overflow:hidden; margin-bottom:4rem; background:#08080C; transition: background 1s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--line); box-shadow:0 20px 60px rgba(0,0,0,0.25); }
                 #audio-viz { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
                 .vp-content { display:flex; flex-wrap:wrap; gap:4rem; align-items:center; justify-content:center; width:100%; max-width:1050px; z-index:1; }
                 
@@ -2365,14 +2366,14 @@ const PROJECTS = {
                 
                 #vinyl-disc { width:260px; height:260px; border-radius:50%; background: conic-gradient(from 45deg, #111 0%, #333 25%, #111 50%, #333 75%, #111 100%); position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; }
                 .groove { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,0.08); }
-                #vinyl-label { width:35%; height:35%; border-radius:50%; background:#FAF8F4; transition: background 0.5s; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+                #vinyl-label { width:35%; height:35%; border-radius:50%; background:#FAF8F4; transition: background 0.5s; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); font-family:'Clash Display'; font-size:0.65rem; font-weight:700; text-align:center; color:#111; }
                 
                 #tonearm { position:absolute; top:20px; right:40px; width:20px; height:180px; background:linear-gradient(to right, #ccc, #eee, #ccc); transform-origin: 10px 20px; transform: rotate(15deg); border-radius:10px; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow:-5px 10px 15px rgba(0,0,0,0.3); z-index:10; }
                 .ta-base { position:absolute; top:0; left:-15px; width:50px; height:50px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #555, #222); box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.2); }
                 .ta-head { position:absolute; bottom:-10px; left:-12px; width:30px; height:55px; background: linear-gradient(to bottom, #333, #111); border-radius:4px; transform: rotate(25deg); box-shadow: -2px 4px 8px rgba(0,0,0,0.4); border-top:1px solid #555; }
                 
-                .track-list-container { flex:1; min-width:300px; background:rgba(255,255,255,0.85); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5); }
-                [data-theme='dark'] .track-list-container { background:rgba(20,20,25,0.85); border-color:rgba(255,255,255,0.1); }
+                .track-list-container { flex:1; min-width:300px; background:rgba(255,255,255,0.88); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.6); }
+                [data-theme='dark'] .track-list-container { background:rgba(20,20,25,0.88); border-color:rgba(255,255,255,0.1); }
                 [data-theme='dark'] .track-btn { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.08); }
                 [data-theme='dark'] .track-btn:hover, [data-theme='dark'] .track-btn.active { background:rgba(255,255,255,0.12); }
               </style>
@@ -2391,7 +2392,7 @@ const PROJECTS = {
                                 <div class="groove" style="inset:24%;"></div>
                                 <div class="groove" style="inset:32%;"></div>
                                 <div class="groove" style="inset:40%;"></div>
-                                <div id="vinyl-label" style="font-family:'Clash Display'; font-size:0.65rem; font-weight:700; text-align:center; color:#111;">ORIGINAL</div>
+                                <div id="vinyl-label">ORIGINAL</div>
                             </div>
                             <div class="spindle"></div>
                         </div>
@@ -2408,7 +2409,7 @@ const PROJECTS = {
                     <!-- Tracklist -->
                     <div class="track-list-container">
                        <h2 style="margin-top:0; font-family:'Clash Display'; font-size:2.2rem; margin-bottom:0.5rem; letter-spacing:-1px;">The DJ Booth</h2>
-                       <p style="color:var(--ink5); margin-bottom:2rem; font-size:1.05rem;">Select a track to start the experience.</p>
+                       <p style="color:var(--ink5); margin-bottom:2rem; font-size:1.05rem;">Select a track to drop the needle and experience its genre-synced visualizer.</p>
                        <div id="track-list" style="display:flex; flex-direction:column; gap:1.25rem;"></div>
                        <audio id="main-audio"></audio>
                     </div>
@@ -2421,9 +2422,30 @@ const PROJECTS = {
               gal.innerHTML = htmlStr;
               
               const tracks = [
-                { file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', name: 'Club Got Boots', genre: 'club', color: '#FF0055' },
-                { file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', name: 'Cloudy Days', genre: 'experimental', color: '#00D2FF' },
-                { file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', name: 'Paradise', genre: 'pop', color: '#FF9A9E' }
+                { 
+                  file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', 
+                  name: 'Club Got Boots', 
+                  genre: 'club', 
+                  tag: 'Club Mix', 
+                  color: '#FF0055',
+                  bgBase: '#08080C'
+                },
+                { 
+                  file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', 
+                  name: 'Cloudy Days', 
+                  genre: 'experimental', 
+                  tag: 'Airy / Experimental', 
+                  color: '#00D2FF',
+                  bgBase: '#0A1428'
+                },
+                { 
+                  file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
+                  name: 'Paradise', 
+                  genre: 'pop', 
+                  tag: 'Pop Mix', 
+                  color: '#FF6B8B',
+                  bgBase: '#1E0C1F'
+                }
               ];
               
               const list = document.getElementById('track-list');
@@ -2431,9 +2453,9 @@ const PROJECTS = {
                   list.innerHTML += `
                   <button class="track-btn" id="tbtn-${i}">
                       <div class="track-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-                      <div>
+                      <div style="flex:1;">
                           <div style="font-weight:700; font-size:1.2rem; font-family:'Clash Display';">${t.name}</div>
-                          <div style="font-size:0.85rem; color:var(--ink5); text-transform:uppercase; letter-spacing:1.5px; margin-top:4px; font-weight:600;">${t.genre} Mix</div>
+                          <div style="font-size:0.8rem; color:var(--ink5); text-transform:uppercase; letter-spacing:1.5px; margin-top:2px; font-weight:600;">${t.tag}</div>
                       </div>
                   </button>
                   `;
@@ -2451,32 +2473,27 @@ const PROJECTS = {
               let currentIdx = -1;
               let animRunning = false;
               
-              function getSimulatedFreqs(genre, time) {
-                  let arr = new Array(32).fill(0);
-                  let vol = audio.volume; 
-                  let beat = (time * (genre === 'club' ? 2.2 : 1.2)) % 1; 
-                  let kick = beat < 0.1 ? 1 : Math.max(0, 1 - beat * 3);
-                  let snare = (beat > 0.45 && beat < 0.55) ? 1 : 0;
-                  
-                  for(let i=0; i<32; i++) {
-                      if (genre === 'club') {
-                          let base = Math.sin(time * 3 + i) * 0.5 + 0.5;
-                          if (i < 4) arr[i] = kick * 255 * vol;
-                          else if (i > 10 && i < 14) arr[i] = snare * 180 * vol;
-                          else arr[i] = (base * 100) * vol;
-                      } else if (genre === 'experimental') {
-                          let wave = Math.sin(time * 1.5 + i * 0.15) * 0.5 + 0.5;
-                          let wave2 = Math.cos(time * 0.8 - i * 0.1) * 0.5 + 0.5;
-                          arr[i] = (wave * 120 + wave2 * 80) * vol;
-                      } else {
-                          let wave = Math.sin(time * 2 - i * 0.2) * 0.5 + 0.5;
-                          arr[i] = (wave * 100 + kick * 60) * vol;
-                      }
-                  }
-                  return arr;
+              let smoothedValues = new Array(64).fill(0);
+              let smoothedVelocities = new Array(64).fill(0);
+              let peakHolds = new Array(64).fill(0);
+              let flashIntensity = 0;
+              let shockwaves = [];
+              let confettiParticles = [];
+              let cloudParticles = [];
+              
+              for (let i = 0; i < 28; i++) {
+                  cloudParticles.push({
+                      x: Math.random(),
+                      y: Math.random(),
+                      radius: 80 + Math.random() * 140,
+                      speedX: (Math.random() - 0.5) * 0.0012,
+                      speedY: (Math.random() - 0.5) * 0.0008,
+                      hue: 195 + Math.random() * 45,
+                      baseAlpha: 0.12 + Math.random() * 0.16,
+                      phase: Math.random() * Math.PI * 2
+                  });
               }
               
-              // Volume Slider
               const slider = document.getElementById('vol-slider');
               const knob = document.getElementById('vol-knob');
               if (slider && knob) {
@@ -2499,7 +2516,7 @@ const PROJECTS = {
                   animRunning = true;
                   
                   function drawViz() {
-                      if(!ctx || currentIdx === -1) {
+                      if (!ctx || currentIdx === -1) {
                           animRunning = false;
                           return;
                       }
@@ -2513,59 +2530,239 @@ const PROJECTS = {
                       let isPlaying = !audio.paused && !audio.ended;
                       
                       if (isPlaying) {
-                          vRot += 1.5; 
+                          vRot += (track.genre === 'club' ? 2.0 : (track.genre === 'pop' ? 1.5 : 0.9)); 
                           vinyl.style.transform = `rotate(${vRot}deg)`;
                           tonearm.style.transform = `rotate(36deg)`;
                       } else {
                           tonearm.style.transform = `rotate(15deg)`;
                       }
                       
-                      ctx.clearRect(0, 0, W, H);
+                      const time = audio.currentTime;
+                      const vol = audio.volume;
                       
-                      if (isPlaying) {
-                          let dataArray = getSimulatedFreqs(track.genre, audio.currentTime);
-                          let sum = 0;
-                          for(let i=0; i<32; i++) sum += dataArray[i];
-                          let avg = sum / 32;
+                      // 1. CLUB GOT BOOTS (Fast Attack, Quick Decay, Bass Punch & Strobe)
+                      if (track.genre === 'club') {
+                          const attack = 0.92;
+                          const decay = 0.72;
                           
-                          if (track.genre === 'club') {
-                              section.style.background = '#08080a';
-                              let bass = dataArray[1]/255;
-                              ctx.fillStyle = `rgba(255, 0, 85, ${bass * 0.35})`;
-                              ctx.fillRect(0, 0, W, H);
-                              
-                              let barW = (W / 32) - 4;
-                              for(let i=0; i<32; i++) {
-                                  let barH = (dataArray[i] / 255) * (H * 0.65);
-                                  ctx.fillStyle = `rgba(0, 255, 255, ${0.35 + (dataArray[i]/255)*0.65})`;
-                                  ctx.beginPath();
-                                  ctx.roundRect(i * (barW + 4), H - barH, barW, barH, [4, 4, 0, 0]);
-                                  ctx.fill();
+                          const beat = (time * 2.15) % 1.0;
+                          const kick = beat < 0.12 ? Math.pow(1 - beat / 0.12, 2) : 0;
+                          const snare = (beat > 0.48 && beat < 0.60) ? 0.9 : 0;
+                          const hihat = (time * 8.6) % 1.0 < 0.15 ? 0.8 : 0;
+                          
+                          const numBars = 36;
+                          const rawFreqs = [];
+                          for (let i = 0; i < numBars; i++) {
+                              let f = 0;
+                              if (i < 6) {
+                                  f = kick * 255 * 1.5 + (Math.sin(time * 6 + i) * 30 + 30);
+                              } else if (i < 16) {
+                                  f = snare * 200 + (Math.sin(time * 4 + i * 0.5) * 50 + 50);
+                              } else {
+                                  f = hihat * 180 + (Math.cos(time * 8 - i * 0.3) * 40 + 40);
                               }
-                          } else if (track.genre === 'experimental') {
-                              section.style.background = '#0b192c';
-                              ctx.beginPath();
-                              ctx.moveTo(0, H/2);
-                              for(let i=0; i<64; i++) {
-                                  let sim = Math.sin(audio.currentTime * 3 + i * 0.2) * 0.5 + 0.5;
-                                  let y = H/2 + (sim - 0.5) * H * 0.5;
-                                  ctx.lineTo(i * (W/64), y);
+                              rawFreqs.push(Math.min(255, f * vol));
+                          }
+                          
+                          for (let i = 0; i < numBars; i++) {
+                              if (rawFreqs[i] > smoothedValues[i]) {
+                                  smoothedValues[i] = smoothedValues[i] * (1 - attack) + rawFreqs[i] * attack;
+                              } else {
+                                  smoothedValues[i] = smoothedValues[i] * decay;
                               }
-                              ctx.lineTo(W, H/2);
-                              ctx.strokeStyle = `rgba(0, 210, 255, 0.8)`;
-                              ctx.lineWidth = 6;
-                              ctx.stroke();
-                          } else if (track.genre === 'pop') {
-                              section.style.background = '#201018';
-                              for(let i=0; i<15; i++) {
-                                  let val = dataArray[i*2]/255;
-                                  let r = 20 + val * 100;
-                                  ctx.beginPath();
-                                  ctx.arc(W * (i+1)/16, H/2 + Math.sin(Date.now()*0.002 + i) * 120, r, 0, Math.PI*2);
-                                  ctx.fillStyle = `hsla(${340 + i*6}, 100%, 65%, 0.5)`;
-                                  ctx.fill();
+                              if (smoothedValues[i] >= peakHolds[i]) {
+                                  peakHolds[i] = smoothedValues[i];
+                              } else {
+                                  peakHolds[i] = Math.max(0, peakHolds[i] - 3.5);
                               }
                           }
+                          
+                          const bassLevel = smoothedValues[1] / 255;
+                          if (bassLevel > 0.68 && isPlaying) {
+                              flashIntensity = Math.min(1.0, flashIntensity + 0.35);
+                              if (Math.random() < 0.4) {
+                                  shockwaves.push({ r: 50, alpha: 0.9 });
+                              }
+                          } else {
+                              flashIntensity *= 0.82;
+                          }
+                          
+                          section.style.background = '#08080C';
+                          ctx.clearRect(0, 0, W, H);
+                          
+                          if (flashIntensity > 0.02) {
+                              const grad = ctx.createRadialGradient(W / 2, H / 2, 50, W / 2, H / 2, Math.max(W, H) * 0.7);
+                              grad.addColorStop(0, `rgba(255, 0, 85, ${flashIntensity * 0.45})`);
+                              grad.addColorStop(0.5, `rgba(0, 240, 255, ${flashIntensity * 0.2})`);
+                              grad.addColorStop(1, 'transparent');
+                              ctx.fillStyle = grad;
+                              ctx.fillRect(0, 0, W, H);
+                          }
+                          
+                          for (let s = shockwaves.length - 1; s >= 0; s--) {
+                              const sw = shockwaves[s];
+                              ctx.beginPath();
+                              ctx.arc(W / 2, H / 2, sw.r, 0, Math.PI * 2);
+                              ctx.strokeStyle = `rgba(255, 0, 85, ${sw.alpha})`;
+                              ctx.lineWidth = 3;
+                              ctx.stroke();
+                              sw.r += 12;
+                              sw.alpha *= 0.88;
+                              if (sw.alpha < 0.02) shockwaves.splice(s, 1);
+                          }
+                          
+                          const barWidth = (W / numBars) - 4;
+                          for (let i = 0; i < numBars; i++) {
+                              const barH = isPlaying ? (smoothedValues[i] / 255) * (H * 0.65) : 8;
+                              const peakH = isPlaying ? (peakHolds[i] / 255) * (H * 0.65) : 8;
+                              const x = i * (barWidth + 4) + 2;
+                              
+                              const barGrad = ctx.createLinearGradient(x, H, x, H - barH);
+                              barGrad.addColorStop(0, 'rgba(0, 240, 255, 0.85)');
+                              barGrad.addColorStop(0.7, 'rgba(255, 0, 128, 0.95)');
+                              barGrad.addColorStop(1, '#FFFFFF');
+                              
+                              ctx.fillStyle = barGrad;
+                              ctx.fillRect(x, H - barH, barWidth, barH);
+                              
+                              if (peakH > 4) {
+                                  ctx.fillStyle = '#FFFFFF';
+                                  ctx.fillRect(x, H - peakH - 3, barWidth, 3);
+                              }
+                          }
+                      }
+                      
+                      // 2. CLOUDY DAYS (Soft, Floaty, Ethereal Atmosphere & Harmonic Waves)
+                      else if (track.genre === 'experimental') {
+                          const midHigh1 = (Math.sin(time * 0.8) * 0.5 + 0.5) * (Math.cos(time * 1.3) * 0.5 + 0.5);
+                          const midHigh2 = (Math.sin(time * 1.5 + 1.2) * 0.5 + 0.5);
+                          
+                          section.style.background = '#0A1428';
+                          ctx.clearRect(0, 0, W, H);
+                          
+                          cloudParticles.forEach(p => {
+                              p.x += p.speedX;
+                              p.y += p.speedY;
+                              if (p.x < -0.1) p.x = 1.1;
+                              if (p.x > 1.1) p.x = -0.1;
+                              if (p.y < -0.1) p.y = 1.1;
+                              if (p.y > 1.1) p.y = -0.1;
+                              
+                              const px = p.x * W;
+                              const py = p.y * H;
+                              const pulse = 1 + (isPlaying ? Math.sin(time * 1.2 + p.phase) * 0.25 * midHigh1 : 0);
+                              const r = p.radius * pulse;
+                              
+                              const fogGrad = ctx.createRadialGradient(px, py, 0, px, py, r);
+                              fogGrad.addColorStop(0, `hsla(${p.hue}, 85%, 65%, ${p.baseAlpha * (isPlaying ? 1.2 : 0.6)})`);
+                              fogGrad.addColorStop(0.6, `hsla(${p.hue + 20}, 75%, 45%, ${p.baseAlpha * 0.4})`);
+                              fogGrad.addColorStop(1, 'transparent');
+                              
+                              ctx.fillStyle = fogGrad;
+                              ctx.beginPath();
+                              ctx.arc(px, py, r, 0, Math.PI * 2);
+                              ctx.fill();
+                          });
+                          
+                          const layers = [
+                              { color: 'rgba(0, 210, 255, 0.45)', speed: 0.7, freq: 0.008, amp: 70, yOffset: 0 },
+                              { color: 'rgba(120, 140, 255, 0.35)', speed: 0.5, freq: 0.012, amp: 90, yOffset: 25 },
+                              { color: 'rgba(200, 220, 255, 0.25)', speed: 0.3, freq: 0.006, amp: 110, yOffset: -25 }
+                          ];
+                          
+                          layers.forEach(layer => {
+                              ctx.beginPath();
+                              ctx.moveTo(0, H);
+                              for (let x = 0; x <= W; x += 8) {
+                                  const wave = Math.sin(x * layer.freq + time * layer.speed) * Math.cos(x * 0.004 - time * 0.4);
+                                  const dynamicAmp = layer.amp * (isPlaying ? (0.6 + midHigh2 * 0.8) : 0.3) * vol;
+                                  const y = (H * 0.55) + layer.yOffset + wave * dynamicAmp;
+                                  ctx.lineTo(x, y);
+                              }
+                              ctx.lineTo(W, H);
+                              ctx.fillStyle = layer.color;
+                              ctx.fill();
+                          });
+                      }
+                      
+                      // 3. PARADISE (Bouncy Spring Easing & Confetti Bursts)
+                      else if (track.genre === 'pop') {
+                          section.style.background = '#1E0C1F';
+                          ctx.clearRect(0, 0, W, H);
+                          
+                          const beat = (time * 1.6) % 1.0;
+                          const popKick = beat < 0.15 ? Math.sin((beat / 0.15) * Math.PI) : 0;
+                          
+                          if (popKick > 0.75 && isPlaying && Math.random() < 0.5) {
+                              const colors = ['#FF6B8B', '#FFD166', '#06D6A0', '#118AB2', '#FF9F1C', '#FFFFFF'];
+                              for (let c = 0; c < 6; c++) {
+                                  confettiParticles.push({
+                                      x: W * 0.2 + Math.random() * W * 0.6,
+                                      y: H * 0.85,
+                                      vx: (Math.random() - 0.5) * 8,
+                                      vy: -(6 + Math.random() * 10),
+                                      size: 5 + Math.random() * 7,
+                                      color: colors[Math.floor(Math.random() * colors.length)],
+                                      rot: Math.random() * Math.PI * 2,
+                                      vRot: (Math.random() - 0.5) * 0.2,
+                                      alpha: 1.0
+                                  });
+                              }
+                          }
+                          
+                          for (let c = confettiParticles.length - 1; c >= 0; c--) {
+                              const p = confettiParticles[c];
+                              p.x += p.vx;
+                              p.y += p.vy;
+                              p.vy += 0.3;
+                              p.rot += p.vRot;
+                              p.alpha *= 0.96;
+                              
+                              ctx.save();
+                              ctx.translate(p.x, p.y);
+                              ctx.rotate(p.rot);
+                              ctx.fillStyle = p.color;
+                              ctx.globalAlpha = p.alpha;
+                              ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                              ctx.restore();
+                              
+                              if (p.alpha < 0.02 || p.y > H + 50) {
+                                  confettiParticles.splice(c, 1);
+                              }
+                          }
+                          
+                          const numPills = 24;
+                          const pillWidth = (W / numPills) - 10;
+                          const k = 0.35;
+                          const d = 0.75;
+                          
+                          for (let i = 0; i < numPills; i++) {
+                              const targetVal = isPlaying 
+                                  ? ((Math.sin(time * 4 - i * 0.4) * 0.5 + 0.5) * 0.6 + popKick * 0.4) * 255 * vol 
+                                  : 15;
+                              
+                              const force = (targetVal - smoothedValues[i]) * k;
+                              smoothedVelocities[i] = (smoothedVelocities[i] + force) * d;
+                              smoothedValues[i] += smoothedVelocities[i];
+                              smoothedValues[i] = Math.max(8, smoothedValues[i]);
+                              
+                              const pillH = (smoothedValues[i] / 255) * (H * 0.6);
+                              const x = i * (pillWidth + 10) + 5;
+                              const y = H - pillH;
+                              
+                              const pillGrad = ctx.createLinearGradient(x, H, x, y);
+                              pillGrad.addColorStop(0, '#FFD166');
+                              pillGrad.addColorStop(0.5, '#FF6B8B');
+                              pillGrad.addColorStop(1, '#FF9F1C');
+                              
+                              ctx.fillStyle = pillGrad;
+                              ctx.beginPath();
+                              ctx.roundRect(x, y, pillWidth, pillH, [pillWidth / 2, pillWidth / 2, 4, 4]);
+                              ctx.fill();
+                          }
+                      }
+                      
+                      if (isPlaying) {
                           requestAnimationFrame(drawViz);
                       } else {
                           animRunning = false;
@@ -2590,8 +2787,16 @@ const PROJECTS = {
                           currentIdx = i;
                           document.getElementById(`tbtn-${i}`).classList.add('active');
                           audio.src = t.file;
+                          
+                          smoothedValues.fill(0);
+                          smoothedVelocities.fill(0);
+                          peakHolds.fill(0);
+                          shockwaves = [];
+                          confettiParticles = [];
+                          
                           audio.play().then(() => {
                               label.style.background = t.color;
+                              label.innerText = t.name.toUpperCase();
                               startVizLoop();
                           }).catch(e => console.log('Audio playback:', e));
                       }
@@ -2599,9 +2804,7 @@ const PROJECTS = {
               });
               return;
           }
-
-          // 9. JASMINE ALBUM
-          if (id === 'jasmine-album') {
+if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
