@@ -1584,7 +1584,7 @@ button{cursor:none;font-family:inherit;}
 
     <p class="about-p">I am Annmary Saji, a BFA Animation graduate from NTU's School of Art, Design and Media, class of June 2026. Over five years I built a creative practice that refuses to stay in one lane. I animate, illustrate, shoot video, design brand systems, and produce music — often all within a single project.</p>
 
-    <br/><p class="about-p">My work has screened at Annecy as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other.</p>
+    <br/><p class="about-p">My work has screened at Annecy as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other. <span style="opacity:0.8; font-style:italic;">Bored? There might be something to do about that.</span></p>
 
     <div class="facts">
 
@@ -1692,7 +1692,35 @@ button{cursor:none;font-family:inherit;}
 
   <span class="foot-copy">2026 · BFA Animation, NTU ADM</span>
 
-  <a href="game.html" class="foot-egg">Curious what happens when you go offline?</a>
+  
+<a href="game.html" class="foot-egg" aria-label="Hidden game">
+    <i data-lucide="ghost"></i>
+</a>
+<style>
+.foot-egg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink05);
+    transition: color 0.3s, transform 0.3s;
+    animation: idle-bounce 15s infinite;
+    text-decoration: none;
+}
+.foot-egg:hover {
+    color: var(--ink);
+    transform: scale(1.1);
+    animation: none;
+}
+@keyframes idle-bounce {
+    0%, 90% { transform: translateY(0); }
+    92% { transform: translateY(-5px) rotate(-10deg); }
+    94% { transform: translateY(0) rotate(10deg); }
+    96% { transform: translateY(-3px) rotate(-5deg); }
+    98% { transform: translateY(0) rotate(0); }
+    100% { transform: translateY(0); }
+}
+</style>
+
 
   <a href="index.html" class="foot-back">Back to start</a>
 
@@ -2254,6 +2282,9 @@ const data = window.PORTFOLIO_DATA; if(data) {
 }
 }, 50);
 
+</script>
+<script>
+    console.log("%cTry pressing space...", "color: #D02F5A; font-size: 14px; font-weight: bold; font-family: monospace;");
 </script>
 </body>
 
