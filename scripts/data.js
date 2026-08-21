@@ -23,8 +23,13 @@ window.PORTFOLIO_DATA = {
     "https://youtu.be/QMuH2Njl0yg"
   ],
   "dear-friend": [
-    "https://youtu.be/BPYEYUmrWfg"
-  ],
+      "https://youtu.be/BPYEYUmrWfg",
+      "assets/portfolio-data/Dear friend/credit1.png",
+      "assets/portfolio-data/Dear friend/rain7.png",
+      "assets/portfolio-data/Dear friend/room layout.png",
+      "assets/portfolio-data/Dear friend/staticshot_4.png",
+      "assets/portfolio-data/Dear friend/topshotd.png"
+    ],
   "digital-paintings": [
     "assets/portfolio-data/Digital painting/a6_ann.png",
     "assets/portfolio-data/Digital painting/dino story.png",

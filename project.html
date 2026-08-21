@@ -1798,6 +1798,10 @@ const PROJECTS = {
 
   // Format string for captions and alt text
   function formatName(str) {
+      const isGoBunny = str.includes('GoBunny');
+      
+      let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
+      
       const overrides = {
           'Your paragraph text (35)': 'Badge Logo',
           'Your paragraph text (36)': 'Logo Inverse',
@@ -1808,15 +1812,17 @@ const PROJECTS = {
           'ART DIRECTION PORTFOLIO (1)': 'Brand Guidelines',
           'Copy of ART DIRECTION PORTFOLIO (3)': 'Brand Presentation',
           'It is time for some strawberries': 'Billboard Mockup',
-          '3': 'Product Packaging',
-          '4': 'Product Packaging',
-          '5': 'Brand Asset',
-          '6': 'Brand Asset',
-          '7': 'Brand Asset',
-          'presents': 'Presentation Slide'
+          
+          '3': isGoBunny ? 'Product Packaging' : 'Event Poster',
+          '4': isGoBunny ? 'Product Packaging' : 'Instagram Campaign',
+          '5': 'Website Mockup',
+          '6': 'Merchandise (T-Shirt)',
+          '7': 'Merchandise (Tote Bag)',
+          'presents': 'Competition Poster',
+          'LOGO GREEN ARROW': 'Primary Lockup',
+          'EcoFuture Color Pallette': 'Color Palette'
       };
       
-      let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
       if (overrides[rawName]) return overrides[rawName];
       
       let name = rawName.replace(/[-_]/g, ' ').replace(/\s*\(\d+\)\s*/g, ' ').trim();
@@ -1868,7 +1874,8 @@ const PROJECTS = {
       
       const captionHtml = (isYouTube || isPDF || isAudio || isComic) ? '' : `<div class="media-caption">${name}</div>`;
       
-      return `<div class="masonry-item ${isComic ? 'comic-item' : ''}">${el}${captionHtml}</div>`;
+      const fwClass = (isYouTube || isVideo || isPDF) ? 'full-width' : '';
+        return `<div class="masonry-item ${isComic ? 'comic-item' : ''} ${fwClass}">${el}${captionHtml}</div>`;
   }
 
   window.onload = () => {
@@ -2054,8 +2061,10 @@ const PROJECTS = {
                   inContext.forEach(f => { htmlStr += renderMedia(f).replace('masonry-item', 'masonry-item in-context-img'); });
                   htmlStr += `</div></div>`;
               } else if (id === 'green-arrow') {
-                  const apps = findFiles('poster').concat(findFiles('mockup')).concat(findFiles('carousel'));
-                  const inContext = findFiles('tote').concat(findFiles('t-shirt'));
+                  const logo = findFile('LOGO GREEN ARROW');
+                  const posters = findFiles('3.png').concat(findFiles('presents'));
+                  const digital = findFiles('4.png').concat(findFiles('5.png'));
+                  const merch = findFiles('6.png').concat(findFiles('7.png'));
                   
                   htmlStr += `
                   <div class="cs-section">
@@ -2069,13 +2078,20 @@ const PROJECTS = {
                       </div>
                   </div>`;
                   
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Brand Identity & Applications</h2><div class="masonry-container">`;
-                  const identityFiles = notFound([...inContext].filter(Boolean));
-                  identityFiles.forEach(f => { htmlStr += renderMedia(f); });
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Logo & Identity</h2><div class="masonry-container">`;
+                  if(logo) htmlStr += renderMedia(logo).replace('masonry-item', 'masonry-item full-width');
+                  htmlStr += `</div></div>`;
+
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Posters & Events</h2><div class="masonry-container">`;
+                  posters.forEach(f => { htmlStr += renderMedia(f); });
+                  htmlStr += `</div></div>`;
+
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Digital & Social Media</h2><div class="masonry-container">`;
+                  digital.forEach(f => { htmlStr += renderMedia(f); });
                   htmlStr += `</div></div>`;
                   
-                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">In Context / Real-World Mockups</h2><div class="masonry-container">`;
-                  inContext.forEach(f => { htmlStr += renderMedia(f).replace('masonry-item', 'masonry-item in-context-img'); });
+                  htmlStr += `<div class="cs-section"><h2 class="cs-heading">Merchandise</h2><div class="masonry-container">`;
+                  merch.forEach(f => { htmlStr += renderMedia(f).replace('masonry-item', 'masonry-item in-context-img'); });
                   htmlStr += `</div></div>`;
               }
               
