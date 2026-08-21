@@ -382,13 +382,7 @@ img{display:block;max-width:100%;}
 
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 
-
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>
+</style>
 
   <link rel="stylesheet" href="css/motion.css"/>
 
@@ -406,13 +400,7 @@ img{display:block;max-width:100%;}
 .loaded #page-transition-overlay {
     opacity: 0;
 }
-
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>
+</style>
 
 </head>
 
@@ -1852,13 +1840,13 @@ const PROJECTS = {
           'Your paragraph text (33)': 'Logo Secondary',
           'Your paragraph text (30)': 'Sticker Pack',
           'Your paragraph text (37)': 'Social Media Asset',
-          'ART DIRECTION PORTFOLIO': 'Brand Guidelines',
+          'ART DIRECTION PORTFOLIO': 'Billboard Mockup',
           'ART DIRECTION PORTFOLIO (1)': 'Brand Guidelines',
           'Copy of ART DIRECTION PORTFOLIO (3)': 'Brand Presentation',
-          'It is time for some strawberries': 'Billboard Mockup',
+          'It is time for some strawberries': 'Mobile UI',
           
-          '3': isGoBunny ? 'Product Packaging' : 'Event Poster',
-          '4': isGoBunny ? 'Product Packaging' : 'Instagram Campaign',
+          '3': isGoBunny ? 'Packaging Design' : 'Event Poster',
+          '4': isGoBunny ? 'Packaging Details' : 'Instagram Campaign',
           '5': 'Website Mockup',
           '6': 'Merchandise (T-Shirt)',
           '7': 'Merchandise (Tote Bag)',
@@ -1929,10 +1917,10 @@ const PROJECTS = {
           const data = window.PORTFOLIO_DATA;
           
           if (id === 'gobunny') {
-              document.documentElement.style.setProperty('--bg', '#FFEBF0');
-              document.documentElement.style.setProperty('--surf', '#FFF5F7');
-              document.documentElement.style.setProperty('--ink', '#D02F5A');
-              document.documentElement.style.setProperty('--line', 'rgba(208, 47, 90, 0.2)');
+              document.documentElement.style.setProperty('--bg', '#FFF2F0');
+              document.documentElement.style.setProperty('--surf', '#FFFFFF');
+              document.documentElement.style.setProperty('--ink', '#FF3522');
+              document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.2)');
               (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
           } else if (id === 'green-arrow') {
               document.documentElement.style.setProperty('--bg', '#EBF4ED');
@@ -2023,25 +2011,13 @@ const PROJECTS = {
             
             [data-theme='dark'] .media-caption { color: rgba(250,248,244,.5); }
             [data-theme='dark'] .cs-swatch { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
-          
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>`;
+          </style>`;
 
           if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
-              let albumHtml = styleBlock + '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style><div class="album-grid">';
+              let albumHtml = styleBlock + '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}</style><div class="album-grid">';
               const count = Math.min(imgs.length, audios.length);
               for(let i=0; i<count; i++) {
                   let img = imgs[i] ? `<img src="${imgs[i]}" alt="Track ${i+1}" style="width:100%; height:auto; border-radius:4px 4px 0 0; display:block;">` : '';
@@ -2067,35 +2043,35 @@ const PROJECTS = {
                 let htmlStr = styleBlock;
                 
                 if (id === 'gobunny') {
-                    const brandColorSvg = findFile('BRANDCOLOR_GOBUNNY.svg');
-                    const logoPrimary = findFile('GO BUNNY.png');
-                    const artDirection = findFiles('ART DIRECTION PORTFOLIO');
-                    const otherAssets = media.filter(f => 
-                        !f.includes('BRANDCOLOR_GOBUNNY') && 
-                        !f.includes('GO BUNNY.png') && 
-                        !f.includes('ART DIRECTION PORTFOLIO')
-                    );
-                    
-                    htmlStr += `<div class="cs-section">
-                        <h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd); margin-bottom: 2rem;">Brand Colors</h2>`;
-                    if (brandColorSvg) {
-                        htmlStr += renderMedia(brandColorSvg).replace('masonry-item', 'masonry-item full-width');
-                    }
-                    htmlStr += `</div>`;
-                    
-                    if (logoPrimary || artDirection.length > 0) {
-                        htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Logo & Art Direction</h2><div class="masonry-container">`;
-                        if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
-                        artDirection.forEach(f => { htmlStr += renderMedia(f); });
-                        htmlStr += `</div></div>`;
-                    }
+                      const brandColorSvg = findFile('BRANDCOLOR_GOBUNNY.svg');
+                      const logoPrimary = findFile('GO BUNNY.png');
+                      const billboard = findFile('ART DIRECTION PORTFOLIO.png');
+                      const mobileUI = findFile('It is time for some strawberries');
+                      const packaging = media.filter(f => f.includes('3.png') || f.includes('4.png'));
+                      const guidelines = media.filter(f => f.includes('Your paragraph text') || f.includes('ART DIRECTION PORTFOLIO (1)') || f.includes('Copy of ART DIRECTION PORTFOLIO'));
+                      
+                      htmlStr += `<div class="cs-section">
+                          <h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd); margin-bottom: 2rem;">Brand Colors</h2>`;
+                      if (brandColorSvg) htmlStr += renderMedia(brandColorSvg).replace('masonry-item', 'masonry-item full-width');
+                      htmlStr += `</div>`;
+                      
+                      htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Logo & Brand Identity</h2><div class="masonry-container">`;
+                      if(logoPrimary) htmlStr += renderMedia(logoPrimary).replace('masonry-item', 'masonry-item full-width');
+                      guidelines.forEach(f => { htmlStr += renderMedia(f); });
+                      htmlStr += `</div></div>`;
+                      
+                      htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Digital & App Mockups</h2><div class="masonry-container">`;
+                      if(mobileUI) htmlStr += renderMedia(mobileUI);
+                      htmlStr += `</div></div>`;
 
-                    if (otherAssets.length > 0) {
-                        htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Brand Assets & Collateral</h2><div class="masonry-container">`;
-                        otherAssets.forEach(f => { htmlStr += renderMedia(f); });
-                        htmlStr += `</div></div>`;
-                    }
-                } else if (id === 'green-arrow') {
+                      htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Posters & Advertising</h2><div class="masonry-container">`;
+                      if(billboard) htmlStr += renderMedia(billboard);
+                      htmlStr += `</div></div>`;
+
+                      htmlStr += `<div class="cs-section"><h2 class="cs-heading" style="font-family: 'More Sugar', var(--fd);">Packaging & Products</h2><div class="masonry-container">`;
+                      packaging.forEach(f => { htmlStr += renderMedia(f); });
+                      htmlStr += `</div></div>`;
+                  } else if (id === 'green-arrow') {
                     const logo = findFile('LOGO GREEN ARROW');
                     const posters = findFiles('3.png').concat(findFiles('presents'));
                     const digital = findFiles('4.png').concat(findFiles('5.png'));
@@ -2166,13 +2142,7 @@ const PROJECTS = {
                       .page-flip-btn.next { right:10px; top:10px; transform:none; }
                       .page-flip-btn:hover { transform:scale(1.1); }
                     }
-                    
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>
+                    </style>
                     <div class="cs-section">
                       <h2 class="cs-heading" style="text-align:center; margin-bottom:2rem;">Nangeli — Reading View</h2>
                       <div id="nangeli-reader"></div>
@@ -2263,13 +2233,7 @@ const PROJECTS = {
                       .ta-head { position:absolute; bottom:-10px; left:-12px; width:30px; height:55px; background: linear-gradient(to bottom, #333, #111); border-radius:4px; transform: rotate(25deg); box-shadow: -2px 4px 8px rgba(0,0,0,0.4); border-top:1px solid #555; }
                       
                       .track-list-container { flex:1; min-width:320px; background:rgba(255,255,255,0.85); backdrop-filter:blur(30px); padding:2.5rem; border-radius:24px; box-shadow:0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5); }
-                    
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>
+                    </style>
                     <div id="vinyl-player-section">
                       <canvas id="audio-viz"></canvas>
                       <div class="vp-content">
@@ -2344,13 +2308,7 @@ const PROJECTS = {
                           .page-flip-btn.next { right:10px; top:10px; transform:none; }
                           .page-flip-btn:hover { transform:scale(1.1); }
                         }
-                        
-  @media (pointer: coarse), (max-width: 768px) {
-    #cur { display: none !important; }
-    * { cursor: auto !important; }
-  }
-
-  </style>
+                        </style>
                         <div class="book-container ${animClass}">
                           <button class="page-flip-btn prev" id="i-prev" ${curPage===0?'disabled':''}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
                           <div class="book-page left">${p1}</div>
@@ -2646,12 +2604,14 @@ window.addEventListener('load', () => document.body.classList.add('loaded'));
 setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
 </script>
 
+<script>
     // BFCache fix for blank pages on back button navigation
     window.addEventListener('pageshow', function(event) {
         if (event.persisted) {
             document.body.classList.remove('page-exit');
         }
     });
+    </script>
     
 </body>
 
