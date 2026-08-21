@@ -9,7 +9,7 @@
         });
     }, { threshold: 0.05, rootMargin: "0px 0px -40px 0px" });
 
-    document.querySelectorAll('.sec, .card-img, .gw-header, .sec-title, .gallery-h, .text-block').forEach(el => {
+    document.querySelectorAll('.sec, .card, .gw-header, .sec-title, .gallery-h, .text-block').forEach(el => {
         if (!el.classList.contains('reveal')) {
             el.classList.add('reveal');
         }
