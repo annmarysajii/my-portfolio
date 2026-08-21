@@ -36,7 +36,7 @@ html,body{height:100%;overflow:hidden;}
 
 body{
 
-  background:var(--bg);font-family:var(--fb);color: #111009;cursor:none;
+  background:var(--bg);font-family:var(--fb);color: var(--ink);cursor:none;
 
   background-image:radial-gradient(circle,rgba(17,16,9,.1) 1px,transparent 1px);
 
@@ -106,7 +106,7 @@ body::after{
 
   position:fixed;top:2.5rem;left:0;width:100%;text-align:center;z-index:11;
 
-  font-size:.78rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color: rgba(17,16,9,0.7);
+  font-size:.78rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color: var(--ink5);
 
 }
 
@@ -116,7 +116,7 @@ body::after{
 
   font-size:clamp(2rem,5.5vw,5rem);
 
-  font-weight:700;color: #111009;
+  font-weight:700;color: var(--ink);
 
   text-align:center;line-height:1.06;letter-spacing:-.025em;
 
@@ -134,7 +134,7 @@ body::after{
 
   font-size:clamp(.95rem,2.2vw,1.3rem);
 
-  font-weight:600;color: #111009;background:none;border:none;cursor:none;
+  font-weight:600;color: var(--ink);background:none;border:none;cursor:none;
 
   padding:.28rem 0;position:relative;transition:color .2s;letter-spacing:-.01em;
 
@@ -152,7 +152,7 @@ body::after{
 
 .gw-opt:hover::after{width:100%;}
 
-.gw-opt:hover{color: rgba(17,16,9,0.7);}
+.gw-opt:hover{color: var(--ink5);}
 
 .gw-opt .arr{
 
@@ -188,7 +188,7 @@ body::after{
 
   font-size:clamp(2.5rem,6vw,5.5rem);
 
-  font-weight:700;color: #111009;
+  font-weight:700;color: var(--ink);
 
   letter-spacing:-.025em;text-align:center;padding:0 2rem;
 
@@ -236,7 +236,7 @@ body::after{
     font-size: 1.6rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: #111009;
+    color: var(--ink);
     margin-bottom: 2rem;
 }
 .aw {
@@ -265,7 +265,7 @@ body::after{
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #111009;
+    color: var(--ink);
     flex-shrink: 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     transition: all 0.3s;
@@ -282,13 +282,13 @@ body::after{
 .aw-t {
     font-size: 1rem;
     line-height: 1.6;
-    color: rgba(17,16,9,0.7);
+    color: var(--ink5);
 }
 .aw-n {
     font-family: 'Clash Display', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #111009;
+    color: var(--ink);
     display: block;
     margin-bottom: 0.3rem;
 }
