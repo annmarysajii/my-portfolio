@@ -453,7 +453,7 @@ img{display:block;max-width:100%;}
 
       <button class="theme-toggle pill-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode"><i data-lucide="moon" class="icon" id="themeIcon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
 
-      <a href="javascript:window.close()" class="nav-back" onclick="if(history.length>1){history.back();return false;}">
+      <a href="portfolio.html" class="nav-back" onclick="if(history.length>1){history.back();return false;}">
 
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 
@@ -1808,7 +1808,7 @@ const PROJECTS = {
       </div>
       <div id="dynamic-gallery"></div>
       <div class="ph-foot" style="margin-top: 4rem; padding-bottom: 4rem;">
-          <a href="index.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
+          <a href="portfolio.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
       </div>
     </div>
       `;
@@ -2603,6 +2603,14 @@ const PROJECTS = {
 window.addEventListener('load', () => document.body.classList.add('loaded'));
 setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
 </script>
+
+    // BFCache fix for blank pages on back button navigation
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            document.body.classList.remove('page-exit');
+        }
+    });
+    
 </body>
 
 </html>

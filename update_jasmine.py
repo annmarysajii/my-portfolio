@@ -1,23 +1,15 @@
-﻿import re
-
-with open('jasmine_comic_full.html', 'r', encoding='utf-8') as f:
+﻿with open('jasmine_reader.html', 'r', encoding='utf-8') as f:
     html = f.read()
 
-# Replace fonts
-font_link = '<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel=\'stylesheet\'"/>'
-html = re.sub(r'<link href="https://fonts.googleapis.com/css2[^>]+>', font_link, html)
+# Add Back to Portfolio button
+back_btn = '<a href="index.html" style="position:fixed; top:20px; left:20px; z-index:9999; color:var(--ink); background:var(--paper); padding:10px 20px; border-radius:24px; text-decoration:none; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,0.15); font-size:14px; display:flex; align-items:center; gap:8px; border:1px solid rgba(0,0,0,0.05);">&larr; Back to Portfolio</a>'
 
-# Replace variables
-html = html.replace('--ink:#f3ead9;', '--ink:#F0EEF5;')
-html = html.replace('--paper:#17130f;', '--paper:#0D0C11;')
-html = html.replace('--paper2:#1e1a15;', '--paper2:#1A1828;')
-html = html.replace('--line: rgba(243,234,217,0.14);', '--line: rgba(240,238,245,0.14);')
+if "&larr; Back to Portfolio" not in html:
+    html = html.replace('<body>', f'<body>\n{back_btn}')
 
-# Replace font-family
-html = html.replace("font-family:'Work Sans', sans-serif;", "font-family:'General Sans', system-ui, sans-serif;")
-html = html.replace("font-family:'Kalam', cursive;", "font-family:'Clash Display', Georgia, serif;")
-html = html.replace("font-family:'Special Elite', monospace;", "font-family:'General Sans', system-ui, sans-serif; font-weight: 500;")
+# Add lazy/async to dynamic images
+html = html.replace("img.className = 'page-img';", "img.className = 'page-img';\n      img.loading = 'lazy';\n      img.decoding = 'async';")
 
-with open('jasmine_comic_full.html', 'w', encoding='utf-8') as f:
+with open('jasmine_reader.html', 'w', encoding='utf-8') as f:
     f.write(html)
-print("Updated jasmine_comic_full.html styles")
+print("Updated jasmine_reader.html!")
