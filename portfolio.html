@@ -810,6 +810,12 @@ button{cursor:none;font-family:inherit;}
     color: #3A6FD8 !important;
 }
 </style>
+<style>
+@keyframes avatarFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+</style>
 </head>
 
 <body>
@@ -1710,7 +1716,9 @@ button{cursor:none;font-family:inherit;}
 
    <div class="rv d2">
 
-    <div class="about-photo"><span class="ab-ph-t">Photo coming soon</span></div>
+    <div class="about-avatar-wrap" style="display:flex;align-items:center;justify-content:center;padding:1rem;">
+      <img src="assets/portfolio-data/My%20profile/me%20avatar.png" alt="Annmary Saji Avatar" style="width:100%;max-width:380px;height:auto;object-fit:contain;animation:avatarFloat 5s ease-in-out infinite;filter:drop-shadow(0 20px 30px rgba(0,0,0,0.35));display:block;">
+    </div>
 
    </div>
 
