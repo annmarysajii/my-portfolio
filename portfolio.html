@@ -857,6 +857,95 @@ button{cursor:none;font-family:inherit;}
   body, button, a, input, textarea, select, canvas { cursor: auto !important; }
 }
 
+
+/* FOOLPROOF ABOUT SECTION FIX FOR IPAD AIR */
+.about {
+    padding: 6rem 0 !important;
+    background: #0A0910 !important;
+    color: #F0EEF5 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+.about .about-g {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 4rem !important;
+    align-items: start !important;
+}
+@media (max-width: 900px) {
+    .about .about-g {
+        grid-template-columns: 1fr !important;
+        gap: 3rem !important;
+    }
+}
+.about .about-label {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: #E8B000 !important;
+    margin-bottom: 1rem !important;
+    display: block !important;
+}
+.about .about-h {
+    font-family: 'Clash Display', Georgia, serif !important;
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.02 !important;
+    color: #FFFFFF !important;
+    margin-bottom: 1.5rem !important;
+    display: block !important;
+}
+.about .about-h em {
+    font-style: normal !important;
+    color: #3A6FD8 !important;
+}
+.about .about-p {
+    font-size: 1.02rem !important;
+    line-height: 1.78 !important;
+    color: rgba(240, 238, 245, 0.85) !important;
+    display: block !important;
+}
+.about .facts {
+    margin-top: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+}
+.about .fact {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 1rem !important;
+    padding: 0.6rem 0 !important;
+    border-bottom: 1px dashed rgba(250, 248, 244, 0.15) !important;
+}
+.about .f-em {
+    font-size: 1rem !important;
+    color: #E8B000 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.about .f-lbl {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: rgba(240, 238, 245, 0.5) !important;
+    min-width: 90px !important;
+}
+.about .f-val {
+    font-size: 0.95rem !important;
+    color: rgba(240, 238, 245, 0.92) !important;
+}
+#about, #about .rv {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
@@ -1765,7 +1854,7 @@ button{cursor:none;font-family:inherit;}
 
    <div class="rv d2">
 
-    <img src="assets/portfolio-data/My profile/me avatar.png" style="object-fit:contain; width:100%; max-width:420px; height:auto; animation: float 5s ease-in-out infinite; transform-origin: center center; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); margin: 0 auto; display: block;">
+    <img src="assets/portfolio-data/My%20profile/me%20avatar.png" style="object-fit:contain; width:100%; max-width:420px; height:auto; animation: float 5s ease-in-out infinite; transform-origin: center center; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); margin: 0 auto; display: block;">
 
    </div>
 
