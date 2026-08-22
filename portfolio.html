@@ -1040,222 +1040,343 @@ html, body {
 <body>
 <div id="page-transition-overlay"></div>
 
-<script>
-// Background Image/Media Preloader with Zero Scanline Chunking
-(function initMediaPreloaders() {
-  const data = window.PORTFOLIO_DATA;
-  if (!data) return;
 
-  const coverOverrides = {
-    'ntu-fest': 'assets/vidtogif/ntu fest banner final.gif',
-    'gobunny': 'assets/portfolio-data/GoBunny_brand/GO BUNNY.png',
-    'keep-yourself-safe': 'assets/vidtogif/KEEP_YOURSELF_SAFE.gif',
-    'dear-friend': 'assets/vidtogif/dear_friend.gif',
-    'a-stray-dog': 'assets/vidtogif/A-STRAY-DOG.gif',
-    'chase': 'assets/vidtogif/The_chase.gif',
-    'socrat-ai': 'assets/vidtogif/HDR_SOCRATVIDEO.gif',
-    'vipcolor-video': 'assets/vidtogif/vipcolor_vid.gif',
-    'gcf-documentary': 'assets/vidtogif/GCF VIDEO FOR ORIENTATION.gif',
-    'music-district-video': 'assets/vidtogif/musicdistrict_projection.gif',
-    'short-film-score': 'assets/vidtogif/solace_shortfilmscore.gif',
-    'jasmine-album': 'assets/portfolio-data/Jasmine_Visdev/THE TRIO.png'
+  <!-- Scripts -->
+  <script src="scripts/data.js?v=1787342124"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+  // 1. Mark JS ready
+  document.body.classList.add('js-on');
+
+  // 2. Icons initialization
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
+  // 3. Theme Toggle
+  (function initTheme(){
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    const btn = document.getElementById('themeBtn');
+    if (btn) btn.classList.toggle('on', saved === 'dark');
+    const initIcon = document.getElementById('themeIcon');
+    if (initIcon) {
+      initIcon.setAttribute('data-lucide', saved === 'dark' ? 'sun' : 'moon');
+    }
+  })();
+
+  window.toggleTheme = function(){
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+
+    const btn = document.getElementById('themeBtn');
+    if (btn) btn.classList.toggle('on', next === 'dark');
+    const tIcon = document.getElementById('themeIcon');
+    if (tIcon) {
+      tIcon.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon');
+      if (window.lucide) window.lucide.createIcons();
+    }
+    const sf = document.getElementById('sf');
+    if (sf && document.getElementById('cur') && !document.getElementById('cur').classList.contains('hov')) {
+      sf.setAttribute('fill', next === 'dark' ? '#F0EEF5' : '#111009');
+    }
   };
 
-  document.querySelectorAll('a.card-img').forEach(a => {
-    const href = a.getAttribute('href');
-    let id = null;
-    if (href && href.includes('id=')) {
-      id = href.split('id=')[1];
-    } else if (href && href.includes('jasmine_reader.html')) {
-      id = 'jasmine-comic';
-    }
-    
-    if (id && data[id] && data[id].length > 0) {
-      let file = data[id].find(f => f.match(/\.(png|jpe?g|gif|webm|mp4|mov)$/i) || f.match(/youtube\.com|youtu\.be/i)) || data[id][0];
-      if (coverOverrides[id]) file = coverOverrides[id];
-      
-      if (!file) return;
-
-      const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
-
-      if (isYouTube) {
-        const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
-        const ytId = ytMatch ? ytMatch[1] : '';
-        const img = new Image();
-        img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-        img.onload = () => {
-          a.innerHTML = '';
-          a.appendChild(img);
-          requestAnimationFrame(() => a.classList.add('media-loaded'));
-        };
-        img.onerror = () => {
-          img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-          a.innerHTML = '';
-          a.appendChild(img);
-          a.classList.add('media-loaded');
-        };
-      } else if (file.match(/\.(mp4|mov|webm)$/i)) {
-        const video = document.createElement('video');
-        video.src = file;
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('webkit-playsinline', 'true');
-        video.oncanplay = () => {
-          a.innerHTML = '';
-          a.appendChild(video);
-          requestAnimationFrame(() => a.classList.add('media-loaded'));
-        };
-        video.onerror = () => {
-          a.classList.add('media-loaded');
-        };
-      } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
-        // Preload image completely in memory before placing into DOM
-        const img = new Image();
-        img.decoding = 'async';
-        img.src = file;
-        
-        img.onload = () => {
-          a.innerHTML = '';
-          a.appendChild(img);
-          requestAnimationFrame(() => a.classList.add('media-loaded'));
-        };
-        img.onerror = () => {
-          a.classList.add('media-loaded');
-        };
-        // If image was already cached
-        if (img.complete && img.naturalWidth > 0) {
-          a.innerHTML = '';
-          a.appendChild(img);
-          a.classList.add('media-loaded');
-        }
-      } else if (file.match(/\.(pdf)$/i)) {
-        a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
-        a.classList.add('media-loaded');
-      } else if (file.match(/\.(mp3|wav|m4a)$/i)) {
-        a.innerHTML = `<div style="width:100%; aspect-ratio:4/3; background: var(--surf); display:flex; align-items:center; justify-content:center; overflow:hidden; border: 1px solid var(--line); border-radius:2px;"><div style="width:100px; height:100px; border-radius:50%; background: #111; position:relative; display:flex; align-items:center; justify-content:center; box-shadow: 2px 4px 12px rgba(0,0,0,0.15);"><div style="position:absolute; inset:8px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:16px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:24px; border-radius:50%; border:1px solid #222;"></div><div style="width:34px; height:34px; border-radius:50%; background:#D02F5A; display:flex; align-items:center; justify-content:center;"><div style="width:6px; height:6px; border-radius:50%; background:var(--surf);"></div></div></div></div>`;
-        a.classList.add('media-loaded');
+  // 4. Music Toggle
+  window.toggleMusic = function(){
+    const m = document.getElementById('bg-music');
+    const b = document.getElementById('musicBtn');
+    if (!m) return;
+    if (m.paused){
+      m.play().catch(e => console.log('Music play prevented:', e));
+      if (b) b.classList.toggle('on', true);
+      const mIcon = b ? b.querySelector('.icon') : null;
+      if (mIcon) {
+        mIcon.setAttribute('data-lucide', 'volume-2');
+        if (window.lucide) window.lucide.createIcons();
       }
+    } else {
+      m.pause();
+      if (b) b.classList.toggle('on', false);
+      const mIcon = b ? b.querySelector('.icon') : null;
+      if (mIcon) {
+        mIcon.setAttribute('data-lucide', 'music');
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+  };
+
+  // 5. Sticky Nav
+  const nav = document.getElementById('nav');
+  if (nav) {
+    window.addEventListener('scroll', () => nav.classList.toggle('sc', window.scrollY > 60), { passive: true });
+  }
+
+  // 6. Smart URL Destination Focus (?f=anim, ?f=brand, ?f=about)
+  const urlFocus = new URLSearchParams(window.location.search).get('f');
+  if (urlFocus) {
+    document.body.classList.add('from-warp');
+    const targetMap = {
+      'anim': 'animation',
+      'brand': 'graphic-design',
+      'about': 'about',
+      'all': 'hero'
+    };
+    const targetId = targetMap[urlFocus] || urlFocus;
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 400);
+    });
+  }
+
+  // 7. Smooth Scroll for in-page anchors
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 
-  if (window.lucide) window.lucide.createIcons();
-})();
-</script>
-<script>
-    console.log("%cTry pressing space...", "color: #D02F5A; font-size: 14px; font-weight: bold; font-family: monospace;");
-</script>
-<script>
-window.addEventListener('load', () => document.body.classList.add('loaded'));
-setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
-</script>
+  // 8. In-Memory Image Preloader with True Skeleton Shimmer Waves
+  (function initMediaPreloaders() {
+    const data = window.PORTFOLIO_DATA;
+    if (!data) return;
 
-<style>
-/* ABSOLUTE FOOLPROOF AWARDS FIX */
-.awards {
-    background: #0D0C11 !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    padding: 30px !important;
-    border-radius: 16px !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-    min-height: 200px !important;
-}
-.awards-h {
-    color: #FFFFFF !important;
-    font-size: 24px !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-.aw {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-.aw-n {
-    color: #FFFFFF !important;
-    font-size: 18px !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-.aw-t {
-    color: #AAAAAA !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-.aw-i {
-    color: #FFFFFF !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-</style>
+    const coverOverrides = {
+      'ntu-fest': 'assets/vidtogif/ntu fest banner final.gif',
+      'gobunny': 'assets/portfolio-data/GoBunny_brand/GO BUNNY.png',
+      'keep-yourself-safe': 'assets/vidtogif/KEEP_YOURSELF_SAFE.gif',
+      'dear-friend': 'assets/vidtogif/dear_friend.gif',
+      'a-stray-dog': 'assets/vidtogif/A-STRAY-DOG.gif',
+      'chase': 'assets/vidtogif/The_chase.gif',
+      'socrat-ai': 'assets/vidtogif/HDR_SOCRATVIDEO.gif',
+      'vipcolor-video': 'assets/vidtogif/vipcolor_vid.gif',
+      'gcf-documentary': 'assets/vidtogif/GCF VIDEO FOR ORIENTATION.gif',
+      'music-district-video': 'assets/vidtogif/musicdistrict_projection.gif',
+      'short-film-score': 'assets/vidtogif/solace_shortfilmscore.gif',
+      'jasmine-album': 'assets/portfolio-data/Jasmine_Visdev/THE TRIO.png'
+    };
 
+    document.querySelectorAll('a.card-img').forEach(a => {
+      const href = a.getAttribute('href');
+      let id = null;
+      if (href && href.includes('id=')) {
+        id = href.split('id=')[1];
+      } else if (href && href.includes('jasmine_reader.html')) {
+        id = 'jasmine-comic';
+      }
+      
+      if (id && data[id] && data[id].length > 0) {
+        let file = data[id].find(f => f.match(/\.(png|jpe?g|gif|webm|mp4|mov)$/i) || f.match(/youtube\.com|youtu\.be/i)) || data[id][0];
+        if (coverOverrides[id]) file = coverOverrides[id];
+        
+        if (!file) return;
 
-<script>
-    // BFCache fix for blank pages on back button navigation
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            document.body.classList.remove('page-exit');
+        const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
+
+        if (isYouTube) {
+          const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
+          const ytId = ytMatch ? ytMatch[1] : '';
+          const img = new Image();
+          img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+          img.onload = () => {
+            a.innerHTML = '';
+            a.appendChild(img);
+            requestAnimationFrame(() => a.classList.add('media-loaded'));
+          };
+          img.onerror = () => {
+            img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            a.innerHTML = '';
+            a.appendChild(img);
+            a.classList.add('media-loaded');
+          };
+        } else if (file.match(/\.(mp4|mov|webm)$/i)) {
+          const video = document.createElement('video');
+          video.src = file;
+          video.autoplay = true;
+          video.loop = true;
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute('webkit-playsinline', 'true');
+          video.oncanplay = () => {
+            a.innerHTML = '';
+            a.appendChild(video);
+            requestAnimationFrame(() => a.classList.add('media-loaded'));
+          };
+          video.onerror = () => {
+            a.classList.add('media-loaded');
+          };
+        } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
+          // Preload image completely in memory before placing into DOM
+          const img = new Image();
+          img.decoding = 'async';
+          img.src = file;
+          
+          img.onload = () => {
+            a.innerHTML = '';
+            a.appendChild(img);
+            requestAnimationFrame(() => a.classList.add('media-loaded'));
+          };
+          img.onerror = () => {
+            a.classList.add('media-loaded');
+          };
+          // If image was already cached in browser
+          if (img.complete && img.naturalWidth > 0) {
+            a.innerHTML = '';
+            a.appendChild(img);
+            a.classList.add('media-loaded');
+          }
+        } else if (file.match(/\.(pdf)$/i)) {
+          a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
+          a.classList.add('media-loaded');
+        } else if (file.match(/\.(mp3|wav|m4a)$/i)) {
+          a.innerHTML = `<div style="width:100%; aspect-ratio:4/3; background: var(--surf); display:flex; align-items:center; justify-content:center; overflow:hidden; border: 1px solid var(--line); border-radius:2px;"><div style="width:100px; height:100px; border-radius:50%; background: #111; position:relative; display:flex; align-items:center; justify-content:center; box-shadow: 2px 4px 12px rgba(0,0,0,0.15);"><div style="position:absolute; inset:8px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:16px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:24px; border-radius:50%; border:1px solid #222;"></div><div style="width:34px; height:34px; border-radius:50%; background:#D02F5A; display:flex; align-items:center; justify-content:center;"><div style="width:6px; height:6px; border-radius:50%; background:var(--surf);"></div></div></div></div>`;
+          a.classList.add('media-loaded');
         }
+      }
     });
-    </script>
-    
-<script>
-  // Contact Form AJAX Handler & Return Navigation
+
+    if (window.lucide) window.lucide.createIcons();
+  })();
+
+  // 9. Canvas Stars Background
+  const bgC = document.getElementById('bg-c');
+  if (bgC) {
+    const bgX = bgC.getContext('2d');
+    let bW, bH;
+    const HUES = [0, 210, 45];
+    function rsz() { bW = bgC.width = window.innerWidth; bH = bgC.height = window.innerHeight; }
+    window.addEventListener('resize', rsz);
+    rsz();
+
+    function drawStar(ctx, x, y, r, rot, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const a = (i * Math.PI / 5) - Math.PI / 2;
+        const rad = i % 2 === 0 ? r : r * 0.42;
+        i === 0 ? ctx.moveTo(Math.cos(a) * rad, Math.sin(a) * rad) : ctx.lineTo(Math.cos(a) * rad, Math.sin(a) * rad);
+      }
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    const STARS = Array.from({ length: 45 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: 2.5 + Math.random() * 5,
+      speed: 0.35 + Math.random() * 0.55,
+      drift: (Math.random() - 0.5) * 0.28,
+      rot: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.018,
+      alpha: 0.08 + Math.random() * 0.1,
+      hue: HUES[Math.floor(Math.random() * 3)],
+      lit: 0
+    }));
+
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    function bgFrame() {
+      bgX.clearRect(0, 0, bW, bH);
+      const isDarkNow = (document.documentElement.getAttribute('data-theme') === 'dark');
+      STARS.forEach(s => {
+        s.y += s.speed;
+        s.x += s.drift;
+        s.rot += s.spin;
+        if (s.y > bH + 20) { s.y = -20; s.x = Math.random() * bW; }
+        const dist = Math.hypot(mx - s.x, my - s.y);
+        const prox = Math.max(0, 1 - dist / 110);
+        s.lit = Math.max(s.lit * 0.94, prox);
+
+        const sz = s.r + (s.lit * 6.5);
+        const a = s.alpha + (s.lit * 0.6);
+        const color = s.lit > 0.04
+          ? `hsla(${s.hue},88%,52%,${a})`
+          : isDarkNow ? `rgba(240,238,245,${s.alpha})` : `rgba(17,16,9,${s.alpha})`;
+        drawStar(bgX, s.x, s.y, sz, s.rot, color);
+      });
+      requestAnimationFrame(bgFrame);
+    }
+    bgFrame();
+  }
+
+  // 10. Contact Form AJAX Handler
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
-      contactForm.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          const btn = document.getElementById('fsb');
-          const plane = document.getElementById('plane-icon');
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('fsb');
+      const plane = document.getElementById('plane-icon');
+      if (btn) {
+        btn.disabled = true;
+        btn.querySelector('span').textContent = 'Sending...';
+      }
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
           if (btn) {
-              btn.disabled = true;
-              btn.querySelector('span').textContent = 'Sending...';
+            btn.querySelector('span').textContent = 'Message Sent! ✨';
+            btn.style.background = '#28a745';
+            btn.style.borderColor = '#28a745';
           }
           if (plane) {
-              plane.style.transform = 'translate(35px, -35px) scale(0.4)';
-              plane.style.opacity = '0';
+            plane.style.transform = 'translate(60px, -60px) scale(0.5)';
+            plane.style.opacity = '0';
           }
-          
-          try {
-              const formData = new FormData(contactForm);
-              await fetch('https://formsubmit.co/ajax/annie10302004@gmail.com', {
-                  method: 'POST',
-                  headers: { 'Accept': 'application/json' },
-                  body: formData
-              });
-          } catch(err) {
-              console.log('Form submission:', err);
-          }
-          
-          // Post-it note success confirmation card
-          contactForm.innerHTML = `
-            <div style="text-align:center; padding: 2rem 1rem; animation: fadeIn 0.4s ease;">
-              <div style="font-size: 2.4rem; margin-bottom: 0.5rem;">✨</div>
-              <h4 style="font-family:'Caveat', cursive, sans-serif; font-size: 2.2rem; color:#111009; margin-bottom:0.4rem; font-weight:700;">Note Delivered!</h4>
-              <p style="font-family:'Caveat', cursive, sans-serif; font-size: 1.3rem; color:rgba(17,16,9,0.85); line-height:1.4; margin-bottom:1.8rem;">
-                Thank you for reaching out! I'll get back to your message soon.
-              </p>
-              <div style="display:flex; flex-direction:column; gap:0.65rem; align-items:center;">
-                <button type="button" class="fsub" style="border:none; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; padding:0.65rem 1.4rem; font-size:1.15rem; width:100%; max-width:240px; cursor:pointer;" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                  ↑ Back to Top / Work
-                </button>
-                <button type="button" class="fsub" style="background:transparent; border:1.5px solid rgba(17,16,9,0.3); color:#111009; font-size:1rem; cursor:pointer; padding:0.45rem 1rem; width:100%; max-width:240px;" onclick="location.reload()">
-                  Write Another Note
-                </button>
-              </div>
-            </div>
-          `;
-      });
+          contactForm.reset();
+          setTimeout(() => {
+            if (btn) {
+              btn.disabled = false;
+              btn.querySelector('span').textContent = 'Send Message';
+              btn.style.background = '';
+              btn.style.borderColor = '';
+            }
+            if (plane) {
+              plane.style.transform = 'translate(0,0) scale(1)';
+              plane.style.opacity = '1';
+            }
+          }, 4000);
+        } else {
+          throw new Error('Network error');
+        }
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.querySelector('span').textContent = 'Error! Try Again';
+          btn.style.background = '#dc3545';
+        }
+      }
+    });
   }
-</script>
+
+  // 11. BFCache Restoration
+  window.addEventListener('pageshow', function(event) {
+    document.querySelectorAll('.rv, .reveal, .sec, .hero, .about, .contact').forEach(el => {
+      el.classList.add('show', 'visible');
+    });
+  });
+  </script>
+
 </body>
 
 </html>
