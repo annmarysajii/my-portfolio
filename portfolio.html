@@ -953,13 +953,10 @@ button{cursor:none;font-family:inherit;}
 <style>
 /* Smooth Page Load Overlay */
 #page-transition-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 999999;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 .loaded #page-transition-overlay {
     opacity: 0;
@@ -970,6 +967,21 @@ button{cursor:none;font-family:inherit;}
 [data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
 </style>
 
+<style>
+/* CRITICAL FIX FOR IPAD AIR: FORCE ALL SECTIONS AND CONTENT VISIBLE */
+html, body {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+#wrap, .hero, .about, .contact, .sec, .card, .rv, .reveal {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+#page-transition-overlay {
+    display: none !important;
+}
+</style>
 </head>
 
 <body>

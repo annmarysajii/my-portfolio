@@ -1,68 +1,27 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
-    // 1. Intersection Observer for Scroll Reveals
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Force reveal all elements immediately on iPad / all screens
+    const forceShow = () => {
+        document.querySelectorAll('.sec, .card, .gw-header, .sec-title, .gallery-h, .text-block, .reveal, .rv').forEach(el => {
+            el.classList.add('visible', 'show');
         });
-    }, { threshold: 0.05, rootMargin: "0px 0px -40px 0px" });
+    };
+    forceShow();
+    window.addEventListener('load', forceShow);
+    setTimeout(forceShow, 200);
+    setTimeout(forceShow, 800);
 
-    document.querySelectorAll('.sec, .card, .gw-header, .sec-title, .gallery-h, .text-block').forEach(el => {
-        if (!el.classList.contains('reveal')) {
-            el.classList.add('reveal');
-        }
-        observer.observe(el);
-    });
-
-    // 2. Smooth Page Transitions
+    // 2. Smooth Page Transitions (Safe)
     const links = document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"]):not([download])');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
-            if (href && !href.startsWith('mailto:') && !href.startsWith('javascript:')) {
-                e.preventDefault();
-                document.body.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 350); 
+            if (href && !href.startsWith('mailto:') && !href.startsWith('javascript:') && !href.startsWith('tel:')) {
+                // allow normal navigation
             }
         });
     });
-
-    // 3. 3D Tilt Effect on Cards
-    const cards = document.querySelectorAll('.card-img, .gw-opt');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            // Max tilt 4 degrees
-            const rotateX = ((y - centerY) / centerY) * -4;
-            const rotateY = ((x - centerX) / centerX) * 4;
-            
-            card.style.transform = `perspective(1000px) scale3d(1.01, 1.01, 1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
-            setTimeout(() => {
-                card.style.transition = '';
-            }, 100);
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
-    });
 });
-
-    
-    // 4. Text Splitting for Typography Animations
+// 4. Text Splitting for Typography Animations
     document.querySelectorAll('.sec-title').forEach(title => {
         const html = title.innerHTML;
         const parts = html.split(/<br\s*\/?>/i);
