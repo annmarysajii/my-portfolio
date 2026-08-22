@@ -420,6 +420,52 @@ img{display:block;max-width:100%;}
 }
 </style>
 
+<style>
+/* === SKELETON SHIMMER STYLES === */
+.card-img, .shimmer-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #EBE8E1 !important;
+    min-height: 180px;
+    border-radius: 4px;
+}
+[data-theme="dark"] .card-img, [data-theme="dark"] .shimmer-wrap {
+    background: #14131D !important;
+}
+
+.card-img:not(.media-loaded)::before, .shimmer-wrap:not(.loaded)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s infinite linear;
+    z-index: 1;
+    pointer-events: none;
+}
+[data-theme="dark"] .card-img:not(.media-loaded)::before, [data-theme="dark"] .shimmer-wrap:not(.loaded)::before {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0) 100%);
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.card-img img, .card-img video, .shimmer-wrap img, .shimmer-wrap video {
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-img.media-loaded img, .card-img.media-loaded video, .shimmer-wrap.loaded img, .shimmer-wrap.loaded video {
+    opacity: 1 !important;
+}
+</style>
 </head>
 
 <body>
