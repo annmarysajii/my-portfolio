@@ -476,7 +476,7 @@ const HUES=[0,210,45]; // red, blue, yellow
 
 function rsz(){bW=bgC.width=innerWidth;bH=bgC.height=innerHeight;}
 
-window.addEventListener('resize',rsz);rsz();
+rsz();
 
 
 
@@ -584,7 +584,7 @@ let W,H,wStars=[],prog=0,dest='';
 
 function rszW(){W=wc.width=innerWidth;H=wc.height=innerHeight;}
 
-window.addEventListener('resize',rszW);rszW();
+window.addEventListener('resize', () => { rsz(); rszW(); });rszW();
 
 const pref=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 

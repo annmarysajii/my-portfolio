@@ -31,18 +31,12 @@
     });
   }
 
-  // Delegate for dynamic content
+  // Delegate for dynamic hover & dark background states
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest('a, button, .project-card, .gateway__option, .dl-btn, .social-link, .track-item');
-    if (target) {
-      cursor.classList.add('hover');
-    } else {
-      cursor.classList.remove('hover');
-    }
-  });
+    if (target) cursor.classList.add('hover');
+    else cursor.classList.remove('hover');
 
-  // Dark bg sections
-  document.addEventListener('mouseover', (e) => {
     const dark = e.target.closest('.about, .downloads, .footer, .case-hero');
     if (dark) cursor.classList.add('on-dark');
     else cursor.classList.remove('on-dark');
