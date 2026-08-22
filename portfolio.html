@@ -164,7 +164,7 @@ button{cursor:none;font-family:inherit;}
 
 ================================================================ */
 
-.from-warp #wrap{animation:zIn .72s cubic-bezier(.4,0,.2,1) both;}
+.from-warp #wrap{animation:zIn .5s cubic-bezier(.4,0,.2,1) forwards;will-change:transform,opacity;}
 
 @keyframes zIn{
 
@@ -260,7 +260,7 @@ button{cursor:none;font-family:inherit;}
 
 ================================================================ */
 
-.hero{min-height:100svh;display:flex;flex-direction:column;padding-top:76px;}
+.hero{min-height:100vh;min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;padding-top:76px;}
 
 .hero-body{
 
@@ -2218,39 +2218,52 @@ window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{pass
 
 
 
-// Zoom entry
+// Zoom entry & Filtering
+const f = new URLSearchParams(location.search).get('f');
+if (f) document.body.classList.add('from-warp');
 
-const f=new URLSearchParams(location.search).get('f');
-
-if(f) document.body.classList.add('from-warp');
-
-if(f==='about'){window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('about')?.scrollIntoView({behavior:'smooth'}),900);});}
-
-if(f&&f!=='all'&&f!=='about'){
-
-  const m={anim:['animation','illustration'],brand:['graphic-design','videography']};
-
-  const ids=m[f]||[];
-
-  if(ids.length) document.querySelectorAll('.sec[id]').forEach(s=>{if(!ids.includes(s.id))s.style.display='none';});
-
+if (f === 'about') {
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 500);
+  });
 }
 
+if (f && f !== 'all' && f !== 'about') {
+  const m = { anim: ['animation', 'illustration'], brand: ['graphic-design', 'videography'] };
+  const ids = m[f] || [];
+  if (ids.length) {
+    const keepAlways = ['hero', 'downloads', 'about', 'contact', 'awards'];
+    document.querySelectorAll('.sec[id]').forEach(s => {
+      if (!keepAlways.includes(s.id) && !ids.includes(s.id)) {
+        s.style.display = 'none';
+      }
+    });
+  }
+}
 
+// Reveal with iPadOS / Safari robust fallback
+const rvs = document.querySelectorAll('.rv');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('show');
+      io.unobserve(e.target);
+    }
+  }), { threshold: 0.01, rootMargin: '80px 0px 80px 0px' });
+  rvs.forEach(el => io.observe(el));
+} else {
+  rvs.forEach(el => el.classList.add('show'));
+}
 
-// Reveal
-
-const rvs=document.querySelectorAll('.rv');
-
-if('IntersectionObserver' in window){
-
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.08});
-
-  rvs.forEach(el=>io.observe(el));
-
-}else{rvs.forEach(el=>el.classList.add('show'));}
-
-requestAnimationFrame(()=>document.querySelectorAll('#hero .rv').forEach(el=>el.classList.add('show')));
+// Immediate reveal for Hero and failsafe reveal for all sections on iPad
+function forceShowAll() {
+  document.querySelectorAll('.rv').forEach(el => el.classList.add('show'));
+}
+document.querySelectorAll('#hero .rv, .hero .rv').forEach(el => el.classList.add('show'));
+window.addEventListener('DOMContentLoaded', forceShowAll);
+window.addEventListener('load', forceShowAll);
+setTimeout(forceShowAll, 500);
+setTimeout(forceShowAll, 1200);
 
 
 
