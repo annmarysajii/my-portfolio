@@ -2282,7 +2282,7 @@ const PROJECTS = {
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
                     <h2 class="cs-heading" style="margin-bottom:0; border-bottom:none;">${isNangeli ? 'Nangeli' : 'CAO Internship Comics'} — Reading View</h2>
                     <div style="display:flex; gap:0.75rem;">
-                        <button id="view-mode-book" style="background:var(--ink); color:var(--bg); border:none; padding:0.6rem 1.2rem; border-radius:20px; font-weight:600; cursor:pointer; font-size:0.85rem;">📖 Two-Page Spread</button>
+                        <button id="view-mode-book" style="background:var(--ink); color:var(--bg); border:none; padding:0.6rem 1.2rem; border-radius:20px; font-weight:600; cursor:pointer; font-size:0.85rem;"><i data-lucide="book-open" style="width:14px; height:14px; margin-right:4px; display:inline-block; vertical-align:middle;"></i> Two-Page Spread</button>
                         <button id="view-mode-scroll" style="background:var(--surf); color:var(--ink); border:1px solid var(--line); padding:0.6rem 1.2rem; border-radius:20px; font-weight:600; cursor:pointer; font-size:0.85rem;">📜 Full Strip View</button>
                     </div>
                 </div>
@@ -2904,7 +2904,21 @@ if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
-              let albumHtml = styleBlock + '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}</style><div class="album-grid">';
+              let albumHtml = styleBlock + `
+              <div class="jasmine-multimedia-banner" style="margin-top: 1rem; margin-bottom: 3rem; padding: 2.25rem 2rem; background: linear-gradient(135deg, #161226, #281B45); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; color: #fff; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                <div>
+                  <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:#A78BFA; font-weight:700; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="sparkles" style="width:14px; height:14px;"></i> Capstone Multimedia Experience
+                  </div>
+                  <h3 style="font-family:'Clash Display', sans-serif; font-size:1.75rem; margin:0 0 0.5rem 0; color:#fff; font-weight:700;">Launch Interactive Screenplay & Music Reader</h3>
+                  <p style="color:rgba(255,255,255,0.75); margin:0; font-size:0.95rem; max-width:560px; line-height:1.5;">Experience the synchronized audio-visual web reader where original orchestral tracks, script dialog, and chapter illustrations play together in real-time.</p>
+                </div>
+                <a href="jasmine_reader.html" class="interactive-launch-btn" style="padding:0.9rem 1.8rem; background:#FAF8F4; color:#111; font-weight:700; border-radius:30px; text-decoration:none; display:inline-flex; align-items:center; gap:0.6rem; font-family:'General Sans', sans-serif; font-size:0.95rem; transition:transform 0.2s, box-shadow 0.2s; box-shadow:0 8px 20px rgba(0,0,0,0.25);">
+                  <span>Launch Experience</span>
+                  <i data-lucide="arrow-up-right" style="width:16px; height:16px;"></i>
+                </a>
+              </div>
+` + '<style>.album-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;}</style><div class="album-grid">';
               const count = Math.min(imgs.length, audios.length);
               for(let i=0; i<count; i++) {
                   let img = imgs[i] ? `<img src="${imgs[i]}" alt="Track ${i+1}" style="width:100%; height:auto; border-radius:6px 6px 0 0; display:block;">` : '';
