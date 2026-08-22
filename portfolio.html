@@ -1888,7 +1888,7 @@ button{cursor:none;font-family:inherit;}
     }
   });
 
-  // 8. In-Memory Image Preloader with True Skeleton Shimmer Waves
+    // 8. Robust Image Preloader with Instant Local & Cache Rendering
   (function initMediaPreloaders() {
     const data = window.PORTFOLIO_DATA;
     if (!data) return;
@@ -1930,53 +1930,42 @@ button{cursor:none;font-family:inherit;}
         if (isYouTube) {
           const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
           const ytId = ytMatch ? ytMatch[1] : '';
-          const img = new Image();
-          img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-          img.onload = () => {
-            a.innerHTML = '';
-            a.appendChild(img);
-            requestAnimationFrame(() => a.classList.add('media-loaded'));
-          };
+          const img = document.createElement('img');
+          img.alt = 'YouTube Video';
+          img.onload = () => a.classList.add('media-loaded');
           img.onerror = () => {
             img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-            a.innerHTML = '';
-            a.appendChild(img);
             a.classList.add('media-loaded');
           };
+          img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+          a.innerHTML = '';
+          a.appendChild(img);
+          if (img.complete) a.classList.add('media-loaded');
         } else if (file.match(/\.(mp4|mov|webm)$/i)) {
           const video = document.createElement('video');
-          video.src = file;
           video.autoplay = true;
           video.loop = true;
           video.muted = true;
           video.playsInline = true;
           video.setAttribute('webkit-playsinline', 'true');
-          video.oncanplay = () => {
-            a.innerHTML = '';
-            a.appendChild(video);
-            requestAnimationFrame(() => a.classList.add('media-loaded'));
-          };
-          video.onerror = () => {
-            a.classList.add('media-loaded');
-          };
+          video.oncanplay = () => a.classList.add('media-loaded');
+          video.onloadeddata = () => a.classList.add('media-loaded');
+          video.onerror = () => a.classList.add('media-loaded');
+          video.src = file;
+          a.innerHTML = '';
+          a.appendChild(video);
+          setTimeout(() => a.classList.add('media-loaded'), 600);
         } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
-          const img = new Image();
+          const img = document.createElement('img');
+          img.alt = '';
+          img.loading = 'lazy';
           img.decoding = 'async';
+          img.onload = () => a.classList.add('media-loaded');
+          img.onerror = () => a.classList.add('media-loaded');
           img.src = file;
-          
-          img.onload = () => {
-            a.innerHTML = '';
-            a.appendChild(img);
-            requestAnimationFrame(() => a.classList.add('media-loaded'));
-          };
-          img.onerror = () => {
-            a.classList.add('media-loaded');
-          };
-          if (img.complete && img.naturalWidth > 0) {
-            a.innerHTML = '';
-            a.appendChild(img);
-            a.classList.add('media-loaded');
-          }
+          a.innerHTML = '';
+          a.appendChild(img);
+          if (img.complete) a.classList.add('media-loaded');
         } else if (file.match(/\.(pdf)$/i)) {
           a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
           a.classList.add('media-loaded');
@@ -1986,6 +1975,11 @@ button{cursor:none;font-family:inherit;}
         }
       }
     });
+
+    // Safety fallback: reveal any media after 1.5s so nothing ever gets stuck in shimmer
+    setTimeout(() => {
+      document.querySelectorAll('a.card-img').forEach(a => a.classList.add('media-loaded'));
+    }, 1500);
 
     if (window.lucide) window.lucide.createIcons();
   })();
