@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-});
-// 4. Text Splitting for Typography Animations
+
+    // 3. Text Splitting for Thematic Typography Animations
     document.querySelectorAll('.sec-title').forEach(title => {
         const html = title.innerHTML;
         const parts = html.split(/<br\s*\/?>/i);
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const text = tempDiv.textContent; 
             
             let partHtml = '';
-            for(let i=0; i<text.length; i++){
+            for(let i = 0; i < text.length; i++){
                 const char = text[i];
                 if(char === ' ') {
                     partHtml += ' '; 
@@ -62,42 +62,41 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.querySelectorAll('.sec-title').forEach(el => typeObserver.observe(el));
 
-
-    // 5. Thematic Falling Backgrounds
+    // 4. Thematic Falling Backgrounds
     let intersectingSecs = new Set();
-const bgObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            intersectingSecs.add(entry.target);
-        } else {
-            intersectingSecs.delete(entry.target);
-        }
-    });
-    
-    let best = null;
-    let minDiff = Infinity;
-    const centerY = window.innerHeight * 0.5;
-    
-    intersectingSecs.forEach(sec => {
-        const rect = sec.getBoundingClientRect();
-        // If it's the music section (last) and we're at the bottom of the page, prioritize it
-        if (sec.id === 'music' && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-            best = sec;
-            minDiff = -1; // force it
-        } else {
-            const secCenter = rect.top + rect.height/2;
-            const diff = Math.abs(secCenter - centerY);
-            if (diff < minDiff) {
-                minDiff = diff;
-                best = sec;
+    const bgObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                intersectingSecs.add(entry.target);
+            } else {
+                intersectingSecs.delete(entry.target);
             }
+        });
+        
+        let best = null;
+        let minDiff = Infinity;
+        const centerY = window.innerHeight * 0.5;
+        
+        intersectingSecs.forEach(sec => {
+            const rect = sec.getBoundingClientRect();
+            if (sec.id === 'music' && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                best = sec;
+                minDiff = -1;
+            } else {
+                const secCenter = rect.top + rect.height/2;
+                const diff = Math.abs(secCenter - centerY);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    best = sec;
+                }
+            }
+        });
+        
+        if (best) {
+            if (best.classList.contains('hero')) window.currentCanvasTheme = 'star';
+            else if (best.id) window.currentCanvasTheme = best.id;
         }
-    });
-    
-    if (best) {
-        if (best.classList.contains('hero')) window.currentCanvasTheme = 'star';
-        else if (best.id) window.currentCanvasTheme = best.id;
-    }
-}, { threshold: [0, 0.1, 0.2, 0.3, 0.5] });
+    }, { threshold: [0, 0.1, 0.2, 0.3, 0.5] });
     
     document.querySelectorAll('.sec, .hero').forEach(el => bgObserver.observe(el));
+});

@@ -111,6 +111,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/jasmine comic full/What_we_could_have_been_screenplay chapter.pdf"
   ],
   "jasmine-album": [
+    "assets/portfolio-data/Jasmine_music_concept album/jasmine cover album.jpg",
     "assets/portfolio-data/Jasmine_music_concept album/1.png",
     "assets/portfolio-data/Jasmine_music_concept album/2.png",
     "assets/portfolio-data/Jasmine_music_concept album/3.png",
@@ -118,15 +119,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Jasmine_music_concept album/5.png",
     "assets/portfolio-data/Jasmine_music_concept album/6.png",
     "assets/portfolio-data/Jasmine_music_concept album/7.png",
-    "assets/portfolio-data/Jasmine_music_concept album/Home pt 1.wav",
-    "assets/portfolio-data/Jasmine_music_concept album/Home_Jazz Track sample.wav",
-    "assets/portfolio-data/Jasmine_music_concept album/Jasmine (prologue) (2).wav",
-    "assets/portfolio-data/Jasmine_music_concept album/jasmine cover album.jpg",
-    "assets/portfolio-data/Jasmine_music_concept album/Night time .wav",
-    "assets/portfolio-data/Jasmine_music_concept album/Rocky roadss (3).wav",
-    "assets/portfolio-data/Jasmine_music_concept album/Simple as that (2).wav",
-    "assets/portfolio-data/Jasmine_music_concept album/What we coud.png",
-    "assets/portfolio-data/Jasmine_music_concept album/What we could have been .wav"
+    "assets/portfolio-data/Jasmine_music_concept album/What we coud.png"
   ],
   "jasmine-visdev": [
     "assets/portfolio-data/Jasmine_Visdev/actual pic of someone reading my work.jpg",
