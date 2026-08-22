@@ -10,7 +10,6 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/extracted_covers/vipcolor_teaser.png",
     "assets/vidtogif/vipcolor_vid.gif"
   ],
-
   "a-stray-dog": [
     "https://youtu.be/uyy00VsBLS4"
   ],
@@ -32,16 +31,20 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Character and concept art/Illustration37.png"
   ],
   "chase": [
-    "https://youtu.be/QMuH2Njl0yg"
+    "https://youtu.be/QMuH2Njl0yg",
+    "assets/portfolio-data/Chase_storyboard/scene2.1shot.png",
+    "assets/portfolio-data/Chase_storyboard/anticipation pose.png",
+    "assets/portfolio-data/Chase_storyboard/akira slide.png",
+    "assets/portfolio-data/Chase_storyboard/bye2.png"
   ],
   "dear-friend": [
-      "https://youtu.be/BPYEYUmrWfg",
-      "assets/portfolio-data/Dear friend/credit1.png",
-      "assets/portfolio-data/Dear friend/rain7.png",
-      "assets/portfolio-data/Dear friend/room layout.png",
-      "assets/portfolio-data/Dear friend/staticshot_4.png",
-      "assets/portfolio-data/Dear friend/topshotd.png"
-    ],
+    "https://youtu.be/BPYEYUmrWfg",
+    "assets/portfolio-data/Dear friend/credit1.png",
+    "assets/portfolio-data/Dear friend/rain7.png",
+    "assets/portfolio-data/Dear friend/room layout.png",
+    "assets/portfolio-data/Dear friend/staticshot_4.png",
+    "assets/portfolio-data/Dear friend/topshotd.png"
+  ],
   "digital-paintings": [
     "assets/portfolio-data/Digital painting/a6_ann.png",
     "assets/portfolio-data/Digital painting/dino story.png",
@@ -84,7 +87,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Green arrow/LOGO GREEN ARROW.png",
     "assets/portfolio-data/Green arrow/presents.png"
   ],
-    "internship-comics": [
+  "internship-comics": [
     "assets/portfolio-data/Internship experience comic series/opening pah.png",
     "assets/portfolio-data/Internship experience comic series/page 1 story 1.png",
     "assets/portfolio-data/Internship experience comic series/page 2 story 1.png",
@@ -161,7 +164,7 @@ window.PORTFOLIO_DATA = {
     "https://youtu.be/T9ksoqWrJBs"
   ],
   "nangele": [
-      "assets/portfolio-data/Nangeli/nangeli cover image.png",
+    "assets/portfolio-data/Nangeli/nangeli cover image.png",
     "assets/portfolio-data/Nangeli/nangeli starting page.png",
     "assets/portfolio-data/Nangeli/nangeli pg 2.png",
     "assets/portfolio-data/Nangeli/nangeli pg 3.png",
@@ -181,9 +184,10 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Nangeli/nangeli pg 17.png",
     "assets/portfolio-data/Nangeli/nangeli pg 18.png",
     "assets/portfolio-data/Nangeli/nangeli pg 19.png",
-    "assets/portfolio-data/Nangeli/nangeli pg 20.png"
+    "assets/portfolio-data/Nangeli/nangeli pg 20.png",
+    "assets/portfolio-data/Nangeli/nangeli pg 21.png"
   ],
-    "ntu-fest": [
+  "ntu-fest": [
     "assets/portfolio-data/Ntu fest assets/ntufest_portfoliogif.gif.mp4",
     "https://youtu.be/5aHRfGrV92o",
     "assets/portfolio-data/Ntu fest assets/ntufest_banner.png",
