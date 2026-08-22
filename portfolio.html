@@ -733,7 +733,8 @@ button{cursor:none;font-family:inherit;}
 </style>
 
 <style>
-/* === SKELETON SHIMMER WAVE & IPAD COMPATIBILITY === */
+
+/* === ULTRA-VIBRANT SKELETON SHIMMER SYSTEM === */
 .card-img {
     display: block !important;
     position: relative !important;
@@ -744,27 +745,34 @@ button{cursor:none;font-family:inherit;}
     border-bottom: 1.5px solid var(--ink12) !important;
 }
 [data-theme="dark"] .card-img {
-    background: #151420 !important;
+    background: #1A1926 !important;
 }
 
 .card-img:not(.media-loaded)::after {
     content: '' !important;
     position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%) !important;
+    inset: 0 !important;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.85) 50%,
+        rgba(255, 255, 255, 0) 100%
+    ) !important;
     background-size: 200% 100% !important;
-    animation: shimmerWave 1.3s infinite ease-in-out !important;
+    animation: vibrantShimmer 1.2s infinite linear !important;
     z-index: 5 !important;
     pointer-events: none !important;
 }
 [data-theme="dark"] .card-img:not(.media-loaded)::after {
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%) !important;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+    ) !important;
 }
 
-@keyframes shimmerWave {
+@keyframes vibrantShimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
 }
@@ -774,13 +782,14 @@ button{cursor:none;font-family:inherit;}
     height: 100% !important;
     object-fit: cover !important;
     opacity: 0 !important;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
     display: block !important;
 }
 
 .card-img.media-loaded img, .card-img.media-loaded video {
     opacity: 1 !important;
 }
+
 
 /* Touch & Cursor safety */
 @media (pointer: coarse), (hover: none) {
@@ -1896,28 +1905,40 @@ button{cursor:none;font-family:inherit;}
     }
   });
 
-    // 8. Robust Image Preloader with Instant Local & Cache Rendering
+      // 8. Robust Image Preloader with True Shimmer & Decode
   (function initMediaPreloaders() {
     const data = window.PORTFOLIO_DATA;
     if (!data) return;
 
     const coverOverrides = {
-      'ntu-fest': 'assets/vidtogif/ntu fest banner final.gif',
-      'gobunny': 'assets/portfolio-data/GoBunny_brand/GO BUNNY.png',
       'keep-yourself-safe': 'assets/vidtogif/KEEP_YOURSELF_SAFE.gif',
-      'dear-friend': 'assets/vidtogif/dear_friend.gif',
       'a-stray-dog': 'assets/vidtogif/A-STRAY-DOG.gif',
+      'dear-friend': 'assets/vidtogif/dear_friend.gif',
       'chase': 'assets/vidtogif/The_chase.gif',
+      'jasmine-visdev': 'assets/portfolio-data/Jasmine_Visdev/full band color.png',
+      'digital-paintings': 'assets/portfolio-data/Digital painting/horse study.png',
+      'wellbeing-planner': 'assets/portfolio-data/Campus wellbeing comic/FINAL IMAGE.png',
+      'internship-comics': 'assets/portfolio-data/Internship experience comic series/opening pah.png',
+      'jasmine-comic': 'assets/portfolio-data/Jasmine_Visdev/jazz entrance_color.png',
+      'freelance-commissions': 'assets/portfolio-data/Character and concept art/Illustration37.png',
+      'nangele': 'assets/portfolio-data/Nangeli/nangeli cover image.png',
+      'gcf-documentary': 'assets/vidtogif/GCF VIDEO FOR ORIENTATION.gif',
       'socrat-ai': 'assets/vidtogif/HDR_SOCRATVIDEO.gif',
       'vipcolor-video': 'assets/vidtogif/vipcolor_vid.gif',
-      'gcf-documentary': 'assets/vidtogif/GCF VIDEO FOR ORIENTATION.gif',
       'music-district-video': 'assets/vidtogif/musicdistrict_projection.gif',
-      'short-film-score': 'assets/vidtogif/solace_shortfilmscore.gif',
-      'jasmine-visdev': 'assets/portfolio-data/Jasmine_Visdev/full band color.png',
-      'jasmine-comic': 'assets/portfolio-data/Jasmine_Visdev/jazz entrance_color.png',
-      'jasmine-album': 'assets/portfolio-data/Jasmine_music_concept album/1.png',
       'elevandi': 'assets/portfolio-data/extracted_covers/elevandi_pr_cover.png',
-      'vipcolor-campaign': 'assets/portfolio-data/extracted_covers/vipcolor_campaign_cover.png'
+      'rekindle': 'assets/portfolio-data/RE-kindle/rekindle cover.png',
+      'vipcolor-campaign': 'assets/portfolio-data/extracted_covers/vipcolor_campaign_cover.png',
+      'ntu-banners': 'assets/portfolio-data/NTU web and social banners/GLOW SQUARE poster.png',
+      'ntu-fest': 'assets/vidtogif/ntu fest banner final.gif',
+      'obesity-infographic': 'assets/portfolio-data/obesity/1.png',
+      'music-district-design': 'assets/portfolio-data/Music district assets/11 february (2).png',
+      'gobunny': 'assets/portfolio-data/GoBunny_brand/GO BUNNY.png',
+      'green-arrow': 'assets/portfolio-data/Green arrow/LOGO GREEN ARROW.png',
+      'mock-posters': 'assets/portfolio-data/Event posters/professional works/CHAT w CHAAT.png',
+      'jasmine-album': 'assets/portfolio-data/Jasmine_music_concept album/1.png',
+      'short-film-score': 'assets/vidtogif/solace_shortfilmscore.gif',
+      'original-tracks': 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a'
     };
 
     document.querySelectorAll('a.card-img').forEach(a => {
@@ -1940,17 +1961,19 @@ button{cursor:none;font-family:inherit;}
         if (isYouTube) {
           const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
           const ytId = ytMatch ? ytMatch[1] : '';
-          const img = document.createElement('img');
-          img.alt = 'YouTube Video';
-          img.onload = () => a.classList.add('media-loaded');
+          const img = new Image();
+          img.onload = () => {
+            a.innerHTML = '';
+            a.appendChild(img);
+            requestAnimationFrame(() => a.classList.add('media-loaded'));
+          };
           img.onerror = () => {
             img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            a.innerHTML = '';
+            a.appendChild(img);
             a.classList.add('media-loaded');
           };
           img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-          a.innerHTML = '';
-          a.appendChild(img);
-          if (img.complete) a.classList.add('media-loaded');
         } else if (file.match(/\.(mp4|mov|webm)$/i)) {
           const video = document.createElement('video');
           video.autoplay = true;
@@ -1958,24 +1981,43 @@ button{cursor:none;font-family:inherit;}
           video.muted = true;
           video.playsInline = true;
           video.setAttribute('webkit-playsinline', 'true');
-          video.oncanplay = () => a.classList.add('media-loaded');
-          video.onloadeddata = () => a.classList.add('media-loaded');
+          const onVideoReady = () => {
+            a.innerHTML = '';
+            a.appendChild(video);
+            requestAnimationFrame(() => a.classList.add('media-loaded'));
+          };
+          video.oncanplay = onVideoReady;
+          video.onloadeddata = onVideoReady;
           video.onerror = () => a.classList.add('media-loaded');
           video.src = file;
-          a.innerHTML = '';
-          a.appendChild(video);
-          setTimeout(() => a.classList.add('media-loaded'), 600);
+          setTimeout(() => a.classList.add('media-loaded'), 800);
         } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
-          const img = document.createElement('img');
-          img.alt = '';
-          img.loading = 'lazy';
+          const img = new Image();
           img.decoding = 'async';
-          img.onload = () => a.classList.add('media-loaded');
-          img.onerror = () => a.classList.add('media-loaded');
-          img.src = file;
-          a.innerHTML = '';
-          a.appendChild(img);
-          if (img.complete) a.classList.add('media-loaded');
+          
+          const showImage = () => {
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.display = 'block';
+            a.innerHTML = '';
+            a.appendChild(img);
+            requestAnimationFrame(() => {
+              a.classList.add('media-loaded');
+            });
+          };
+
+          if (img.decode) {
+            img.src = file;
+            img.decode().then(showImage).catch(() => {
+              img.onload = showImage;
+              img.onerror = () => a.classList.add('media-loaded');
+            });
+          } else {
+            img.onload = showImage;
+            img.onerror = () => a.classList.add('media-loaded');
+            img.src = file;
+          }
         } else if (file.match(/\.(pdf)$/i)) {
           a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
           a.classList.add('media-loaded');
@@ -1985,11 +2027,6 @@ button{cursor:none;font-family:inherit;}
         }
       }
     });
-
-    // Safety fallback: reveal any media after 1.5s so nothing ever gets stuck in shimmer
-    setTimeout(() => {
-      document.querySelectorAll('a.card-img').forEach(a => a.classList.add('media-loaded'));
-    }, 1500);
 
     if (window.lucide) window.lucide.createIcons();
   })();
