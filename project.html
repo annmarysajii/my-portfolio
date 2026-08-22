@@ -466,6 +466,33 @@ img{display:block;max-width:100%;}
     opacity: 1 !important;
 }
 </style>
+<style>
+/* === GALLERY SHIMMER STYLES === */
+.gallery-img {
+    position: relative !important;
+    overflow: hidden !important;
+    background: #E8E5DD !important;
+}
+[data-theme="dark"] .gallery-img {
+    background: #151420 !important;
+}
+.gallery-img:not(.media-loaded)::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%) !important;
+    background-size: 200% 100% !important;
+    animation: shimmerWave 1.3s infinite ease-in-out !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+}
+[data-theme="dark"] .gallery-img:not(.media-loaded)::after {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%) !important;
+}
+</style>
 </head>
 
 <body>
