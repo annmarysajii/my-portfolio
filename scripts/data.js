@@ -1,4 +1,16 @@
 window.PORTFOLIO_DATA = {
+  "elevandi": [
+    "assets/portfolio-data/extracted_covers/elevandi_pr_cover.png",
+    "assets/portfolio-data/NTU web and social banners/GLOW SQUARE poster.png",
+    "assets/portfolio-data/NTU web and social banners/ntu banner.png",
+    "assets/portfolio-data/NTU web and social banners/wssbanner.png"
+  ],
+  "vipcolor-campaign": [
+    "assets/portfolio-data/extracted_covers/vipcolor_campaign_cover.png",
+    "assets/portfolio-data/extracted_covers/vipcolor_teaser.png",
+    "assets/vidtogif/vipcolor_vid.gif"
+  ],
+
   "a-stray-dog": [
     "https://youtu.be/uyy00VsBLS4"
   ],
