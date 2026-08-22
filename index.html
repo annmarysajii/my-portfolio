@@ -309,6 +309,12 @@ body::after{
 [data-theme="dark"] .awards-h, [data-theme="dark"] .aw-n { color: #F0EEF5 !important; }
 [data-theme="dark"] .aw-t { color: rgba(240,238,245,0.7) !important; }
 [data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
+
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  #cur { display: none !important; }
+  body, button, a, input, textarea, select, canvas { cursor: auto !important; }
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>

@@ -394,6 +394,12 @@ img{display:block;max-width:100%;}
 
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 
+
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  #cur { display: none !important; }
+  body, button, a, input, textarea, select, canvas { cursor: auto !important; }
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
@@ -1891,13 +1897,13 @@ const PROJECTS = {
               }
           }
       } else if (isVideo) {
-          el = `<video class="media-el full-width" src="${file}" controls style="width:100%; height:auto; display:block; background:var(--surf); border-radius:8px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
+          el = `<video class="media-el full-width" src="${file}" controls playsinline webkit-playsinline style="width:100%; height:auto; display:block; background:var(--surf); border-radius:8px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
       } else if (isAudio) {
           el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
             <div style="width:90px; height:90px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
             </div>
-            <audio src="${file}" controls style="width:100%; outline:none; height:40px;"></audio>
+            <audio src="${file}" controls playsinline webkit-playsinline style="width:100%; outline:none; height:40px;"></audio>
           </div>`;
       } else if (isPDF) {
           el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
@@ -2829,7 +2835,7 @@ if (id === 'jasmine-album') {
               const count = Math.min(imgs.length, audios.length);
               for(let i=0; i<count; i++) {
                   let img = imgs[i] ? `<img src="${imgs[i]}" alt="Track ${i+1}" style="width:100%; height:auto; border-radius:6px 6px 0 0; display:block;">` : '';
-                  let aud = audios[i] ? `<audio src="${audios[i]}" controls style="width:100%; outline:none; height:40px;"></audio>` : '';
+                  let aud = audios[i] ? `<audio src="${audios[i]}" controls playsinline webkit-playsinline style="width:100%; outline:none; height:40px;"></audio>` : '';
                   let title = audios[i] ? audios[i].split('/').pop().replace(/\.(wav|mp3|m4a)$/i, '') : `Track ${i+1}`;
                   albumHtml += `<div style="background:var(--surf); border:1px solid var(--line); border-radius:6px; overflow:hidden;">
                       ${img}

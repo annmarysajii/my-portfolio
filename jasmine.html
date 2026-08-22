@@ -89,7 +89,13 @@
       transition: border-color 0.2s, color 0.2s;
     }
     .back-btn:hover { border-color: var(--page-accent-sat); color: var(--page-accent-sat); }
-  </style>
+  
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  #cur { display: none !important; }
+  body, button, a, input, textarea, select, canvas { cursor: auto !important; }
+}
+
+</style>
   <link rel="stylesheet" href="css/motion.css"/>
 </head>
 <body>

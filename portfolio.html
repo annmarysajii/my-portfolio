@@ -851,6 +851,12 @@ button{cursor:none;font-family:inherit;}
     border-bottom-color: #00D2FF;
 }
 
+
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  #cur { display: none !important; }
+  body, button, a, input, textarea, select, canvas { cursor: auto !important; }
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css"/>
