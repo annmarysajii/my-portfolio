@@ -3035,7 +3035,7 @@ const PROJECTS = {
                     </div>
                     
                     <div id="track-list" style="display:flex; flex-direction:column; gap:1rem;"></div>
-                    <audio id="main-audio" preload="auto"></audio>
+                    <audio id="main-audio" preload="auto" crossorigin="anonymous"></audio>
                   </div>
                   
                 </div>
@@ -3119,6 +3119,35 @@ const PROJECTS = {
               let vRot = 0;
               let speedMultiplier = 1.0;
               
+              // Web Audio API Frequency Analysis Engine
+              let audioCtx = null;
+              let analyser = null;
+              let audioSource = null;
+              let freqData = null;
+              
+              function initWebAudio() {
+                if (!audioCtx) {
+                  try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) {
+                      audioCtx = new AudioContextClass();
+                      analyser = audioCtx.createAnalyser();
+                      analyser.fftSize = 256;
+                      analyser.smoothingTimeConstant = 0.8;
+                      freqData = new Uint8Array(analyser.frequencyBinCount);
+                      audioSource = audioCtx.createMediaElementSource(audio);
+                      audioSource.connect(analyser);
+                      analyser.connect(audioCtx.destination);
+                    }
+                  } catch (e) {
+                    console.log('Web Audio init fallback:', e);
+                  }
+                }
+                if (audioCtx && audioCtx.state === 'suspended') {
+                  audioCtx.resume();
+                }
+              }
+              
               // Load active track immediately
               audio.src = encodeURI(tracks[currentIdx].file);
               audio.volume = 1.0;
@@ -3197,21 +3226,26 @@ const PROJECTS = {
               // REFERENCE VISUAL ARRAYS & PARTICLES
               // ================================================================
               
-              // 1. CLOUDY DAYS: Raindrops on Window Pane
-              const rainDroplets = [];
-              for (let i = 0; i < 75; i++) {
-                rainDroplets.push({
+              // 1. CLOUDY DAYS: Car Windshield Rain Drops & Expanding Impact Ripples
+              const ambientDroplets = [];
+              for (let i = 0; i < 65; i++) {
+                ambientDroplets.push({
                   x: Math.random() * (window.innerWidth || 1440),
                   y: Math.random() * (window.innerHeight || 900),
-                  r: 2.2 + Math.random() * 4.0,
-                  vy: 0.8 + Math.random() * 2.5,
-                  trailLength: 20 + Math.random() * 50
+                  r: 1.8 + Math.random() * 3.5,
+                  vy: 0.4 + Math.random() * 1.6,
+                  trickleProgress: Math.random() * 100,
+                  trailLength: 15 + Math.random() * 45
                 });
               }
               
-              // Bokeh Orbs for Cloudy Days
+              // Piano Beat Ripple Impacts on Windshield
+              const pianoRipples = [];
+              let lastPianoSpawnTime = 0;
+              
+              // Out-of-Focus Golden & Cyan City Bokeh Lights
               const bokehOrbs = [];
-              for (let i = 0; i < 32; i++) {
+              for (let i = 0; i < 30; i++) {
                 bokehOrbs.push({
                   x: Math.random() * (window.innerWidth || 1440),
                   y: (window.innerHeight || 900) * (0.1 + Math.random() * 0.8),
@@ -3219,15 +3253,6 @@ const PROJECTS = {
                   baseAlpha: 0.35 + Math.random() * 0.35,
                   hue: [38, 48, 195, 215, 340, 280][i % 6],
                   driftX: (Math.random() - 0.5) * 0.2
-                });
-              }
-              
-              // 2. PARADISE: Passing Streetlights & Light Trails
-              const streetlights = [];
-              for (let i = 0; i < 20; i++) {
-                streetlights.push({
-                  z: i * 75 + 10,
-                  side: i % 2 === 0 ? -1 : 1
                 });
               }
               
@@ -3266,120 +3291,153 @@ const PROJECTS = {
                     tonearm.style.transform = `rotate(12deg)`;
                   }
                   
-                  // Compute Precision Audio Transients
-                  const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
-                  const beatPeriod = 60 / bpm;
-                  const phase = (cTime % beatPeriod) / beatPeriod;
+                  // Live Frequency Extraction
+                  let liveSubBass = 0;
+                  let liveMidRange = 0;
+                  let liveHighs = 0;
                   
-                  if (isPlaying) {
-                    if (phase < 0.14 && (cTime - lastKickTime > beatPeriod * 0.65)) {
-                      lastKickTime = cTime;
-                      strobeDecay = 1.0;
-                    } else {
-                      strobeDecay *= 0.88;
-                    }
+                  if (analyser && isPlaying && freqData) {
+                    analyser.getByteFrequencyData(freqData);
+                    let sumB = 0; for (let i = 0; i < 4; i++) sumB += freqData[i];
+                    liveSubBass = (sumB / 4) / 255;
+                    let sumM = 0; for (let i = 5; i < 18; i++) sumM += freqData[i];
+                    liveMidRange = (sumM / 13) / 255;
+                    let sumH = 0; for (let i = 19; i < 45; i++) sumH += freqData[i];
+                    liveHighs = (sumH / 26) / 255;
                   } else {
-                    strobeDecay = 0.25 + Math.sin(animTime * 0.05) * 0.15;
+                    // Precision math fallback
+                    const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
+                    const beatPeriod = 60 / bpm;
+                    const phase = (cTime % beatPeriod) / beatPeriod;
+                    if (phase < 0.14) liveSubBass = 0.85;
+                    else liveSubBass = Math.max(0.1, liveSubBass * 0.88);
+                    liveMidRange = 0.35 + Math.sin(cTime * 3) * 0.25;
                   }
-                  const kickPulse = strobeDecay;
-                  const midEnergy = isPlaying ? Math.min(1.0, 0.4 + Math.sin(cTime * 3) * 0.3) : 0.35;
+                  
+                  const kickPulse = liveSubBass;
+                  const midEnergy = liveMidRange;
                   
                   ctx.clearRect(0, 0, W, H);
                   
                   // ================================================================
-                  // 1. ⚡ "CLUB GOT BOOTS" — LIVE FESTIVAL TRUSS LASER RIG (MOMENT FACTORY)
+                  // 1. ⚡ "CLUB GOT BOOTS" — PHYSICAL SPOTLIGHT HEADS & DIRECT BEAMS
                   // ================================================================
                   if (track.genre === 'club') {
-                    // Deep Obsidian Venue Background
+                    // Deep Obsidian Arena Background
                     ctx.fillStyle = '#020204';
                     ctx.fillRect(0, 0, W, H);
                     
                     const trussX = W / 2;
-                    const trussY = H * 0.13;
+                    const trussY = H * 0.12;
+                    const trussW = W * 0.55;
+                    const numFixtures = 12;
+                    const fixturePositions = [];
                     
-                    // Palette Shifts Across Song Sections
-                    let colA = '#00FF66';
-                    let colB = '#39FF14';
-                    if (cTime >= 32 && cTime < 64) {
-                      colA = '#FF0055'; colB = '#9D4EDD';
-                    } else if (cTime >= 64 && cTime < 100) {
-                      colA = '#FFB703'; colB = '#FB8500';
-                    } else if (cTime >= 100) {
-                      colA = '#00F0FF'; colB = '#FF0055';
+                    // Symmetrical Suspended 3D Truss Frame
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(trussX - trussW * 0.55, trussY - 24);
+                    ctx.lineTo(trussX + trussW * 0.55, trussY - 24);
+                    ctx.lineTo(trussX + trussW * 0.42, trussY + 24);
+                    ctx.lineTo(trussX - trussW * 0.42, trussY + 24);
+                    ctx.closePath();
+                    ctx.stroke();
+                    
+                    // Cross-bracing struts
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                    for (let s = -4; s <= 4; s++) {
+                      const sx1 = trussX + s * (trussW * 0.1);
+                      const sx2 = trussX + (s + 0.5) * (trussW * 0.1);
+                      ctx.beginPath();
+                      ctx.moveTo(sx1, trussY - 24);
+                      ctx.lineTo(sx2, trussY + 24);
+                      ctx.stroke();
                     }
                     
-                    // Volumetric Stage Haze & Laser Underglow
-                    const haze = ctx.createRadialGradient(trussX, trussY, 40, trussX, H * 0.55, Math.max(W, H) * 0.8);
+                    // Compute Exact Spotlight Fixture Head Positions
+                    for (let f = 0; f < numFixtures; f++) {
+                      const spread = ((f / (numFixtures - 1)) - 0.5);
+                      const fx = trussX + spread * (trussW * 0.88);
+                      const fy = trussY + 18;
+                      fixturePositions.push({ x: fx, y: fy, idx: f, spread: spread });
+                    }
+                    
+                    // Volumetric Stage Haze & Atmosphere
+                    const haze = ctx.createRadialGradient(trussX, trussY, 30, trussX, H * 0.6, Math.max(W, H) * 0.8);
                     haze.addColorStop(0, `rgba(0, 255, 102, ${0.18 + kickPulse * 0.25})`);
-                    haze.addColorStop(0.4, `rgba(0, 0, 0, 0.6)`);
+                    haze.addColorStop(0.4, `rgba(0, 0, 0, 0.65)`);
                     haze.addColorStop(1, '#020204');
                     ctx.fillStyle = haze;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Laser Beam Array with Core Brightness
-                    const beamCount = 18;
-                    for (let b = 0; b < beamCount; b++) {
-                      const spread = ((b / (beamCount - 1)) - 0.5) * 2;
-                      const targetX = trussX + spread * (W * 0.85) + Math.sin(animTime * 0.03 + b) * 35;
-                      const targetY = H * 0.95;
-                      const col = (b % 2 === 0) ? colA : colB;
-                      const beamAlpha = 0.4 + kickPulse * 0.6;
+                    // Draw Connected Laser Beams directly originating from each spotlight head
+                    fixturePositions.forEach(fix => {
+                      const sweepOsc = Math.sin(animTime * 0.04 + fix.idx * 0.4) * (W * 0.25);
+                      const targetX = trussX + fix.spread * (W * 0.9) + sweepOsc;
+                      const targetY = H * 0.96;
+                      
+                      const colA = (fix.idx % 2 === 0) ? '#00FF66' : '#39FF14';
+                      const beamAlpha = 0.35 + kickPulse * 0.6;
                       
                       // Outer Laser Glow
                       ctx.beginPath();
-                      ctx.moveTo(trussX + spread * 105, trussY);
+                      ctx.moveTo(fix.x, fix.y);
                       ctx.lineTo(targetX, targetY);
-                      ctx.strokeStyle = col;
+                      ctx.strokeStyle = colA;
                       ctx.lineWidth = 5 + kickPulse * 5;
-                      ctx.shadowColor = col;
-                      ctx.shadowBlur = 25;
+                      ctx.shadowColor = colA;
+                      ctx.shadowBlur = 24;
                       ctx.globalAlpha = beamAlpha;
                       ctx.stroke();
                       
                       // Inner High-Intensity White Core Beam
                       ctx.beginPath();
-                      ctx.moveTo(trussX + spread * 105, trussY);
+                      ctx.moveTo(fix.x, fix.y);
                       ctx.lineTo(targetX, targetY);
                       ctx.strokeStyle = '#FFFFFF';
                       ctx.lineWidth = 1.8;
                       ctx.globalAlpha = beamAlpha * 0.9;
                       ctx.stroke();
-                    }
+                    });
                     ctx.globalAlpha = 1.0;
                     ctx.shadowBlur = 0;
                     
-                    // Symmetrical Suspended 3D Truss Frame
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-                    ctx.lineWidth = 2.5;
-                    ctx.beginPath();
-                    ctx.moveTo(trussX - 250, trussY - 25);
-                    ctx.lineTo(trussX + 250, trussY - 25);
-                    ctx.lineTo(trussX + 180, trussY + 25);
-                    ctx.lineTo(trussX - 180, trussY + 25);
-                    ctx.closePath();
-                    ctx.stroke();
-                    
-                    // Truss Spot Fixtures
-                    for (let f = -5; f <= 5; f++) {
-                      ctx.fillStyle = '#FFFFFF';
+                    // Draw Spotlight Fixture Hardware on the Truss
+                    fixturePositions.forEach(fix => {
+                      // Fixture Body
+                      ctx.fillStyle = '#2A2930';
+                      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                      ctx.lineWidth = 1.5;
                       ctx.beginPath();
-                      ctx.arc(trussX + f * 42, trussY, 3.5, 0, Math.PI * 2);
+                      ctx.rect(fix.x - 7, fix.y - 12, 14, 14);
                       ctx.fill();
-                    }
+                      ctx.stroke();
+                      
+                      // Glowing Lens
+                      ctx.fillStyle = '#FFFFFF';
+                      ctx.shadowColor = '#00FF66';
+                      ctx.shadowBlur = 12;
+                      ctx.beginPath();
+                      ctx.arc(fix.x, fix.y, 4.5, 0, Math.PI * 2);
+                      ctx.fill();
+                      ctx.shadowBlur = 0;
+                    });
                     
                     // Drum Strobe Flash on Kick Onset
-                    if (kickPulse > 0.45 && isPlaying) {
-                      ctx.fillStyle = `rgba(255, 255, 255, ${kickPulse * 0.25})`;
+                    if (kickPulse > 0.65 && isPlaying) {
+                      ctx.fillStyle = `rgba(255, 255, 255, ${kickPulse * 0.2})`;
                       ctx.fillRect(0, 0, W, H);
                     }
                     
-                    // Symmetrical Audience Crowd Silhouette
+                    // Symmetrical Festival Crowd Silhouette at Bottom with raised hands
                     ctx.fillStyle = '#010103';
                     ctx.beginPath();
                     ctx.moveTo(0, H);
-                    for (let x = 0; x <= W; x += 16) {
+                    for (let x = 0; x <= W; x += 18) {
                       const wave = Math.sin(x * 0.05 + animTime * 0.05);
-                      const headH = 55 + wave * 18 + (x % 32 === 0 ? 32 : 0);
+                      const headH = 55 + wave * 18 + (x % 36 === 0 ? 34 : 0);
                       ctx.lineTo(x, H - headH);
                     }
                     ctx.lineTo(W, H);
@@ -3388,21 +3446,21 @@ const PROJECTS = {
                   }
                   
                   // ================================================================
-                  // 2. ☁️ "CLOUDY DAYS" — BLADE RUNNER 2049 RAIN-ON-WINDOW & BOKEH
+                  // 2. ☁️ "CLOUDY DAYS" — CAR WINDSHIELD VIEW, BEAT RIPPLES & DRAGGING RAIN
                   // ================================================================
                   else if (track.genre === 'experimental') {
-                    // Deep Atmospheric Indigo-Slate Rainy Twilight Sky
+                    // Deep Overcast Rainy Twilight Sky
                     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    skyGrad.addColorStop(0, '#141E2E');
-                    skyGrad.addColorStop(0.5, '#1E2C42');
-                    skyGrad.addColorStop(1, '#0F1622');
+                    skyGrad.addColorStop(0, '#121A28');
+                    skyGrad.addColorStop(0.5, '#1B2638');
+                    skyGrad.addColorStop(1, '#0D1420');
                     ctx.fillStyle = skyGrad;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Diffused Atmospheric Moonlight / Soft Horizon Glow
+                    // Diffused Atmospheric Moonlight behind clouds
                     const moonBloom = ctx.createRadialGradient(W * 0.35, H * 0.22, 20, W * 0.35, H * 0.22, Math.max(W, H) * 0.7);
-                    moonBloom.addColorStop(0, `rgba(240, 248, 255, ${0.55 + midEnergy * 0.3})`);
-                    moonBloom.addColorStop(0.4, `rgba(56, 189, 248, ${0.25 + midEnergy * 0.2})`);
+                    moonBloom.addColorStop(0, `rgba(240, 248, 255, ${0.5 + midEnergy * 0.3})`);
+                    moonBloom.addColorStop(0.4, `rgba(56, 189, 248, ${0.22 + midEnergy * 0.2})`);
                     moonBloom.addColorStop(1, 'transparent');
                     ctx.fillStyle = moonBloom;
                     ctx.fillRect(0, 0, W, H);
@@ -3426,16 +3484,91 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // Wet Window Condensation Layer
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+                    // Windshield Glass Condensation Layer
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Glistening Water Droplets & Smooth Continuous Rivulets Trickling Down Glass
-                    rainDroplets.forEach(drop => {
-                      drop.y += drop.vy * (1 + (isPlaying ? midEnergy * 0.8 : 0));
-                      drop.vy += 0.02;
+                    // Spawn Piano Note Ripple Impacts on Windshield beat-by-beat
+                    const pianoInterval = 0.71; // 84 BPM lo-fi quarter notes
+                    if (isPlaying && (cTime - lastPianoSpawnTime > pianoInterval * 0.95)) {
+                      lastPianoSpawnTime = cTime;
+                      pianoRipples.push({
+                        x: W * 0.15 + Math.random() * (W * 0.7),
+                        y: H * 0.12 + Math.random() * (H * 0.45),
+                        radius: 3,
+                        maxRadius: 28 + Math.random() * 22,
+                        alpha: 0.9,
+                        dropletSize: 2.8 + Math.random() * 3.5,
+                        vy: 0.5 + Math.random() * 1.5,
+                        dragStarted: false,
+                        dragDist: 0
+                      });
+                    }
+                    
+                    // Draw Piano Expanding Water Ripples & Dragging Drops
+                    for (let r = pianoRipples.length - 1; r >= 0; r--) {
+                      const rip = pianoRipples[r];
                       
-                      // Draw smooth continuous vertical water stream
+                      if (rip.radius < rip.maxRadius) {
+                        rip.radius += 1.6;
+                        rip.alpha *= 0.94;
+                        
+                        // Expanding Water Ripple Ring on Glass
+                        ctx.beginPath();
+                        ctx.arc(rip.x, rip.y, rip.radius, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${rip.alpha * 0.75})`;
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        
+                        // Inner Second Refraction Ring
+                        ctx.beginPath();
+                        ctx.arc(rip.x, rip.y, rip.radius * 0.6, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${rip.alpha * 0.4})`;
+                        ctx.lineWidth = 1.2;
+                        ctx.stroke();
+                      } else {
+                        rip.dragStarted = true;
+                      }
+                      
+                      // If ripple finished expanding, the droplet drags down the windshield
+                      if (rip.dragStarted) {
+                        rip.y += rip.vy;
+                        rip.vy += 0.025; // gravity acceleration on wet car glass
+                        rip.dragDist += rip.vy;
+                        
+                        // Smooth wet vertical rivulet stream
+                        ctx.beginPath();
+                        ctx.moveTo(rip.x, rip.y);
+                        ctx.lineTo(rip.x, rip.y - Math.min(rip.dragDist, 55));
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+                        ctx.lineWidth = rip.dropletSize * 0.75;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+                        
+                        // Realistic Translucent Water Droplet Lens
+                        ctx.beginPath();
+                        ctx.arc(rip.x, rip.y, rip.dropletSize, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; // bottom soft shadow
+                        ctx.fill();
+                        
+                        // Top Specular Highlight
+                        ctx.beginPath();
+                        ctx.arc(rip.x - rip.dropletSize * 0.35, rip.y - rip.dropletSize * 0.35, rip.dropletSize * 0.45, 0, Math.PI * 2);
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fill();
+                      }
+                      
+                      if (rip.y > H + 50) {
+                        pianoRipples.splice(r, 1);
+                      }
+                    }
+                    
+                    // Ambient Windshield Water Droplets & Sliding Rivulets
+                    ambientDroplets.forEach(drop => {
+                      drop.y += drop.vy * (1 + (isPlaying ? midEnergy * 0.6 : 0));
+                      drop.vy += 0.015;
+                      
+                      // Smooth Continuous Wet Rivulet Stream
                       ctx.beginPath();
                       ctx.moveTo(drop.x, drop.y);
                       ctx.lineTo(drop.x, Math.max(0, drop.y - drop.trailLength));
@@ -3444,21 +3577,21 @@ const PROJECTS = {
                       ctx.lineCap = 'round';
                       ctx.stroke();
                       
-                      // Water bead shadow & specular highlight
+                      // Translucent Droplet Lens (Soft refraction + Crisp white highlight)
                       ctx.beginPath();
                       ctx.arc(drop.x, drop.y, drop.r, 0, Math.PI * 2);
-                      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
                       ctx.fill();
                       
                       ctx.beginPath();
-                      ctx.arc(drop.x - drop.r * 0.3, drop.y - drop.r * 0.3, drop.r * 0.5, 0, Math.PI * 2);
-                      ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
+                      ctx.arc(drop.x - drop.r * 0.35, drop.y - drop.r * 0.35, drop.r * 0.45, 0, Math.PI * 2);
+                      ctx.fillStyle = '#FFFFFF';
                       ctx.fill();
                       
                       if (drop.y > H + 50) {
                         drop.y = -20;
                         drop.x = Math.random() * W;
-                        drop.vy = 0.8 + Math.random() * 2.0;
+                        drop.vy = 0.5 + Math.random() * 1.5;
                       }
                     });
                   }
@@ -3469,9 +3602,9 @@ const PROJECTS = {
                   else if (track.genre === 'pop') {
                     // Full Glowing Synthwave Sunset Sky
                     const sky = ctx.createLinearGradient(0, 0, 0, H * 0.7);
-                    sky.addColorStop(0, '#3B0066');
-                    sky.addColorStop(0.3, '#FF007F');
-                    sky.addColorStop(0.65, '#FF6B00');
+                    sky.addColorStop(0, '#35005E');
+                    sky.addColorStop(0.32, '#FF007F');
+                    sky.addColorStop(0.68, '#FF6B00');
                     sky.addColorStop(1, '#FFD700');
                     ctx.fillStyle = sky;
                     ctx.fillRect(0, 0, W, H * 0.7);
@@ -3515,7 +3648,7 @@ const PROJECTS = {
                       ctx.closePath();
                       ctx.fill();
                       
-                      // Curved Fronds
+                      // Curved Leaf Fronds
                       ctx.strokeStyle = '#1A0028';
                       ctx.lineWidth = 4;
                       [[-35, 12], [-25, -6], [-12, -22], [12, -22], [25, -6], [35, 12]].forEach(([fx, fy]) => {
@@ -3560,7 +3693,21 @@ const PROJECTS = {
                       }
                     }
                     
-                    // Glowing Neon Highway Barriers
+                    // Dashed Center Highway Line Moving in Perspective
+                    for (let d = 0; d < 8; d++) {
+                      const dy = roadY + Math.pow(((d + (animTime * 0.06)) % 8) / 8, 2.2) * (H - roadY);
+                      const dNextY = dy + 18 * ((dy - roadY) / (H - roadY) + 0.3);
+                      if (dy >= roadY && dy <= H) {
+                        ctx.beginPath();
+                        ctx.moveTo(vanX, dy);
+                        ctx.lineTo(vanX, dNextY);
+                        ctx.strokeStyle = '#FFD54F';
+                        ctx.lineWidth = 3 * ((dy - roadY) / (H - roadY) + 0.4);
+                        ctx.stroke();
+                      }
+                    }
+                    
+                    // Glowing Neon Highway Barriers (Magenta left, Cyan right)
                     ctx.strokeStyle = '#FF007F';
                     ctx.lineWidth = 5 + kickPulse * 4;
                     ctx.shadowColor = '#FF007F';
@@ -3578,26 +3725,6 @@ const PROJECTS = {
                     ctx.lineTo(W * 0.96, H);
                     ctx.stroke();
                     ctx.shadowBlur = 0;
-                    
-                    // Passing Streetlights with Long-Exposure Speed Trails
-                    streetlights.forEach(sl => {
-                      sl.z -= roadSpeed;
-                      if (sl.z <= 10) sl.z = 1000;
-                      
-                      const k = 360 / sl.z;
-                      const lx = vanX + sl.side * (150 * k);
-                      const ly = roadY + (190 * k);
-                      
-                      if (ly >= roadY && ly <= H) {
-                        const trailLen = Math.min(130, roadSpeed * 8.5 * k);
-                        ctx.beginPath();
-                        ctx.moveTo(lx, ly);
-                        ctx.lineTo(lx + sl.side * trailLen * 0.5, ly + trailLen);
-                        ctx.strokeStyle = sl.side === -1 ? '#FFD54F' : '#00F0FF';
-                        ctx.lineWidth = Math.max(2, 6.5 * k);
-                        ctx.stroke();
-                      }
-                    });
                   }
                   
                   requestAnimationFrame(drawViz);
@@ -3611,6 +3738,7 @@ const PROJECTS = {
                 const icon = document.getElementById(`ticon-${i}`);
                 
                 btn.onclick = () => {
+                  initWebAudio();
                   const isCurrent = (currentIdx === i);
                   
                   if (isCurrent) {
@@ -3665,6 +3793,7 @@ const PROJECTS = {
               if (!window.djKeyHandlerAttached) {
                 window.djKeyHandlerAttached = true;
                 window.addEventListener('keydown', (e) => {
+                  initWebAudio();
                   if (e.code === 'Space') {
                     const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
                     if (activeBtn) activeBtn.click();
@@ -3695,6 +3824,7 @@ const PROJECTS = {
               return;
           }
 
+          // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
