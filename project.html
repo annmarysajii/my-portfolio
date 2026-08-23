@@ -1876,42 +1876,55 @@ const PROJECTS = {
   const main = document.getElementById('main');
   
   if (p) {
-      let badges = '';
-      if (p.badge) {
-          const bs = Array.isArray(p.badge) ? p.badge : [p.badge];
-          bs.forEach(b => badges += `<span class="badge bs">${b}</span>`);
-      }
-      
-      main.innerHTML = `
-    <div class="con">
-      <div class="proj-header">
-        <div class="proj-disc-tag">${p.discipline}${p.context ? ' &bull; ' + p.context : ''}</div>
-        <h1 class="proj-title">${p.title}</h1>
-        ${badges ? `<div class="proj-badges" style="margin-top:0.75rem;">${badges}</div>` : ''}
-        
-        <div class="proj-meta-row" style="margin-top:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:1rem;">
-          <span class="proj-meta-item"><strong>Year:</strong> &nbsp;${p.year}</span>
-          <div class="proj-meta-sep"></div>
-          <span class="proj-meta-item"><strong>Role:</strong> &nbsp;${p.role}</span>
+      if (id === 'original-tracks') {
+          // Pure Full-Screen Dedicated DJ Studio Page (Zero duplicate header)
+          document.body.classList.add('dj-studio-mode');
+          main.innerHTML = `
+            <div id="dynamic-gallery" style="width:100%; min-height:85vh;"></div>
+            <div class="con" style="margin-top: 1rem; padding-bottom: 4rem; position:relative; z-index:10;">
+              <div class="ph-foot" style="display:flex; justify-content:center;">
+                <a href="portfolio.html" class="nav-back" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.18); padding:0.85rem 1.8rem; border-radius:30px; backdrop-filter:blur(12px); font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.2s;"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
+              </div>
+            </div>
+          `;
+      } else {
+          let badges = '';
+          if (p.badge) {
+              const bs = Array.isArray(p.badge) ? p.badge : [p.badge];
+              bs.forEach(b => badges += `<span class="badge bs">${b}</span>`);
+          }
+          
+          main.innerHTML = `
+        <div class="con">
+          <div class="proj-header">
+            <div class="proj-disc-tag">${p.discipline}${p.context ? ' &bull; ' + p.context : ''}</div>
+            <h1 class="proj-title">${p.title}</h1>
+            ${badges ? `<div class="proj-badges" style="margin-top:0.75rem;">${badges}</div>` : ''}
+            
+            <div class="proj-meta-row" style="margin-top:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:1rem;">
+              <span class="proj-meta-item"><strong>Year:</strong> &nbsp;${p.year}</span>
+              <div class="proj-meta-sep"></div>
+              <span class="proj-meta-item"><strong>Role:</strong> &nbsp;${p.role}</span>
+            </div>
+            
+            ${p.overview ? `
+            <div class="proj-overview-box" style="margin-top:2rem; max-width:820px;">
+              <p style="font-size:1.15rem; line-height:1.75; color:var(--ink); opacity:0.9; margin:0;">${p.overview}</p>
+            </div>` : ''}
+            
+            ${p.tools && p.tools.length ? `
+            <div class="proj-tools-wrap" style="margin-top:1.75rem; display:flex; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+              <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink5); margin-right:0.25rem;">Apps / Tools Used:</span>
+              ${p.tools.map(t => `<span class="tool" style="font-size:0.85rem; font-weight:600;">${t}</span>`).join('')}
+            </div>` : ''}
+          </div>
+          <div id="dynamic-gallery"></div>
+          <div class="ph-foot" style="margin-top: 4rem; padding-bottom: 4rem;">
+              <a href="portfolio.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
+          </div>
         </div>
-        
-        ${p.overview ? `
-        <div class="proj-overview-box" style="margin-top:2rem; max-width:820px;">
-          <p style="font-size:1.15rem; line-height:1.75; color:var(--ink); opacity:0.9; margin:0;">${p.overview}</p>
-        </div>` : ''}
-        
-        ${p.tools && p.tools.length ? `
-        <div class="proj-tools-wrap" style="margin-top:1.75rem; display:flex; align-items:center; flex-wrap:wrap; gap:0.6rem;">
-          <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink5); margin-right:0.25rem;">Apps / Tools Used:</span>
-          ${p.tools.map(t => `<span class="tool" style="font-size:0.85rem; font-weight:600;">${t}</span>`).join('')}
-        </div>` : ''}
-      </div>
-      <div id="dynamic-gallery"></div>
-      <div class="ph-foot" style="margin-top: 4rem; padding-bottom: 4rem;">
-          <a href="portfolio.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
-      </div>
-    </div>
-      `;
+          `;
+      }
   }
 
   // Format string for captions and alt text
@@ -3227,7 +3240,7 @@ const PROJECTS = {
                   
                   // 1. CLUB GOT BOOTS (FULLSCREEN Cyberpunk Underground Club)
                   if (track.genre === 'club') {
-                    document.body.style.background = '#040407';
+                    document.body.style.background = '#050508';
                     
                     // Full-Screen Perimeter Kick Glow
                     if (bassEnergy > 0.62 && isPlaying) {
@@ -3290,26 +3303,60 @@ const PROJECTS = {
                     }
                   }
                   
-                  // 2. CLOUDY DAYS (FULLSCREEN Volumetric Ethereal Nebula & Triple Waves)
+                  // 2. CLOUDY DAYS (FULLSCREEN ETHEREAL TWILIGHT CLOUDSCAPE & GOLDEN GOD-RAYS)
                   else if (track.genre === 'experimental') {
-                    document.body.style.background = '#030A18';
+                    document.body.style.background = '#050B14';
                     
-                    cloudParticles.forEach(p => {
+                    // Twilight Sky Horizon Gradient
+                    const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+                    skyGrad.addColorStop(0, '#040711');
+                    skyGrad.addColorStop(0.5, '#081224');
+                    skyGrad.addColorStop(1, '#050B14');
+                    ctx.fillStyle = skyGrad;
+                    ctx.fillRect(0, 0, W, H);
+                    
+                    // A. Volumetric Golden Sunbeams / God-Rays Piercing Down
+                    const rayCount = 7;
+                    for (let r = 0; r < rayCount; r++) {
+                      const rayAngle = (r - rayCount / 2) * 0.12 + Math.sin(audio.currentTime * 0.2 + r) * 0.04;
+                      const rayX = W * 0.5 + Math.tan(rayAngle) * H;
+                      const rayAlpha = (0.06 + midEnergy * 0.2 + highEnergy * 0.15);
+                      
+                      const rayGrad = ctx.createLinearGradient(W * 0.5, 0, rayX, H);
+                      rayGrad.addColorStop(0, `rgba(255, 220, 150, ${rayAlpha * 1.5})`);
+                      rayGrad.addColorStop(0.4, `rgba(0, 229, 255, ${rayAlpha * 0.8})`);
+                      rayGrad.addColorStop(1, 'transparent');
+                      
+                      ctx.beginPath();
+                      ctx.moveTo(W * 0.5 - 20, 0);
+                      ctx.lineTo(W * 0.5 + 20, 0);
+                      ctx.lineTo(rayX + 120, H);
+                      ctx.lineTo(rayX - 120, H);
+                      ctx.closePath();
+                      ctx.fillStyle = rayGrad;
+                      ctx.fill();
+                    }
+                    
+                    // B. Luminous Iridescent Cloud Banks (Teal, Lavender, Silver)
+                    cloudParticles.forEach((p, idx) => {
                       p.x += p.speedX;
                       p.y += p.speedY;
-                      if (p.x < -0.1) p.x = 1.1;
-                      if (p.x > 1.1) p.x = -0.1;
-                      if (p.y < -0.1) p.y = 1.1;
-                      if (p.y > 1.1) p.y = -0.1;
+                      if (p.x < -0.2) p.x = 1.2;
+                      if (p.x > 1.2) p.x = -0.2;
+                      if (p.y < -0.2) p.y = 1.2;
+                      if (p.y > 1.2) p.y = -0.2;
                       
                       const px = p.x * W;
                       const py = p.y * H;
-                      const pulse = 1 + (isPlaying ? midEnergy * 0.45 : 0);
+                      const pulse = 1 + (isPlaying ? midEnergy * 0.5 : 0);
                       const r = p.radius * pulse;
                       
+                      const cloudHues = [190, 260, 210, 280];
+                      const hue = cloudHues[idx % cloudHues.length];
+                      
                       const fogGrad = ctx.createRadialGradient(px, py, 0, px, py, r);
-                      fogGrad.addColorStop(0, `hsla(${p.hue}, 85%, 65%, ${p.baseAlpha * (isPlaying ? 1.4 : 0.7)})`);
-                      fogGrad.addColorStop(0.6, `hsla(${p.hue + 25}, 75%, 45%, ${p.baseAlpha * 0.45})`);
+                      fogGrad.addColorStop(0, `hsla(${hue}, 80%, 65%, ${p.baseAlpha * (isPlaying ? 1.4 : 0.7)})`);
+                      fogGrad.addColorStop(0.55, `hsla(${hue + 20}, 70%, 45%, ${p.baseAlpha * 0.4})`);
                       fogGrad.addColorStop(1, 'transparent');
                       
                       ctx.fillStyle = fogGrad;
@@ -3318,19 +3365,44 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // Triple Harmonic Aurora Ribbons Across Screen
+                    // C. Shimmering Raindrop Crystal Particles
+                    if (!window.rainParticles) {
+                      window.rainParticles = Array.from({length: 45}, () => ({
+                        x: Math.random() * W,
+                        y: Math.random() * H,
+                        speed: 1.5 + Math.random() * 3,
+                        len: 8 + Math.random() * 16,
+                        alpha: 0.2 + Math.random() * 0.5
+                      }));
+                    }
+                    window.rainParticles.forEach(rp => {
+                      rp.y += (rp.speed + bassEnergy * 4) * speedMultiplier;
+                      if (rp.y > H + 20) {
+                        rp.y = -20;
+                        rp.x = Math.random() * W;
+                      }
+                      
+                      ctx.beginPath();
+                      ctx.moveTo(rp.x, rp.y);
+                      ctx.lineTo(rp.x, rp.y + rp.len);
+                      ctx.strokeStyle = `rgba(180, 230, 255, ${rp.alpha * (0.5 + highEnergy * 0.8)})`;
+                      ctx.lineWidth = 1.2;
+                      ctx.stroke();
+                    });
+                    
+                    // D. Liquid Harmonic Horizon Waves
                     const waveLayers = [
-                      { color: 'rgba(0, 229, 255, 0.45)', speed: 0.6, freq: 0.006, amp: 85, offset: 0 },
-                      { color: 'rgba(120, 140, 255, 0.35)', speed: 0.4, freq: 0.009, amp: 110, offset: 35 },
-                      { color: 'rgba(200, 225, 255, 0.25)', speed: 0.25, freq: 0.004, amp: 130, offset: -35 }
+                      { color: 'rgba(0, 229, 255, 0.4)', speed: 0.5, freq: 0.005, amp: 80, offset: 0 },
+                      { color: 'rgba(157, 78, 221, 0.3)', speed: 0.35, freq: 0.008, amp: 105, offset: 30 },
+                      { color: 'rgba(255, 170, 166, 0.2)', speed: 0.2, freq: 0.004, amp: 125, offset: -30 }
                     ];
                     
                     waveLayers.forEach(w => {
                       ctx.beginPath();
                       ctx.moveTo(0, H);
-                      for (let x = 0; x <= W; x += 10) {
+                      for (let x = 0; x <= W; x += 8) {
                         const sinWave = Math.sin(x * w.freq + audio.currentTime * w.speed);
-                        const dynamicAmp = w.amp * (0.4 + midEnergy * 0.9 + highEnergy * 0.5);
+                        const dynamicAmp = w.amp * (0.4 + midEnergy * 0.95 + highEnergy * 0.4);
                         const y = (H * 0.58) + w.offset + sinWave * dynamicAmp;
                         ctx.lineTo(x, y);
                       }
@@ -3342,7 +3414,7 @@ const PROJECTS = {
                   
                   // 3. PARADISE (FULLSCREEN CELESTIAL UNIVERSE / COSMIC NEBULA OASIS)
                   else if (track.genre === 'pop') {
-                    document.body.style.background = '#05020D';
+                    document.body.style.background = '#050508';
                     
                     // Deep Celestial Space Radial Gradient
                     const spaceGrad = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, Math.max(W, H) * 0.85);
