@@ -3647,8 +3647,8 @@ const PROJECTS = {
                   // 3. 🌌 "PARADISE" — WONG KAR-WAI SUNSET DRIVE (SEAMLESS CINEMATIC SKY)
                   // ================================================================
                   // ================================================================
-                  // THREE.JS CINEMATIC 12-PHASE SONG-LENGTH ENGINE FOR "PARADISE"
-                  // Matching Reference Moodboard & Exact 3:31 Song Structure
+                  // THREE.JS MASTERCLASS CINEMATIC ENGINE FOR "PARADISE"
+                  // Authentic Wong Kar-wai Aesthetics (Highway, 3D Tunnel, Neon Rain City)
                   // ================================================================
                   else if (track.genre === 'pop') {
                     const canvas2d = document.getElementById('global-audio-viz');
@@ -3656,32 +3656,18 @@ const PROJECTS = {
                     if (canvas2d) canvas2d.style.display = 'none';
                     if (webglCanvas) webglCanvas.style.display = 'block';
                     
-                    // Web Audio AnalyserNode Setup for Sub-Bass & Transient Detection
-                    if (!window.audioCtx && window.AudioContext) {
-                      try {
-                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                        window.audioCtx = new AudioCtx();
-                        window.audioAnalyser = window.audioCtx.createAnalyser();
-                        window.audioAnalyser.fftSize = 2048;
-                        window.audioDataArray = new Uint8Array(window.audioAnalyser.frequencyBinCount);
-                        // Do not connect createMediaElementSource directly to prevent CORS silencing,
-                        // use synthesized real-time buffer simulation or connect if allowed
-                      } catch(e) {
-                        console.log('Web Audio init note:', e);
-                      }
-                    }
-                    
                     if (!window.paradiseThreeEngine && webglCanvas) {
                       const W = window.innerWidth || 1440;
                       const H = window.innerHeight || 900;
                       
-                      // 1. Scene, Camera, WebGL Renderer
+                      // 1. Three.js Scene, Camera, WebGL Renderer
                       const scene = new THREE.Scene();
-                      scene.background = new THREE.Color(0x06010C);
+                      scene.background = new THREE.Color(0x06020A);
+                      scene.fog = new THREE.FogExp2(0x0B0414, 0.012);
                       
-                      const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 1000);
-                      camera.position.set(0, 2.2, 0);
-                      camera.lookAt(0, 2.2, -100);
+                      const camera = new THREE.PerspectiveCamera(58, W / H, 0.1, 1000);
+                      camera.position.set(0, 1.4, 0); // Low-slung driver POV
+                      camera.lookAt(0, 1.4, -100);
                       
                       const renderer = new THREE.WebGLRenderer({
                         canvas: webglCanvas,
@@ -3692,7 +3678,7 @@ const PROJECTS = {
                       renderer.setSize(W, H);
                       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                       
-                      // 2. Ping-Pong Render Targets for Step-Printing Motion Smear & Film LUT Post-Process
+                      // 2. Ping-Pong Render Targets for Step-Printing Motion Smear & Film LUT
                       const rtParams = {
                         minFilter: THREE.LinearFilter,
                         magFilter: THREE.LinearFilter,
@@ -3733,22 +3719,19 @@ const PROJECTS = {
                             vec4 cur = texture2D(tDiffuse, vUv);
                             vec4 prev = texture2D(tPrevious, vUv);
                             
-                            // STEP 3: Motion Smear Ping-Pong Blend (Leaves authentic light trails)
+                            // Step-Printing Motion Smear Retention
                             vec4 blended = max(cur, prev * uRetention);
                             
-                            // STEP 4: Film LUT Color Grading
+                            // Film Tone Curve Color Grading
                             float lum = dot(blended.rgb, vec3(0.299, 0.587, 0.114));
                             
-                            // Base Film Tone Curves
-                            vec3 shadowColor = vec3(0.545, 0.0, 0.0);   // Crimson #8B0000
-                            vec3 midColor = vec3(1.0, 0.6, 0.0);       // Amber #FF9900
-                            vec3 darkEmerald = vec3(0.043, 0.431, 0.31); // Emerald #0B6E4F
+                            vec3 shadowColor = vec3(0.48, 0.02, 0.08);  // Crimson #8B0000
+                            vec3 midColor = vec3(1.0, 0.55, 0.05);      // Amber #FF9900
+                            vec3 darkEmerald = vec3(0.04, 0.38, 0.28);  // Emerald #0B6E4F
                             
-                            // Step 10: Warm Shift (Chorus Violin)
                             if (uWarmShift > 0.01) {
-                              midColor = mix(midColor, vec3(1.0, 0.75, 0.1), uWarmShift);
-                              shadowColor = mix(shadowColor, vec3(0.65, 0.12, 0.0), uWarmShift);
-                              darkEmerald = mix(darkEmerald, vec3(0.2, 0.35, 0.15), uWarmShift);
+                              midColor = mix(midColor, vec3(1.0, 0.72, 0.15), uWarmShift);
+                              shadowColor = mix(shadowColor, vec3(0.55, 0.15, 0.0), uWarmShift);
                             }
                             
                             vec3 graded;
@@ -3760,13 +3743,13 @@ const PROJECTS = {
                               graded = mix(midColor, blended.rgb, (lum - 0.68) / 0.32);
                             }
                             
-                            vec3 finalRgb = mix(blended.rgb, graded, 0.35);
+                            vec3 finalRgb = mix(blended.rgb, graded, 0.32);
                             
-                            // STEP 5: Act 2 Tunnel Green Shift (Monochrome tunnel fluorescent tone)
-                            vec3 tunnelGreen = vec3(0.05, 0.88, 0.52) * lum * 1.45;
+                            // Tunnel Monochrome Green Shift
+                            vec3 tunnelGreen = vec3(0.04, 0.88, 0.55) * lum * 1.4;
                             finalRgb = mix(finalRgb, tunnelGreen, uTunnelTint * 0.82);
                             
-                            // STEP 11: Outro Dimming
+                            // Outro Dimming
                             finalRgb *= (1.0 - uDim * 0.32);
                             
                             gl_FragColor = vec4(finalRgb, 1.0);
@@ -3779,96 +3762,93 @@ const PROJECTS = {
                         vertexShader: FilmGradingShader.vertexShader,
                         fragmentShader: FilmGradingShader.fragmentShader
                       });
-                      const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat);
-                      postScene.add(postQuad);
+                      postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
                       
                       // -------------------------------------------------------------
-                      // STEP 1: 3 SWAPPABLE DEPTH-LAYER MESH GROUPS
-                      // -------------------------------------------------------------
-                      const layerForeground = new THREE.Group();
-                      layerForeground.position.z = -5;
-                      scene.add(layerForeground);
-                      
-                      const layerMidground = new THREE.Group();
-                      layerMidground.position.z = -30;
-                      scene.add(layerMidground);
-                      
-                      const layerBackground = new THREE.Group();
-                      layerBackground.position.z = -90;
-                      scene.add(layerBackground);
-                      
-                      // Ground Road Plane (UV-Scrolled)
-                      const groundGeo = new THREE.PlaneGeometry(160, 300);
-                      const roadCanvas = document.createElement('canvas');
-                      roadCanvas.width = 512; roadCanvas.height = 1024;
-                      const rCtx = roadCanvas.getContext('2d');
-                      
-                      // Draw Highway Asphalt Texture
-                      rCtx.fillStyle = '#06010C'; rCtx.fillRect(0, 0, 512, 1024);
-                      rCtx.fillStyle = '#120A1A'; rCtx.fillRect(140, 0, 232, 1024);
-                      
-                      // Sparse Highway Markings
-                      rCtx.fillStyle = '#FFD666';
-                      for (let y = 60; y < 1024; y += 220) {
-                        rCtx.fillRect(250, y, 12, 80);
-                      }
-                      rCtx.fillStyle = '#FF007F'; rCtx.fillRect(140, 0, 4, 1024);
-                      rCtx.fillStyle = '#00F0FF'; rCtx.fillRect(368, 0, 4, 1024);
-                      
-                      const roadTex = new THREE.CanvasTexture(roadCanvas);
-                      roadTex.wrapS = THREE.RepeatWrapping;
-                      roadTex.wrapT = THREE.RepeatWrapping;
-                      roadTex.repeat.set(1, 8);
-                      
-                      const groundMat = new THREE.MeshBasicMaterial({ map: roadTex, side: THREE.DoubleSide });
-                      const groundPlane = new THREE.Mesh(groundGeo, groundMat);
-                      groundPlane.rotation.x = -Math.PI / 2;
-                      groundPlane.position.set(0, 0, -100);
-                      scene.add(groundPlane);
-                      
-                      // -------------------------------------------------------------
-                      // STEP 2 & 8: HIGHWAY & HIGHWAY-DUSK ASSETS
+                      // 1. HIGHWAY ACT ASSETS (Calm Sunset / Dusk Drive)
                       // -------------------------------------------------------------
                       const highwayGroup = new THREE.Group();
                       
-                      // 1. Sunset Sky (#2D1B4E -> #FF6B9D -> #FFD666)
+                      // A. High-Resolution Sunset Sky Dome
                       const skyCanvas = document.createElement('canvas');
-                      skyCanvas.width = 512; skyCanvas.height = 512;
+                      skyCanvas.width = 1024; skyCanvas.height = 512;
                       const sCtx = skyCanvas.getContext('2d');
+                      
+                      // Sky gradient: Deep twilight purple -> vibrant magenta -> golden horizon
                       const skyGrad = sCtx.createLinearGradient(0, 0, 0, 512);
-                      skyGrad.addColorStop(0.0, '#2D1B4E');
-                      skyGrad.addColorStop(0.52, '#FF6B9D');
-                      skyGrad.addColorStop(1.0, '#FFD666');
+                      skyGrad.addColorStop(0.0, '#16082C');
+                      skyGrad.addColorStop(0.38, '#4A0E34');
+                      skyGrad.addColorStop(0.68, '#B82E56');
+                      skyGrad.addColorStop(0.92, '#FF8A50');
+                      skyGrad.addColorStop(1.0, '#FFD166');
                       sCtx.fillStyle = skyGrad;
-                      sCtx.fillRect(0, 0, 512, 512);
+                      sCtx.fillRect(0, 0, 1024, 512);
+                      
+                      // Layered Atmospheric Sunset Clouds
+                      sCtx.fillStyle = 'rgba(255, 110, 140, 0.22)';
+                      sCtx.beginPath();
+                      sCtx.ellipse(320, 320, 240, 38, -0.05, 0, Math.PI * 2);
+                      sCtx.ellipse(720, 300, 280, 44, 0.04, 0, Math.PI * 2);
+                      sCtx.fill();
+                      
+                      sCtx.fillStyle = 'rgba(255, 200, 110, 0.28)';
+                      sCtx.beginPath();
+                      sCtx.ellipse(512, 380, 360, 48, 0, 0, Math.PI * 2);
+                      sCtx.fill();
+                      
+                      // Mountain Silhouette on Horizon
+                      sCtx.fillStyle = '#1A0624';
+                      sCtx.beginPath();
+                      sCtx.moveTo(0, 512);
+                      sCtx.lineTo(0, 440);
+                      sCtx.lineTo(180, 400);
+                      sCtx.lineTo(340, 425);
+                      sCtx.lineTo(512, 390);
+                      sCtx.lineTo(680, 430);
+                      sCtx.lineTo(860, 395);
+                      sCtx.lineTo(1024, 435);
+                      sCtx.lineTo(1024, 512);
+                      sCtx.closePath();
+                      sCtx.fill();
                       
                       const skyTex = new THREE.CanvasTexture(skyCanvas);
-                      const skyMat = new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.DoubleSide, depthWrite: false });
-                      const skyMesh = new THREE.Mesh(new THREE.PlaneGeometry(360, 200), skyMat);
-                      skyMesh.position.set(0, 32, -80);
+                      const skyMesh = new THREE.Mesh(
+                        new THREE.PlaneGeometry(360, 180),
+                        new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.DoubleSide, depthWrite: false })
+                      );
+                      skyMesh.position.set(0, 36, -95);
                       highwayGroup.add(skyMesh);
                       
-                      // Dusk Sky Canvas for Step 8 (Highway-Dusk)
+                      // Cool Dusk Sky for Verse 2
                       const duskCanvas = document.createElement('canvas');
-                      duskCanvas.width = 512; duskCanvas.height = 512;
+                      duskCanvas.width = 1024; duskCanvas.height = 512;
                       const dCtx = duskCanvas.getContext('2d');
                       const duskGrad = dCtx.createLinearGradient(0, 0, 0, 512);
-                      duskGrad.addColorStop(0.0, '#0F0826');
-                      duskGrad.addColorStop(0.48, '#3A1448');
-                      duskGrad.addColorStop(0.82, '#8A1838');
-                      duskGrad.addColorStop(1.0, '#D45A2A');
+                      duskGrad.addColorStop(0.0, '#0A041A');
+                      duskGrad.addColorStop(0.42, '#280A38');
+                      duskGrad.addColorStop(0.75, '#68143C');
+                      duskGrad.addColorStop(0.94, '#A83238');
+                      duskGrad.addColorStop(1.0, '#E06D44');
                       dCtx.fillStyle = duskGrad;
-                      dCtx.fillRect(0, 0, 512, 512);
+                      dCtx.fillRect(0, 0, 1024, 512);
+                      
+                      // Mountain silhouette
+                      dCtx.fillStyle = '#0E0214';
+                      dCtx.beginPath();
+                      dCtx.moveTo(0, 512); dCtx.lineTo(0, 440); dCtx.lineTo(180, 400); dCtx.lineTo(340, 425);
+                      dCtx.lineTo(512, 390); dCtx.lineTo(680, 430); dCtx.lineTo(860, 395); dCtx.lineTo(1024, 435);
+                      dCtx.lineTo(1024, 512); dCtx.closePath(); dCtx.fill();
                       const duskTex = new THREE.CanvasTexture(duskCanvas);
                       
-                      // 2. Horizon Sun Sprite
+                      // B. Horizon Sun Sprite with Volumetric Lens Glow
                       const sunCanvas = document.createElement('canvas');
                       sunCanvas.width = 256; sunCanvas.height = 256;
                       const sunCtx = sunCanvas.getContext('2d');
                       const sunGrad = sunCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
                       sunGrad.addColorStop(0, '#FFFFFF');
-                      sunGrad.addColorStop(0.25, '#FFE885');
-                      sunGrad.addColorStop(0.6, '#FF6B9D');
+                      sunGrad.addColorStop(0.2, '#FFF4B8');
+                      sunGrad.addColorStop(0.5, '#FF6B9D');
+                      sunGrad.addColorStop(0.8, '#9D1B68');
                       sunGrad.addColorStop(1, 'transparent');
                       sunCtx.fillStyle = sunGrad;
                       sunCtx.beginPath();
@@ -3876,132 +3856,278 @@ const PROJECTS = {
                       sunCtx.fill();
                       
                       const sunTex = new THREE.CanvasTexture(sunCanvas);
-                      const sunSpriteMat = new THREE.SpriteMaterial({ map: sunTex, transparent: true, blending: THREE.AdditiveBlending });
-                      const sunSprite = new THREE.Sprite(sunSpriteMat);
-                      sunSprite.position.set(0, 3.5, -78);
-                      sunSprite.scale.set(45, 45, 1);
+                      const sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: sunTex, transparent: true, blending: THREE.AdditiveBlending }));
+                      sunSprite.position.set(0, 2.8, -90);
+                      sunSprite.scale.set(38, 38, 1);
                       highwayGroup.add(sunSprite);
                       
-                      // 3. Midground Rolling Silhouette Hills (Drifting Laterally)
-                      const hillCanvas = document.createElement('canvas');
-                      hillCanvas.width = 1024; hillCanvas.height = 256;
-                      const hCtx = hillCanvas.getContext('2d');
-                      hCtx.fillStyle = '#200D30';
-                      hCtx.beginPath();
-                      hCtx.moveTo(0, 256);
-                      hCtx.quadraticCurveTo(256, 60, 512, 160);
-                      hCtx.quadraticCurveTo(768, 40, 1024, 256);
-                      hCtx.closePath();
-                      hCtx.fill();
+                      // C. Realistic Multi-Lane Asphalt Highway
+                      const roadCanvas = document.createElement('canvas');
+                      roadCanvas.width = 512; roadCanvas.height = 1024;
+                      const rCtx = roadCanvas.getContext('2d');
                       
-                      const hillTex = new THREE.CanvasTexture(hillCanvas);
-                      const hillMesh = new THREE.Mesh(
-                        new THREE.PlaneGeometry(160, 35),
-                        new THREE.MeshBasicMaterial({ map: hillTex, transparent: true, side: THREE.DoubleSide })
-                      );
-                      hillMesh.position.set(0, 12, -28);
-                      highwayGroup.add(hillMesh);
+                      // Dark weathered asphalt
+                      rCtx.fillStyle = '#0D0814'; rCtx.fillRect(0, 0, 512, 1024);
+                      rCtx.fillStyle = '#160F22'; rCtx.fillRect(64, 0, 384, 1024);
+                      
+                      // Outer white solid shoulder lines
+                      rCtx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                      rCtx.fillRect(72, 0, 6, 1024);
+                      rCtx.fillRect(434, 0, 6, 1024);
+                      
+                      // Center yellow dashed lines
+                      rCtx.fillStyle = '#FFC72C';
+                      for (let y = 40; y < 1024; y += 180) {
+                        rCtx.fillRect(252, y, 8, 70);
+                      }
+                      
+                      // Inner lane divider white dashes
+                      rCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+                      for (let y = 60; y < 1024; y += 180) {
+                        rCtx.fillRect(160, y, 4, 50);
+                        rCtx.fillRect(348, y, 4, 50);
+                      }
+                      
+                      const roadTex = new THREE.CanvasTexture(roadCanvas);
+                      roadTex.wrapS = THREE.RepeatWrapping;
+                      roadTex.wrapT = THREE.RepeatWrapping;
+                      roadTex.repeat.set(1, 10);
+                      
+                      const roadGeo = new THREE.PlaneGeometry(24, 250);
+                      const roadMesh = new THREE.Mesh(roadGeo, new THREE.MeshBasicMaterial({ map: roadTex, side: THREE.DoubleSide }));
+                      roadMesh.rotation.x = -Math.PI / 2;
+                      roadMesh.position.set(0, 0, -100);
+                      highwayGroup.add(roadMesh);
+                      
+                      // Distant Car Taillight Streaks (Red neon moving dots ahead)
+                      const carLightsGroup = new THREE.Group();
+                      for (let c = 0; c < 6; c++) {
+                        const carSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+                          map: sunTex,
+                          color: 0xFF0033,
+                          transparent: true,
+                          blending: THREE.AdditiveBlending
+                        }));
+                        const laneOffset = (c % 2 === 0) ? -2.2 : 2.2;
+                        carSprite.position.set(laneOffset, 0.6, -30 - c * 25);
+                        carSprite.scale.set(1.6, 0.8, 1);
+                        carLightsGroup.add(carSprite);
+                      }
+                      highwayGroup.add(carLightsGroup);
                       
                       scene.add(highwayGroup);
                       
                       // -------------------------------------------------------------
-                      // STEP 6: CITY ACT ASSETS (NEON RAIN STREET)
+                      // 2. 3D TUNNEL ACT ASSETS (Fallen Angels Curved Concrete Tube)
+                      // -------------------------------------------------------------
+                      const tunnelGroup = new THREE.Group();
+                      tunnelGroup.visible = false;
+                      
+                      // Procedural Tunnel Texture with Concrete Ribs & Ceiling Strip Lights
+                      const tunnelCanvas = document.createElement('canvas');
+                      tunnelCanvas.width = 512; tunnelCanvas.height = 512;
+                      const tCtx = tunnelCanvas.getContext('2d');
+                      
+                      tCtx.fillStyle = '#06120C'; tCtx.fillRect(0, 0, 512, 512);
+                      
+                      // Concrete rib tiles
+                      tCtx.strokeStyle = 'rgba(0, 255, 140, 0.18)';
+                      tCtx.lineWidth = 4;
+                      for (let y = 0; y < 512; y += 64) {
+                        tCtx.beginPath(); tCtx.moveTo(0, y); tCtx.lineTo(512, y); tCtx.stroke();
+                      }
+                      for (let x = 0; x < 512; x += 128) {
+                        tCtx.beginPath(); tCtx.moveTo(x, 0); tCtx.lineTo(x, 512); tCtx.stroke();
+                      }
+                      
+                      // Glowing fluorescent ceiling light strip
+                      tCtx.fillStyle = '#00FFA3';
+                      tCtx.fillRect(240, 0, 32, 512);
+                      tCtx.fillStyle = '#FFFFFF';
+                      tCtx.fillRect(250, 0, 12, 512);
+                      
+                      const tunnelTex = new THREE.CanvasTexture(tunnelCanvas);
+                      tunnelTex.wrapS = THREE.RepeatWrapping;
+                      tunnelTex.wrapT = THREE.RepeatWrapping;
+                      tunnelTex.repeat.set(1, 14);
+                      
+                      // True Curved Tunnel Cylinder Geometry
+                      const tunnelGeo = new THREE.CylinderGeometry(8.5, 8.5, 240, 32, 1, true);
+                      const tunnelMat = new THREE.MeshBasicMaterial({ map: tunnelTex, side: THREE.BackSide });
+                      const tunnelMesh = new THREE.Mesh(tunnelGeo, tunnelMat);
+                      tunnelMesh.rotation.x = Math.PI / 2;
+                      tunnelMesh.position.set(0, 3.5, -100);
+                      tunnelGroup.add(tunnelMesh);
+                      
+                      // Tunnel Road Surface
+                      const tunnelRoad = new THREE.Mesh(
+                        new THREE.PlaneGeometry(16, 250),
+                        new THREE.MeshBasicMaterial({ color: 0x051208, side: THREE.DoubleSide })
+                      );
+                      tunnelRoad.rotation.x = -Math.PI / 2;
+                      tunnelRoad.position.set(0, 0.05, -100);
+                      tunnelGroup.add(tunnelRoad);
+                      
+                      scene.add(tunnelGroup);
+                      
+                      // -------------------------------------------------------------
+                      // 3. NEON RAIN CITY ACT ASSETS (Chungking Express / Fallen Angels)
                       // -------------------------------------------------------------
                       const cityGroup = new THREE.Group();
                       cityGroup.visible = false;
                       
-                      // 1. Background Dense Neon Skyline (z = -80)
-                      const cityCanvas = document.createElement('canvas');
-                      cityCanvas.width = 1024; cityCanvas.height = 512;
-                      const cCtx = cityCanvas.getContext('2d');
-                      cCtx.fillStyle = '#080512'; cCtx.fillRect(0, 0, 1024, 512);
+                      // A. Background Dense Neon Skyline
+                      const citySkyCanvas = document.createElement('canvas');
+                      citySkyCanvas.width = 1024; citySkyCanvas.height = 512;
+                      const csCtx = citySkyCanvas.getContext('2d');
+                      csCtx.fillStyle = '#06030C'; csCtx.fillRect(0, 0, 1024, 512);
                       
+                      // Atmospheric night sky glow
+                      const citySkyGrad = csCtx.createLinearGradient(0, 0, 0, 512);
+                      citySkyGrad.addColorStop(0, '#080314');
+                      citySkyGrad.addColorStop(0.65, '#22082A');
+                      citySkyGrad.addColorStop(1, '#4A0D38');
+                      csCtx.fillStyle = citySkyGrad;
+                      csCtx.fillRect(0, 0, 1024, 380);
+                      
+                      // Dense overlapping skyscrapers with illuminated windows & roof antennas
                       const neonColors = ['#00FF66', '#FF0055', '#00F0FF', '#FFB703', '#9D4EDD', '#FFD166'];
-                      for (let b = 0; b < 22; b++) {
-                        const bx = 30 + b * 44;
-                        const bw = 24 + (b % 3) * 12;
-                        const bh = 140 + (b % 5) * 50;
+                      for (let b = 0; b < 28; b++) {
+                        const bx = 10 + b * 36;
+                        const bw = 28 + (b % 4) * 8;
+                        const bh = 140 + (b % 7) * 45;
+                        
+                        // Dark building silhouette
+                        csCtx.fillStyle = '#0E061A';
+                        csCtx.fillRect(bx, 512 - bh, bw, bh);
+                        
+                        // Window grid
+                        csCtx.fillStyle = (b % 2 === 0) ? 'rgba(255, 214, 102, 0.35)' : 'rgba(0, 240, 255, 0.25)';
+                        for (let wy = 512 - bh + 15; wy < 490; wy += 14) {
+                          for (let wx = bx + 4; wx < bx + bw - 4; wx += 8) {
+                            if ((wx + wy) % 5 !== 0) csCtx.fillRect(wx, wy, 4, 6);
+                          }
+                        }
+                        
+                        // Roof Neon Signboard
                         const col = neonColors[b % neonColors.length];
-                        
-                        cCtx.fillStyle = '#120A1E';
-                        cCtx.fillRect(bx, 512 - bh, bw, bh);
-                        
-                        cCtx.fillStyle = col;
-                        cCtx.fillRect(bx + 4, 512 - bh + 15, bw - 8, 32 + (b % 4) * 20);
-                        
-                        cCtx.fillStyle = '#FFFFFF';
-                        cCtx.fillRect(bx + 8, 512 - bh + 22, bw - 16, 4);
+                        csCtx.fillStyle = col;
+                        csCtx.fillRect(bx + 2, 512 - bh + 6, bw - 4, 12);
                       }
                       
-                      const cityTex = new THREE.CanvasTexture(cityCanvas);
-                      const cityMesh = new THREE.Mesh(
-                        new THREE.PlaneGeometry(320, 160),
-                        new THREE.MeshBasicMaterial({ map: cityTex, side: THREE.DoubleSide, depthWrite: false })
+                      const citySkyTex = new THREE.CanvasTexture(citySkyCanvas);
+                      const citySkyMesh = new THREE.Mesh(
+                        new THREE.PlaneGeometry(360, 180),
+                        new THREE.MeshBasicMaterial({ map: citySkyTex, side: THREE.DoubleSide, depthWrite: false })
                       );
-                      cityMesh.position.set(0, 45, -80);
-                      cityGroup.add(cityMesh);
+                      citySkyMesh.position.set(0, 36, -95);
+                      cityGroup.add(citySkyMesh);
                       
-                      // 2. Midground Neon Signage with STEP 6 Wet-Street Reflections
-                      const neonSignsGroup = new THREE.Group();
-                      neonSignsGroup.position.set(0, 0, -25);
+                      // B. Midground 3D Hong Kong Street Architecture with Authentic Kanji Neon Signs
+                      const streetBuildingsGroup = new THREE.Group();
+                      const signSprites = [];
                       
-                      const signSpritesList = [];
+                      const signTexts = ['PARADISE', '重慶大廈', 'NEON BAR', '夜生活', '24H CLUB', '九龍', 'TAXI 88', '維多利亞'];
                       for (let n = 0; n < 14; n++) {
                         const side = (n % 2 === 0) ? -1 : 1;
                         const signCol = neonColors[n % neonColors.length];
+                        const text = signTexts[n % signTexts.length];
                         
+                        // Authentic Vertical Neon Signboard Canvas
                         const signCanv = document.createElement('canvas');
-                        signCanv.width = 128; signCanv.height = 256;
+                        signCanv.width = 160; signCanv.height = 360;
                         const snCtx = signCanv.getContext('2d');
                         
-                        snCtx.fillStyle = signCol;
-                        snCtx.fillRect(10, 10, 108, 236);
+                        // Weathered metal backing frame
+                        snCtx.fillStyle = '#110C18';
+                        snCtx.fillRect(8, 8, 144, 344);
+                        snCtx.strokeStyle = signCol;
+                        snCtx.lineWidth = 6;
+                        snCtx.strokeRect(12, 12, 136, 336);
+                        
+                        // Neon glowing typography
                         snCtx.fillStyle = '#FFFFFF';
-                        snCtx.fillRect(20, 30, 88, 16);
-                        snCtx.fillRect(20, 60, 88, 16);
-                        snCtx.fillRect(20, 90, 88, 16);
+                        snCtx.font = 'bold 28px sans-serif';
+                        snCtx.textAlign = 'center';
+                        snCtx.shadowColor = signCol;
+                        snCtx.shadowBlur = 18;
+                        
+                        for (let c = 0; c < text.length; c++) {
+                          snCtx.fillText(text[c], 80, 60 + c * 38);
+                        }
                         
                         const signTexture = new THREE.CanvasTexture(signCanv);
                         
-                        // Main Sign Sprite
+                        // Main Neon Signboard Sprite
                         const signMat = new THREE.SpriteMaterial({ map: signTexture, transparent: true });
                         const signSprite = new THREE.Sprite(signMat);
-                        const posX = side * (18 + (n * 2.5));
-                        const posY = 10 + (n % 3) * 4;
-                        const posZ = - (n * 14);
+                        const posX = side * (11 + (n % 3) * 2.5);
+                        const posY = 5.5 + (n % 3) * 2.2;
+                        const posZ = -10 - (n * 16);
                         signSprite.position.set(posX, posY, posZ);
-                        signSprite.scale.set(8, 16, 1);
-                        neonSignsGroup.add(signSprite);
+                        signSprite.scale.set(6, 13.5, 1);
+                        streetBuildingsGroup.add(signSprite);
                         
-                        // STEP 6: Wet-Street Reflection (Vertically flipped ~40% opacity with downward fade)
-                        const reflMat = new THREE.SpriteMaterial({ 
-                          map: signTexture, 
-                          transparent: true, 
-                          opacity: 0.40, 
-                          blending: THREE.AdditiveBlending 
+                        // Wet-Street Reflection (Vertically flipped ~40% opacity with downward fade)
+                        const reflMat = new THREE.SpriteMaterial({
+                          map: signTexture,
+                          transparent: true,
+                          opacity: 0.38,
+                          blending: THREE.AdditiveBlending
                         });
                         const reflSprite = new THREE.Sprite(reflMat);
                         reflSprite.position.set(posX, -posY * 0.45, posZ);
-                        reflSprite.scale.set(8, -16, 1); // Vertically flipped
-                        neonSignsGroup.add(reflSprite);
+                        reflSprite.scale.set(6, -13.5, 1);
+                        streetBuildingsGroup.add(reflSprite);
                         
-                        signSpritesList.push({ main: signSprite, refl: reflSprite, mat: signMat, reflMat: reflMat });
+                        signSprites.push({ main: signSprite, refl: reflSprite, mat: signMat, reflMat: reflMat });
                       }
-                      cityGroup.add(neonSignsGroup);
+                      cityGroup.add(streetBuildingsGroup);
                       
-                      // 3. Foreground Falling Rain Particles
-                      const rainCount = 450;
+                      // C. Wet City Asphalt Road Surface with Specular Sheen
+                      const cityRoadCanvas = document.createElement('canvas');
+                      cityRoadCanvas.width = 512; cityRoadCanvas.height = 1024;
+                      const crCtx = cityRoadCanvas.getContext('2d');
+                      
+                      crCtx.fillStyle = '#06030A'; crCtx.fillRect(0, 0, 512, 1024);
+                      crCtx.fillStyle = '#0E0818'; crCtx.fillRect(48, 0, 416, 1024);
+                      
+                      // Wet puddle reflections
+                      crCtx.fillStyle = 'rgba(0, 240, 255, 0.22)'; crCtx.fillRect(60, 0, 32, 1024);
+                      crCtx.fillStyle = 'rgba(255, 0, 128, 0.22)'; crCtx.fillRect(420, 0, 32, 1024);
+                      
+                      // Dashed center line
+                      crCtx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                      for (let y = 30; y < 1024; y += 150) {
+                        crCtx.fillRect(252, y, 8, 60);
+                      }
+                      
+                      const cityRoadTex = new THREE.CanvasTexture(cityRoadCanvas);
+                      cityRoadTex.wrapS = THREE.RepeatWrapping;
+                      cityRoadTex.wrapT = THREE.RepeatWrapping;
+                      cityRoadTex.repeat.set(1, 10);
+                      
+                      const cityRoadMesh = new THREE.Mesh(
+                        new THREE.PlaneGeometry(24, 250),
+                        new THREE.MeshBasicMaterial({ map: cityRoadTex, side: THREE.DoubleSide })
+                      );
+                      cityRoadMesh.rotation.x = -Math.PI / 2;
+                      cityRoadMesh.position.set(0, 0, -100);
+                      cityGroup.add(cityRoadMesh);
+                      
+                      // D. Foreground Rain Particles
+                      const rainCount = 500;
                       const rainGeo = new THREE.BufferGeometry();
                       const rainPos = new Float32Array(rainCount * 3);
                       for (let p = 0; p < rainCount; p++) {
-                        rainPos[p * 3] = (Math.random() - 0.5) * 44;
-                        rainPos[p * 3 + 1] = Math.random() * 28;
+                        rainPos[p * 3] = (Math.random() - 0.5) * 40;
+                        rainPos[p * 3 + 1] = Math.random() * 24;
                         rainPos[p * 3 + 2] = -5 - Math.random() * 28;
                       }
                       rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
                       
                       const rainMat = new THREE.PointsMaterial({
-                        color: 0x88CCFF,
+                        color: 0x99DDFF,
                         size: 0.35,
                         transparent: true,
                         opacity: 0.65
@@ -4020,22 +4146,23 @@ const PROJECTS = {
                         postScene,
                         postCamera,
                         postMat,
-                        groundPlane,
-                        roadTex,
                         highwayGroup,
+                        tunnelGroup,
                         cityGroup,
                         skyMesh,
                         skyTex,
                         duskTex,
                         sunSprite,
-                        hillMesh,
+                        roadTex,
+                        tunnelTex,
+                        cityRoadTex,
+                        carLightsGroup,
                         rainParticles,
-                        signSpritesList,
+                        signSprites,
                         currentActKey: 'highway',
-                        actTransitionProgress: 0,
                         scrollSpeed: 0.006,
-                        fovTarget: 60,
-                        fovCurrent: 60,
+                        fovTarget: 58,
+                        fovCurrent: 58,
                         bassRollingAvg: 0.25,
                         dispose: function() {
                           renderer.dispose();
@@ -4059,11 +4186,9 @@ const PROJECTS = {
                     
                     if (pEngine && pEngine.renderer) {
                       // -------------------------------------------------------------
-                      // EXACT SONG STRUCTURE & ACT TIMING MAP (3:31 Runtime)
+                      // EXACT SONG TIMESTAMPS (3:31 Runtime)
                       // -------------------------------------------------------------
                       const songTime = audio.currentTime || 0;
-                      
-                      // Check for manual test progress param if debugging
                       const urlParams = new URLSearchParams(window.location.search);
                       let manualSec = urlParams.has('test_sec') ? parseFloat(urlParams.get('test_sec')) : -1;
                       const currentSec = (manualSec >= 0) ? manualSec : songTime;
@@ -4084,72 +4209,67 @@ const PROJECTS = {
                       
                       pEngine.currentActKey = activeAct;
                       
-                      // -------------------------------------------------------------
-                      // STEP 12: CAMERA SWAY (2D Simplex noise on position & rotation)
-                      // -------------------------------------------------------------
-                      const swayX = SimplexNoise.noise2D(animTime * 0.015, 0) * 0.45;
-                      const swayY = SimplexNoise.noise2D(0, animTime * 0.015) * 0.15;
-                      const swayRotZ = SimplexNoise.noise2D(animTime * 0.01, 10) * 0.015;
+                      // Step 12: Camera Sway (Simplex noise on pos & rot)
+                      const swayX = SimplexNoise.noise2D(animTime * 0.015, 0) * 0.35;
+                      const swayY = SimplexNoise.noise2D(0, animTime * 0.015) * 0.12;
+                      const swayRotZ = SimplexNoise.noise2D(animTime * 0.01, 10) * 0.012;
                       pEngine.camera.position.x = swayX;
-                      pEngine.camera.position.y = 2.2 + swayY;
+                      pEngine.camera.position.y = 1.4 + swayY;
                       pEngine.camera.rotation.z = swayRotZ;
                       
-                      // Sub-bass transient rolling average & FOV snap (60 -> 58, ease back over 400ms)
+                      // Audio Sub-bass transient FOV snap
                       pEngine.bassRollingAvg = pEngine.bassRollingAvg * 0.95 + lerpedBass * 0.05;
                       const isSubBassTransient = (lerpedBass > pEngine.bassRollingAvg * 1.5) && (lerpedBass > 0.65);
                       
                       if (isPlaying && isSubBassTransient) {
-                        pEngine.fovCurrent = 58.0;
+                        pEngine.fovCurrent = 56.0;
                       } else {
-                        pEngine.fovCurrent += (60.0 - pEngine.fovCurrent) * 0.08;
+                        pEngine.fovCurrent += (58.0 - pEngine.fovCurrent) * 0.08;
                       }
                       pEngine.camera.fov = pEngine.fovCurrent;
                       pEngine.camera.updateProjectionMatrix();
                       
                       // -------------------------------------------------------------
-                      // ACT-SPECIFIC ASSET CONFIGURATIONS & POST-PROCESSING
+                      // ACT STATE SWITCHING & MOTION SMEAR RETENTION
                       // -------------------------------------------------------------
                       if (activeAct === 'highway') {
-                        // STEP 2: Highway Sunset
                         pEngine.highwayGroup.visible = true;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = false;
                         pEngine.skyMesh.material.map = pEngine.skyTex;
-                        pEngine.sunSprite.scale.set(45, 45, 1);
+                        pEngine.sunSprite.scale.set(38, 38, 1);
                         pEngine.scrollSpeed = 0.006;
                         pEngine.postMat.uniforms['uRetention'].value = 0.85;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
-                        
-                        if (pEngine.hillMesh) pEngine.hillMesh.position.x = Math.sin(animTime * 0.005) * 8;
                       }
                       else if (activeAct === 'highway-pulse') {
-                        // STEP 7: Highway Funky Bass Pulse
                         pEngine.highwayGroup.visible = true;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = false;
                         pEngine.skyMesh.material.map = pEngine.skyTex;
-                        pEngine.sunSprite.scale.set(45 + lerpedBass * 18, 45 + lerpedBass * 18, 1);
+                        pEngine.sunSprite.scale.set(38 + lerpedBass * 16, 38 + lerpedBass * 16, 1);
                         pEngine.scrollSpeed = 0.007;
-                        pEngine.postMat.uniforms['uRetention'].value = 0.86;
+                        pEngine.postMat.uniforms['uRetention'].value = 0.87;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
-                        
-                        if (pEngine.hillMesh) pEngine.hillMesh.position.x = Math.sin(animTime * 0.005) * 8;
                       }
                       else if (activeAct === 'tunnel') {
-                        // STEP 5: Tunnel Transition (~95% retention, green tint, blur crossfade)
-                        pEngine.highwayGroup.visible = true;
-                        pEngine.cityGroup.visible = true;
-                        pEngine.scrollSpeed = 0.015; // accelerating
-                        pEngine.postMat.uniforms['uRetention'].value = 0.95; // heavy streak blur
+                        // 3D Curved Tunnel Tube with Heavy Streak Blur
+                        pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = true;
+                        pEngine.cityGroup.visible = false;
+                        pEngine.scrollSpeed = 0.016; // accelerating
+                        pEngine.postMat.uniforms['uRetention'].value = 0.95; // 95% streak blur
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.88; // green tunnel lighting
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
                       }
                       else if (activeAct === 'city') {
-                        // STEP 6: Neon Rain City Street (Peak energy)
                         pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = true;
                         pEngine.scrollSpeed = 0.009;
                         pEngine.postMat.uniforms['uRetention'].value = 0.86;
@@ -4157,19 +4277,19 @@ const PROJECTS = {
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
                         
-                        // Animate rain streaks
+                        // Rain fall
                         if (pEngine.rainParticles) {
                           const pos = pEngine.rainParticles.geometry.attributes.position.array;
                           for (let p = 1; p < pos.length; p += 3) {
                             pos[p] -= 0.88;
-                            if (pos[p] < 0) pos[p] = 28;
+                            if (pos[p] < 0) pos[p] = 24;
                           }
                           pEngine.rainParticles.geometry.attributes.position.needsUpdate = true;
                         }
                       }
                       else if (activeAct === 'city-pulse') {
-                        // STEP 7: City Funky Bass Pulse
                         pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = true;
                         pEngine.scrollSpeed = 0.010;
                         pEngine.postMat.uniforms['uRetention'].value = 0.88;
@@ -4177,74 +4297,74 @@ const PROJECTS = {
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
                         
-                        // Pulse neon sign emissive scale
-                        pEngine.signSpritesList.forEach(s => {
-                          s.main.scale.set(8 + lerpedBass * 2.5, 16 + lerpedBass * 4, 1);
+                        pEngine.signSprites.forEach(s => {
+                          s.main.scale.set(6 + lerpedBass * 2.0, 13.5 + lerpedBass * 3.5, 1);
                         });
                         
                         if (pEngine.rainParticles) {
                           const pos = pEngine.rainParticles.geometry.attributes.position.array;
                           for (let p = 1; p < pos.length; p += 3) {
                             pos[p] -= 0.95;
-                            if (pos[p] < 0) pos[p] = 28;
+                            if (pos[p] < 0) pos[p] = 24;
                           }
                           pEngine.rainParticles.geometry.attributes.position.needsUpdate = true;
                         }
                       }
                       else if (activeAct === 'highway-dusk') {
-                        // STEP 8: Highway Dusk (Return trip, cooler blue/purple sky)
                         pEngine.highwayGroup.visible = true;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = false;
                         pEngine.skyMesh.material.map = pEngine.duskTex;
-                        pEngine.sunSprite.scale.set(38, 38, 1);
+                        pEngine.sunSprite.scale.set(32, 32, 1);
                         pEngine.scrollSpeed = 0.006;
                         pEngine.postMat.uniforms['uRetention'].value = 0.85;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
-                        
-                        if (pEngine.hillMesh) pEngine.hillMesh.position.x = Math.sin(animTime * 0.005) * 8;
                       }
                       else if (activeAct === 'suspended') {
-                        // STEP 9: Dreamy Bridge (30% speed, 92% retention, dimmed silhouettes)
                         pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = true;
-                        pEngine.scrollSpeed = 0.0025; // 30% baseline
+                        pEngine.scrollSpeed = 0.0025;
                         pEngine.postMat.uniforms['uRetention'].value = 0.92;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.0;
-                        pEngine.postMat.uniforms['uDim'].value = 0.5; // Dimmed to silhouettes
+                        pEngine.postMat.uniforms['uDim'].value = 0.5;
                       }
                       else if (activeAct === 'city-warm') {
-                        // STEP 10: Chorus Violin (Warm amber shift, reduced cyan)
                         pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = true;
                         pEngine.scrollSpeed = 0.008;
                         pEngine.postMat.uniforms['uRetention'].value = 0.86;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
-                        pEngine.postMat.uniforms['uWarmShift'].value = 0.85; // Warm LUT shift
+                        pEngine.postMat.uniforms['uWarmShift'].value = 0.85;
                         pEngine.postMat.uniforms['uDim'].value = 0.0;
                       }
                       else if (activeAct === 'outro') {
-                        // STEP 11: Outro (Quieter, -30% neon, scroll decelerating to stop)
                         pEngine.highwayGroup.visible = false;
+                        pEngine.tunnelGroup.visible = false;
                         pEngine.cityGroup.visible = true;
                         const outroRemaining = Math.max(0, 211 - currentSec);
                         pEngine.scrollSpeed = (outroRemaining < 10) ? (0.001 * (outroRemaining / 10)) : 0.0035;
                         pEngine.postMat.uniforms['uRetention'].value = 0.82;
                         pEngine.postMat.uniforms['uTunnelTint'].value = 0.0;
                         pEngine.postMat.uniforms['uWarmShift'].value = 0.3;
-                        pEngine.postMat.uniforms['uDim'].value = 0.35; // -30% dim
+                        pEngine.postMat.uniforms['uDim'].value = 0.35;
                       }
                       
-                      // Road UV continuous forward motion
-                      pEngine.roadTex.offset.y -= pEngine.scrollSpeed * speedMultiplier * (isPlaying ? 1.0 : 0.25);
+                      // UV Scroll Forward Motion
+                      const spd = pEngine.scrollSpeed * speedMultiplier * (isPlaying ? 1.0 : 0.25);
+                      pEngine.roadTex.offset.y -= spd;
+                      pEngine.tunnelTex.offset.y -= spd * 1.5;
+                      pEngine.cityRoadTex.offset.y -= spd;
                       
                       // 1. Render Scene to rtCurrent
                       pEngine.renderer.setRenderTarget(pEngine.rtCurrent);
                       pEngine.renderer.render(pEngine.scene, pEngine.camera);
                       
-                      // 2. Render Post-Processing Quad to Screen (Canvas)
+                      // 2. Render Post Quad to Screen
                       pEngine.renderer.setRenderTarget(null);
                       pEngine.postMat.uniforms['tDiffuse'].value = pEngine.rtCurrent.texture;
                       pEngine.postMat.uniforms['tPrevious'].value = pEngine.rtPrevious.texture;
