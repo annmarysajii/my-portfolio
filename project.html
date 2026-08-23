@@ -96,9 +96,28 @@ img{display:block;max-width:100%;}
 
 /* CURSOR & CANVAS */
 
-#cur{position:fixed;top:0;left:0;width:28px;height:28px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;}
-
-#cur.hov{transform:translate(-50%,-50%) scale(2);}
+#cur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0.1, 1), opacity 0.2s;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.45));
+}
+#cur.hov {
+  transform: translate(-50%, -50%) scale(1.75);
+  filter: drop-shadow(0 0 6px rgba(255, 0, 85, 0.8)) drop-shadow(0 0 12px rgba(255, 0, 85, 0.5));
+}
+[data-theme="dark"] #cur, body.dj-studio-mode #cur {
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.65));
+}
+[data-theme="dark"] #cur.hov, body.dj-studio-mode #cur.hov {
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9)) drop-shadow(0 0 14px rgba(255, 0, 85, 0.7));
+}
 
 #bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
 
@@ -503,46 +522,24 @@ img{display:block;max-width:100%;}
 <canvas id="bg-c"></canvas>
 
 <div id="cur">
-
-  <svg id="csq" width="28" height="28" viewBox="0 0 30 30">
-
+  <svg id="csq" width="32" height="32" viewBox="0 0 30 30">
     <defs>
-
       <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-
-        <line x1="0" y1="0" x2="3" y2="3" stroke="var(--ink)" stroke-width="0.4" stroke-opacity="0.25"/>
-
-        <line x1="3" y1="0" x2="0" y2="3" stroke="var(--ink)" stroke-width="0.3" stroke-opacity="0.12"/>
-
+        <line x1="0" y1="0" x2="3" y2="3" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.25"/>
+        <line x1="3" y1="0" x2="0" y2="3" stroke="currentColor" stroke-width="0.3" stroke-opacity="0.12"/>
       </pattern>
-
       <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
-
     </defs>
-
+    <!-- Outer High-Contrast Stroke Layer -->
+    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round" opacity="0.85"/>
+    <!-- Main Star Body -->
     <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="var(--ink)" filter="url(#rf)"/>
-
+    <!-- Textured Pattern Overlay -->
     <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
-
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="var(--ink)" stroke-width="0.6" stroke-opacity="0.28" filter="url(#rf)"/>
-
+    <!-- Precision Center Pinpoint Dot -->
+    <circle cx="15" cy="15" r="2" fill="#E8B000" stroke="#FFFFFF" stroke-width="0.75"/>
   </svg>
-
-</div>
-
-
-
-<nav class="nav" id="nav">
-
-  <div class="nav-in">
-
-    <a href="portfolio.html" class="nav-logo">Annmary Saji</a>
-
-    <div style="display:flex;align-items:center;gap:1.5rem;">
-
-      
-
-      <button class="theme-toggle pill-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle dark mode"><i data-lucide="moon" class="icon" id="themeIcon"></i><div class="pill-track"><div class="pill-knob"></div></div></button>
+</div></button>
 
       <a href="portfolio.html" class="nav-back">
 
@@ -615,13 +612,16 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 })();
 
 document.addEventListener('mouseover',e=>{
+  const isInteractive = !!e.target.closest('a, button, .card, .gallery-img, .back-btn, .portfolio-btn, .track-card-btn, .orbit-item, .slider-track, #vinyl-disc, .filter-dial, .speed-btn');
+  cur.classList.toggle('hov', isInteractive);
 
-  cur.classList.toggle('hov',!!e.target.closest('a,button,.gallery-img,.back-btn,.portfolio-btn'));
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  sf.setAttribute('fill',cur.classList.contains('hov') ? '#D93020' : (isDark ? '#F0EEF5' : '#111009'));
-
+  const isDark = (document.documentElement.getAttribute('data-theme') === 'dark') || document.body.classList.contains('dj-studio-mode');
+  
+  if (cur.classList.contains('hov')) {
+    sf.setAttribute('fill', '#FF0055');
+  } else {
+    sf.setAttribute('fill', isDark ? '#FFF7D6' : '#111009');
+  }
 });
 
 
