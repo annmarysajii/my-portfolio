@@ -2485,13 +2485,13 @@ const PROJECTS = {
               return;
           }
 
-          // 8. ORIGINAL TRACKS (ULTRA-HIGH-FIDELITY AUDIO-REACTIVE CINEMATIC WORLDS)
+          // 8. ORIGINAL TRACKS (WORLD-CLASS GENERATIVE STUDIO VISUALIZER ENGINE)
           if (id === 'original-tracks') {
               let htmlStr = styleBlock;
               htmlStr += `
               <style>
                 /* ================================================================
-                   WHOLE-PAGE ENVIRONMENT THEMES & ULTRA-CRISP UI
+                   WHOLE-PAGE ENVIRONMENT THEMES & FROSTED GLASSMORPHISM
                 ================================================================ */
                 html, body {
                   background: #020204 !important;
@@ -2510,8 +2510,9 @@ const PROJECTS = {
                   display: none !important;
                 }
                 body.dj-studio-mode .nav {
-                  background: rgba(2, 2, 4, 0.9) !important;
-                  backdrop-filter: blur(20px);
+                  background: rgba(2, 2, 4, 0.75) !important;
+                  backdrop-filter: blur(24px) saturate(180%);
+                  -webkit-backdrop-filter: blur(24px) saturate(180%);
                   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
                 }
                 body.dj-studio-mode .nav-logo,
@@ -2558,11 +2559,12 @@ const PROJECTS = {
                   text-transform: uppercase;
                   letter-spacing: 2px;
                   margin-bottom: 0.85rem;
-                  background: rgba(255, 255, 255, 0.12);
-                  border: 1px solid rgba(255, 255, 255, 0.3);
+                  background: rgba(255, 255, 255, 0.08);
+                  border: 1px solid rgba(255, 255, 255, 0.22);
                   color: #E8B000;
-                  backdrop-filter: blur(14px);
-                  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+                  backdrop-filter: blur(20px) saturate(180%);
+                  -webkit-backdrop-filter: blur(20px) saturate(180%);
+                  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
                 }
                 .dj-status-dot {
                   width: 8px;
@@ -2584,7 +2586,7 @@ const PROJECTS = {
                   letter-spacing: -1.5px;
                   color: #FFFFFF !important;
                   margin: 0;
-                  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 4px 30px rgba(0, 0, 0, 0.9);
+                  text-shadow: 0 0 35px rgba(255, 255, 255, 0.35), 0 4px 30px rgba(0, 0, 0, 0.9);
                 }
                 .dj-main-subtitle {
                   font-size: 1.05rem;
@@ -2606,14 +2608,16 @@ const PROJECTS = {
                   margin-top: 1rem;
                 }
                 
-                /* TURNTABLE HARDWARE CHASSIS */
+                /* TURNTABLE HARDWARE CHASSIS - FROSTED GLASSMORPHISM */
                 .turntable-hardware {
                   position: relative;
                   width: 410px;
                   height: 350px;
                   border-radius: 28px;
-                  background: linear-gradient(145deg, #1c1a24, #0d0c12) !important;
-                  box-shadow: 0 40px 80px rgba(0,0,0,0.85), inset 0 2px 4px rgba(255,255,255,0.18), inset 0 -4px 12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.18) !important;
+                  background: rgba(18, 16, 26, 0.72) !important;
+                  backdrop-filter: blur(24px) saturate(180%) !important;
+                  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                  box-shadow: 0 35px 80px rgba(0,0,0,0.65), inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -4px 12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.14) !important;
                   display: flex;
                   align-items: center;
                   justify-content: center;
@@ -2628,12 +2632,12 @@ const PROJECTS = {
                   width: 290px;
                   height: 290px;
                   border-radius: 50%;
-                  background: radial-gradient(circle, #282632 0%, #0d0c10 90%) !important;
-                  box-shadow: 0 14px 28px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.2) !important;
+                  background: radial-gradient(circle, #22202a 0%, #0d0c10 90%) !important;
+                  box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.18) !important;
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  border: 4px solid #3d3b48 !important;
+                  border: 4px solid #363442 !important;
                 }
                 
                 .spindle {
@@ -2757,7 +2761,7 @@ const PROJECTS = {
                   height: 125px;
                   border-radius: 5px;
                   cursor: pointer;
-                  background: #09080d;
+                  background: rgba(0,0,0,0.5);
                   box-shadow: inset 0 2px 5px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.12);
                 }
                 .slider-knob {
@@ -2814,17 +2818,18 @@ const PROJECTS = {
                   border-color: #E8B000;
                 }
                 
-                /* TRACK DECK PANEL */
+                /* TRACK DECK PANEL - FROSTED GLASSMORPHISM */
                 .track-deck-panel {
                   flex: 1;
                   min-width: 340px;
                   max-width: 520px;
                   border-radius: 24px;
                   padding: 2.25rem;
-                  background: rgba(14, 13, 22, 0.94) !important;
-                  backdrop-filter: blur(25px);
-                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                  box-shadow: 0 30px 70px rgba(0,0,0,0.75) !important;
+                  background: rgba(16, 14, 24, 0.75) !important;
+                  backdrop-filter: blur(24px) saturate(180%) !important;
+                  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+                  box-shadow: 0 35px 80px rgba(0,0,0,0.65), inset 0 1px 1px rgba(255,255,255,0.15) !important;
                   display: flex;
                   flex-direction: column;
                   gap: 1.2rem;
@@ -2842,19 +2847,19 @@ const PROJECTS = {
                   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                   text-align: left;
                   outline: none;
-                  background: rgba(255, 255, 255, 0.08);
-                  border: 1.5px solid rgba(255, 255, 255, 0.16);
+                  background: rgba(255, 255, 255, 0.05);
+                  border: 1px solid rgba(255, 255, 255, 0.12);
                   color: #FFFFFF !important;
                 }
                 .track-card-btn:hover {
                   transform: translateX(4px);
-                  background: rgba(255, 255, 255, 0.15);
-                  border-color: rgba(255, 255, 255, 0.35);
+                  background: rgba(255, 255, 255, 0.12);
+                  border-color: rgba(255, 255, 255, 0.3);
                 }
                 .track-card-btn.active {
                   border-color: var(--track-color, #E8B000) !important;
-                  background: rgba(255, 255, 255, 0.14) !important;
-                  box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 22px var(--track-glow, rgba(232, 176, 0, 0.35)) !important;
+                  background: rgba(255, 255, 255, 0.12) !important;
+                  box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px var(--track-glow, rgba(232, 176, 0, 0.35)) !important;
                 }
                 
                 .track-play-icon {
@@ -2865,8 +2870,8 @@ const PROJECTS = {
                   align-items: center;
                   justify-content: center;
                   flex-shrink: 0;
-                  background: rgba(255, 255, 255, 0.15);
-                  border: 1px solid rgba(255, 255, 255, 0.3);
+                  background: rgba(255, 255, 255, 0.12);
+                  border: 1px solid rgba(255, 255, 255, 0.25);
                   color: #fff;
                   transition: all 0.3s;
                 }
@@ -3057,7 +3062,7 @@ const PROJECTS = {
                   file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', 
                   name: 'Club Got Boots', 
                   genre: 'club', 
-                  tag: '128 BPM · Festival Laser Rig · V Squared Labs', 
+                  tag: '128 BPM · Generative Light Architecture · Rave Mood', 
                   color: '#00FF66',
                   glow: 'rgba(0, 255, 102, 0.5)'
                 },
@@ -3065,7 +3070,7 @@ const PROJECTS = {
                   file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', 
                   name: 'Cloudy Days', 
                   genre: 'experimental', 
-                  tag: '84 BPM · Blade Runner Rain Pane · Melancholic Bokeh', 
+                  tag: '84 BPM · Fluid Glass Dynamics · Melancholic Bokeh', 
                   color: '#38BDF8',
                   glow: 'rgba(56, 189, 248, 0.45)'
                 },
@@ -3073,7 +3078,7 @@ const PROJECTS = {
                   file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
                   name: 'Paradise', 
                   genre: 'pop', 
-                  tag: '118 BPM · Synthwave Night Drive · Drive 2011', 
+                  tag: '118 BPM · Wong Kar-wai Sunset Drive · Step-Printing', 
                   color: '#FF007F',
                   glow: 'rgba(255, 0, 127, 0.5)'
                 }
@@ -3113,7 +3118,6 @@ const PROJECTS = {
               const volKnob = document.getElementById('vol-knob');
               const filterDial = document.getElementById('filter-dial');
               const speedBtn = document.getElementById('speed-btn');
-              const ttHardware = document.getElementById('turntable-hardware');
               
               let animRunning = false;
               let vRot = 0;
@@ -3196,42 +3200,113 @@ const PROJECTS = {
               };
               
               // ================================================================
-              // REFERENCE VISUAL ARRAYS & PARTICLES
+              // PROCEDURAL SIMPLEX NOISE ALGORITHM (Self-contained, ultra-fast)
+              // ================================================================
+              const SimplexNoise = (function() {
+                const p = new Uint8Array(256);
+                for (let i = 0; i < 256; i++) p[i] = (i * 151 + 73) & 255;
+                const perm = new Uint8Array(512), permMod12 = new Uint8Array(512);
+                for (let i = 0; i < 512; i++) {
+                  perm[i] = p[i & 255];
+                  permMod12[i] = perm[i] % 12;
+                }
+                const grad3 = new Float32Array([
+                  1,1,0, -1,1,0, 1,-1,0, -1,-1,0,
+                  1,0,1, -1,0,1, 1,0,-1, -1,0,-1,
+                  0,1,1, 0,-1,1, 0,1,-1, 0,-1,-1
+                ]);
+                return {
+                  noise2D: function(xin, yin) {
+                    const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
+                    const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
+                    let s = (xin + yin) * F2;
+                    let i = Math.floor(xin + s), j = Math.floor(yin + s);
+                    let t = (i + j) * G2;
+                    let X0 = i - t, Y0 = j - t;
+                    let x0 = xin - X0, y0 = yin - Y0;
+                    let i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+                    let x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+                    let x2 = x0 - 1.0 + 2.0 * G2, y2 = y0 - 1.0 + 2.0 * G2;
+                    let ii = i & 255, jj = j & 255;
+                    let gi0 = permMod12[ii + perm[jj]] * 3;
+                    let gi1 = permMod12[ii + i1 + perm[jj + j1]] * 3;
+                    let gi2 = permMod12[ii + 1 + perm[jj + 1]] * 3;
+                    let n0 = 0, n1 = 0, n2 = 0;
+                    let t0 = 0.5 - x0 * x0 - y0 * y0;
+                    if (t0 > 0) { t0 *= t0; n0 = t0 * t0 * (grad3[gi0] * x0 + grad3[gi0 + 1] * y0); }
+                    let t1 = 0.5 - x1 * x1 - y1 * y1;
+                    if (t1 > 0) { t1 *= t1; n1 = t1 * t1 * (grad3[gi1] * x1 + grad3[gi1 + 1] * y1); }
+                    let t2 = 0.5 - x2 * x2 - y2 * y2;
+                    if (t2 > 0) { t2 *= t2; n2 = t2 * t2 * (grad3[gi2] * x2 + grad3[gi2 + 1] * y2); }
+                    return 70.0 * (n0 + n1 + n2);
+                  }
+                };
+              })();
+              
+              // ================================================================
+              // PHYSICAL STATE ARRAYS & MEMORY CONTAINERS
               // ================================================================
               
-              // 1. CLOUDY DAYS: Car Windshield Rain Drops & Expanding Impact Ripples
-              const ambientDroplets = [];
-              for (let i = 0; i < 65; i++) {
-                ambientDroplets.push({
+              // 1. CLOUDY DAYS: Fluid Stick-Slip Droplets & Elliptical Impacts
+              const fluidDroplets = [];
+              for (let i = 0; i < 75; i++) {
+                fluidDroplets.push({
                   x: Math.random() * (window.innerWidth || 1440),
                   y: Math.random() * (window.innerHeight || 900),
-                  r: 1.8 + Math.random() * 3.5,
-                  vy: 0.4 + Math.random() * 1.6,
-                  trickleProgress: Math.random() * 100,
-                  trailLength: 15 + Math.random() * 45
+                  mass: 0.2 + Math.random() * 0.6,
+                  scale: 1.5 + Math.random() * 3.0,
+                  opacity: 0.4 + Math.random() * 0.5,
+                  frictionThreshold: 0.75 + Math.random() * 0.6,
+                  state: 'stick', // 'stick' or 'slip'
+                  vy: 0,
+                  streakTrail: [],
+                  vibrate: 0
                 });
               }
               
-              // Piano Beat Ripple Impacts on Windshield
-              const pianoRipples = [];
-              let lastPianoSpawnTime = 0;
+              const impactEllipses = [];
+              let lastImpactTime = 0;
               
-              // Out-of-Focus Golden & Cyan City Bokeh Lights
-              const bokehOrbs = [];
-              for (let i = 0; i < 30; i++) {
-                bokehOrbs.push({
+              // Layered Out-of-Focus City Bokeh Lights
+              const bokehLights = [];
+              for (let i = 0; i < 28; i++) {
+                bokehLights.push({
                   x: Math.random() * (window.innerWidth || 1440),
                   y: (window.innerHeight || 900) * (0.1 + Math.random() * 0.8),
-                  r: 60 + Math.random() * 110,
-                  baseAlpha: 0.35 + Math.random() * 0.35,
+                  r: 55 + Math.random() * 95,
+                  baseAlpha: 0.3 + Math.random() * 0.35,
                   hue: [38, 48, 195, 215, 340, 280][i % 6],
-                  driftX: (Math.random() - 0.5) * 0.2
+                  driftX: (Math.random() - 0.5) * 0.25,
+                  driftY: (Math.random() - 0.5) * 0.15
                 });
               }
               
-              let strobeDecay = 0;
-              let lastKickTime = 0;
+              // 2. PARADISE: Step-Printing Streetlight Trail Containers (15 FPS updates)
+              const wkwStreetlights = [];
+              for (let i = 0; i < 18; i++) {
+                wkwStreetlights.push({
+                  z: i * 65 + 10,
+                  side: i % 2 === 0 ? -1 : 1,
+                  cachedX: 0,
+                  cachedY: 0,
+                  trailLen: 0
+                });
+              }
+              
+              // LERP Interpolated Energy Quantities
+              let lerpedBass = 0.2;
+              let lerpedMid = 0.3;
+              let lerpedHigh = 0.2;
+              let targetBass = 0.2;
+              let targetMid = 0.3;
+              let targetHigh = 0.2;
+              
+              // Transition cross-fade
+              let currentRenderMode = tracks[currentIdx].genre;
+              let transitionAlpha = 1.0;
+              
               let animTime = 0;
+              let frameCounter = 0;
               
               function startVizLoop() {
                 if (animRunning) return;
@@ -3255,6 +3330,7 @@ const PROJECTS = {
                   const cTime = isPlaying ? audio.currentTime : (animTime * 0.016);
                   
                   animTime += 1;
+                  frameCounter += 1;
                   
                   if (isPlaying) {
                     vRot += (track.genre === 'club' ? 2.2 : (track.genre === 'pop' ? 1.6 : 1.0)) * speedMultiplier;
@@ -3264,150 +3340,139 @@ const PROJECTS = {
                     tonearm.style.transform = `rotate(12deg)`;
                   }
                   
-                  // Precision Audio Transients Mapped Directly to Track Arranging
+                  // Compute Target Audio Transient Levels
                   const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
                   const beatPeriod = 60 / bpm;
                   const phase = (cTime % beatPeriod) / beatPeriod;
                   
-                  let liveSubBass = 0;
-                  let liveMidRange = 0;
-                  
                   if (isPlaying) {
                     if (phase < 0.15) {
-                      liveSubBass = 0.95;
+                      targetBass = 0.95;
                     } else {
-                      liveSubBass = Math.max(0.15, Math.pow(1 - phase, 2) * 0.8);
+                      targetBass = Math.max(0.12, Math.pow(1 - phase, 2.2) * 0.85);
                     }
-                    liveMidRange = 0.4 + Math.sin(cTime * 4.2) * 0.35;
+                    targetMid = 0.35 + Math.sin(cTime * 3.8) * 0.3;
+                    targetHigh = 0.3 + Math.cos(cTime * 5.2) * 0.25;
                   } else {
-                    liveSubBass = 0.25 + Math.sin(animTime * 0.05) * 0.15;
-                    liveMidRange = 0.3;
+                    targetBass = 0.2 + Math.sin(animTime * 0.04) * 0.1;
+                    targetMid = 0.25;
+                    targetHigh = 0.2;
                   }
                   
-                  const kickPulse = liveSubBass;
-                  const midEnergy = liveMidRange;
-                  
-                  ctx.clearRect(0, 0, W, H);
+                  // Smooth Exponential LERP Interpolation (Zero Jitter Physics)
+                  const lerpRate = 0.12;
+                  lerpedBass += (targetBass - lerpedBass) * lerpRate;
+                  lerpedMid += (targetMid - lerpedMid) * lerpRate;
+                  lerpedHigh += (targetHigh - lerpedHigh) * lerpRate;
                   
                   // ================================================================
-                  // 1. ⚡ "CLUB GOT BOOTS" — PHYSICAL SPOTLIGHT HEADS & DIRECT BEAMS
+                  // 1. ⚡ "CLUB GOT BOOTS" — DEEP-SPACE GENERATIVE LIGHT ARCHITECTURE
                   // ================================================================
                   if (track.genre === 'club') {
-                    // Deep Obsidian Arena Background
+                    // Deep Obsidian Space
                     ctx.fillStyle = '#020204';
                     ctx.fillRect(0, 0, W, H);
                     
-                    const trussX = W / 2;
-                    const trussY = H * 0.12;
-                    const trussW = W * 0.55;
-                    const numFixtures = 12;
-                    const fixturePositions = [];
+                    const vanX = W / 2;
+                    const vanY = H * 0.48;
+                    const ceilingY = H * 0.12;
                     
-                    // Symmetrical Suspended 3D Truss Frame
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-                    ctx.lineWidth = 3;
-                    ctx.beginPath();
-                    ctx.moveTo(trussX - trussW * 0.55, trussY - 24);
-                    ctx.lineTo(trussX + trussW * 0.55, trussY - 24);
-                    ctx.lineTo(trussX + trussW * 0.42, trussY + 24);
-                    ctx.lineTo(trussX - trussW * 0.42, trussY + 24);
-                    ctx.closePath();
-                    ctx.stroke();
+                    // Overhead Spotlight Anchors on Ceiling Rig
+                    const numAnchors = 10;
+                    const anchors = [];
+                    for (let a = 0; a < numAnchors; a++) {
+                      const spread = (a / (numAnchors - 1) - 0.5);
+                      const ax = vanX + spread * (W * 0.65);
+                      const ay = ceilingY + Math.abs(spread) * 18;
+                      anchors.push({ x: ax, y: ay, spread: spread });
+                    }
                     
-                    // Cross-bracing struts
-                    ctx.lineWidth = 1.5;
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-                    for (let s = -4; s <= 4; s++) {
-                      const sx1 = trussX + s * (trussW * 0.1);
-                      const sx2 = trussX + (s + 0.5) * (trussW * 0.1);
+                    // 3D Generative Wireframe Perspective Tunnel with Ocean Wave Ripples
+                    const numRings = 16;
+                    const numSlices = 24;
+                    
+                    ctx.save();
+                    for (let r = 0; r < numRings; r++) {
+                      const depth = ((r + (animTime * 0.02 * speedMultiplier)) % numRings) / numRings;
+                      const ringScale = Math.pow(depth, 2.2);
+                      const ringAlpha = 0.08 + ringScale * 0.55;
+                      
                       ctx.beginPath();
-                      ctx.moveTo(sx1, trussY - 24);
-                      ctx.lineTo(sx2, trussY + 24);
+                      for (let s = 0; s <= numSlices; s++) {
+                        const theta = (s / numSlices) * Math.PI * 2;
+                        
+                        // Ocean Wave Ripple Displacement
+                        const waveNoise = SimplexNoise.noise2D(Math.cos(theta) * 2.0, r * 0.3 + animTime * 0.03);
+                        const waveDisplace = Math.sin(theta * 3 + animTime * 0.04) * (15 + lerpedMid * 35) + waveNoise * (10 + lerpedMid * 20);
+                        
+                        const rx = (W * 0.5) * ringScale + waveDisplace * ringScale;
+                        const ry = (H * 0.42) * ringScale + waveDisplace * ringScale;
+                        
+                        const px = vanX + Math.cos(theta) * rx;
+                        const py = vanY + Math.sin(theta) * ry;
+                        
+                        if (s === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                      }
+                      ctx.strokeStyle = `rgba(0, 255, 120, ${ringAlpha})`;
+                      ctx.lineWidth = 1.0 + lerpedBass * 1.5;
                       ctx.stroke();
                     }
                     
-                    // Compute Exact Spotlight Fixture Head Positions
-                    for (let f = 0; f < numFixtures; f++) {
-                      const spread = ((f / (numFixtures - 1)) - 0.5);
-                      const fx = trussX + spread * (trussW * 0.88);
-                      const fy = trussY + 18;
-                      fixturePositions.push({ x: fx, y: fy, idx: f, spread: spread });
+                    // Converging Fine Vector Perspective Rays
+                    for (let s = 0; s < numSlices; s += 2) {
+                      const theta = (s / numSlices) * Math.PI * 2;
+                      const outerX = vanX + Math.cos(theta) * (W * 0.7);
+                      const outerY = vanY + Math.sin(theta) * (H * 0.6);
+                      
+                      ctx.beginPath();
+                      ctx.moveTo(vanX, vanY);
+                      ctx.lineTo(outerX, outerY);
+                      ctx.strokeStyle = `rgba(57, 255, 20, ${0.1 + lerpedBass * 0.2})`;
+                      ctx.lineWidth = 0.8;
+                      ctx.stroke();
                     }
+                    ctx.restore();
                     
-                    // Volumetric Stage Haze & Atmosphere
-                    const haze = ctx.createRadialGradient(trussX, trussY, 30, trussX, H * 0.6, Math.max(W, H) * 0.8);
-                    haze.addColorStop(0, `rgba(0, 255, 102, ${0.18 + kickPulse * 0.25})`);
-                    haze.addColorStop(0.4, `rgba(0, 0, 0, 0.65)`);
-                    haze.addColorStop(1, '#020204');
-                    ctx.fillStyle = haze;
-                    ctx.fillRect(0, 0, W, H);
-                    
-                    // Draw Connected Laser Beams directly originating from each spotlight head
-                    fixturePositions.forEach(fix => {
-                      const sweepOsc = Math.sin(animTime * 0.04 + fix.idx * 0.4) * (W * 0.25);
-                      const targetX = trussX + fix.spread * (W * 0.9) + sweepOsc;
-                      const targetY = H * 0.96;
-                      
-                      const colA = (fix.idx % 2 === 0) ? '#00FF66' : '#39FF14';
-                      const beamAlpha = 0.35 + kickPulse * 0.6;
-                      
-                      // Outer Laser Glow
-                      ctx.beginPath();
-                      ctx.moveTo(fix.x, fix.y);
-                      ctx.lineTo(targetX, targetY);
-                      ctx.strokeStyle = colA;
-                      ctx.lineWidth = 5 + kickPulse * 5;
-                      ctx.shadowColor = colA;
-                      ctx.shadowBlur = 24;
-                      ctx.globalAlpha = beamAlpha;
-                      ctx.stroke();
-                      
-                      // Inner High-Intensity White Core Beam
-                      ctx.beginPath();
-                      ctx.moveTo(fix.x, fix.y);
-                      ctx.lineTo(targetX, targetY);
-                      ctx.strokeStyle = '#FFFFFF';
-                      ctx.lineWidth = 1.8;
-                      ctx.globalAlpha = beamAlpha * 0.9;
-                      ctx.stroke();
-                    });
-                    ctx.globalAlpha = 1.0;
-                    ctx.shadowBlur = 0;
-                    
-                    // Draw Spotlight Fixture Hardware on the Truss
-                    fixturePositions.forEach(fix => {
-                      // Fixture Body
+                    // Volumetric Screen-Space Lens Flare & Bloom from Overhead Anchors
+                    anchors.forEach((anc, idx) => {
+                      // Draw sleek spotlight fixture node
                       ctx.fillStyle = '#2A2930';
-                      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-                      ctx.lineWidth = 1.5;
                       ctx.beginPath();
-                      ctx.rect(fix.x - 7, fix.y - 12, 14, 14);
+                      ctx.arc(anc.x, anc.y, 4.5, 0, Math.PI * 2);
                       ctx.fill();
-                      ctx.stroke();
                       
-                      // Glowing Lens
-                      ctx.fillStyle = '#FFFFFF';
-                      ctx.shadowColor = '#00FF66';
-                      ctx.shadowBlur = 12;
+                      // Volumetric Bloom on Sub-bass Transient Peak
+                      if (lerpedBass > 0.45) {
+                        const bloomR = 40 + (lerpedBass - 0.45) * 120;
+                        const flare = ctx.createRadialGradient(anc.x, anc.y, 0, anc.x, anc.y, bloomR);
+                        flare.addColorStop(0, `rgba(255, 255, 255, ${(lerpedBass - 0.45) * 0.8})`);
+                        flare.addColorStop(0.25, `rgba(0, 255, 102, ${(lerpedBass - 0.45) * 0.4})`);
+                        flare.addColorStop(1, 'transparent');
+                        
+                        ctx.fillStyle = flare;
+                        ctx.beginPath();
+                        ctx.arc(anc.x, anc.y, bloomR, 0, Math.PI * 2);
+                        ctx.fill();
+                      }
+                      
+                      // Fine laser line projecting to arena horizon
+                      const sweep = Math.sin(animTime * 0.03 + idx * 0.4) * (W * 0.2);
                       ctx.beginPath();
-                      ctx.arc(fix.x, fix.y, 4.5, 0, Math.PI * 2);
-                      ctx.fill();
-                      ctx.shadowBlur = 0;
+                      ctx.moveTo(anc.x, anc.y);
+                      ctx.lineTo(vanX + anc.spread * (W * 0.9) + sweep, H * 0.96);
+                      ctx.strokeStyle = (idx % 2 === 0) ? `rgba(0, 255, 102, ${0.25 + lerpedBass * 0.4})` : `rgba(57, 255, 20, ${0.25 + lerpedBass * 0.4})`;
+                      ctx.lineWidth = 1.2 + lerpedBass * 1.5;
+                      ctx.stroke();
                     });
                     
-                    // Drum Strobe Flash on Kick Onset
-                    if (kickPulse > 0.65 && isPlaying) {
-                      ctx.fillStyle = `rgba(255, 255, 255, ${kickPulse * 0.2})`;
-                      ctx.fillRect(0, 0, W, H);
-                    }
-                    
-                    // Symmetrical Festival Crowd Silhouette at Bottom with raised hands
+                    // Subtle Backlit Audience Silhouette at bottom
                     ctx.fillStyle = '#010103';
                     ctx.beginPath();
                     ctx.moveTo(0, H);
-                    for (let x = 0; x <= W; x += 18) {
-                      const wave = Math.sin(x * 0.05 + animTime * 0.05);
-                      const headH = 55 + wave * 18 + (x % 36 === 0 ? 34 : 0);
+                    for (let x = 0; x <= W; x += 20) {
+                      const wave = Math.sin(x * 0.04 + animTime * 0.04);
+                      const headH = 45 + wave * 14 + (x % 40 === 0 ? 28 : 0);
                       ctx.lineTo(x, H - headH);
                     }
                     ctx.lineTo(W, H);
@@ -3416,36 +3481,31 @@ const PROJECTS = {
                   }
                   
                   // ================================================================
-                  // 2. ☁️ "CLOUDY DAYS" — CAR WINDSHIELD VIEW, BEAT RIPPLES & DRAGGING RAIN
+                  // 2. ☁️ "CLOUDY DAYS" — RAIN GLASS FLUID SIMULATION & STICK-SLIP
                   // ================================================================
                   else if (track.genre === 'experimental') {
-                    // Deep Overcast Rainy Twilight Sky
+                    // Deep Indigo-Slate Overcast Sky
                     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    skyGrad.addColorStop(0, '#121A28');
-                    skyGrad.addColorStop(0.5, '#1B2638');
-                    skyGrad.addColorStop(1, '#0D1420');
+                    skyGrad.addColorStop(0, '#101724');
+                    skyGrad.addColorStop(0.5, '#172233');
+                    skyGrad.addColorStop(1, '#0C121C');
                     ctx.fillStyle = skyGrad;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Diffused Atmospheric Moonlight behind clouds
-                    const moonBloom = ctx.createRadialGradient(W * 0.35, H * 0.22, 20, W * 0.35, H * 0.22, Math.max(W, H) * 0.7);
-                    moonBloom.addColorStop(0, `rgba(240, 248, 255, ${0.5 + midEnergy * 0.3})`);
-                    moonBloom.addColorStop(0.4, `rgba(56, 189, 248, ${0.22 + midEnergy * 0.2})`);
-                    moonBloom.addColorStop(1, 'transparent');
-                    ctx.fillStyle = moonBloom;
-                    ctx.fillRect(0, 0, W, H);
-                    
-                    // Out-of-Focus Golden & Cyan City Bokeh Lights
-                    bokehOrbs.forEach(b => {
+                    // Out-of-Focus Layered City Bokeh Lights slowly drifting
+                    bokehLights.forEach(b => {
                       b.x += b.driftX;
+                      b.y += b.driftY;
                       if (b.x < -120) b.x = W + 120;
                       if (b.x > W + 120) b.x = -120;
+                      if (b.y < -100) b.y = H + 100;
+                      if (b.y > H + 100) b.y = -100;
                       
-                      const swell = 1 + midEnergy * 0.4;
+                      const swell = 1 + lerpedMid * 0.35;
                       const r = b.r * swell;
                       const bokehGrad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
-                      bokehGrad.addColorStop(0, `hsla(${b.hue}, 90%, 65%, ${b.baseAlpha * (0.95 + midEnergy * 0.7)})`);
-                      bokehGrad.addColorStop(0.65, `hsla(${b.hue}, 75%, 45%, ${b.baseAlpha * 0.35})`);
+                      bokehGrad.addColorStop(0, `hsla(${b.hue}, 90%, 65%, ${b.baseAlpha * (0.8 + lerpedMid * 0.6)})`);
+                      bokehGrad.addColorStop(0.65, `hsla(${b.hue}, 75%, 45%, ${b.baseAlpha * 0.28})`);
                       bokehGrad.addColorStop(1, 'transparent');
                       
                       ctx.fillStyle = bokehGrad;
@@ -3454,247 +3514,230 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // Windshield Glass Condensation Layer
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
-                    ctx.fillRect(0, 0, W, H);
-                    
-                    // Spawn Piano Note Ripple Impacts on Windshield beat-by-beat
-                    const pianoInterval = 0.71; // 84 BPM lo-fi quarter notes
-                    if (isPlaying && (cTime - lastPianoSpawnTime > pianoInterval * 0.95)) {
-                      lastPianoSpawnTime = cTime;
-                      pianoRipples.push({
-                        x: W * 0.15 + Math.random() * (W * 0.7),
-                        y: H * 0.12 + Math.random() * (H * 0.45),
-                        radius: 3,
-                        maxRadius: 28 + Math.random() * 22,
-                        alpha: 0.9,
-                        dropletSize: 2.8 + Math.random() * 3.5,
-                        vy: 0.5 + Math.random() * 1.5,
-                        dragStarted: false,
-                        dragDist: 0
+                    // Low-Bass Elliptical Impact Contacts on Glass with Exponential Evaporation
+                    if (isPlaying && lerpedBass > 0.65 && (cTime - lastImpactTime > 0.45)) {
+                      lastImpactTime = cTime;
+                      impactEllipses.push({
+                        x: W * 0.12 + Math.random() * (W * 0.76),
+                        y: H * 0.12 + Math.random() * (H * 0.55),
+                        rx: 4,
+                        ry: 2.5,
+                        maxRx: 26 + Math.random() * 24,
+                        maxRy: 16 + Math.random() * 14,
+                        rot: (Math.random() - 0.5) * 0.6,
+                        alpha: 0.85
                       });
                     }
                     
-                    // Draw Piano Expanding Water Ripples & Dragging Drops
-                    for (let r = pianoRipples.length - 1; r >= 0; r--) {
-                      const rip = pianoRipples[r];
+                    for (let e = impactEllipses.length - 1; e >= 0; e--) {
+                      const imp = impactEllipses[e];
+                      imp.rx += (imp.maxRx - imp.rx) * 0.18;
+                      imp.ry += (imp.maxRy - imp.ry) * 0.18;
+                      imp.alpha *= 0.93; // Smooth exponential evaporation
                       
-                      if (rip.radius < rip.maxRadius) {
-                        rip.radius += 1.6;
-                        rip.alpha *= 0.94;
-                        
-                        // Expanding Water Ripple Ring on Glass
-                        ctx.beginPath();
-                        ctx.arc(rip.x, rip.y, rip.radius, 0, Math.PI * 2);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${rip.alpha * 0.75})`;
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-                        
-                        // Inner Second Refraction Ring
-                        ctx.beginPath();
-                        ctx.arc(rip.x, rip.y, rip.radius * 0.6, 0, Math.PI * 2);
-                        ctx.strokeStyle = `rgba(56, 189, 248, ${rip.alpha * 0.4})`;
-                        ctx.lineWidth = 1.2;
-                        ctx.stroke();
-                      } else {
-                        rip.dragStarted = true;
-                      }
-                      
-                      // If ripple finished expanding, the droplet drags down the windshield
-                      if (rip.dragStarted) {
-                        rip.y += rip.vy;
-                        rip.vy += 0.025; // gravity acceleration on wet car glass
-                        rip.dragDist += rip.vy;
-                        
-                        // Smooth wet vertical rivulet stream
-                        ctx.beginPath();
-                        ctx.moveTo(rip.x, rip.y);
-                        ctx.lineTo(rip.x, rip.y - Math.min(rip.dragDist, 55));
-                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-                        ctx.lineWidth = rip.dropletSize * 0.75;
-                        ctx.lineCap = 'round';
-                        ctx.stroke();
-                        
-                        // Realistic Translucent Water Droplet Lens
-                        ctx.beginPath();
-                        ctx.arc(rip.x, rip.y, rip.dropletSize, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; // bottom soft shadow
-                        ctx.fill();
-                        
-                        // Top Specular Highlight
-                        ctx.beginPath();
-                        ctx.arc(rip.x - rip.dropletSize * 0.35, rip.y - rip.dropletSize * 0.35, rip.dropletSize * 0.45, 0, Math.PI * 2);
-                        ctx.fillStyle = '#FFFFFF';
-                        ctx.fill();
-                      }
-                      
-                      if (rip.y > H + 50) {
-                        pianoRipples.splice(r, 1);
-                      }
-                    }
-                    
-                    // Ambient Windshield Water Droplets & Sliding Rivulets
-                    ambientDroplets.forEach(drop => {
-                      drop.y += drop.vy * (1 + (isPlaying ? midEnergy * 0.6 : 0));
-                      drop.vy += 0.015;
-                      
-                      // Smooth Continuous Wet Rivulet Stream
+                      ctx.save();
                       ctx.beginPath();
-                      ctx.moveTo(drop.x, drop.y);
-                      ctx.lineTo(drop.x, Math.max(0, drop.y - drop.trailLength));
-                      ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
-                      ctx.lineWidth = drop.r * 0.7;
-                      ctx.lineCap = 'round';
+                      ctx.ellipse(imp.x, imp.y, imp.rx, imp.ry, imp.rot, 0, Math.PI * 2);
+                      ctx.strokeStyle = `rgba(255, 255, 255, ${imp.alpha * 0.75})`;
+                      ctx.lineWidth = 1.8;
                       ctx.stroke();
                       
-                      // Translucent Droplet Lens (Soft refraction + Crisp white highlight)
+                      // Secondary inner refraction ellipse
                       ctx.beginPath();
-                      ctx.arc(drop.x, drop.y, drop.r, 0, Math.PI * 2);
-                      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                      ctx.ellipse(imp.x, imp.y, imp.rx * 0.6, imp.ry * 0.6, imp.rot, 0, Math.PI * 2);
+                      ctx.strokeStyle = `rgba(56, 189, 248, ${imp.alpha * 0.4})`;
+                      ctx.lineWidth = 1.0;
+                      ctx.stroke();
+                      ctx.restore();
+                      
+                      if (imp.alpha < 0.02) impactEllipses.splice(e, 1);
+                    }
+                    
+                    // Fluid Stick-and-Slip Surface Tension Particle Simulation
+                    fluidDroplets.forEach(d => {
+                      // High-frequency mist feed mass accumulation
+                      d.mass += (0.0015 + lerpedHigh * 0.006);
+                      
+                      if (d.state === 'stick') {
+                        // Subtle mid-frequency vibration on glass surface
+                        d.vibrate = SimplexNoise.noise2D(d.x * 0.04, animTime * 0.08) * (lerpedMid * 2.8);
+                        
+                        // Check if accumulated mass crosses friction threshold
+                        if (d.mass > d.frictionThreshold) {
+                          d.state = 'slip';
+                          d.vy = 1.8 + d.mass * 1.6;
+                        }
+                      } else if (d.state === 'slip') {
+                        d.y += d.vy;
+                        d.vy += 0.07; // gravity acceleration
+                        d.mass *= 0.985; // shed mass into trail
+                        
+                        // Append position to streak trail
+                        d.streakTrail.push({ x: d.x, y: d.y, alpha: 0.45 });
+                        if (d.streakTrail.length > 20) d.streakTrail.shift();
+                        
+                        // Check if shed mass falls below friction threshold to stick again
+                        if (d.mass < d.frictionThreshold * 0.6) {
+                          d.vy *= 0.88;
+                          if (d.vy < 0.35) {
+                            d.state = 'stick';
+                            d.mass = 0.2 + Math.random() * 0.3;
+                          }
+                        }
+                      }
+                      
+                      // Draw Fading Water Streak Trails
+                      if (d.streakTrail.length > 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(d.streakTrail[0].x, d.streakTrail[0].y);
+                        for (let t = 1; t < d.streakTrail.length; t++) {
+                          ctx.lineTo(d.streakTrail[t].x, d.streakTrail[t].y);
+                          d.streakTrail[t].alpha *= 0.96;
+                        }
+                        ctx.strokeStyle = `rgba(255, 255, 255, 0.22)`;
+                        ctx.lineWidth = d.scale * 0.7;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+                      }
+                      
+                      // Draw Translucent Droplet Lens
+                      const dx = d.x + d.vibrate;
+                      const dy = d.y;
+                      const dr = d.scale * (0.8 + d.mass * 0.5);
+                      
+                      // Droplet shadow & refraction rim
+                      ctx.beginPath();
+                      ctx.arc(dx, dy, dr, 0, Math.PI * 2);
+                      ctx.fillStyle = `rgba(0, 0, 0, ${d.opacity * 0.35})`;
                       ctx.fill();
                       
+                      // Specular White Highlight
                       ctx.beginPath();
-                      ctx.arc(drop.x - drop.r * 0.35, drop.y - drop.r * 0.35, drop.r * 0.45, 0, Math.PI * 2);
-                      ctx.fillStyle = '#FFFFFF';
+                      ctx.arc(dx - dr * 0.35, dy - dr * 0.35, dr * 0.42, 0, Math.PI * 2);
+                      ctx.fillStyle = `rgba(255, 255, 255, ${d.opacity * 0.95})`;
                       ctx.fill();
                       
-                      if (drop.y > H + 50) {
-                        drop.y = -20;
-                        drop.x = Math.random() * W;
-                        drop.vy = 0.5 + Math.random() * 1.5;
+                      if (d.y > H + 40) {
+                        d.y = -20;
+                        d.x = Math.random() * W;
+                        d.mass = 0.2 + Math.random() * 0.5;
+                        d.state = 'stick';
+                        d.vy = 0;
+                        d.streakTrail = [];
                       }
                     });
                   }
                   
                   // ================================================================
-                  // 3. 🌌 "PARADISE" — SYNTHWAVE SUNSET HIGHWAY DRIVE (DRIVE 2011)
+                  // 3. 🌌 "PARADISE" — WONG KAR-WAI SUNSET DRIVE (STEP-PRINTING 15 FPS)
                   // ================================================================
                   else if (track.genre === 'pop') {
-                    // Full Glowing Synthwave Sunset Sky
-                    const sky = ctx.createLinearGradient(0, 0, 0, H * 0.7);
-                    sky.addColorStop(0, '#35005E');
-                    sky.addColorStop(0.32, '#FF007F');
-                    sky.addColorStop(0.68, '#FF6B00');
-                    sky.addColorStop(1, '#FFD700');
-                    ctx.fillStyle = sky;
-                    ctx.fillRect(0, 0, W, H * 0.7);
+                    // Translucent Black Veil for Step-Printing Motion Trails
+                    ctx.fillStyle = 'rgba(4, 2, 8, 0.12)';
+                    ctx.fillRect(0, 0, W, H);
                     
                     const vanX = W / 2;
-                    const sunY = H * 0.26;
-                    const roadY = H * 0.36;
+                    const vanY = H * 0.45;
+                    const horizonY = H * 0.36;
                     
-                    // Massive Glowing Synthwave Sun
-                    const sunR = Math.min(W, H) * 0.22;
-                    const sunGrad = ctx.createLinearGradient(vanX, sunY - sunR, vanX, sunY + sunR);
-                    sunGrad.addColorStop(0, '#FFFDE7');
-                    sunGrad.addColorStop(0.35, '#FFEA00');
-                    sunGrad.addColorStop(0.7, '#FF1744');
-                    sunGrad.addColorStop(1, '#D500F9');
+                    // Rich Bleeding Sunset Crimson, Emerald & Twilight Purple Gradient
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'screen';
+                    
+                    const sunsetGlow = ctx.createLinearGradient(0, 0, 0, horizonY + 60);
+                    sunsetGlow.addColorStop(0, '#1F0833');
+                    sunsetGlow.addColorStop(0.35, '#7A0026');
+                    sunsetGlow.addColorStop(0.7, '#D81B60');
+                    sunsetGlow.addColorStop(0.9, '#004D40'); // Emerald neon green bleed
+                    sunsetGlow.addColorStop(1, '#FF8F00');
+                    ctx.fillStyle = sunsetGlow;
+                    ctx.fillRect(0, 0, W, horizonY + 60);
+                    
+                    // Frequency-Modulated Dreamy Horizon Silhouette Blur
+                    const horizonScale = 1.0 + lerpedBass * 0.15;
+                    const sunR = Math.min(W, H) * 0.18 * horizonScale;
+                    const sunY = horizonY - 40;
+                    
+                    const sunGrad = ctx.createRadialGradient(vanX, sunY, 0, vanX, sunY, sunR);
+                    sunGrad.addColorStop(0, 'rgba(255, 245, 157, 0.85)');
+                    sunGrad.addColorStop(0.4, 'rgba(255, 64, 129, 0.65)');
+                    sunGrad.addColorStop(0.8, 'rgba(124, 77, 255, 0.4)');
+                    sunGrad.addColorStop(1, 'transparent');
+                    
                     ctx.fillStyle = sunGrad;
                     ctx.beginPath();
                     ctx.arc(vanX, sunY, sunR, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.restore();
                     
-                    // Horizontal Scanlines Across Sun
-                    for (let s = 0; s < 8; s++) {
-                      const sy = sunY - sunR * 0.65 + (s / 8) * (sunR * 1.5);
-                      ctx.fillStyle = '#FF007F';
-                      ctx.fillRect(vanX - sunR - 15, sy, (sunR + 15) * 2, 4 + s * 1.1);
-                    }
+                    // Step-Printing Motion Effect (Update positions at 15 FPS = every 4 frames)
+                    const is15FpsTick = (frameCounter % 4 === 0);
+                    const roadSpeed = (isPlaying ? (9 + lerpedBass * 14) : 3) * speedMultiplier;
                     
-                    // Palm Tree Silhouettes along Horizon with Natural Curved Fronds
-                    ctx.fillStyle = '#1A0028';
-                    [-480, -360, -240, 240, 360, 480].forEach(px => {
-                      const treeX = vanX + px;
-                      const treeH = 85;
-                      const crownY = roadY - treeH;
+                    wkwStreetlights.forEach(sl => {
+                      if (is15FpsTick) {
+                        sl.z -= roadSpeed * 4;
+                        if (sl.z <= 10) sl.z = 850;
+                        
+                        const k = 340 / sl.z;
+                        sl.cachedX = vanX + sl.side * (160 * k);
+                        sl.cachedY = horizonY + (190 * k);
+                        sl.trailLen = Math.min(140, roadSpeed * 9 * k);
+                      }
                       
-                      // Trunk
-                      ctx.beginPath();
-                      ctx.moveTo(treeX - 3, roadY);
-                      ctx.quadraticCurveTo(treeX - 1, roadY - treeH * 0.5, treeX, crownY);
-                      ctx.lineTo(treeX + 3, crownY);
-                      ctx.quadraticCurveTo(treeX + 5, roadY - treeH * 0.5, treeX + 3, roadY);
-                      ctx.closePath();
-                      ctx.fill();
-                      
-                      // Curved Leaf Fronds
-                      ctx.strokeStyle = '#1A0028';
-                      ctx.lineWidth = 4;
-                      [[-35, 12], [-25, -6], [-12, -22], [12, -22], [25, -6], [35, 12]].forEach(([fx, fy]) => {
+                      if (sl.cachedY >= horizonY && sl.cachedY <= H) {
+                        ctx.save();
+                        ctx.globalCompositeOperation = 'screen';
                         ctx.beginPath();
-                        ctx.moveTo(treeX, crownY);
-                        ctx.quadraticCurveTo(treeX + fx * 0.6, crownY + fy - 8, treeX + fx, crownY + fy);
+                        ctx.moveTo(sl.cachedX, sl.cachedY);
+                        ctx.lineTo(sl.cachedX + sl.side * sl.trailLen * 0.4, sl.cachedY + sl.trailLen);
+                        ctx.strokeStyle = sl.side === -1 ? `rgba(255, 213, 79, ${0.45 + lerpedMid * 0.4})` : `rgba(0, 240, 255, ${0.45 + lerpedMid * 0.4})`;
+                        ctx.lineWidth = Math.max(2, 6.5 * (340 / sl.z));
                         ctx.stroke();
-                      });
+                        ctx.restore();
+                      }
                     });
                     
-                    // Dark Reflective Terrain outside road
-                    const terrainGrad = ctx.createLinearGradient(0, roadY, 0, H);
-                    terrainGrad.addColorStop(0, '#1A042B');
-                    terrainGrad.addColorStop(1, '#080110');
-                    ctx.fillStyle = terrainGrad;
-                    ctx.fillRect(0, roadY, W, H - roadY);
-                    
-                    // 3D Perspective Neon Highway Asphalt
+                    // 3D Perspective Road Asphalt
                     ctx.fillStyle = '#06010C';
                     ctx.beginPath();
-                    ctx.moveTo(vanX - 45, roadY);
-                    ctx.lineTo(vanX + 45, roadY);
+                    ctx.moveTo(vanX - 40, horizonY);
+                    ctx.lineTo(vanX + 40, horizonY);
                     ctx.lineTo(W * 0.96, H);
                     ctx.lineTo(W * 0.04, H);
                     ctx.closePath();
                     ctx.fill();
                     
-                    // Moving Perspective Grid Lines on Asphalt
-                    const roadSpeed = (isPlaying ? (8 + kickPulse * 14) : 3) * speedMultiplier;
-                    for (let g = 0; g < 12; g++) {
-                      const gy = roadY + Math.pow(((g + (animTime * 0.05)) % 12) / 12, 2.4) * (H - roadY);
-                      if (gy >= roadY && gy <= H) {
-                        const progressY = (gy - roadY) / (H - roadY);
-                        const leftX = (vanX - 45) - progressY * ((vanX - 45) - W * 0.04);
-                        const rightX = (vanX + 45) + progressY * (W * 0.96 - (vanX + 45));
-                        ctx.beginPath();
-                        ctx.moveTo(leftX, gy);
-                        ctx.lineTo(rightX, gy);
-                        ctx.strokeStyle = `rgba(255, 0, 127, ${0.3 + progressY * 0.6})`;
-                        ctx.lineWidth = 2.5;
-                        ctx.stroke();
-                      }
-                    }
-                    
-                    // Dashed Center Highway Line Moving in Perspective
-                    for (let d = 0; d < 8; d++) {
-                      const dy = roadY + Math.pow(((d + (animTime * 0.06)) % 8) / 8, 2.2) * (H - roadY);
-                      const dNextY = dy + 18 * ((dy - roadY) / (H - roadY) + 0.3);
-                      if (dy >= roadY && dy <= H) {
+                    // Moving Dashed Center Line
+                    for (let d = 0; d < 7; d++) {
+                      const dy = horizonY + Math.pow(((d + (animTime * 0.06)) % 7) / 7, 2.2) * (H - horizonY);
+                      const dNextY = dy + 18 * ((dy - horizonY) / (H - horizonY) + 0.3);
+                      if (dy >= horizonY && dy <= H) {
                         ctx.beginPath();
                         ctx.moveTo(vanX, dy);
                         ctx.lineTo(vanX, dNextY);
-                        ctx.strokeStyle = '#FFD54F';
-                        ctx.lineWidth = 3 * ((dy - roadY) / (H - roadY) + 0.4);
+                        ctx.strokeStyle = 'rgba(255, 213, 79, 0.75)';
+                        ctx.lineWidth = 3.2 * ((dy - horizonY) / (H - horizonY) + 0.4);
                         ctx.stroke();
                       }
                     }
                     
-                    // Glowing Neon Highway Barriers (Magenta left, Cyan right)
+                    // Glowing Neon Guardrails
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'screen';
                     ctx.strokeStyle = '#FF007F';
-                    ctx.lineWidth = 5 + kickPulse * 4;
-                    ctx.shadowColor = '#FF007F';
-                    ctx.shadowBlur = 24;
-                    
+                    ctx.lineWidth = 4 + lerpedBass * 3;
                     ctx.beginPath();
-                    ctx.moveTo(vanX - 45, roadY);
+                    ctx.moveTo(vanX - 40, horizonY);
                     ctx.lineTo(W * 0.04, H);
                     ctx.stroke();
                     
                     ctx.strokeStyle = '#00F0FF';
-                    ctx.shadowColor = '#00F0FF';
                     ctx.beginPath();
-                    ctx.moveTo(vanX + 45, roadY);
+                    ctx.moveTo(vanX + 40, horizonY);
                     ctx.lineTo(W * 0.96, H);
                     ctx.stroke();
-                    ctx.shadowBlur = 0;
+                    ctx.restore();
                   }
                   
                   requestAnimationFrame(drawViz);
@@ -3702,7 +3745,7 @@ const PROJECTS = {
                 drawViz();
               }
               
-              // Track Buttons
+              // Track Buttons with Smooth Cross-Fade
               tracks.forEach((t, i) => {
                 const btn = document.getElementById(`tbtn-${i}`);
                 const icon = document.getElementById(`ticon-${i}`);
@@ -3793,6 +3836,7 @@ const PROJECTS = {
               return;
           }
 
+          // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
