@@ -3646,263 +3646,162 @@ const PROJECTS = {
                   }
                   
 // ================================================================
-                  // 3. 🚗 "PARADISE" — RETRO VECTOR SUNSET CAR DRIVE
+                  // 3. 🌅 "PARADISE" — MINIMALIST SUNSET WAVE ENGINE (Ultra-Clean & Elegant)
                   // ================================================================
                   else if (track.genre === 'pop') {
                     const urlParams = new URLSearchParams(window.location.search);
                     const manualSec = urlParams.has('test_sec') ? parseFloat(urlParams.get('test_sec')) : -1;
                     const songTime = (manualSec >= 0) ? manualSec : (isPlaying ? audio.currentTime : (animTime * 0.016));
                     
-                    // Smooth Sky Color Morphing across Song Sections
-                    let skyTop = '#1E0B36', skyMid = '#FF007F', skyBottom = '#FFB800';
-                    let isTunnelMode = false;
-                    let isCityMode = false;
-                    let isDuskMode = false;
+                    // Smooth Cinematic Day-to-Night Color Palette Morphing
+                    let skyTop = '#1A062E', skyMid = '#D62262', skyBottom = '#FFB03A';
+                    let gridCol = 'rgba(255, 0, 128, ';
+                    let isTunnel = false;
                     
                     if (songTime < 48) {
-                      // 0:00-0:48 Sunset
-                      skyTop = '#22083E'; skyMid = '#E8175D'; skyBottom = '#FFAE33';
+                      // Act 1 (0-48s): Warm Golden Sunset
+                      skyTop = '#1E0836'; skyMid = '#D81B60'; skyBottom = '#FFA726';
+                      gridCol = 'rgba(255, 0, 128, ';
                     } else if (songTime < 66) {
-                      // 0:48-1:06 Tunnel 1
-                      isTunnelMode = true;
-                      skyTop = '#011A0E'; skyMid = '#005933'; skyBottom = '#00FF9D';
+                      // Act 2 (48-66s): Cyber Green Tunnel
+                      isTunnel = true;
+                      skyTop = '#011A0E'; skyMid = '#00693E'; skyBottom = '#00FF9D';
+                      gridCol = 'rgba(0, 255, 150, ';
                     } else if (songTime < 96) {
-                      // 1:06-1:36 City 1
-                      isCityMode = true;
-                      skyTop = '#0B021C'; skyMid = '#6A0572'; skyBottom = '#00F0FF';
+                      // Act 3 (66-96s): Neon Magenta/Cyan City Twilight
+                      skyTop = '#0A0118'; skyMid = '#5B0E6D'; skyBottom = '#00E5FF';
+                      gridCol = 'rgba(0, 229, 255, ';
                     } else if (songTime < 115) {
-                      // 1:36-1:55 Dusk
-                      isDuskMode = true;
-                      skyTop = '#09041A'; skyMid = '#3D0C28'; skyBottom = '#D44A1E';
+                      // Act 8 (96-115s): Deep Twilight Dusk (Sun has set)
+                      skyTop = '#080318'; skyMid = '#380B26'; skyBottom = '#C73E1D';
+                      gridCol = 'rgba(215, 60, 40, ';
                     } else if (songTime < 134) {
-                      // 1:55-2:14 Tunnel 2
-                      isTunnelMode = true;
-                      skyTop = '#011A0E'; skyMid = '#005933'; skyBottom = '#00FF9D';
+                      // Tunnel 2 (115-134s)
+                      isTunnel = true;
+                      skyTop = '#011A0E'; skyMid = '#00693E'; skyBottom = '#00FF9D';
+                      gridCol = 'rgba(0, 255, 150, ';
                     } else if (songTime < 191) {
-                      // 2:14-3:11 City 2 (Violin Warm)
-                      isCityMode = true;
-                      skyTop = '#140526'; skyMid = '#851D41'; skyBottom = '#FFB830';
+                      // Chorus Violin (134-191s): Warm Amber Twilight
+                      skyTop = '#120422'; skyMid = '#7A163C'; skyBottom = '#FFA000';
+                      gridCol = 'rgba(255, 160, 0, ';
                     } else {
-                      // 3:11-3:31 Starry Outro
-                      skyTop = '#03010A'; skyMid = '#0A0518'; skyBottom = '#1F1235';
+                      // Outro (191-211s): Midnight Deep Space
+                      skyTop = '#020008'; skyMid = '#080314'; skyBottom = '#180B28';
+                      gridCol = 'rgba(120, 60, 220, ';
                     }
                     
-                    const vanX = W / 2 + Math.sin(animTime * 0.015) * 18;
-                    const vanY = H * 0.44;
+                    const vanX = W / 2;
+                    const vanY = H * 0.46;
                     
-                    // 1. Draw Sky Gradient
+                    // 1. Panoramic Sky Gradient
                     const sky = ctx.createLinearGradient(0, 0, 0, vanY);
                     sky.addColorStop(0, skyTop);
-                    sky.addColorStop(0.55, skyMid);
+                    sky.addColorStop(0.6, skyMid);
                     sky.addColorStop(1, skyBottom);
                     ctx.fillStyle = sky;
                     ctx.fillRect(0, 0, W, vanY);
                     
-                    // 2. Horizon Sun (Sunset / Outrun Aesthetic)
-                    if (!isTunnelMode && songTime < 191) {
-                      const sunR = Math.min(W, H) * 0.18;
-                      const sunY = vanY - sunR * 0.35;
-                      const sunGrad = ctx.createLinearGradient(0, sunY - sunR, 0, sunY + sunR);
-                      sunGrad.addColorStop(0, '#FFF59D');
-                      sunGrad.addColorStop(0.5, '#FF6B6B');
-                      sunGrad.addColorStop(1, '#C70039');
+                    // 2. Glowing Minimalist Horizon Sun (Sunset Acts)
+                    if (!isTunnel && songTime < 191) {
+                      const sunR = Math.min(W, H) * 0.16;
+                      const sunY = vanY - sunR * 0.25;
+                      
+                      // Soft Volumetric Radial Glow
+                      const sunBloom = ctx.createRadialGradient(vanX, sunY, 0, vanX, sunY, sunR * 1.6);
+                      sunBloom.addColorStop(0, 'rgba(255, 240, 180, 0.95)');
+                      sunBloom.addColorStop(0.35, 'rgba(255, 140, 50, 0.45)');
+                      sunBloom.addColorStop(0.7, 'rgba(216, 27, 96, 0.2)');
+                      sunBloom.addColorStop(1, 'transparent');
                       
                       ctx.save();
+                      ctx.fillStyle = sunBloom;
+                      ctx.beginPath();
+                      ctx.arc(vanX, sunY, sunR * 1.6, 0, Math.PI * 2);
+                      ctx.fill();
+                      
+                      // Clean Horizon Sun Core
+                      const sunGrad = ctx.createLinearGradient(0, sunY - sunR, 0, sunY + sunR);
+                      sunGrad.addColorStop(0, '#FFF9C4');
+                      sunGrad.addColorStop(0.5, '#FF7043');
+                      sunGrad.addColorStop(1, '#C2185B');
                       ctx.fillStyle = sunGrad;
                       ctx.beginPath();
                       ctx.arc(vanX, sunY, sunR, 0, Math.PI * 2);
                       ctx.fill();
                       
-                      // Venetian Blind Stripes
-                      ctx.fillStyle = skyMid;
-                      for (let sy = sunY; sy < sunY + sunR; sy += 12) {
-                        const stripeH = 3 + (sy - sunY) * 0.08;
-                        ctx.fillRect(vanX - sunR, sy, sunR * 2, stripeH);
-                      }
-                      ctx.restore();
-                      
-                      // Parallax Mountain Silhouettes
-                      ctx.fillStyle = '#160824';
+                      // Elegant Mountain Ridge Silhouette
+                      ctx.fillStyle = '#0E041A';
                       ctx.beginPath();
                       ctx.moveTo(0, vanY);
-                      for (let mx = 0; mx <= W; mx += 40) {
-                        const my = vanY - (Math.sin(mx * 0.006 + 1.2) * 35 + Math.cos(mx * 0.015) * 18);
+                      for (let mx = 0; mx <= W; mx += 30) {
+                        const my = vanY - (Math.sin(mx * 0.005 + 0.8) * 24 + Math.sin(mx * 0.012) * 12);
                         ctx.lineTo(mx, my);
                       }
                       ctx.lineTo(W, vanY);
                       ctx.closePath();
                       ctx.fill();
-                    }
-                    
-                    // City Buildings Skyline (City Mode)
-                    if (isCityMode) {
-                      ctx.save();
-                      for (let b = 0; b < 16; b++) {
-                        const bx = (b / 15) * W;
-                        const bw = W * 0.055;
-                        const bh = 50 + (b % 5) * 25 + Math.sin(b * 2.2) * 15;
-                        ctx.fillStyle = '#120822';
-                        ctx.fillRect(bx - bw/2, vanY - bh, bw, bh);
-                        
-                        // Neon rooftop crowns
-                        ctx.fillStyle = (b % 2 === 0) ? '#00F0FF' : '#FF007F';
-                        ctx.fillRect(bx - bw/2 + 2, vanY - bh, bw - 4, 4);
-                      }
                       ctx.restore();
                     }
                     
-                    // 3. Perspective Highway Road Surface (Below Horizon)
+                    // 3. Clean Highway Road Bed (Below Horizon)
                     const roadGrad = ctx.createLinearGradient(0, vanY, 0, H);
-                    roadGrad.addColorStop(0, isTunnelMode ? '#011208' : '#0D0518');
-                    roadGrad.addColorStop(1, isTunnelMode ? '#022612' : '#1A0B2E');
+                    roadGrad.addColorStop(0, isTunnel ? '#011208' : '#080210');
+                    roadGrad.addColorStop(1, isTunnel ? '#022410' : '#140622');
                     ctx.fillStyle = roadGrad;
                     ctx.fillRect(0, vanY, W, H - vanY);
                     
-                    // Perspective Grid Lines (Horizontal scrolling depth)
+                    // 4. Smooth Perspective Horizon Grid (Zero Clutter)
                     ctx.save();
-                    const numGridLines = 18;
-                    for (let g = 0; g < numGridLines; g++) {
-                      const depth = ((g + (animTime * 0.04 * speedMultiplier)) % numGridLines) / numGridLines;
-                      const gy = vanY + Math.pow(depth, 2.5) * (H - vanY);
+                    const numGrid = 16;
+                    for (let g = 0; g < numGrid; g++) {
+                      const depth = ((g + (animTime * 0.03 * speedMultiplier)) % numGrid) / numGrid;
+                      const gy = vanY + Math.pow(depth, 2.4) * (H - vanY);
                       ctx.beginPath();
                       ctx.moveTo(0, gy);
                       ctx.lineTo(W, gy);
-                      ctx.strokeStyle = isTunnelMode ? `rgba(0, 255, 150, ${depth * 0.6})` : `rgba(255, 0, 128, ${depth * 0.55})`;
-                      ctx.lineWidth = 1.0 + depth * 2.0;
+                      ctx.strokeStyle = `${gridCol}${depth * 0.45})`;
+                      ctx.lineWidth = 1.0 + depth * 1.5;
                       ctx.stroke();
                     }
                     
-                    // Converging Road Rays & Shoulder Barriers
-                    const roadWidthBottom = W * 0.75;
-                    const roadLeftX = vanX - roadWidthBottom / 2;
-                    const roadRightX = vanX + roadWidthBottom / 2;
-                    
-                    // Road Center Dashed Line (Reacting to Bass)
+                    // Converging Road Rails
+                    const roadBottomW = W * 0.72;
                     ctx.beginPath();
-                    ctx.setLineDash([25 + lerpedBass * 15, 20]);
-                    ctx.lineDashOffset = -animTime * 4.5 * speedMultiplier;
+                    ctx.moveTo(vanX, vanY); ctx.lineTo(vanX - roadBottomW/2, H);
+                    ctx.moveTo(vanX, vanY); ctx.lineTo(vanX + roadBottomW/2, H);
+                    ctx.strokeStyle = isTunnel ? '#00FF9D' : '#00E5FF';
+                    ctx.lineWidth = 2.5 + lerpedBass * 1.5;
+                    ctx.stroke();
+                    
+                    // Center Road Markings
+                    ctx.beginPath();
+                    ctx.setLineDash([24 + lerpedBass * 12, 18]);
+                    ctx.lineDashOffset = -animTime * 4.0 * speedMultiplier;
                     ctx.moveTo(vanX, vanY);
                     ctx.lineTo(vanX, H);
-                    ctx.strokeStyle = isTunnelMode ? '#00FF9D' : '#FFD600';
-                    ctx.lineWidth = 3.5 + lerpedBass * 3.0;
+                    ctx.strokeStyle = isTunnel ? '#00FF9D' : '#FFD600';
+                    ctx.lineWidth = 3.0 + lerpedBass * 2.0;
                     ctx.stroke();
                     ctx.setLineDash([]);
                     
-                    // Outer Highway Glowing Shoulders
-                    ctx.beginPath();
-                    ctx.moveTo(vanX, vanY); ctx.lineTo(roadLeftX, H);
-                    ctx.moveTo(vanX, vanY); ctx.lineTo(roadRightX, H);
-                    ctx.strokeStyle = isTunnelMode ? '#00FF9D' : '#00F0FF';
-                    ctx.lineWidth = 3.0 + lerpedBass * 2.0;
-                    ctx.stroke();
-                    
-                    // Roadside Light Poles
-                    roadPoles.forEach(p => {
-                      p.z -= 1.8 * speedMultiplier;
-                      if (p.z < 2) p.z = 120;
-                      
-                      const pScale = 35 / p.z;
-                      const px = vanX + p.side * (roadWidthBottom * 0.55 * (1.0 - (p.z / 120)));
-                      const py = vanY + (1.0 - (p.z / 120)) * (H - vanY);
-                      const ph = 90 * pScale;
-                      
-                      if (py > vanY + 5) {
-                        ctx.fillStyle = isTunnelMode ? `rgba(0, 255, 150, ${0.8 - p.z / 150})` : `rgba(255, 180, 0, ${0.85 - p.z / 150})`;
-                        ctx.fillRect(px - 2 * pScale, py - ph, 4 * pScale, ph);
-                        
-                        ctx.beginPath();
-                        ctx.arc(px, py - ph, 6 * pScale, 0, Math.PI * 2);
-                        ctx.fill();
-                      }
-                    });
-                    
-                    // =============================================================
-                    // 4. THE SLEEK RETRO CAR (Low Rear-Chase Camera View)
-                    // =============================================================
-                    const carX = vanX + Math.sin(animTime * 0.025) * 10;
-                    const carY = H * 0.83 + Math.sin(animTime * 0.1) * (1.5 + lerpedBass * 3.0);
-                    const carW = 210;
-                    const carH = 82;
-                    
-                    // Car Shadow on Asphalt
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.beginPath();
-                    ctx.ellipse(carX, carY + 12, carW * 0.55, 20, 0, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Car Body Gradient
-                    const carGrad = ctx.createLinearGradient(carX - carW/2, carY - carH, carX + carW/2, carY);
-                    carGrad.addColorStop(0, '#1B1424');
-                    carGrad.addColorStop(0.3, '#3D1C44');
-                    carGrad.addColorStop(0.7, '#241026');
-                    carGrad.addColorStop(1, '#110918');
-                    
-                    ctx.fillStyle = carGrad;
-                    ctx.beginPath();
-                    ctx.roundRect(carX - carW/2, carY - carH * 0.6, carW, carH * 0.7, 14);
-                    ctx.fill();
-                    
-                    // Rear Windshield Cabin
-                    const cabGrad = ctx.createLinearGradient(0, carY - carH, 0, carY - carH * 0.4);
-                    cabGrad.addColorStop(0, '#090510');
-                    cabGrad.addColorStop(1, '#1D1226');
-                    ctx.fillStyle = cabGrad;
-                    ctx.beginPath();
-                    ctx.moveTo(carX - carW * 0.35, carY - carH * 0.55);
-                    ctx.lineTo(carX - carW * 0.26, carY - carH * 1.05);
-                    ctx.lineTo(carX + carW * 0.26, carY - carH * 1.05);
-                    ctx.lineTo(carX + carW * 0.35, carY - carH * 0.55);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-                    
-                    // Rear Spoiler
-                    ctx.fillStyle = '#0F0A16';
-                    ctx.fillRect(carX - carW * 0.48, carY - carH * 0.72, carW * 0.96, 6);
-                    ctx.fillRect(carX - carW * 0.38, carY - carH * 0.68, 6, 12);
-                    ctx.fillRect(carX + carW * 0.38 - 6, carY - carH * 0.68, 6, 12);
-                    
-                    // Spinning Rear Tires
-                    ctx.fillStyle = '#08080C';
-                    ctx.fillRect(carX - carW * 0.48, carY - 8, 28, 28);
-                    ctx.fillRect(carX + carW * 0.48 - 28, carY - 8, 28, 28);
-                    
-                    // Glowing Neon Taillight Strip (Pulsing with Sub-Bass Beats)
-                    const tailGlow = 0.6 + lerpedBass * 0.4;
-                    const tailColor = isTunnelMode ? `rgba(0, 255, 150, ${tailGlow})` : `rgba(255, 0, 80, ${tailGlow})`;
-                    
-                    ctx.fillStyle = tailColor;
-                    ctx.shadowColor = isTunnelMode ? '#00FF9D' : '#FF0055';
-                    ctx.shadowBlur = 20 + lerpedBass * 30;
-                    
-                    // Left and Right Taillight Bars
-                    ctx.fillRect(carX - carW * 0.42, carY - carH * 0.38, carW * 0.32, 12);
-                    ctx.fillRect(carX + carW * 0.10, carY - carH * 0.38, carW * 0.32, 12);
-                    
-                    // Center License Plate
-                    ctx.shadowBlur = 0;
-                    ctx.fillStyle = '#050208';
-                    ctx.fillRect(carX - 24, carY - carH * 0.34, 48, 18);
-                    ctx.fillStyle = '#E8B000';
-                    ctx.font = 'bold 10px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('PARADISE', carX, carY - carH * 0.34 + 13);
-                    
-                    // Exhaust Sparks on Heavy Bass Drops
-                    if (isPlaying && lerpedBass > 0.55) {
-                      ctx.fillStyle = '#FFB800';
+                    // 5. Flowing Audio-Reactive Ribbon Waves Across the Road
+                    const numWaves = 3;
+                    for (let wIdx = 0; wIdx < numWaves; wIdx++) {
                       ctx.beginPath();
-                      ctx.arc(carX - 38, carY + 6, 3 + Math.random() * 5, 0, Math.PI * 2);
-                      ctx.arc(carX + 38, carY + 6, 3 + Math.random() * 5, 0, Math.PI * 2);
-                      ctx.fill();
+                      ctx.moveTo(0, H * 0.75);
+                      for (let x = 0; x <= W; x += 15) {
+                        const wave1 = Math.sin(x * 0.008 + animTime * 0.04 + wIdx * 1.2) * (18 + lerpedMid * 30);
+                        const wave2 = Math.cos(x * 0.015 - animTime * 0.03) * (10 + lerpedBass * 20);
+                        const wy = H * 0.76 + wave1 + wave2 + wIdx * 16;
+                        ctx.lineTo(x, wy);
+                      }
+                      ctx.strokeStyle = (wIdx === 0) ? `rgba(255, 0, 128, ${0.35 + lerpedBass * 0.4})` : ((wIdx === 1) ? `rgba(0, 229, 255, ${0.3 + lerpedMid * 0.35})` : `rgba(255, 180, 0, ${0.25 + lerpedBass * 0.3})`);
+                      ctx.lineWidth = 2.0 + lerpedBass * 1.5;
+                      ctx.stroke();
                     }
                     
                     ctx.restore();
-                  }
-                  
-                  requestAnimationFrame(drawViz);
+                  }requestAnimationFrame(drawViz);
                 }
                 
                 requestAnimationFrame(drawViz);
