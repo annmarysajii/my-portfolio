@@ -2441,93 +2441,121 @@ const PROJECTS = {
               let htmlStr = styleBlock;
               htmlStr += `
               <style>
-                /* FULLSCREEN DJ BOOTH CONTAINER */
-                #dj-stage-outer {
-                  position: relative;
-                  width: 100vw;
-                  margin-left: calc(-50vw + 50%);
-                  margin-top: 1rem;
-                  margin-bottom: 4rem;
-                  min-height: 86vh;
-                  background: #060609;
-                  overflow: hidden;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  padding: 4rem 1.5rem;
-                  box-shadow: inset 0 0 100px rgba(0,0,0,0.8), 0 25px 60px rgba(0,0,0,0.4);
-                  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                /* FULL-PAGE DJ STUDIO MODE */
+                body.dj-studio-mode {
+                  background: #040407 !important;
+                  color: #FFFFFF !important;
+                  overflow-x: hidden;
+                }
+                body.dj-studio-mode .nav {
+                  background: rgba(4, 4, 7, 0.75) !important;
+                  backdrop-filter: blur(20px);
+                  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                }
+                body.dj-studio-mode .nav-logo,
+                body.dj-studio-mode .nav-back {
+                  color: #FFFFFF !important;
+                }
+                body.dj-studio-mode .foot {
+                  background: #040407 !important;
+                  border-top: 1px solid rgba(255, 255, 255, 0.08);
+                  color: rgba(255, 255, 255, 0.6) !important;
                 }
                 
-                #audio-viz {
-                  position: absolute;
+                /* GLOBAL FULLSCREEN BACKGROUND CANVAS */
+                #global-audio-viz {
+                  position: fixed;
                   inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  z-index: 1;
+                  width: 100vw;
+                  height: 100vh;
+                  z-index: 0;
                   pointer-events: none;
                 }
                 
-                .dj-header-bar {
+                .dj-stage-container {
                   position: relative;
                   z-index: 10;
+                  width: 100%;
+                  max-width: 1240px;
+                  margin: 0 auto;
+                  padding: 2rem 1.5rem 4rem 1.5rem;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                }
+                
+                /* DJ HEADER / HUD */
+                .dj-hud-header {
                   text-align: center;
                   margin-bottom: 2.5rem;
-                  color: #fff;
+                  width: 100%;
                 }
-                .dj-badge {
+                .dj-live-pill {
                   display: inline-flex;
                   align-items: center;
-                  gap: 6px;
-                  background: rgba(255,255,255,0.08);
-                  border: 1px solid rgba(255,255,255,0.15);
-                  padding: 4px 14px;
-                  border-radius: 20px;
-                  font-size: 0.75rem;
+                  gap: 8px;
+                  background: rgba(255, 255, 255, 0.06);
+                  border: 1px solid rgba(255, 255, 255, 0.14);
+                  padding: 6px 18px;
+                  border-radius: 30px;
+                  font-size: 0.8rem;
+                  font-weight: 700;
                   text-transform: uppercase;
                   letter-spacing: 2px;
                   color: #E8B000;
-                  font-weight: 700;
-                  margin-bottom: 0.75rem;
-                  backdrop-filter: blur(10px);
+                  margin-bottom: 1rem;
+                  backdrop-filter: blur(12px);
+                  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
                 }
-                .dj-title {
-                  font-family: 'Clash Display', sans-serif;
-                  font-size: clamp(2.2rem, 5vw, 3.5rem);
-                  font-weight: 700;
-                  margin: 0;
-                  letter-spacing: -1px;
-                  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
-                  color: #FFFFFF;
+                .dj-live-dot {
+                  width: 8px;
+                  height: 8px;
+                  border-radius: 50%;
+                  background: #E8B000;
+                  box-shadow: 0 0 10px #E8B000;
+                  animation: pulseDot 1.4s ease-in-out infinite;
                 }
-                .dj-subtitle {
-                  font-size: 1.05rem;
-                  color: rgba(255,255,255,0.65);
-                  margin-top: 0.4rem;
-                  max-width: 550px;
+                @keyframes pulseDot {
+                  0%, 100% { opacity: 1; transform: scale(1); }
+                  50% { opacity: 0.4; transform: scale(0.75); }
                 }
                 
-                .dj-booth-deck {
-                  position: relative;
-                  z-index: 10;
+                .dj-main-title {
+                  font-family: 'Clash Display', sans-serif;
+                  font-size: clamp(2.4rem, 6vw, 4rem);
+                  font-weight: 700;
+                  letter-spacing: -1.5px;
+                  color: #FFFFFF;
+                  margin: 0;
+                  text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+                }
+                .dj-meta-subtitle {
+                  font-size: 1.05rem;
+                  color: rgba(255, 255, 255, 0.65);
+                  max-width: 600px;
+                  margin: 0.6rem auto 0 auto;
+                  line-height: 1.5;
+                }
+                
+                /* MAIN WORKSTATION WORKSPACE */
+                .dj-workstation {
                   display: flex;
                   flex-wrap: wrap;
                   gap: 3.5rem;
                   align-items: center;
                   justify-content: center;
                   width: 100%;
-                  max-width: 1120px;
+                  margin-top: 1rem;
                 }
                 
                 /* TURNTABLE HARDWARE */
                 .turntable-hardware {
                   position: relative;
-                  width: 390px;
-                  height: 330px;
-                  background: linear-gradient(145deg, #1f1e24, #121117);
+                  width: 410px;
+                  height: 350px;
+                  background: linear-gradient(145deg, #1d1c22, #0f0e13);
                   border-radius: 28px;
-                  box-shadow: 0 35px 70px rgba(0,0,0,0.6), inset 0 2px 3px rgba(255,255,255,0.15), inset 0 -4px 10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+                  box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.12), inset 0 -4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
                   display: flex;
                   align-items: center;
                   justify-content: center;
@@ -2538,39 +2566,38 @@ const PROJECTS = {
                 .platter {
                   position: absolute;
                   left: 24px;
-                  width: 275px;
-                  height: 275px;
+                  width: 290px;
+                  height: 290px;
                   border-radius: 50%;
-                  background: radial-gradient(circle, #2a2930 0%, #111115 90%);
-                  box-shadow: 0 12px 25px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.15);
+                  background: radial-gradient(circle, #25242c 0%, #0d0c10 90%);
+                  box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.15);
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  border: 4px solid #3d3b45;
+                  border: 4px solid #36343e;
                 }
                 
                 .spindle {
                   position: absolute;
-                  width: 16px;
-                  height: 16px;
+                  width: 18px;
+                  height: 18px;
                   border-radius: 50%;
-                  background: radial-gradient(circle at 30% 30%, #fff, #777);
+                  background: radial-gradient(circle at 30% 30%, #fff, #666);
                   z-index: 20;
-                  box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.7);
                 }
                 
                 #vinyl-disc {
-                  width: 255px;
-                  height: 255px;
+                  width: 270px;
+                  height: 270px;
                   border-radius: 50%;
-                  background: conic-gradient(from 45deg, #09090b 0%, #202024 25%, #09090b 50%, #202024 75%, #09090b 100%);
+                  background: conic-gradient(from 45deg, #08080a 0%, #1e1e23 25%, #08080a 50%, #1e1e23 75%, #08080a 100%);
                   position: relative;
-                  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+                  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   cursor: grab;
-                  transition: filter 0.3s;
                 }
                 #vinyl-disc:active { cursor: grabbing; }
                 
@@ -2591,30 +2618,29 @@ const PROJECTS = {
                   flex-direction: column;
                   align-items: center;
                   justify-content: center;
-                  box-shadow: inset 0 0 12px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+                  box-shadow: inset 0 0 14px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
                   font-family: 'Clash Display', sans-serif;
-                  font-size: 0.62rem;
+                  font-size: 0.65rem;
                   font-weight: 700;
                   text-align: center;
                   color: #111;
                   padding: 4px;
-                  line-height: 1.1;
+                  line-height: 1.15;
                   pointer-events: none;
                 }
                 
-                /* TONEARM */
                 #tonearm {
                   position: absolute;
                   top: 22px;
                   right: 36px;
                   width: 18px;
-                  height: 185px;
-                  background: linear-gradient(to right, #777, #ccc, #888);
+                  height: 195px;
+                  background: linear-gradient(to right, #666, #ccc, #777);
                   transform-origin: 9px 20px;
                   transform: rotate(12deg);
                   border-radius: 8px;
-                  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-                  box-shadow: -6px 12px 18px rgba(0,0,0,0.5);
+                  transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+                  box-shadow: -6px 12px 20px rgba(0,0,0,0.5);
                   z-index: 15;
                   pointer-events: none;
                 }
@@ -2622,18 +2648,18 @@ const PROJECTS = {
                   position: absolute;
                   top: 0;
                   left: -16px;
-                  width: 50px;
-                  height: 50px;
+                  width: 52px;
+                  height: 52px;
                   border-radius: 50%;
-                  background: radial-gradient(circle at 30% 30%, #444, #1a1a1e);
+                  background: radial-gradient(circle at 30% 30%, #444, #151518);
                   box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.2);
                 }
                 .ta-head {
                   position: absolute;
                   bottom: -10px;
                   left: -12px;
-                  width: 30px;
-                  height: 54px;
+                  width: 32px;
+                  height: 56px;
                   background: linear-gradient(to bottom, #2a2930, #111);
                   border-radius: 4px;
                   transform: rotate(24deg);
@@ -2641,19 +2667,17 @@ const PROJECTS = {
                   border-top: 1px solid #555;
                 }
                 
-                /* CONTROLS (VOLUME FADER & FILTER DIAL) */
                 .dj-controls-strip {
                   position: absolute;
                   right: 18px;
-                  top: 30px;
-                  bottom: 30px;
+                  top: 28px;
+                  bottom: 28px;
                   display: flex;
                   flex-direction: column;
                   align-items: center;
                   justify-content: space-between;
                   z-index: 12;
                 }
-                
                 .fader-wrap {
                   display: flex;
                   flex-direction: column;
@@ -2661,19 +2685,19 @@ const PROJECTS = {
                   gap: 4px;
                 }
                 .ctrl-label {
-                  font-size: 0.6rem;
+                  font-size: 0.62rem;
                   font-weight: 700;
                   text-transform: uppercase;
                   letter-spacing: 1px;
-                  color: rgba(255,255,255,0.45);
+                  color: rgba(255,255,255,0.5);
                 }
                 .slider-track {
                   position: relative;
                   width: 10px;
-                  height: 120px;
-                  background: #0c0b10;
+                  height: 125px;
+                  background: #09080d;
                   border-radius: 5px;
-                  box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+                  box-shadow: inset 0 2px 5px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.06);
                   cursor: pointer;
                 }
                 .slider-knob {
@@ -2682,7 +2706,7 @@ const PROJECTS = {
                   left: -11px;
                   width: 32px;
                   height: 18px;
-                  background: linear-gradient(to bottom, #e0e0e0, #888);
+                  background: linear-gradient(to bottom, #e5e5e5, #888);
                   border-radius: 3px;
                   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
                   transform: translateY(-50%);
@@ -2693,37 +2717,56 @@ const PROJECTS = {
                 .slider-knob:active { cursor: grabbing; }
                 
                 .filter-dial {
-                  width: 36px;
-                  height: 36px;
+                  width: 38px;
+                  height: 38px;
                   border-radius: 50%;
-                  background: linear-gradient(145deg, #2a2930, #16151a);
-                  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.2), 0 0 0 1px rgba(255,255,255,0.05);
+                  background: linear-gradient(145deg, #2a2930, #141318);
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.2), 0 0 0 1px rgba(255,255,255,0.06);
                   position: relative;
                   cursor: pointer;
-                  transition: transform 0.2s;
+                  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
                 }
                 .filter-dial::after {
                   content: '';
                   position: absolute;
                   top: 4px;
-                  left: 17px;
+                  left: 18px;
                   width: 2px;
-                  height: 10px;
+                  height: 11px;
                   background: #E8B000;
                   border-radius: 1px;
                 }
                 
-                /* TRACKLIST DECK */
+                /* SPEED 33/45 RPM BUTTON */
+                .speed-btn {
+                  background: rgba(255,255,255,0.06);
+                  border: 1px solid rgba(255,255,255,0.12);
+                  border-radius: 6px;
+                  color: rgba(255,255,255,0.6);
+                  font-size: 0.65rem;
+                  font-weight: 700;
+                  padding: 3px 6px;
+                  cursor: pointer;
+                  transition: all 0.2s;
+                }
+                .speed-btn.active {
+                  background: #E8B000;
+                  color: #111;
+                  border-color: #E8B000;
+                  box-shadow: 0 0 10px rgba(232, 176, 0, 0.4);
+                }
+                
+                /* TRACK DECK PANEL */
                 .track-deck-panel {
                   flex: 1;
                   min-width: 320px;
-                  max-width: 480px;
-                  background: rgba(18, 17, 24, 0.85);
+                  max-width: 490px;
+                  background: rgba(16, 15, 22, 0.85);
                   backdrop-filter: blur(25px);
                   border: 1px solid rgba(255, 255, 255, 0.12);
                   border-radius: 24px;
                   padding: 2.25rem;
-                  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+                  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
                   display: flex;
                   flex-direction: column;
                   gap: 1.2rem;
@@ -2828,7 +2871,6 @@ const PROJECTS = {
                   100% { transform: scaleY(1); }
                 }
                 
-                /* TIME & PROGRESS BAR */
                 .track-time-bar {
                   width: 100%;
                   height: 3px;
@@ -2848,27 +2890,28 @@ const PROJECTS = {
                   border-radius: 2px;
                 }
                 
-                @media (max-width: 860px) {
+                @media (max-width: 880px) {
                   .turntable-hardware { width: 330px; height: 290px; }
                   .platter { left: 16px; width: 235px; height: 235px; }
                   #vinyl-disc { width: 220px; height: 220px; }
-                  .slider-track { height: 90px; }
-                  .dj-booth-deck { gap: 2rem; }
+                  .slider-track { height: 95px; }
+                  .dj-workstation { gap: 2rem; }
                 }
               </style>
               
-              <div id="dj-stage-outer">
-                <canvas id="audio-viz"></canvas>
+              <canvas id="global-audio-viz"></canvas>
+              
+              <div class="dj-stage-container">
                 
-                <div class="dj-header-bar">
-                  <div class="dj-badge"><i data-lucide="disc-3" style="width:14px;height:14px;"></i> Interactive DJ Booth</div>
-                  <h1 class="dj-title">The DJ Booth</h1>
-                  <p class="dj-subtitle">Drop the needle on Annmary's original production tracks with live audio-reactive reactive lighting & dynamic synthesizers.</p>
+                <div class="dj-hud-header">
+                  <div class="dj-live-pill"><span class="dj-live-dot"></span> The DJ Studio</div>
+                  <h1 class="dj-main-title">Interactive Sound Lab</h1>
+                  <p class="dj-meta-subtitle">Direct the turntable needle, scrub the grooved vinyl, and watch the entire atmosphere transform in real-time to Annmary's original production tracks.</p>
                 </div>
                 
-                <div class="dj-booth-deck">
+                <div class="dj-workstation">
                   
-                  <!-- Turntable Deck -->
+                  <!-- 3D Turntable Deck -->
                   <div class="turntable-hardware">
                     <div class="platter">
                       <div id="vinyl-disc">
@@ -2889,9 +2932,12 @@ const PROJECTS = {
                           <div class="slider-knob" id="vol-knob"></div>
                         </div>
                       </div>
-                      <div class="fader-wrap" style="margin-top:12px;">
-                        <span class="ctrl-label">FILTER</span>
-                        <div class="filter-dial" id="filter-dial" title="Click to cycle EQ filter"></div>
+                      <div class="fader-wrap" style="margin-top:10px;">
+                        <span class="ctrl-label" id="filter-label">FILTER</span>
+                        <div class="filter-dial" id="filter-dial" title="Click to cycle EQ filter (Clean / Lowpass / Highpass)"></div>
+                      </div>
+                      <div class="fader-wrap" style="margin-top:6px;">
+                        <button class="speed-btn active" id="speed-btn" title="Toggle 33 / 45 RPM">33</button>
                       </div>
                     </div>
                     
@@ -2901,8 +2947,13 @@ const PROJECTS = {
                     </div>
                   </div>
                   
-                  <!-- Tracklist Deck -->
+                  <!-- Track Deck -->
                   <div class="track-deck-panel">
+                    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:0.75rem; margin-bottom:0.25rem;">
+                      <span style="font-family:'Clash Display'; font-size:1.15rem; font-weight:700; color:#fff;">Session Playlist</span>
+                      <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.5); font-weight:600;">3 Compositions</span>
+                    </div>
+                    
                     <div id="track-list" style="display:flex; flex-direction:column; gap:1rem;"></div>
                     <audio id="main-audio" preload="auto"></audio>
                   </div>
@@ -2921,7 +2972,7 @@ const PROJECTS = {
                   tag: 'Club Mix — Punchy, High Energy', 
                   color: '#FF0055',
                   glow: 'rgba(255, 0, 85, 0.45)',
-                  bgBase: '#08080C'
+                  bgBase: '#06060A'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', 
@@ -2930,7 +2981,7 @@ const PROJECTS = {
                   tag: 'Airy / Experimental — Soft, Dreamy', 
                   color: '#00E5FF',
                   glow: 'rgba(0, 229, 255, 0.45)',
-                  bgBase: '#071224'
+                  bgBase: '#040D1E'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
@@ -2939,7 +2990,7 @@ const PROJECTS = {
                   tag: 'Pop Mix — Bouncy, Vibrant', 
                   color: '#FF6B8B',
                   glow: 'rgba(255, 107, 139, 0.45)',
-                  bgBase: '#1C0B22'
+                  bgBase: '#15081C'
                 }
               ];
               
@@ -2966,19 +3017,21 @@ const PROJECTS = {
               const vinyl = document.getElementById('vinyl-disc');
               const tonearm = document.getElementById('tonearm');
               const label = document.getElementById('vinyl-label');
-              const canvas = document.getElementById('audio-viz');
+              const canvas = document.getElementById('global-audio-viz');
               const ctx = canvas ? canvas.getContext('2d') : null;
-              const stageOuter = document.getElementById('dj-stage-outer');
               const volSlider = document.getElementById('vol-slider');
               const volKnob = document.getElementById('vol-knob');
               const filterDial = document.getElementById('filter-dial');
+              const filterLabel = document.getElementById('filter-label');
+              const speedBtn = document.getElementById('speed-btn');
               
               let currentIdx = -1;
               let animRunning = false;
               let vRot = 0;
-              let filterState = 0; // 0 = Full Open (Clean), 1 = Warm Club Lowpass, 2 = Highpass Crisp
+              let filterState = 0; // 0 = Clean, 1 = Club Lowpass, 2 = Crisp Highpass
+              let speedMultiplier = 1.0;
               
-              // Real Web Audio API Context
+              // Real Web Audio API Context & DSP Nodes
               let audioCtx = null;
               let analyser = null;
               let sourceNode = null;
@@ -3006,7 +3059,7 @@ const PROJECTS = {
                       gainNode.connect(analyser);
                       analyser.connect(audioCtx.destination);
                     } catch(e) {
-                      console.log('MediaElementSource error:', e);
+                      console.log('MediaElementSource initialization:', e);
                     }
                   }
                 }
@@ -3015,23 +3068,44 @@ const PROJECTS = {
                 }
               }
               
+              // Speed 33 / 45 RPM Switch
+              if (speedBtn) {
+                speedBtn.onclick = () => {
+                  if (speedMultiplier === 1.0) {
+                    speedMultiplier = 1.25;
+                    audio.playbackRate = 1.25;
+                    speedBtn.textContent = '45';
+                    speedBtn.style.background = '#FF0055';
+                    speedBtn.style.color = '#fff';
+                  } else {
+                    speedMultiplier = 1.0;
+                    audio.playbackRate = 1.0;
+                    speedBtn.textContent = '33';
+                    speedBtn.style.background = '#E8B000';
+                    speedBtn.style.color = '#111';
+                  }
+                };
+              }
+              
               // Filter Dial Toggle
               if (filterDial) {
                 const filterAngles = [0, 90, 180];
+                const filterNames = ['FLTR:OFF', 'FLTR:LP', 'FLTR:HP'];
                 filterDial.onclick = () => {
                   setupWebAudio();
                   filterState = (filterState + 1) % 3;
                   filterDial.style.transform = `rotate(${filterAngles[filterState]}deg)`;
+                  if (filterLabel) filterLabel.textContent = filterNames[filterState];
                   if (biquadFilter) {
                     if (filterState === 0) {
                       biquadFilter.type = 'lowpass';
                       biquadFilter.frequency.value = 22000;
                     } else if (filterState === 1) {
                       biquadFilter.type = 'lowpass';
-                      biquadFilter.frequency.value = 1400; // Warm club filter
+                      biquadFilter.frequency.value = 1300;
                     } else if (filterState === 2) {
                       biquadFilter.type = 'highpass';
-                      biquadFilter.frequency.value = 800; // Highpass crisp
+                      biquadFilter.frequency.value = 850;
                     }
                   }
                 };
@@ -3054,7 +3128,7 @@ const PROJECTS = {
                 window.addEventListener('mouseup', () => { isDraggingVol = false; });
               }
               
-              // Scratch & Spin Vinyl
+              // Interactive Vinyl Drag / Scratch
               if (vinyl) {
                 let isScratching = false;
                 let lastAngle = 0;
@@ -3077,7 +3151,7 @@ const PROJECTS = {
                     const diff = ang - lastAngle;
                     vRot += diff * (180 / Math.PI);
                     vinyl.style.transform = `rotate(${vRot}deg)`;
-                    audio.currentTime = Math.max(0, Math.min(audio.duration || 100, audio.currentTime + diff * 0.4));
+                    audio.currentTime = Math.max(0, Math.min(audio.duration || 100, audio.currentTime + diff * 0.45));
                     lastAngle = ang;
                   }
                 });
@@ -3093,19 +3167,19 @@ const PROJECTS = {
                 }
               };
               
-              // Genre Particles
+              // Full-Screen Particles & Waves
               let shockwaves = [];
               let confettiParticles = [];
               let cloudParticles = [];
-              for (let i = 0; i < 32; i++) {
+              for (let i = 0; i < 36; i++) {
                 cloudParticles.push({
                   x: Math.random(),
                   y: Math.random(),
-                  radius: 90 + Math.random() * 160,
-                  speedX: (Math.random() - 0.5) * 0.0008,
-                  speedY: (Math.random() - 0.5) * 0.0006,
+                  radius: 120 + Math.random() * 220,
+                  speedX: (Math.random() - 0.5) * 0.0007,
+                  speedY: (Math.random() - 0.5) * 0.0005,
                   hue: 190 + Math.random() * 40,
-                  baseAlpha: 0.14 + Math.random() * 0.18,
+                  baseAlpha: 0.16 + Math.random() * 0.2,
                   phase: Math.random() * Math.PI * 2
                 });
               }
@@ -3122,8 +3196,8 @@ const PROJECTS = {
                     return;
                   }
                   
-                  canvas.width = stageOuter.offsetWidth;
-                  canvas.height = stageOuter.offsetHeight;
+                  canvas.width = window.innerWidth;
+                  canvas.height = window.innerHeight;
                   const W = canvas.width;
                   const H = canvas.height;
                   
@@ -3131,56 +3205,56 @@ const PROJECTS = {
                   const isPlaying = !audio.paused && !audio.ended;
                   
                   if (isPlaying) {
-                    vRot += (track.genre === 'club' ? 2.2 : (track.genre === 'pop' ? 1.6 : 1.0));
+                    vRot += (track.genre === 'club' ? 2.2 : (track.genre === 'pop' ? 1.6 : 1.0)) * speedMultiplier;
                     vinyl.style.transform = `rotate(${vRot}deg)`;
                     tonearm.style.transform = `rotate(35deg)`;
                   } else {
                     tonearm.style.transform = `rotate(12deg)`;
                   }
                   
-                  // Read Real Frequency Spectrum
+                  // Read Real-Time Frequency Spectrum
                   if (analyser && isPlaying) {
                     analyser.getByteFrequencyData(freqArray);
                   } else {
-                    for(let i=0; i<64; i++) freqArray[i] = Math.max(0, freqArray[i] * 0.88);
+                    for(let i=0; i<64; i++) freqArray[i] = Math.max(0, freqArray[i] * 0.86);
                   }
                   
                   const bassEnergy = (freqArray[0] + freqArray[1] + freqArray[2] + freqArray[3]) / (4 * 255);
-                  const midEnergy = (freqArray[10] + freqArray[12] + freqArray[14] + freqArray[16]) / (4 * 255);
+                  const midEnergy = (freqArray[8] + freqArray[12] + freqArray[16] + freqArray[20]) / (4 * 255);
                   const highEnergy = (freqArray[24] + freqArray[28] + freqArray[32] + freqArray[36]) / (4 * 255);
                   
                   ctx.clearRect(0, 0, W, H);
                   
-                  // 1. CLUB GOT BOOTS — Deep Bass Kicks, Laser Arrays, & Reactive Equalizer Bars
+                  // 1. CLUB GOT BOOTS (FULLSCREEN Cyberpunk Underground Club)
                   if (track.genre === 'club') {
-                    stageOuter.style.background = '#06060A';
+                    document.body.style.background = '#040407';
                     
-                    // Bass Kick Strobe & Shockwaves
-                    if (bassEnergy > 0.65 && isPlaying) {
-                      const flash = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, Math.max(W, H) * 0.8);
-                      flash.addColorStop(0, `rgba(255, 0, 85, ${bassEnergy * 0.4})`);
-                      flash.addColorStop(0.5, `rgba(0, 240, 255, ${bassEnergy * 0.15})`);
+                    // Full-Screen Perimeter Kick Glow
+                    if (bassEnergy > 0.62 && isPlaying) {
+                      const flash = ctx.createRadialGradient(W / 2, H / 2, 50, W / 2, H / 2, Math.max(W, H) * 0.9);
+                      flash.addColorStop(0, `rgba(255, 0, 85, ${bassEnergy * 0.45})`);
+                      flash.addColorStop(0.5, `rgba(0, 240, 255, ${bassEnergy * 0.2})`);
                       flash.addColorStop(1, 'transparent');
                       ctx.fillStyle = flash;
                       ctx.fillRect(0, 0, W, H);
                       
                       if (Math.random() < 0.4) {
-                        shockwaves.push({ r: 60, alpha: 0.9 });
+                        shockwaves.push({ r: 80, alpha: 0.95 });
                       }
                     }
                     
-                    // Laser Beam Array
-                    const beamCount = 8;
+                    // Laser Beam Array Spanning Across the Full Screen
+                    const beamCount = 10;
                     for (let b = 0; b < beamCount; b++) {
-                      const ang = (b / beamCount) * Math.PI + (audio.currentTime * 0.4);
-                      const len = Math.max(W, H) * 1.2;
+                      const ang = (b / beamCount) * Math.PI + (audio.currentTime * 0.35);
+                      const len = Math.max(W, H) * 1.5;
                       const bx = W / 2 + Math.cos(ang) * len;
                       const by = H / 2 + Math.sin(ang) * len;
                       ctx.beginPath();
                       ctx.moveTo(W / 2, H / 2);
                       ctx.lineTo(bx, by);
-                      ctx.strokeStyle = (b % 2 === 0) ? `rgba(255, 0, 85, ${0.12 + bassEnergy * 0.3})` : `rgba(0, 240, 255, ${0.12 + midEnergy * 0.3})`;
-                      ctx.lineWidth = 1.5 + bassEnergy * 3;
+                      ctx.strokeStyle = (b % 2 === 0) ? `rgba(255, 0, 85, ${0.15 + bassEnergy * 0.35})` : `rgba(0, 240, 255, ${0.15 + midEnergy * 0.35})`;
+                      ctx.lineWidth = 1.5 + bassEnergy * 3.5;
                       ctx.stroke();
                     }
                     
@@ -3192,18 +3266,18 @@ const PROJECTS = {
                       ctx.strokeStyle = `rgba(255, 0, 85, ${sw.alpha})`;
                       ctx.lineWidth = 3;
                       ctx.stroke();
-                      sw.r += 14;
-                      sw.alpha *= 0.89;
+                      sw.r += 16;
+                      sw.alpha *= 0.88;
                       if (sw.alpha < 0.02) shockwaves.splice(s, 1);
                     }
                     
-                    // 36-band EQ Floor Spectrum
-                    const numBars = 36;
+                    // 48-band Chromatic Equalizer along the Bottom Edge of Screen
+                    const numBars = 48;
                     const barW = (W / numBars) - 4;
                     for (let i = 0; i < numBars; i++) {
                       const bin = Math.floor(i * (freqArray.length / numBars));
                       const val = (freqArray[bin] || 0) / 255;
-                      const barH = Math.max(6, val * (H * 0.5));
+                      const barH = Math.max(6, val * (H * 0.45));
                       const x = i * (barW + 4) + 2;
                       
                       const grad = ctx.createLinearGradient(x, H, x, H - barH);
@@ -3216,9 +3290,9 @@ const PROJECTS = {
                     }
                   }
                   
-                  // 2. CLOUDY DAYS — Volumetric Ethereal Nebula, Aurora Waves & Harmonic Particles
+                  // 2. CLOUDY DAYS (FULLSCREEN Volumetric Ethereal Nebula & Triple Waves)
                   else if (track.genre === 'experimental') {
-                    stageOuter.style.background = '#061020';
+                    document.body.style.background = '#030A18';
                     
                     cloudParticles.forEach(p => {
                       p.x += p.speedX;
@@ -3230,12 +3304,12 @@ const PROJECTS = {
                       
                       const px = p.x * W;
                       const py = p.y * H;
-                      const pulse = 1 + (isPlaying ? midEnergy * 0.4 : 0);
+                      const pulse = 1 + (isPlaying ? midEnergy * 0.45 : 0);
                       const r = p.radius * pulse;
                       
                       const fogGrad = ctx.createRadialGradient(px, py, 0, px, py, r);
-                      fogGrad.addColorStop(0, `hsla(${p.hue}, 85%, 65%, ${p.baseAlpha * (isPlaying ? 1.3 : 0.6)})`);
-                      fogGrad.addColorStop(0.6, `hsla(${p.hue + 25}, 75%, 45%, ${p.baseAlpha * 0.4})`);
+                      fogGrad.addColorStop(0, `hsla(${p.hue}, 85%, 65%, ${p.baseAlpha * (isPlaying ? 1.4 : 0.7)})`);
+                      fogGrad.addColorStop(0.6, `hsla(${p.hue + 25}, 75%, 45%, ${p.baseAlpha * 0.45})`);
                       fogGrad.addColorStop(1, 'transparent');
                       
                       ctx.fillStyle = fogGrad;
@@ -3244,20 +3318,20 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // Triple Harmonic Aurora Waves
+                    // Triple Harmonic Aurora Ribbons Across Screen
                     const waveLayers = [
-                      { color: 'rgba(0, 229, 255, 0.4)', speed: 0.6, freq: 0.007, amp: 75, offset: 0 },
-                      { color: 'rgba(120, 140, 255, 0.3)', speed: 0.4, freq: 0.011, amp: 95, offset: 25 },
-                      { color: 'rgba(200, 225, 255, 0.2)', speed: 0.25, freq: 0.005, amp: 115, offset: -25 }
+                      { color: 'rgba(0, 229, 255, 0.45)', speed: 0.6, freq: 0.006, amp: 85, offset: 0 },
+                      { color: 'rgba(120, 140, 255, 0.35)', speed: 0.4, freq: 0.009, amp: 110, offset: 35 },
+                      { color: 'rgba(200, 225, 255, 0.25)', speed: 0.25, freq: 0.004, amp: 130, offset: -35 }
                     ];
                     
                     waveLayers.forEach(w => {
                       ctx.beginPath();
                       ctx.moveTo(0, H);
-                      for (let x = 0; x <= W; x += 8) {
+                      for (let x = 0; x <= W; x += 10) {
                         const sinWave = Math.sin(x * w.freq + audio.currentTime * w.speed);
                         const dynamicAmp = w.amp * (0.4 + midEnergy * 0.9 + highEnergy * 0.5);
-                        const y = (H * 0.55) + w.offset + sinWave * dynamicAmp;
+                        const y = (H * 0.58) + w.offset + sinWave * dynamicAmp;
                         ctx.lineTo(x, y);
                       }
                       ctx.lineTo(W, H);
@@ -3266,23 +3340,23 @@ const PROJECTS = {
                     });
                   }
                   
-                  // 3. PARADISE — Bouncy Pop Spectrum, Expanding Rhythmic Rings & Confetti
+                  // 3. PARADISE (FULLSCREEN Sunset Disco & Bouncy Spectrum)
                   else if (track.genre === 'pop') {
-                    stageOuter.style.background = '#180A1E';
+                    document.body.style.background = '#140618';
                     
-                    // Snare/Bass Confetti Burst
-                    if (bassEnergy > 0.68 && isPlaying && Math.random() < 0.45) {
+                    // Snare/Bass Confetti Bursts
+                    if (bassEnergy > 0.65 && isPlaying && Math.random() < 0.45) {
                       const colors = ['#FF6B8B', '#FFD166', '#06D6A0', '#118AB2', '#FF9F1C', '#FFFFFF'];
-                      for (let c = 0; c < 5; c++) {
+                      for (let c = 0; c < 6; c++) {
                         confettiParticles.push({
-                          x: W * 0.2 + Math.random() * W * 0.6,
-                          y: H * 0.85,
-                          vx: (Math.random() - 0.5) * 8,
-                          vy: -(7 + Math.random() * 9),
-                          size: 5 + Math.random() * 7,
+                          x: W * 0.15 + Math.random() * W * 0.7,
+                          y: H * 0.9,
+                          vx: (Math.random() - 0.5) * 10,
+                          vy: -(8 + Math.random() * 10),
+                          size: 6 + Math.random() * 8,
                           color: colors[Math.floor(Math.random() * colors.length)],
                           rot: Math.random() * Math.PI * 2,
-                          vRot: (Math.random() - 0.5) * 0.2,
+                          vRot: (Math.random() - 0.5) * 0.25,
                           alpha: 1.0
                         });
                       }
@@ -3292,7 +3366,7 @@ const PROJECTS = {
                       const p = confettiParticles[c];
                       p.x += p.vx;
                       p.y += p.vy;
-                      p.vy += 0.28;
+                      p.vy += 0.3;
                       p.rot += p.vRot;
                       p.alpha *= 0.96;
                       
@@ -3307,14 +3381,14 @@ const PROJECTS = {
                       if (p.alpha < 0.02 || p.y > H + 50) confettiParticles.splice(c, 1);
                     }
                     
-                    // 24 Bouncy Rounded Pills
-                    const numPills = 24;
-                    const pillW = (W / numPills) - 10;
+                    // 32 Bouncy Rounded Spectrum Pillars
+                    const numPills = 32;
+                    const pillW = (W / numPills) - 8;
                     for (let i = 0; i < numPills; i++) {
                       const bin = Math.floor(i * (freqArray.length / numPills));
                       const val = (freqArray[bin] || 0) / 255;
-                      const pillH = Math.max(10, (val * 0.7 + midEnergy * 0.3) * (H * 0.55));
-                      const x = i * (pillW + 10) + 5;
+                      const pillH = Math.max(12, (val * 0.75 + midEnergy * 0.35) * (H * 0.5));
+                      const x = i * (pillW + 8) + 4;
                       const y = H - pillH;
                       
                       const pillGrad = ctx.createLinearGradient(x, H, x, y);
@@ -3338,7 +3412,7 @@ const PROJECTS = {
                 drawViz();
               }
               
-              // Track Selection & Play/Pause Button Handling
+              // Track Buttons
               tracks.forEach((t, i) => {
                 const btn = document.getElementById(`tbtn-${i}`);
                 const icon = document.getElementById(`ticon-${i}`);
@@ -3354,14 +3428,13 @@ const PROJECTS = {
                         btn.classList.add('playing');
                         icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
                         startVizLoop();
-                      }).catch(e => console.log('Play error:', e));
+                      }).catch(e => console.log('Audio play error:', e));
                     } else {
                       audio.pause();
                       btn.classList.remove('playing');
                       icon.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>';
                     }
                   } else {
-                    // Switch to new track
                     currentIdx = i;
                     document.querySelectorAll('.track-card-btn').forEach((b, idx) => {
                       b.classList.remove('active', 'playing');
@@ -3373,13 +3446,14 @@ const PROJECTS = {
                     icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
                     
                     audio.src = t.file;
+                    audio.playbackRate = speedMultiplier;
                     audio.play().then(() => {
                       label.style.background = t.color;
                       label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
                       shockwaves = [];
                       confettiParticles = [];
                       startVizLoop();
-                    }).catch(e => console.log('Audio load/play error:', e));
+                    }).catch(e => console.log('Audio switch error:', e));
                   }
                 };
               });
