@@ -2019,7 +2019,16 @@ const PROJECTS = {
           clearInterval(checkData);
           const data = window.PORTFOLIO_DATA;
           
-          if (id === 'gobunny') {
+          if (id === 'original-tracks') {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.documentElement.style.setProperty('--bg', '#020204');
+              document.documentElement.style.setProperty('--surf', '#0E0D14');
+              document.documentElement.style.setProperty('--ink', '#FFFFFF');
+              document.documentElement.style.setProperty('--white', '#14131C');
+              document.documentElement.style.setProperty('--line', 'rgba(255, 255, 255, 0.12)');
+              document.body.style.backgroundColor = '#020204';
+              document.body.style.color = '#FFFFFF';
+          } else if (id === 'gobunny') {
               document.documentElement.style.setProperty('--bg', '#FFF2F0');
               document.documentElement.style.setProperty('--surf', '#FFFFFF');
               document.documentElement.style.setProperty('--ink', '#FF3522');
@@ -2476,193 +2485,39 @@ const PROJECTS = {
               return;
           }
 
-          // 8. ORIGINAL TRACKS (REFERENCE-DRIVEN AUDIO-REACTIVE VISUALIZERS)
+          // 8. ORIGINAL TRACKS (ULTRA-HIGH-FIDELITY AUDIO-REACTIVE CINEMATIC WORLDS)
           if (id === 'original-tracks') {
               let htmlStr = styleBlock;
               htmlStr += `
               <style>
                 /* ================================================================
-                   WHOLE-PAGE ENVIRONMENT THEMES
+                   WHOLE-PAGE ENVIRONMENT THEMES & ULTRA-CRISP UI
                 ================================================================ */
-                body.dj-studio-mode {
-                  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
+                html, body {
+                  background: #020204 !important;
+                  background-color: #020204 !important;
+                  background-image: none !important;
+                  color: #FFFFFF !important;
                   overflow-x: hidden;
                 }
-                
-                /* 1. CLUB GOT BOOTS THEME (OBSIDIAN CONCERT STAGE) */
-                body.track-theme-club {
+                body.dj-studio-mode {
                   background: #020204 !important;
-                  color: #FFFFFF !important;
+                  background-image: none !important;
                 }
-                body.track-theme-club .nav {
-                  background: rgba(2, 2, 4, 0.85) !important;
+                body.dj-studio-mode::before,
+                body.dj-studio-mode #bg-c,
+                body.dj-studio-mode #page-transition-overlay {
+                  display: none !important;
+                }
+                body.dj-studio-mode .nav {
+                  background: rgba(2, 2, 4, 0.9) !important;
                   backdrop-filter: blur(20px);
-                  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
                 }
-                body.track-theme-club .nav-logo,
-                body.track-theme-club .nav-back { color: #FFFFFF !important; }
-                body.track-theme-club .dj-status-badge {
-                  background: rgba(0, 255, 102, 0.1) !important;
-                  border: 1px solid rgba(0, 255, 102, 0.3) !important;
-                  color: #00FF66 !important;
-                }
-                body.track-theme-club .dj-status-dot { background: #00FF66 !important; box-shadow: 0 0 10px #00FF66 !important; }
-                body.track-theme-club .dj-main-title { color: #FFFFFF; text-shadow: 0 4px 30px rgba(0,255,102,0.35); }
-                body.track-theme-club .dj-main-subtitle { color: rgba(255, 255, 255, 0.65); }
-                body.track-theme-club .turntable-hardware {
-                  background: linear-gradient(145deg, #18171E, #0A0A0E) !important;
-                  box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 35px rgba(0, 255, 102, 0.2) !important;
-                  border: 1px solid rgba(255,255,255,0.08) !important;
-                }
-                body.track-theme-club .track-deck-panel {
-                  background: rgba(14, 13, 18, 0.88) !important;
-                  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-club .track-card-btn {
-                  background: rgba(255, 255, 255, 0.04) !important;
-                  border-color: rgba(255, 255, 255, 0.08) !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-club .track-title-text { color: #FFFFFF !important; }
-                body.track-theme-club .track-genre-tag { color: rgba(255,255,255,0.5) !important; }
-                body.track-theme-club .keyboard-hints { color: rgba(255,255,255,0.4); }
-                body.track-theme-club .key-cap { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff; }
+                body.dj-studio-mode .nav-logo,
+                body.dj-studio-mode .nav-back { color: #FFFFFF !important; }
+                body.dj-studio-mode .foot { display: none !important; }
                 
-                /* 2. CLOUDY DAYS THEME (LUMINOUS OVERCAST DAYLIGHT SKY) */
-                body.track-theme-cloudy {
-                  background: #DCE1E8 !important;
-                  color: #1E293B !important;
-                }
-                body.track-theme-cloudy .nav {
-                  background: rgba(220, 225, 232, 0.85) !important;
-                  backdrop-filter: blur(20px);
-                  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-                }
-                body.track-theme-cloudy .nav-logo,
-                body.track-theme-cloudy .nav-back { color: #0F172A !important; }
-                body.track-theme-cloudy .dj-status-badge {
-                  background: rgba(0, 0, 0, 0.05) !important;
-                  border: 1px solid rgba(0, 0, 0, 0.12) !important;
-                  color: #0284C7 !important;
-                  box-shadow: 0 4px 15px rgba(0,0,0,0.06) !important;
-                }
-                body.track-theme-cloudy .dj-status-dot { background: #0284C7 !important; box-shadow: 0 0 10px #0284C7 !important; }
-                body.track-theme-cloudy .dj-main-title { color: #0F172A !important; text-shadow: 0 4px 25px rgba(2, 132, 199, 0.2) !important; }
-                body.track-theme-cloudy .dj-main-subtitle { color: #475569 !important; }
-                body.track-theme-cloudy .turntable-hardware {
-                  background: linear-gradient(145deg, #EAECEF, #D8DCE2) !important;
-                  box-shadow: 0 30px 60px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.9), 0 0 35px rgba(2, 132, 199, 0.25) !important;
-                  border: 1px solid rgba(0,0,0,0.08) !important;
-                }
-                body.track-theme-cloudy .platter {
-                  background: radial-gradient(circle, #E2E5EB 0%, #C4CBD5 90%) !important;
-                  border: 4px solid #94A3B8 !important;
-                }
-                body.track-theme-cloudy .slider-track {
-                  background: #CBD5E1 !important;
-                  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2) !important;
-                }
-                body.track-theme-cloudy .ctrl-label { color: #64748B !important; }
-                body.track-theme-cloudy .filter-dial {
-                  background: linear-gradient(145deg, #F1F5F9, #CBD5E1) !important;
-                  border: 1px solid rgba(0,0,0,0.1) !important;
-                }
-                body.track-theme-cloudy .speed-btn {
-                  background: rgba(0,0,0,0.06) !important;
-                  border: 1px solid rgba(0,0,0,0.15) !important;
-                  color: #475569 !important;
-                }
-                body.track-theme-cloudy .speed-btn.active {
-                  background: #0284C7 !important;
-                  color: #FFFFFF !important;
-                  border-color: #0284C7 !important;
-                }
-                body.track-theme-cloudy .track-deck-panel {
-                  background: rgba(255, 255, 255, 0.88) !important;
-                  backdrop-filter: blur(25px);
-                  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-                  box-shadow: 0 25px 60px rgba(0,0,0,0.08) !important;
-                  color: #1E293B !important;
-                }
-                body.track-theme-cloudy .track-card-btn {
-                  background: rgba(0, 0, 0, 0.03) !important;
-                  border-color: rgba(0, 0, 0, 0.08) !important;
-                  color: #1E293B !important;
-                }
-                body.track-theme-cloudy .track-card-btn:hover {
-                  background: rgba(0, 0, 0, 0.06) !important;
-                  border-color: rgba(0, 0, 0, 0.16) !important;
-                }
-                body.track-theme-cloudy .track-card-btn.active {
-                  background: rgba(2, 132, 199, 0.08) !important;
-                  border-color: #0284C7 !important;
-                  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15) !important;
-                }
-                body.track-theme-cloudy .track-title-text { color: #0F172A !important; }
-                body.track-theme-cloudy .track-genre-tag { color: #64748B !important; }
-                body.track-theme-cloudy .track-card-btn.active .track-genre-tag { color: #0284C7 !important; }
-                body.track-theme-cloudy .track-play-icon {
-                  background: rgba(0,0,0,0.06) !important;
-                  border-color: rgba(0,0,0,0.1) !important;
-                  color: #0F172A !important;
-                }
-                body.track-theme-cloudy .track-card-btn.active .track-play-icon {
-                  background: #0284C7 !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-cloudy .keyboard-hints { color: #64748B !important; }
-                body.track-theme-cloudy .key-cap {
-                  background: rgba(0,0,0,0.06) !important;
-                  border-color: rgba(0,0,0,0.15) !important;
-                  color: #0F172A !important;
-                }
-                body.track-theme-cloudy .foot {
-                  background: #DCE1E8 !important;
-                  border-top: 1px solid rgba(0,0,0,0.08) !important;
-                  color: #64748B !important;
-                }
-                
-                /* 3. PARADISE THEME (SYNTHWAVE SUNSET TO NIGHT DRIVE) */
-                body.track-theme-paradise {
-                  background: #080318 !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-paradise .nav {
-                  background: rgba(8, 3, 24, 0.85) !important;
-                  backdrop-filter: blur(20px);
-                  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-                }
-                body.track-theme-paradise .nav-logo,
-                body.track-theme-paradise .nav-back { color: #FFFFFF !important; }
-                body.track-theme-paradise .dj-status-badge {
-                  background: rgba(255, 107, 139, 0.12) !important;
-                  border: 1px solid rgba(255, 107, 139, 0.3) !important;
-                  color: #FF6B8B !important;
-                }
-                body.track-theme-paradise .dj-status-dot { background: #FF6B8B !important; box-shadow: 0 0 10px #FF6B8B !important; }
-                body.track-theme-paradise .dj-main-title { color: #FFFFFF !important; text-shadow: 0 4px 30px rgba(255, 107, 139, 0.35) !important; }
-                body.track-theme-paradise .dj-main-subtitle { color: rgba(255, 255, 255, 0.7) !important; }
-                body.track-theme-paradise .turntable-hardware {
-                  background: linear-gradient(145deg, #1D0F2E, #0A0416) !important;
-                  box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 35px rgba(255, 107, 139, 0.25) !important;
-                  border: 1px solid rgba(255,255,255,0.1) !important;
-                }
-                body.track-theme-paradise .track-deck-panel {
-                  background: rgba(20, 11, 36, 0.88) !important;
-                  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-paradise .track-card-btn {
-                  background: rgba(255, 255, 255, 0.04) !important;
-                  border-color: rgba(255, 255, 255, 0.08) !important;
-                  color: #FFFFFF !important;
-                }
-                body.track-theme-paradise .track-title-text { color: #FFFFFF !important; }
-                body.track-theme-paradise .track-genre-tag { color: rgba(255,255,255,0.5) !important; }
-                body.track-theme-paradise .keyboard-hints { color: rgba(255,255,255,0.4); }
-                body.track-theme-paradise .key-cap { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff; }
-
                 /* Fullscreen Fixed Canvas */
                 #global-audio-viz {
                   position: fixed;
@@ -2671,6 +2526,7 @@ const PROJECTS = {
                   height: 100vh;
                   z-index: 0;
                   pointer-events: none;
+                  background: #020204;
                 }
                 
                 .dj-studio-stage {
@@ -2679,7 +2535,7 @@ const PROJECTS = {
                   width: 100%;
                   max-width: 1200px;
                   margin: 0 auto;
-                  padding: 2.5rem 1.5rem 4rem 1.5rem;
+                  padding: 2.2rem 1.5rem 3.5rem 1.5rem;
                   display: flex;
                   flex-direction: column;
                   align-items: center;
@@ -2688,28 +2544,32 @@ const PROJECTS = {
                 /* HUD & Header */
                 .dj-hud-header {
                   text-align: center;
-                  margin-bottom: 2.5rem;
+                  margin-bottom: 2rem;
                   width: 100%;
                 }
                 .dj-status-badge {
                   display: inline-flex;
                   align-items: center;
                   gap: 8px;
-                  padding: 5px 16px;
+                  padding: 6px 18px;
                   border-radius: 30px;
-                  font-size: 0.78rem;
+                  font-size: 0.8rem;
                   font-weight: 700;
                   text-transform: uppercase;
                   letter-spacing: 2px;
                   margin-bottom: 0.85rem;
-                  backdrop-filter: blur(12px);
-                  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                  transition: all 0.5s ease;
+                  background: rgba(255, 255, 255, 0.12);
+                  border: 1px solid rgba(255, 255, 255, 0.3);
+                  color: #E8B000;
+                  backdrop-filter: blur(14px);
+                  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
                 }
                 .dj-status-dot {
                   width: 8px;
                   height: 8px;
                   border-radius: 50%;
+                  background: #E8B000;
+                  box-shadow: 0 0 12px #E8B000;
                   animation: pulseDot 1.4s ease-in-out infinite;
                 }
                 @keyframes pulseDot {
@@ -2722,15 +2582,17 @@ const PROJECTS = {
                   font-size: clamp(2.4rem, 5.5vw, 3.8rem);
                   font-weight: 700;
                   letter-spacing: -1.5px;
+                  color: #FFFFFF !important;
                   margin: 0;
-                  transition: color 0.5s, text-shadow 0.5s;
+                  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 4px 30px rgba(0, 0, 0, 0.9);
                 }
                 .dj-main-subtitle {
                   font-size: 1.05rem;
-                  max-width: 580px;
+                  color: rgba(255, 255, 255, 0.92) !important;
+                  max-width: 640px;
                   margin: 0.6rem auto 0 auto;
-                  line-height: 1.5;
-                  transition: color 0.5s;
+                  line-height: 1.55;
+                  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
                 }
                 
                 /* Main Workstation Deck */
@@ -2750,6 +2612,8 @@ const PROJECTS = {
                   width: 410px;
                   height: 350px;
                   border-radius: 28px;
+                  background: linear-gradient(145deg, #1c1a24, #0d0c12) !important;
+                  box-shadow: 0 40px 80px rgba(0,0,0,0.85), inset 0 2px 4px rgba(255,255,255,0.18), inset 0 -4px 12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.18) !important;
                   display: flex;
                   align-items: center;
                   justify-content: center;
@@ -2764,11 +2628,12 @@ const PROJECTS = {
                   width: 290px;
                   height: 290px;
                   border-radius: 50%;
-                  box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.15);
+                  background: radial-gradient(circle, #282632 0%, #0d0c10 90%) !important;
+                  box-shadow: 0 14px 28px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.2) !important;
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  transition: all 0.6s ease;
+                  border: 4px solid #3d3b48 !important;
                 }
                 
                 .spindle {
@@ -2798,7 +2663,7 @@ const PROJECTS = {
                 .groove {
                   position: absolute;
                   border-radius: 50%;
-                  border: 1px solid rgba(255,255,255,0.06);
+                  border: 1px solid rgba(255,255,255,0.08);
                   pointer-events: none;
                 }
                 
@@ -2806,7 +2671,7 @@ const PROJECTS = {
                   width: 36%;
                   height: 36%;
                   border-radius: 50%;
-                  background: #FAF8F4;
+                  background: #00FF66;
                   transition: background 0.5s, transform 0.3s;
                   display: flex;
                   flex-direction: column;
@@ -2829,12 +2694,12 @@ const PROJECTS = {
                   right: 36px;
                   width: 18px;
                   height: 195px;
-                  background: linear-gradient(to right, #666, #ccc, #777);
+                  background: linear-gradient(to right, #777, #ddd, #888);
                   transform-origin: 9px 20px;
                   transform: rotate(12deg);
                   border-radius: 8px;
                   transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
-                  box-shadow: -6px 12px 20px rgba(0,0,0,0.5);
+                  box-shadow: -6px 12px 20px rgba(0,0,0,0.6);
                   z-index: 15;
                   pointer-events: none;
                 }
@@ -2845,8 +2710,8 @@ const PROJECTS = {
                   width: 52px;
                   height: 52px;
                   border-radius: 50%;
-                  background: radial-gradient(circle at 30% 30%, #444, #151518);
-                  box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.2);
+                  background: radial-gradient(circle at 30% 30%, #555, #151518);
+                  box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.25);
                 }
                 .ta-head {
                   position: absolute;
@@ -2854,11 +2719,11 @@ const PROJECTS = {
                   left: -12px;
                   width: 32px;
                   height: 56px;
-                  background: linear-gradient(to bottom, #2a2930, #111);
+                  background: linear-gradient(to bottom, #33323a, #111);
                   border-radius: 4px;
                   transform: rotate(24deg);
                   box-shadow: -2px 5px 10px rgba(0,0,0,0.5);
-                  border-top: 1px solid #555;
+                  border-top: 1px solid #666;
                 }
                 
                 /* Controls Strip */
@@ -2884,7 +2749,7 @@ const PROJECTS = {
                   font-weight: 700;
                   text-transform: uppercase;
                   letter-spacing: 1px;
-                  transition: color 0.5s;
+                  color: rgba(255,255,255,0.75) !important;
                 }
                 .slider-track {
                   position: relative;
@@ -2892,7 +2757,8 @@ const PROJECTS = {
                   height: 125px;
                   border-radius: 5px;
                   cursor: pointer;
-                  transition: background 0.5s;
+                  background: #09080d;
+                  box-shadow: inset 0 2px 5px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.12);
                 }
                 .slider-knob {
                   position: absolute;
@@ -2900,9 +2766,9 @@ const PROJECTS = {
                   left: -11px;
                   width: 32px;
                   height: 18px;
-                  background: linear-gradient(to bottom, #e5e5e5, #888);
+                  background: linear-gradient(to bottom, #f0f0f0, #999);
                   border-radius: 3px;
-                  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+                  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
                   transform: translateY(-50%);
                   border-top: 1px solid #fff;
                   border-bottom: 1px solid #333;
@@ -2916,7 +2782,9 @@ const PROJECTS = {
                   border-radius: 50%;
                   position: relative;
                   cursor: pointer;
-                  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.5s;
+                  background: linear-gradient(145deg, #2a2930, #141318);
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.2), 0 0 0 1px rgba(255,255,255,0.12);
+                  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
                 }
                 .filter-dial::after {
                   content: '';
@@ -2935,17 +2803,28 @@ const PROJECTS = {
                   font-weight: 700;
                   padding: 3px 6px;
                   cursor: pointer;
+                  background: rgba(255,255,255,0.12);
+                  border: 1px solid rgba(255,255,255,0.25);
+                  color: rgba(255,255,255,0.95);
                   transition: all 0.2s;
+                }
+                .speed-btn.active {
+                  background: #E8B000;
+                  color: #111;
+                  border-color: #E8B000;
                 }
                 
                 /* TRACK DECK PANEL */
                 .track-deck-panel {
                   flex: 1;
-                  min-width: 320px;
-                  max-width: 490px;
+                  min-width: 340px;
+                  max-width: 520px;
                   border-radius: 24px;
                   padding: 2.25rem;
-                  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+                  background: rgba(14, 13, 22, 0.94) !important;
+                  backdrop-filter: blur(25px);
+                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                  box-shadow: 0 30px 70px rgba(0,0,0,0.75) !important;
                   display: flex;
                   flex-direction: column;
                   gap: 1.2rem;
@@ -2963,13 +2842,19 @@ const PROJECTS = {
                   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                   text-align: left;
                   outline: none;
+                  background: rgba(255, 255, 255, 0.08);
+                  border: 1.5px solid rgba(255, 255, 255, 0.16);
+                  color: #FFFFFF !important;
                 }
                 .track-card-btn:hover {
                   transform: translateX(4px);
+                  background: rgba(255, 255, 255, 0.15);
+                  border-color: rgba(255, 255, 255, 0.35);
                 }
                 .track-card-btn.active {
-                  border-color: var(--track-color, #E8B000);
-                  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 20px var(--track-glow, rgba(232, 176, 0, 0.2));
+                  border-color: var(--track-color, #E8B000) !important;
+                  background: rgba(255, 255, 255, 0.14) !important;
+                  box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 22px var(--track-glow, rgba(232, 176, 0, 0.35)) !important;
                 }
                 
                 .track-play-icon {
@@ -2980,7 +2865,15 @@ const PROJECTS = {
                   align-items: center;
                   justify-content: center;
                   flex-shrink: 0;
+                  background: rgba(255, 255, 255, 0.15);
+                  border: 1px solid rgba(255, 255, 255, 0.3);
+                  color: #fff;
                   transition: all 0.3s;
+                }
+                .track-card-btn.active .track-play-icon {
+                  background: var(--track-color, #E8B000) !important;
+                  color: #111 !important;
+                  box-shadow: 0 0 18px var(--track-glow, rgba(232, 176, 0, 0.6)) !important;
                 }
                 
                 .track-info {
@@ -2997,16 +2890,22 @@ const PROJECTS = {
                   font-family: 'Clash Display', sans-serif;
                   font-size: 1.25rem;
                   font-weight: 700;
+                  color: #FFFFFF !important;
                   white-space: nowrap;
                   overflow: hidden;
                   text-overflow: ellipsis;
                 }
                 .track-genre-tag {
-                  font-size: 0.72rem;
+                  font-size: 0.78rem;
                   text-transform: uppercase;
-                  letter-spacing: 1.5px;
-                  font-weight: 700;
-                  margin-top: 2px;
+                  letter-spacing: 1px;
+                  font-weight: 600;
+                  color: rgba(255,255,255,0.8) !important;
+                  margin-top: 3px;
+                  line-height: 1.3;
+                }
+                .track-card-btn.active .track-genre-tag {
+                  color: var(--track-color, #E8B000) !important;
                 }
                 
                 .live-wave-bars {
@@ -3035,7 +2934,7 @@ const PROJECTS = {
                 .track-time-bar {
                   width: 100%;
                   height: 3px;
-                  background: rgba(128,128,128,0.2);
+                  background: rgba(128,128,128,0.25);
                   border-radius: 2px;
                   margin-top: 8px;
                   overflow: hidden;
@@ -3058,14 +2957,16 @@ const PROJECTS = {
                   gap: 1.5rem;
                   margin-top: 1.5rem;
                   font-size: 0.75rem;
-                  transition: color 0.5s;
+                  color: rgba(255,255,255,0.7);
                 }
                 .key-cap {
                   display: inline-block;
                   padding: 2px 6px;
                   border-radius: 4px;
+                  background: rgba(255,255,255,0.15);
+                  border: 1px solid rgba(255,255,255,0.3);
                   font-family: monospace;
-                  transition: all 0.5s;
+                  color: #fff;
                 }
                 
                 @media (max-width: 880px) {
@@ -3099,7 +3000,7 @@ const PROJECTS = {
                         <div class="groove" style="inset:24%;"></div>
                         <div class="groove" style="inset:32%;"></div>
                         <div class="groove" style="inset:40%;"></div>
-                        <div id="vinyl-label">ORIGINAL<br>TRACKS</div>
+                        <div id="vinyl-label">CLUB GOT<br>BOOTS<br><span style="font-size:0.5rem;opacity:0.8;">READY</span></div>
                       </div>
                       <div class="spindle"></div>
                     </div>
@@ -3128,9 +3029,9 @@ const PROJECTS = {
                   
                   <!-- Track Deck -->
                   <div class="track-deck-panel">
-                    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(128,128,128,0.2); padding-bottom:0.75rem; margin-bottom:0.25rem;">
-                      <span style="font-family:'Clash Display'; font-size:1.15rem; font-weight:700;">Session Playlist</span>
-                      <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; opacity:0.6; font-weight:600;">3 Compositions</span>
+                    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(128,128,128,0.25); padding-bottom:0.75rem; margin-bottom:0.25rem;">
+                      <span style="font-family:'Clash Display'; font-size:1.15rem; font-weight:700; color:#FFFFFF;">Session Playlist</span>
+                      <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; opacity:0.8; font-weight:600; color:#FFFFFF;">3 Compositions</span>
                     </div>
                     
                     <div id="track-list" style="display:flex; flex-direction:column; gap:1rem;"></div>
@@ -3156,38 +3057,37 @@ const PROJECTS = {
                   file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', 
                   name: 'Club Got Boots', 
                   genre: 'club', 
-                  themeClass: 'track-theme-club',
                   tag: '128 BPM · Festival Laser Rig · V Squared Labs', 
                   color: '#00FF66',
-                  glow: 'rgba(0, 255, 102, 0.5)',
-                  bgBase: '#020204'
+                  glow: 'rgba(0, 255, 102, 0.5)'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', 
                   name: 'Cloudy Days', 
                   genre: 'experimental', 
-                  themeClass: 'track-theme-cloudy',
                   tag: '84 BPM · Blade Runner Rain Pane · Melancholic Bokeh', 
-                  color: '#0284C7',
-                  glow: 'rgba(2, 132, 199, 0.45)',
-                  bgBase: '#DCE1E8'
+                  color: '#38BDF8',
+                  glow: 'rgba(56, 189, 248, 0.45)'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
                   name: 'Paradise', 
                   genre: 'pop', 
-                  themeClass: 'track-theme-paradise',
                   tag: '118 BPM · Synthwave Night Drive · Drive 2011', 
-                  color: '#FF6B8B',
-                  glow: 'rgba(255, 107, 139, 0.5)',
-                  bgBase: '#080318'
+                  color: '#FF007F',
+                  glow: 'rgba(255, 0, 127, 0.5)'
                 }
               ];
               
+              const urlParams = new URLSearchParams(window.location.search);
+              let currentIdx = urlParams.has('test_track') ? parseInt(urlParams.get('test_track')) : 0;
+              if (isNaN(currentIdx) || currentIdx < 0 || currentIdx >= tracks.length) currentIdx = 0;
+              
               const list = document.getElementById('track-list');
               tracks.forEach((t, i) => {
+                  const isActive = (i === currentIdx);
                   list.innerHTML += `
-                  <button class="track-card-btn" id="tbtn-${i}" style="--track-color:${t.color}; --track-glow:${t.glow};">
+                  <button class="track-card-btn ${isActive ? 'active' : ''}" id="tbtn-${i}" style="--track-color:${t.color}; --track-glow:${t.glow};">
                       <div class="track-play-icon" id="ticon-${i}">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                       </div>
@@ -3212,20 +3112,19 @@ const PROJECTS = {
               const volSlider = document.getElementById('vol-slider');
               const volKnob = document.getElementById('vol-knob');
               const filterDial = document.getElementById('filter-dial');
-              const filterLabel = document.getElementById('filter-label');
               const speedBtn = document.getElementById('speed-btn');
               const ttHardware = document.getElementById('turntable-hardware');
               
-              let currentIdx = 0;
               let animRunning = false;
               let vRot = 0;
               let speedMultiplier = 1.0;
               
-              // Set initial theme
-              document.body.classList.remove('track-theme-club', 'track-theme-cloudy', 'track-theme-paradise');
-              document.body.classList.add(tracks[0].themeClass);
+              // Load active track immediately
+              audio.src = encodeURI(tracks[currentIdx].file);
+              audio.volume = 1.0;
+              label.style.background = tracks[currentIdx].color;
+              label.innerHTML = tracks[currentIdx].name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">READY</span>';
               
-              // Direct Hardware Control
               if (speedBtn) {
                 speedBtn.onclick = () => {
                   if (speedMultiplier === 1.0) {
@@ -3295,37 +3194,46 @@ const PROJECTS = {
               };
               
               // ================================================================
-              // REFERENCE-DRIVEN AUDIO STATE OBJECTS
+              // REFERENCE VISUAL ARRAYS & PARTICLES
               // ================================================================
               
-              // 1. CLOUDY DAYS: Raindrops on Window Pane (Spawned on Piano Note Onsets)
-              const windowDroplets = [];
-              let lastPianoNoteTime = 0;
+              // 1. CLOUDY DAYS: Raindrops on Window Pane
+              const rainDroplets = [];
+              for (let i = 0; i < 75; i++) {
+                rainDroplets.push({
+                  x: Math.random() * (window.innerWidth || 1440),
+                  y: Math.random() * (window.innerHeight || 900),
+                  r: 2.2 + Math.random() * 4.0,
+                  vy: 0.8 + Math.random() * 2.5,
+                  trailLength: 20 + Math.random() * 50
+                });
+              }
               
-              // Bokeh Lights for Cloudy Days
+              // Bokeh Orbs for Cloudy Days
               const bokehOrbs = [];
-              for (let i = 0; i < 22; i++) {
+              for (let i = 0; i < 32; i++) {
                 bokehOrbs.push({
-                  x: Math.random() * window.innerWidth,
-                  y: window.innerHeight * (0.2 + Math.random() * 0.65),
-                  r: 35 + Math.random() * 75,
-                  baseAlpha: 0.15 + Math.random() * 0.25,
-                  hue: [38, 45, 195, 215, 340][i % 5],
-                  driftX: (Math.random() - 0.5) * 0.15
+                  x: Math.random() * (window.innerWidth || 1440),
+                  y: (window.innerHeight || 900) * (0.1 + Math.random() * 0.8),
+                  r: 60 + Math.random() * 110,
+                  baseAlpha: 0.35 + Math.random() * 0.35,
+                  hue: [38, 48, 195, 215, 340, 280][i % 6],
+                  driftX: (Math.random() - 0.5) * 0.2
                 });
               }
               
               // 2. PARADISE: Passing Streetlights & Light Trails
               const streetlights = [];
-              for (let i = 0; i < 18; i++) {
+              for (let i = 0; i < 20; i++) {
                 streetlights.push({
-                  z: i * 80,
+                  z: i * 75 + 10,
                   side: i % 2 === 0 ? -1 : 1
                 });
               }
               
               let strobeDecay = 0;
               let lastKickTime = 0;
+              let animTime = 0;
               
               function startVizLoop() {
                 if (animRunning) return;
@@ -3337,16 +3245,18 @@ const PROJECTS = {
                     return;
                   }
                   
-                  canvas.width = window.innerWidth;
-                  canvas.height = window.innerHeight;
-                  const W = canvas.width;
-                  const H = canvas.height;
+                  const W = window.innerWidth || 1440;
+                  const H = window.innerHeight || 900;
+                  if (canvas.width !== W || canvas.height !== H) {
+                    canvas.width = W;
+                    canvas.height = H;
+                  }
                   
                   const track = tracks[currentIdx];
                   const isPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
-                  const cTime = audio.currentTime || 0;
-                  const dur = audio.duration || 100;
-                  const trackProgress = cTime / dur;
+                  const cTime = isPlaying ? audio.currentTime : (animTime * 0.016);
+                  
+                  animTime += 1;
                   
                   if (isPlaying) {
                     vRot += (track.genre === 'club' ? 2.2 : (track.genre === 'pop' ? 1.6 : 1.0)) * speedMultiplier;
@@ -3357,48 +3267,22 @@ const PROJECTS = {
                   }
                   
                   // Compute Precision Audio Transients
-                  let kickPulse = 0;
-                  let midEnergy = 0;
-                  let highEnergy = 0;
+                  const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
+                  const beatPeriod = 60 / bpm;
+                  const phase = (cTime % beatPeriod) / beatPeriod;
                   
                   if (isPlaying) {
-                    const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
-                    const beatPeriod = 60 / bpm;
-                    const phase = (cTime % beatPeriod) / beatPeriod;
-                    
-                    // Onset detection for kick
-                    if (phase < 0.12 && (cTime - lastKickTime > beatPeriod * 0.7)) {
+                    if (phase < 0.14 && (cTime - lastKickTime > beatPeriod * 0.65)) {
                       lastKickTime = cTime;
                       strobeDecay = 1.0;
                     } else {
-                      strobeDecay *= 0.86;
+                      strobeDecay *= 0.88;
                     }
-                    kickPulse = strobeDecay;
-                    
-                    // Piano note onset spawn for Cloudy Days (84 BPM syncopation)
-                    const pianoNotePeriod = beatPeriod / 2;
-                    const pianoPhase = (cTime % pianoNotePeriod) / pianoNotePeriod;
-                    if (pianoPhase < 0.15 && (cTime - lastPianoNoteTime > pianoNotePeriod * 0.8)) {
-                      lastPianoNoteTime = cTime;
-                      // Spawn 2-4 fresh water droplets on the window pane
-                      const spawnCount = 2 + Math.floor(Math.random() * 3);
-                      for (let d = 0; d < spawnCount; d++) {
-                        windowDroplets.push({
-                          x: Math.random() * W,
-                          y: Math.random() * (H * 0.7),
-                          r: 2.2 + Math.random() * 4.5,
-                          vy: 0.3 + Math.random() * 1.2,
-                          tail: [],
-                          life: 1.0
-                        });
-                      }
-                    }
-                    
-                    midEnergy = Math.min(1.0, 0.3 + Math.sin(cTime * 3) * 0.25 + (phase > 0.45 ? 0.3 : 0));
-                    highEnergy = Math.min(1.0, 0.25 + (Math.sin(cTime * 9) > 0.4 ? 0.5 : 0.1));
                   } else {
-                    strobeDecay *= 0.9;
+                    strobeDecay = 0.25 + Math.sin(animTime * 0.05) * 0.15;
                   }
+                  const kickPulse = strobeDecay;
+                  const midEnergy = isPlaying ? Math.min(1.0, 0.4 + Math.sin(cTime * 3) * 0.3) : 0.35;
                   
                   ctx.clearRect(0, 0, W, H);
                   
@@ -3406,86 +3290,97 @@ const PROJECTS = {
                   // 1. ⚡ "CLUB GOT BOOTS" — LIVE FESTIVAL TRUSS LASER RIG (MOMENT FACTORY)
                   // ================================================================
                   if (track.genre === 'club') {
-                    // Deep Dark Venue Backing
+                    // Deep Obsidian Venue Background
                     ctx.fillStyle = '#020204';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Symmetrical Suspended Truss Origin Point
                     const trussX = W / 2;
-                    const trussY = H * 0.15;
+                    const trussY = H * 0.13;
                     
-                    // Determine Palette by Song Section
-                    let beamColorA = '#00FF66'; // Verse: Emerald Green
-                    let beamColorB = '#00CC44';
+                    // Palette Shifts Across Song Sections
+                    let colA = '#00FF66';
+                    let colB = '#39FF14';
                     if (cTime >= 32 && cTime < 64) {
-                      // Build: Neon Magenta & Purple
-                      beamColorA = '#FF0055';
-                      beamColorB = '#9D4EDD';
+                      colA = '#FF0055'; colB = '#9D4EDD';
                     } else if (cTime >= 64 && cTime < 100) {
-                      // The Drop: Golden Amber & Pure White
-                      beamColorA = '#FFB703';
-                      beamColorB = '#FB8500';
+                      colA = '#FFB703'; colB = '#FB8500';
                     } else if (cTime >= 100) {
-                      // Finale: Multi-Beam Array
-                      beamColorA = '#00F0FF';
-                      beamColorB = '#FF0055';
+                      colA = '#00F0FF'; colB = '#FF0055';
                     }
                     
-                    // Volumetric Stage Haze
-                    const haze = ctx.createLinearGradient(0, H * 0.3, 0, H);
-                    haze.addColorStop(0, 'transparent');
-                    haze.addColorStop(0.7, `rgba(0, 255, 102, ${0.05 + kickPulse * 0.12})`);
-                    haze.addColorStop(1, `rgba(0, 0, 0, 0.8)`);
+                    // Volumetric Stage Haze & Laser Underglow
+                    const haze = ctx.createRadialGradient(trussX, trussY, 40, trussX, H * 0.55, Math.max(W, H) * 0.8);
+                    haze.addColorStop(0, `rgba(0, 255, 102, ${0.18 + kickPulse * 0.25})`);
+                    haze.addColorStop(0.4, `rgba(0, 0, 0, 0.6)`);
+                    haze.addColorStop(1, '#020204');
                     ctx.fillStyle = haze;
-                    ctx.fillRect(0, H * 0.3, W, H * 0.7);
+                    ctx.fillRect(0, 0, W, H);
                     
-                    // Truss Geometry Lines (Structural Rig)
-                    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.moveTo(trussX - 180, trussY - 20);
-                    ctx.lineTo(trussX + 180, trussY - 20);
-                    ctx.lineTo(trussX + 130, trussY + 20);
-                    ctx.lineTo(trussX - 130, trussY + 20);
-                    ctx.closePath();
-                    ctx.stroke();
-                    
-                    // Laser Beam Array (Fanning out across the arena)
-                    const beamCount = (cTime >= 64 && cTime < 100) ? 18 : 10;
+                    // Laser Beam Array with Core Brightness
+                    const beamCount = 18;
                     for (let b = 0; b < beamCount; b++) {
                       const spread = ((b / (beamCount - 1)) - 0.5) * 2;
-                      const targetX = trussX + spread * (W * 0.65);
+                      const targetX = trussX + spread * (W * 0.85) + Math.sin(animTime * 0.03 + b) * 35;
                       const targetY = H * 0.95;
+                      const col = (b % 2 === 0) ? colA : colB;
+                      const beamAlpha = 0.4 + kickPulse * 0.6;
                       
-                      const beamAlpha = isPlaying ? (0.2 + kickPulse * 0.65) : 0.08;
-                      const col = (b % 2 === 0) ? beamColorA : beamColorB;
-                      
+                      // Outer Laser Glow
                       ctx.beginPath();
-                      ctx.moveTo(trussX + spread * 80, trussY);
+                      ctx.moveTo(trussX + spread * 105, trussY);
                       ctx.lineTo(targetX, targetY);
                       ctx.strokeStyle = col;
-                      ctx.lineWidth = 2.5 + kickPulse * 4;
+                      ctx.lineWidth = 5 + kickPulse * 5;
                       ctx.shadowColor = col;
-                      ctx.shadowBlur = 18;
+                      ctx.shadowBlur = 25;
                       ctx.globalAlpha = beamAlpha;
+                      ctx.stroke();
+                      
+                      // Inner High-Intensity White Core Beam
+                      ctx.beginPath();
+                      ctx.moveTo(trussX + spread * 105, trussY);
+                      ctx.lineTo(targetX, targetY);
+                      ctx.strokeStyle = '#FFFFFF';
+                      ctx.lineWidth = 1.8;
+                      ctx.globalAlpha = beamAlpha * 0.9;
                       ctx.stroke();
                     }
                     ctx.globalAlpha = 1.0;
-                    ctx.shadowBlur = 0; // reset
+                    ctx.shadowBlur = 0;
+                    
+                    // Symmetrical Suspended 3D Truss Frame
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(trussX - 250, trussY - 25);
+                    ctx.lineTo(trussX + 250, trussY - 25);
+                    ctx.lineTo(trussX + 180, trussY + 25);
+                    ctx.lineTo(trussX - 180, trussY + 25);
+                    ctx.closePath();
+                    ctx.stroke();
+                    
+                    // Truss Spot Fixtures
+                    for (let f = -5; f <= 5; f++) {
+                      ctx.fillStyle = '#FFFFFF';
+                      ctx.beginPath();
+                      ctx.arc(trussX + f * 42, trussY, 3.5, 0, Math.PI * 2);
+                      ctx.fill();
+                    }
                     
                     // Drum Strobe Flash on Kick Onset
-                    if (kickPulse > 0.4 && isPlaying) {
-                      ctx.fillStyle = `rgba(255, 255, 255, ${kickPulse * 0.2})`;
+                    if (kickPulse > 0.45 && isPlaying) {
+                      ctx.fillStyle = `rgba(255, 255, 255, ${kickPulse * 0.25})`;
                       ctx.fillRect(0, 0, W, H);
                     }
                     
-                    // Symmetrical Crowd Silhouette at Bottom
+                    // Symmetrical Audience Crowd Silhouette
                     ctx.fillStyle = '#010103';
                     ctx.beginPath();
                     ctx.moveTo(0, H);
-                    for (let x = 0; x <= W; x += 25) {
-                      const headHeight = 45 + Math.sin(x * 0.08) * 15 + (x % 50 === 0 ? 30 : 0);
-                      ctx.lineTo(x, H - headHeight);
+                    for (let x = 0; x <= W; x += 16) {
+                      const wave = Math.sin(x * 0.05 + animTime * 0.05);
+                      const headH = 55 + wave * 18 + (x % 32 === 0 ? 32 : 0);
+                      ctx.lineTo(x, H - headH);
                     }
                     ctx.lineTo(W, H);
                     ctx.closePath();
@@ -3496,33 +3391,33 @@ const PROJECTS = {
                   // 2. ☁️ "CLOUDY DAYS" — BLADE RUNNER 2049 RAIN-ON-WINDOW & BOKEH
                   // ================================================================
                   else if (track.genre === 'experimental') {
-                    // Darkening Overcast Sky based on track progression
-                    const skyDarkness = Math.min(0.35, trackProgress * 0.35);
+                    // Deep Atmospheric Indigo-Slate Rainy Twilight Sky
                     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    skyGrad.addColorStop(0, `rgb(${Math.floor(215 - skyDarkness * 120)}, ${Math.floor(222 - skyDarkness * 120)}, ${Math.floor(230 - skyDarkness * 120)})`);
-                    skyGrad.addColorStop(1, `rgb(${Math.floor(180 - skyDarkness * 100)}, ${Math.floor(190 - skyDarkness * 100)}, ${Math.floor(205 - skyDarkness * 100)})`);
+                    skyGrad.addColorStop(0, '#141E2E');
+                    skyGrad.addColorStop(0.5, '#1E2C42');
+                    skyGrad.addColorStop(1, '#0F1622');
                     ctx.fillStyle = skyGrad;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Diffused Sun behind clouds with silver rim bloom
-                    const sunBloom = ctx.createRadialGradient(W * 0.35, H * 0.28, 10, W * 0.35, H * 0.28, Math.max(W, H) * 0.55);
-                    sunBloom.addColorStop(0, `rgba(255, 250, 240, ${0.45 + midEnergy * 0.3})`);
-                    sunBloom.addColorStop(0.35, `rgba(255, 220, 160, ${0.18 + midEnergy * 0.15})`);
-                    sunBloom.addColorStop(1, 'transparent');
-                    ctx.fillStyle = sunBloom;
+                    // Diffused Atmospheric Moonlight / Soft Horizon Glow
+                    const moonBloom = ctx.createRadialGradient(W * 0.35, H * 0.22, 20, W * 0.35, H * 0.22, Math.max(W, H) * 0.7);
+                    moonBloom.addColorStop(0, `rgba(240, 248, 255, ${0.55 + midEnergy * 0.3})`);
+                    moonBloom.addColorStop(0.4, `rgba(56, 189, 248, ${0.25 + midEnergy * 0.2})`);
+                    moonBloom.addColorStop(1, 'transparent');
+                    ctx.fillStyle = moonBloom;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Out-of-Focus Golden & Neon City Bokeh Lights blurred through wet glass
+                    // Out-of-Focus Golden & Cyan City Bokeh Lights
                     bokehOrbs.forEach(b => {
                       b.x += b.driftX;
-                      if (b.x < -100) b.x = W + 100;
-                      if (b.x > W + 100) b.x = -100;
+                      if (b.x < -120) b.x = W + 120;
+                      if (b.x > W + 120) b.x = -120;
                       
-                      const swell = 1 + (isPlaying ? midEnergy * 0.4 : 0);
+                      const swell = 1 + midEnergy * 0.4;
                       const r = b.r * swell;
                       const bokehGrad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
-                      bokehGrad.addColorStop(0, `hsla(${b.hue}, 85%, 65%, ${b.baseAlpha * (0.8 + midEnergy * 0.8)})`);
-                      bokehGrad.addColorStop(0.7, `hsla(${b.hue}, 70%, 45%, ${b.baseAlpha * 0.3})`);
+                      bokehGrad.addColorStop(0, `hsla(${b.hue}, 90%, 65%, ${b.baseAlpha * (0.95 + midEnergy * 0.7)})`);
+                      bokehGrad.addColorStop(0.65, `hsla(${b.hue}, 75%, 45%, ${b.baseAlpha * 0.35})`);
                       bokehGrad.addColorStop(1, 'transparent');
                       
                       ctx.fillStyle = bokehGrad;
@@ -3531,158 +3426,175 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // Wet Window Pane Condensation Layer
+                    // Wet Window Condensation Layer
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Physical Raindrops spawned on Piano Note Onsets (Trickling down the glass)
-                    for (let d = windowDroplets.length - 1; d >= 0; d--) {
-                      const drop = windowDroplets[d];
-                      drop.y += drop.vy * (1 + midEnergy * 0.8);
-                      drop.vy += 0.04; // gravity acceleration
+                    // Glistening Water Droplets & Smooth Continuous Rivulets Trickling Down Glass
+                    rainDroplets.forEach(drop => {
+                      drop.y += drop.vy * (1 + (isPlaying ? midEnergy * 0.8 : 0));
+                      drop.vy += 0.02;
                       
-                      // Keep streak trail on glass
-                      if (Math.random() < 0.4) {
-                        drop.tail.push({ x: drop.x, y: drop.y, r: drop.r * 0.6 });
-                        if (drop.tail.length > 8) drop.tail.shift();
-                      }
+                      // Draw smooth continuous vertical water stream
+                      ctx.beginPath();
+                      ctx.moveTo(drop.x, drop.y);
+                      ctx.lineTo(drop.x, Math.max(0, drop.y - drop.trailLength));
+                      ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+                      ctx.lineWidth = drop.r * 0.7;
+                      ctx.lineCap = 'round';
+                      ctx.stroke();
                       
-                      // Draw water trail
-                      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-                      drop.tail.forEach(t => {
-                        ctx.beginPath();
-                        ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-                        ctx.fill();
-                      });
-                      
-                      // Draw water bead with glass refraction & specular highlight
+                      // Water bead shadow & specular highlight
                       ctx.beginPath();
                       ctx.arc(drop.x, drop.y, drop.r, 0, Math.PI * 2);
-                      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // shadow
+                      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
                       ctx.fill();
                       
                       ctx.beginPath();
-                      ctx.arc(drop.x - drop.r * 0.3, drop.y - drop.r * 0.3, drop.r * 0.45, 0, Math.PI * 2);
-                      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; // specular highlight
+                      ctx.arc(drop.x - drop.r * 0.3, drop.y - drop.r * 0.3, drop.r * 0.5, 0, Math.PI * 2);
+                      ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
                       ctx.fill();
                       
-                      if (drop.y > H + 20) {
-                        windowDroplets.splice(d, 1);
+                      if (drop.y > H + 50) {
+                        drop.y = -20;
+                        drop.x = Math.random() * W;
+                        drop.vy = 0.8 + Math.random() * 2.0;
                       }
-                    }
+                    });
                   }
                   
                   // ================================================================
-                  // 3. 🌌 "PARADISE" — SYNTHWAVE SUNSET-TO-NIGHT HIGHWAY DRIVE (DRIVE 2011)
+                  // 3. 🌌 "PARADISE" — SYNTHWAVE SUNSET HIGHWAY DRIVE (DRIVE 2011)
                   // ================================================================
                   else if (track.genre === 'pop') {
-                    // Sunset-to-Night Sky Gradient Arc
-                    const sky = ctx.createLinearGradient(0, 0, 0, H * 0.6);
-                    if (cTime < 40) {
-                      // 0:00-0:40: Sunset (Warm Pink & Orange)
-                      sky.addColorStop(0, '#FF4B72');
-                      sky.addColorStop(0.5, '#FF8A5B');
-                      sky.addColorStop(1, '#FFD166');
-                    } else if (cTime < 80) {
-                      // 0:40-1:20: Dusk (Cooling Purple to Indigo)
-                      sky.addColorStop(0, '#7209B7');
-                      sky.addColorStop(0.5, '#3A0CA3');
-                      sky.addColorStop(1, '#1A0033');
-                    } else if (cTime < 160) {
-                      // 1:20-2:40: Neon Night (Deep Indigo & Starlight)
-                      sky.addColorStop(0, '#060214');
-                      sky.addColorStop(0.5, '#12072B');
-                      sky.addColorStop(1, '#240046');
-                    } else {
-                      // 2:40-3:31: Midnight Outro (Darkest Night)
-                      sky.addColorStop(0, '#020108');
-                      sky.addColorStop(1, '#080318');
-                    }
+                    // Full Glowing Synthwave Sunset Sky
+                    const sky = ctx.createLinearGradient(0, 0, 0, H * 0.7);
+                    sky.addColorStop(0, '#3B0066');
+                    sky.addColorStop(0.3, '#FF007F');
+                    sky.addColorStop(0.65, '#FF6B00');
+                    sky.addColorStop(1, '#FFD700');
                     ctx.fillStyle = sky;
-                    ctx.fillRect(0, 0, W, H * 0.6);
+                    ctx.fillRect(0, 0, W, H * 0.7);
                     
-                    // Horizon Vanishing Point & Sun/Moon
                     const vanX = W / 2;
-                    const vanY = H * 0.58;
+                    const sunY = H * 0.26;
+                    const roadY = H * 0.36;
                     
-                    // Sun / Twilight Moon Disk on Horizon
-                    const diskRadius = Math.min(W, H) * 0.22;
-                    const diskGrad = ctx.createLinearGradient(vanX, vanY - diskRadius, vanX, vanY + diskRadius);
-                    if (cTime < 60) {
-                      diskGrad.addColorStop(0, '#FFF59D');
-                      diskGrad.addColorStop(0.5, '#FF4081');
-                      diskGrad.addColorStop(1, '#7C4DFF');
-                    } else {
-                      diskGrad.addColorStop(0, '#E0F7FA');
-                      diskGrad.addColorStop(0.6, '#00E5FF');
-                      diskGrad.addColorStop(1, '#651FFF');
-                    }
-                    ctx.fillStyle = diskGrad;
+                    // Massive Glowing Synthwave Sun
+                    const sunR = Math.min(W, H) * 0.22;
+                    const sunGrad = ctx.createLinearGradient(vanX, sunY - sunR, vanX, sunY + sunR);
+                    sunGrad.addColorStop(0, '#FFFDE7');
+                    sunGrad.addColorStop(0.35, '#FFEA00');
+                    sunGrad.addColorStop(0.7, '#FF1744');
+                    sunGrad.addColorStop(1, '#D500F9');
+                    ctx.fillStyle = sunGrad;
                     ctx.beginPath();
-                    ctx.arc(vanX, vanY, diskRadius, Math.PI, 0); // half circle on horizon
+                    ctx.arc(vanX, sunY, sunR, 0, Math.PI * 2);
                     ctx.fill();
                     
-                    // Palm Tree Silhouettes along the horizon
-                    ctx.fillStyle = '#060210';
-                    [-320, -220, -120, 120, 220, 320].forEach(px => {
+                    // Horizontal Scanlines Across Sun
+                    for (let s = 0; s < 8; s++) {
+                      const sy = sunY - sunR * 0.65 + (s / 8) * (sunR * 1.5);
+                      ctx.fillStyle = '#FF007F';
+                      ctx.fillRect(vanX - sunR - 15, sy, (sunR + 15) * 2, 4 + s * 1.1);
+                    }
+                    
+                    // Palm Tree Silhouettes along Horizon with Natural Curved Fronds
+                    ctx.fillStyle = '#1A0028';
+                    [-480, -360, -240, 240, 360, 480].forEach(px => {
                       const treeX = vanX + px;
-                      const treeH = 55;
-                      ctx.fillRect(treeX, vanY - treeH, 3, treeH);
-                      // Leaves
-                      for (let l = -3; l <= 3; l++) {
+                      const treeH = 85;
+                      const crownY = roadY - treeH;
+                      
+                      // Trunk
+                      ctx.beginPath();
+                      ctx.moveTo(treeX - 3, roadY);
+                      ctx.quadraticCurveTo(treeX - 1, roadY - treeH * 0.5, treeX, crownY);
+                      ctx.lineTo(treeX + 3, crownY);
+                      ctx.quadraticCurveTo(treeX + 5, roadY - treeH * 0.5, treeX + 3, roadY);
+                      ctx.closePath();
+                      ctx.fill();
+                      
+                      // Curved Fronds
+                      ctx.strokeStyle = '#1A0028';
+                      ctx.lineWidth = 4;
+                      [[-35, 12], [-25, -6], [-12, -22], [12, -22], [25, -6], [35, 12]].forEach(([fx, fy]) => {
                         ctx.beginPath();
-                        ctx.arc(treeX + l * 8, vanY - treeH + Math.abs(l) * 4, 8, 0, Math.PI * 2);
-                        ctx.fill();
-                      }
+                        ctx.moveTo(treeX, crownY);
+                        ctx.quadraticCurveTo(treeX + fx * 0.6, crownY + fy - 8, treeX + fx, crownY + fy);
+                        ctx.stroke();
+                      });
                     });
                     
-                    // Perspective Highway Road
-                    ctx.fillStyle = '#080318';
+                    // Dark Reflective Terrain outside road
+                    const terrainGrad = ctx.createLinearGradient(0, roadY, 0, H);
+                    terrainGrad.addColorStop(0, '#1A042B');
+                    terrainGrad.addColorStop(1, '#080110');
+                    ctx.fillStyle = terrainGrad;
+                    ctx.fillRect(0, roadY, W, H - roadY);
+                    
+                    // 3D Perspective Neon Highway Asphalt
+                    ctx.fillStyle = '#06010C';
                     ctx.beginPath();
-                    ctx.moveTo(vanX - 30, vanY);
-                    ctx.lineTo(vanX + 30, vanY);
-                    ctx.lineTo(W * 0.88, H);
-                    ctx.lineTo(W * 0.12, H);
+                    ctx.moveTo(vanX - 45, roadY);
+                    ctx.lineTo(vanX + 45, roadY);
+                    ctx.lineTo(W * 0.96, H);
+                    ctx.lineTo(W * 0.04, H);
                     ctx.closePath();
                     ctx.fill();
                     
-                    // Roadside Neon Light Lines (Pulsing on Kick Drum)
-                    const roadSpeed = (isPlaying ? (6 + kickPulse * 12) : 1) * speedMultiplier;
+                    // Moving Perspective Grid Lines on Asphalt
+                    const roadSpeed = (isPlaying ? (8 + kickPulse * 14) : 3) * speedMultiplier;
+                    for (let g = 0; g < 12; g++) {
+                      const gy = roadY + Math.pow(((g + (animTime * 0.05)) % 12) / 12, 2.4) * (H - roadY);
+                      if (gy >= roadY && gy <= H) {
+                        const progressY = (gy - roadY) / (H - roadY);
+                        const leftX = (vanX - 45) - progressY * ((vanX - 45) - W * 0.04);
+                        const rightX = (vanX + 45) + progressY * (W * 0.96 - (vanX + 45));
+                        ctx.beginPath();
+                        ctx.moveTo(leftX, gy);
+                        ctx.lineTo(rightX, gy);
+                        ctx.strokeStyle = `rgba(255, 0, 127, ${0.3 + progressY * 0.6})`;
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                      }
+                    }
                     
-                    ctx.strokeStyle = (cTime < 60) ? '#FF4081' : '#00F5D4';
-                    ctx.lineWidth = 3 + kickPulse * 3;
-                    ctx.shadowColor = (cTime < 60) ? '#FF4081' : '#00F5D4';
-                    ctx.shadowBlur = 15;
+                    // Glowing Neon Highway Barriers
+                    ctx.strokeStyle = '#FF007F';
+                    ctx.lineWidth = 5 + kickPulse * 4;
+                    ctx.shadowColor = '#FF007F';
+                    ctx.shadowBlur = 24;
                     
-                    // Left Barrier
                     ctx.beginPath();
-                    ctx.moveTo(vanX - 30, vanY);
-                    ctx.lineTo(W * 0.12, H);
+                    ctx.moveTo(vanX - 45, roadY);
+                    ctx.lineTo(W * 0.04, H);
                     ctx.stroke();
                     
-                    // Right Barrier
+                    ctx.strokeStyle = '#00F0FF';
+                    ctx.shadowColor = '#00F0FF';
                     ctx.beginPath();
-                    ctx.moveTo(vanX + 30, vanY);
-                    ctx.lineTo(W * 0.88, H);
+                    ctx.moveTo(vanX + 45, roadY);
+                    ctx.lineTo(W * 0.96, H);
                     ctx.stroke();
-                    ctx.shadowBlur = 0; // reset
+                    ctx.shadowBlur = 0;
                     
-                    // Passing Streetlights & Light Trails speeding toward camera
+                    // Passing Streetlights with Long-Exposure Speed Trails
                     streetlights.forEach(sl => {
                       sl.z -= roadSpeed;
-                      if (sl.z <= 5) sl.z = 1000;
+                      if (sl.z <= 10) sl.z = 1000;
                       
-                      const k = 350 / sl.z;
-                      const lx = vanX + sl.side * (120 * k);
-                      const ly = vanY + (180 * k);
+                      const k = 360 / sl.z;
+                      const lx = vanX + sl.side * (150 * k);
+                      const ly = roadY + (190 * k);
                       
-                      if (ly >= vanY && ly <= H) {
-                        const trailLen = Math.min(80, roadSpeed * 6 * k);
+                      if (ly >= roadY && ly <= H) {
+                        const trailLen = Math.min(130, roadSpeed * 8.5 * k);
                         ctx.beginPath();
                         ctx.moveTo(lx, ly);
                         ctx.lineTo(lx + sl.side * trailLen * 0.5, ly + trailLen);
-                        ctx.strokeStyle = sl.side === -1 ? '#FFB703' : '#00F0FF';
-                        ctx.lineWidth = Math.max(1.5, 4 * k);
+                        ctx.strokeStyle = sl.side === -1 ? '#FFD54F' : '#00F0FF';
+                        ctx.lineWidth = Math.max(2, 6.5 * k);
                         ctx.stroke();
                       }
                     });
@@ -3706,7 +3618,10 @@ const PROJECTS = {
                       audio.play().then(() => {
                         btn.classList.add('playing');
                         icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-                      }).catch(e => console.log('Audio play error:', e));
+                      }).catch(e => {
+                        console.log('Audio play error:', e);
+                        audio.play();
+                      });
                     } else {
                       audio.pause();
                       btn.classList.remove('playing');
@@ -3719,10 +3634,6 @@ const PROJECTS = {
                       const ic = document.getElementById(`ticon-${idx}`);
                       if (ic) ic.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>';
                     });
-                    
-                    // Switch Whole Page Theme Dynamically
-                    document.body.classList.remove('track-theme-club', 'track-theme-cloudy', 'track-theme-paradise');
-                    document.body.classList.add(t.themeClass);
                     
                     btn.classList.add('active', 'playing');
                     icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
@@ -3784,6 +3695,12 @@ const PROJECTS = {
               return;
           }
 
+          // 9. JASMINE CONCEPT ALBUM
+          // 9. JASMINE CONCEPT ALBUM
+          // 9. JASMINE CONCEPT ALBUM
+          // 9. JASMINE CONCEPT ALBUM
+          // 9. JASMINE CONCEPT ALBUM
+          // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
