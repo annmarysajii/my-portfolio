@@ -3200,7 +3200,7 @@ const PROJECTS = {
               };
               
               // ================================================================
-              // PROCEDURAL SIMPLEX NOISE ALGORITHM (Self-contained, ultra-fast)
+              // PROCEDURAL SIMPLEX NOISE ALGORITHM (Self-contained, deterministic)
               // ================================================================
               const SimplexNoise = (function() {
                 const p = new Uint8Array(256);
@@ -3244,7 +3244,7 @@ const PROJECTS = {
               })();
               
               // ================================================================
-              // PHYSICAL STATE ARRAYS & MEMORY CONTAINERS
+              // PHYSICAL STATE ARRAYS & PARTICLES
               // ================================================================
               
               // 1. CLOUDY DAYS: Fluid Stick-Slip Droplets & Elliptical Impacts
@@ -3257,7 +3257,7 @@ const PROJECTS = {
                   scale: 1.5 + Math.random() * 3.0,
                   opacity: 0.4 + Math.random() * 0.5,
                   frictionThreshold: 0.75 + Math.random() * 0.6,
-                  state: 'stick', // 'stick' or 'slip'
+                  state: 'stick',
                   vy: 0,
                   streakTrail: [],
                   vibrate: 0
@@ -3300,10 +3300,6 @@ const PROJECTS = {
               let targetBass = 0.2;
               let targetMid = 0.3;
               let targetHigh = 0.2;
-              
-              // Transition cross-fade
-              let currentRenderMode = tracks[currentIdx].genre;
-              let transitionAlpha = 1.0;
               
               let animTime = 0;
               let frameCounter = 0;
@@ -3364,6 +3360,8 @@ const PROJECTS = {
                   lerpedBass += (targetBass - lerpedBass) * lerpRate;
                   lerpedMid += (targetMid - lerpedMid) * lerpRate;
                   lerpedHigh += (targetHigh - lerpedHigh) * lerpRate;
+                  
+                  ctx.globalCompositeOperation = 'source-over';
                   
                   // ================================================================
                   // 1. ⚡ "CLUB GOT BOOTS" — DEEP-SPACE GENERATIVE LIGHT ARCHITECTURE
@@ -3533,7 +3531,7 @@ const PROJECTS = {
                       const imp = impactEllipses[e];
                       imp.rx += (imp.maxRx - imp.rx) * 0.18;
                       imp.ry += (imp.maxRy - imp.ry) * 0.18;
-                      imp.alpha *= 0.93; // Smooth exponential evaporation
+                      imp.alpha *= 0.93;
                       
                       ctx.save();
                       ctx.beginPath();
@@ -3555,28 +3553,22 @@ const PROJECTS = {
                     
                     // Fluid Stick-and-Slip Surface Tension Particle Simulation
                     fluidDroplets.forEach(d => {
-                      // High-frequency mist feed mass accumulation
                       d.mass += (0.0015 + lerpedHigh * 0.006);
                       
                       if (d.state === 'stick') {
-                        // Subtle mid-frequency vibration on glass surface
                         d.vibrate = SimplexNoise.noise2D(d.x * 0.04, animTime * 0.08) * (lerpedMid * 2.8);
-                        
-                        // Check if accumulated mass crosses friction threshold
                         if (d.mass > d.frictionThreshold) {
                           d.state = 'slip';
                           d.vy = 1.8 + d.mass * 1.6;
                         }
                       } else if (d.state === 'slip') {
                         d.y += d.vy;
-                        d.vy += 0.07; // gravity acceleration
-                        d.mass *= 0.985; // shed mass into trail
+                        d.vy += 0.07;
+                        d.mass *= 0.985;
                         
-                        // Append position to streak trail
                         d.streakTrail.push({ x: d.x, y: d.y, alpha: 0.45 });
                         if (d.streakTrail.length > 20) d.streakTrail.shift();
                         
-                        // Check if shed mass falls below friction threshold to stick again
                         if (d.mass < d.frictionThreshold * 0.6) {
                           d.vy *= 0.88;
                           if (d.vy < 0.35) {
@@ -3605,13 +3597,11 @@ const PROJECTS = {
                       const dy = d.y;
                       const dr = d.scale * (0.8 + d.mass * 0.5);
                       
-                      // Droplet shadow & refraction rim
                       ctx.beginPath();
                       ctx.arc(dx, dy, dr, 0, Math.PI * 2);
                       ctx.fillStyle = `rgba(0, 0, 0, ${d.opacity * 0.35})`;
                       ctx.fill();
                       
-                      // Specular White Highlight
                       ctx.beginPath();
                       ctx.arc(dx - dr * 0.35, dy - dr * 0.35, dr * 0.42, 0, Math.PI * 2);
                       ctx.fillStyle = `rgba(255, 255, 255, ${d.opacity * 0.95})`;
@@ -3629,48 +3619,115 @@ const PROJECTS = {
                   }
                   
                   // ================================================================
-                  // 3. 🌌 "PARADISE" — WONG KAR-WAI SUNSET DRIVE (STEP-PRINTING 15 FPS)
+                  // 3. 🌌 "PARADISE" — WONG KAR-WAI SUNSET DRIVE (SEAMLESS CINEMATIC SKY)
                   // ================================================================
                   else if (track.genre === 'pop') {
-                    // Translucent Black Veil for Step-Printing Motion Trails
-                    ctx.fillStyle = 'rgba(4, 2, 8, 0.12)';
+                    const vanX = W / 2;
+                    const horizonY = H * 0.44;
+                    
+                    // Seamless Fullscreen Velvet Twilight & Sunset Sky Gradient
+                    const fullSky = ctx.createLinearGradient(0, 0, 0, H);
+                    fullSky.addColorStop(0, '#0F0218');
+                    fullSky.addColorStop(0.25, '#3B0A26');
+                    fullSky.addColorStop(0.44, '#7A1C3C');
+                    fullSky.addColorStop(0.48, '#1A332C'); // Soft emerald horizon transition
+                    fullSky.addColorStop(0.65, '#0E0414'); // Road asphalt blend
+                    fullSky.addColorStop(1, '#050108');
+                    ctx.fillStyle = fullSky;
                     ctx.fillRect(0, 0, W, H);
                     
-                    const vanX = W / 2;
-                    const vanY = H * 0.45;
-                    const horizonY = H * 0.36;
-                    
-                    // Rich Bleeding Sunset Crimson, Emerald & Twilight Purple Gradient
-                    ctx.save();
-                    ctx.globalCompositeOperation = 'screen';
-                    
-                    const sunsetGlow = ctx.createLinearGradient(0, 0, 0, horizonY + 60);
-                    sunsetGlow.addColorStop(0, '#1F0833');
-                    sunsetGlow.addColorStop(0.35, '#7A0026');
-                    sunsetGlow.addColorStop(0.7, '#D81B60');
-                    sunsetGlow.addColorStop(0.9, '#004D40'); // Emerald neon green bleed
-                    sunsetGlow.addColorStop(1, '#FF8F00');
-                    ctx.fillStyle = sunsetGlow;
-                    ctx.fillRect(0, 0, W, horizonY + 60);
-                    
-                    // Frequency-Modulated Dreamy Horizon Silhouette Blur
-                    const horizonScale = 1.0 + lerpedBass * 0.15;
-                    const sunR = Math.min(W, H) * 0.18 * horizonScale;
-                    const sunY = horizonY - 40;
-                    
-                    const sunGrad = ctx.createRadialGradient(vanX, sunY, 0, vanX, sunY, sunR);
-                    sunGrad.addColorStop(0, 'rgba(255, 245, 157, 0.85)');
-                    sunGrad.addColorStop(0.4, 'rgba(255, 64, 129, 0.65)');
-                    sunGrad.addColorStop(0.8, 'rgba(124, 77, 255, 0.4)');
+                    // Dreamy Glowing Horizon Sun
+                    const sunR = Math.min(W, H) * 0.16;
+                    const sunY = horizonY - 25;
+                    const sunGrad = ctx.createRadialGradient(vanX, sunY, 0, vanX, sunY, sunR * (1 + lerpedBass * 0.2));
+                    sunGrad.addColorStop(0, 'rgba(255, 240, 160, 0.95)');
+                    sunGrad.addColorStop(0.35, 'rgba(255, 64, 129, 0.75)');
+                    sunGrad.addColorStop(0.7, 'rgba(124, 77, 255, 0.45)');
                     sunGrad.addColorStop(1, 'transparent');
                     
                     ctx.fillStyle = sunGrad;
                     ctx.beginPath();
-                    ctx.arc(vanX, sunY, sunR, 0, Math.PI * 2);
+                    ctx.arc(vanX, sunY, sunR * (1 + lerpedBass * 0.2), 0, Math.PI * 2);
                     ctx.fill();
+                    
+                    // Soft Horizontal Scanlines across Sun
+                    for (let s = 0; s < 6; s++) {
+                      const sy = sunY - sunR * 0.5 + (s / 6) * (sunR * 1.3);
+                      ctx.fillStyle = 'rgba(59, 10, 38, 0.7)';
+                      ctx.fillRect(vanX - sunR - 10, sy, (sunR + 10) * 2, 3 + s * 0.8);
+                    }
+                    
+                    // Palm Tree Silhouettes along Horizon with Natural Curved Fronds
+                    ctx.fillStyle = '#12021E';
+                    [-480, -360, -240, 240, 360, 480].forEach(px => {
+                      const treeX = vanX + px;
+                      const treeH = 75;
+                      const crownY = horizonY - treeH;
+                      
+                      // Trunk
+                      ctx.beginPath();
+                      ctx.moveTo(treeX - 3, horizonY);
+                      ctx.quadraticCurveTo(treeX - 1, horizonY - treeH * 0.5, treeX, crownY);
+                      ctx.lineTo(treeX + 3, crownY);
+                      ctx.quadraticCurveTo(treeX + 5, horizonY - treeH * 0.5, treeX + 3, horizonY);
+                      ctx.closePath();
+                      ctx.fill();
+                      
+                      // Curved Leaf Fronds
+                      ctx.strokeStyle = '#12021E';
+                      ctx.lineWidth = 3.5;
+                      [[-32, 10], [-22, -6], [-10, -18], [10, -18], [22, -6], [32, 10]].forEach(([fx, fy]) => {
+                        ctx.beginPath();
+                        ctx.moveTo(treeX, crownY);
+                        ctx.quadraticCurveTo(treeX + fx * 0.6, crownY + fy - 6, treeX + fx, crownY + fy);
+                        ctx.stroke();
+                      });
+                    });
+                    
+                    // 3D Perspective Road Asphalt (Spanning cleanly to bottom of screen)
+                    ctx.fillStyle = '#06010C';
+                    ctx.beginPath();
+                    ctx.moveTo(vanX - 50, horizonY);
+                    ctx.lineTo(vanX + 50, horizonY);
+                    ctx.lineTo(W * 0.96, H);
+                    ctx.lineTo(W * 0.04, H);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    // Perspective Moving Dashed Center Highway Line
+                    for (let d = 0; d < 8; d++) {
+                      const dy = horizonY + Math.pow(((d + (animTime * 0.05 * speedMultiplier)) % 8) / 8, 2.2) * (H - horizonY);
+                      const dNextY = dy + 22 * ((dy - horizonY) / (H - horizonY) + 0.3);
+                      if (dy >= horizonY && dy <= H) {
+                        ctx.beginPath();
+                        ctx.moveTo(vanX, dy);
+                        ctx.lineTo(vanX, dNextY);
+                        ctx.strokeStyle = 'rgba(255, 213, 79, 0.85)';
+                        ctx.lineWidth = 3.5 * ((dy - horizonY) / (H - horizonY) + 0.4);
+                        ctx.stroke();
+                      }
+                    }
+                    
+                    // Glowing Neon Highway Barriers (Magenta left, Cyan right)
+                    ctx.save();
+                    ctx.shadowColor = '#FF007F';
+                    ctx.shadowBlur = 18;
+                    ctx.strokeStyle = '#FF007F';
+                    ctx.lineWidth = 4 + lerpedBass * 3;
+                    ctx.beginPath();
+                    ctx.moveTo(vanX - 50, horizonY);
+                    ctx.lineTo(W * 0.04, H);
+                    ctx.stroke();
+                    
+                    ctx.shadowColor = '#00F0FF';
+                    ctx.strokeStyle = '#00F0FF';
+                    ctx.beginPath();
+                    ctx.moveTo(vanX + 50, horizonY);
+                    ctx.lineTo(W * 0.96, H);
+                    ctx.stroke();
                     ctx.restore();
                     
-                    // Step-Printing Motion Effect (Update positions at 15 FPS = every 4 frames)
+                    // Streetlight Speed Trails (Updated at 15 FPS)
                     const is15FpsTick = (frameCounter % 4 === 0);
                     const roadSpeed = (isPlaying ? (9 + lerpedBass * 14) : 3) * speedMultiplier;
                     
@@ -3686,58 +3743,14 @@ const PROJECTS = {
                       }
                       
                       if (sl.cachedY >= horizonY && sl.cachedY <= H) {
-                        ctx.save();
-                        ctx.globalCompositeOperation = 'screen';
                         ctx.beginPath();
                         ctx.moveTo(sl.cachedX, sl.cachedY);
                         ctx.lineTo(sl.cachedX + sl.side * sl.trailLen * 0.4, sl.cachedY + sl.trailLen);
                         ctx.strokeStyle = sl.side === -1 ? `rgba(255, 213, 79, ${0.45 + lerpedMid * 0.4})` : `rgba(0, 240, 255, ${0.45 + lerpedMid * 0.4})`;
                         ctx.lineWidth = Math.max(2, 6.5 * (340 / sl.z));
                         ctx.stroke();
-                        ctx.restore();
                       }
                     });
-                    
-                    // 3D Perspective Road Asphalt
-                    ctx.fillStyle = '#06010C';
-                    ctx.beginPath();
-                    ctx.moveTo(vanX - 40, horizonY);
-                    ctx.lineTo(vanX + 40, horizonY);
-                    ctx.lineTo(W * 0.96, H);
-                    ctx.lineTo(W * 0.04, H);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    // Moving Dashed Center Line
-                    for (let d = 0; d < 7; d++) {
-                      const dy = horizonY + Math.pow(((d + (animTime * 0.06)) % 7) / 7, 2.2) * (H - horizonY);
-                      const dNextY = dy + 18 * ((dy - horizonY) / (H - horizonY) + 0.3);
-                      if (dy >= horizonY && dy <= H) {
-                        ctx.beginPath();
-                        ctx.moveTo(vanX, dy);
-                        ctx.lineTo(vanX, dNextY);
-                        ctx.strokeStyle = 'rgba(255, 213, 79, 0.75)';
-                        ctx.lineWidth = 3.2 * ((dy - horizonY) / (H - horizonY) + 0.4);
-                        ctx.stroke();
-                      }
-                    }
-                    
-                    // Glowing Neon Guardrails
-                    ctx.save();
-                    ctx.globalCompositeOperation = 'screen';
-                    ctx.strokeStyle = '#FF007F';
-                    ctx.lineWidth = 4 + lerpedBass * 3;
-                    ctx.beginPath();
-                    ctx.moveTo(vanX - 40, horizonY);
-                    ctx.lineTo(W * 0.04, H);
-                    ctx.stroke();
-                    
-                    ctx.strokeStyle = '#00F0FF';
-                    ctx.beginPath();
-                    ctx.moveTo(vanX + 40, horizonY);
-                    ctx.lineTo(W * 0.96, H);
-                    ctx.stroke();
-                    ctx.restore();
                   }
                   
                   requestAnimationFrame(drawViz);
@@ -3745,7 +3758,7 @@ const PROJECTS = {
                 drawViz();
               }
               
-              // Track Buttons with Smooth Cross-Fade
+              // Track Buttons
               tracks.forEach((t, i) => {
                 const btn = document.getElementById(`tbtn-${i}`);
                 const icon = document.getElementById(`ticon-${i}`);
@@ -3836,6 +3849,7 @@ const PROJECTS = {
               return;
           }
 
+          // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
