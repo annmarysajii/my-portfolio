@@ -2039,6 +2039,9 @@ const PROJECTS = {
           const gal = document.getElementById('dynamic-gallery');
           if (media.length === 0) {
               gal.innerHTML = `<div class="gallery-hero"><div class="tape tape-tl"></div><div class="tape tape-tr"></div><span class="ph-label">Media coming soon</span></div>`;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
           
@@ -2141,6 +2144,9 @@ const PROJECTS = {
               }
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2196,6 +2202,9 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2236,6 +2245,9 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2267,6 +2279,9 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2379,6 +2394,9 @@ const PROJECTS = {
                       btnBook.style.color = 'var(--ink)';
                   };
               }
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2425,6 +2443,9 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -2449,6 +2470,9 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -3239,7 +3263,7 @@ const PROJECTS = {
                 const freqArray = new Uint8Array(64);
                 
                 function drawViz() {
-                  if (!ctx || currentIdx === -1) {
+                  if (!ctx) {
                     animRunning = false;
                     return;
                   }
@@ -3249,8 +3273,9 @@ const PROJECTS = {
                   const W = canvas.width;
                   const H = canvas.height;
                   
-                  const track = tracks[currentIdx];
-                  const isPlaying = !audio.paused && !audio.ended;
+                  const activeIdx = currentIdx === -1 ? 0 : currentIdx;
+                  const track = tracks[activeIdx];
+                  const isPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
                   
                   if (isPlaying) {
                     vRot += (track.genre === 'club' ? 2.2 : (track.genre === 'pop' ? 1.6 : 1.0)) * speedMultiplier;
@@ -3261,15 +3286,39 @@ const PROJECTS = {
                   }
                   
                   // Read Real-Time Frequency Spectrum
+                  let hasRealFft = false;
                   if (analyser && isPlaying) {
                     analyser.getByteFrequencyData(freqArray);
-                  } else {
-                    for(let i=0; i<64; i++) freqArray[i] = Math.max(0, freqArray[i] * 0.86);
+                    let sum = 0;
+                    for (let i = 0; i < 32; i++) sum += freqArray[i];
+                    if (sum > 10) hasRealFft = true;
                   }
                   
-                  const bassEnergy = (freqArray[0] + freqArray[1] + freqArray[2] + freqArray[3]) / (4 * 255);
-                  const midEnergy = (freqArray[8] + freqArray[12] + freqArray[16] + freqArray[20]) / (4 * 255);
-                  const highEnergy = (freqArray[24] + freqArray[28] + freqArray[32] + freqArray[36]) / (4 * 255);
+                  let bassEnergy = 0;
+                  let midEnergy = 0;
+                  let highEnergy = 0;
+                  
+                  if (hasRealFft) {
+                    bassEnergy = (freqArray[0] + freqArray[1] + freqArray[2] + freqArray[3]) / (4 * 255);
+                    midEnergy = (freqArray[8] + freqArray[12] + freqArray[16] + freqArray[20]) / (4 * 255);
+                    highEnergy = (freqArray[24] + freqArray[28] + freqArray[32] + freqArray[36]) / (4 * 255);
+                  } else if (isPlaying) {
+                    // Precision BPM Harmonic Energy Synthesizer (Fallback ensuring 100% reactivity)
+                    const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
+                    const beatPeriod = 60 / bpm;
+                    const phase = (audio.currentTime % beatPeriod) / beatPeriod;
+                    const kickPulse = Math.pow(Math.max(0, 1 - phase * 3.2), 2);
+                    const snarePulse = (phase > 0.45 && phase < 0.75) ? Math.pow(Math.sin((phase - 0.45) * Math.PI / 0.3), 2) : 0;
+                    
+                    bassEnergy = Math.min(1.0, 0.25 + kickPulse * 0.75);
+                    midEnergy = Math.min(1.0, 0.3 + snarePulse * 0.5 + Math.sin(audio.currentTime * 3) * 0.2);
+                    highEnergy = Math.min(1.0, 0.2 + (Math.sin(audio.currentTime * 12) > 0.5 ? 0.6 : 0.1));
+                  } else {
+                    // Idle breathing state
+                    bassEnergy = 0.1 + Math.sin(Date.now() * 0.0015) * 0.05;
+                    midEnergy = 0.12 + Math.cos(Date.now() * 0.002) * 0.05;
+                    highEnergy = 0.08;
+                  }
                   
                   ctx.clearRect(0, 0, W, H);
                   
@@ -3579,6 +3628,9 @@ const PROJECTS = {
                 });
               }
               
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 
@@ -3617,6 +3669,9 @@ const PROJECTS = {
               }
               albumHtml += '</div>';
               gal.innerHTML = albumHtml;
+              // Kick off visualizer loop immediately for ambient background
+              startVizLoop();
+
               return;
           }
 

@@ -995,9 +995,12 @@ button{cursor:none;font-family:inherit;}
   transform: translate(-50%, -50%) scale(1);
   animation: floatPouch 6s ease-in-out infinite 1.2s;
 }
+.item-pouch .orbit-item-inner img {
+  transform: rotate(60deg);
+}
 @keyframes floatPouch {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(60deg); }
-  50% { transform: translate(-50%, -50%) translateY(-7px) rotate(65deg); }
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-7px); }
 }
 
 .item-pencil {
