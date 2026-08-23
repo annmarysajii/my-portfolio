@@ -2740,6 +2740,62 @@ const PROJECTS = {
                   border-top: 1px solid #666;
                 }
                 
+                
+                /* Responsive Multi-Device Scaling for DJ Studio */
+                @media (max-width: 768px) {
+                  .dj-main-title {
+                    font-size: 2.1rem !important;
+                    line-height: 1.15 !important;
+                    padding: 0 1rem;
+                  }
+                  .dj-main-subtitle {
+                    font-size: 0.9rem !important;
+                    padding: 0 1rem;
+                  }
+                  .dj-deck-wrapper {
+                    gap: 1.5rem !important;
+                    padding: 0 0.5rem;
+                  }
+                  .turntable-hardware {
+                    width: 350px !important;
+                    max-width: 95vw !important;
+                    height: 300px !important;
+                    border-radius: 20px !important;
+                  }
+                  .platter {
+                    left: 12px !important;
+                    width: 230px !important;
+                    height: 230px !important;
+                  }
+                  #vinyl-disc {
+                    width: 215px !important;
+                    height: 215px !important;
+                  }
+                  #tonearm {
+                    right: 62px !important;
+                    height: 155px !important;
+                  }
+                  .slider-track {
+                    height: 95px !important;
+                  }
+                  .dj-playlist-hardware {
+                    width: 350px !important;
+                    max-width: 95vw !important;
+                  }
+                }
+                
+                @media (min-width: 769px) and (max-width: 1024px) {
+                  .dj-deck-wrapper {
+                    gap: 2rem !important;
+                  }
+                  .turntable-hardware {
+                    width: 400px !important;
+                  }
+                  .dj-playlist-hardware {
+                    width: 400px !important;
+                  }
+                }
+
                 /* Controls Strip */
                 .dj-controls-strip {
                   position: absolute;
@@ -3142,35 +3198,125 @@ const PROJECTS = {
               let vRot = 0;
               let speedMultiplier = 1.0;
               
-              // Real Web Audio API Setup
+              // ================================================================
+              // 1. SHARED AUDIO PIPELINE (One AnalyserNode, fftSize: 512)
+              // ================================================================
               let audioCtx = null;
               let analyser = null;
               let audioSrcNode = null;
               let freqData = null;
               
               function initWebAudio() {
-                if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
-                  try {
+                try {
+                  if (!audioCtx) {
                     const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    audioCtx = new AudioContext();
-                    analyser = audioCtx.createAnalyser();
-                    analyser.fftSize = 256;
-                    analyser.smoothingTimeConstant = 0.8;
-                    freqData = new Uint8Array(analyser.frequencyBinCount);
-                    
-                    audioSrcNode = audioCtx.createMediaElementSource(audio);
-                    audioSrcNode.connect(analyser);
-                    analyser.connect(audioCtx.destination);
-                  } catch (e) {
-                    console.log('Web Audio setup note:', e);
+                    if (AudioContext) {
+                      audioCtx = new AudioContext();
+                      analyser = audioCtx.createAnalyser();
+                      analyser.fftSize = 512; // 256 frequency bins
+                      analyser.smoothingTimeConstant = 0.75;
+                      freqData = new Uint8Array(analyser.frequencyBinCount);
+                      
+                      if (!audioSrcNode && audio) {
+                        audioSrcNode = audioCtx.createMediaElementSource(audio);
+                        audioSrcNode.connect(analyser);
+                        analyser.connect(audioCtx.destination);
+                      }
+                    }
                   }
-                }
-                if (audioCtx && audioCtx.state === 'suspended') {
-                  audioCtx.resume();
+                  if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                  }
+                } catch (e) {
+                  console.warn('Web Audio note:', e);
                 }
               }
               
-              // Load active track immediately with full volume
+              // Attack / Decay Smoothing Helper
+              function applyAttackDecay(raw, smoothed, attackCoeff = 0.5, decayCoeff = 0.08) {
+                if (raw > smoothed) {
+                  return smoothed + (raw - smoothed) * attackCoeff; // fast attack
+                } else {
+                  return smoothed + (raw - smoothed) * decayCoeff;  // slow decay
+                }
+              }
+              
+              let smoothBass = 0.05;
+              let smoothMid = 0.08;
+              let smoothTreble = 0.05;
+              let prevSmoothBass = 0.05;
+              let lastHitTime = 0;
+              let isBassHit = false;
+              
+              // ================================================================
+              // 2. DATA STRUCTURES FOR THE 3 SCENES
+              // ================================================================
+              
+              // A. Club Got Boots — 10x6 Disco Light-Square Grid
+              const gridCols = 10;
+              const gridRows = 6;
+              const discoSquares = [];
+              for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                  // Distance from center (0 = center, 1 = corner)
+                  const dc = Math.hypot((c - (gridCols - 1) / 2) / (gridCols / 2), (r - (gridRows - 1) / 2) / (gridRows / 2));
+                  let band = 'treble';
+                  if (dc < 0.45) band = 'bass';
+                  else if (dc < 0.85) band = 'mid';
+                  
+                  discoSquares.push({
+                    col: c,
+                    row: r,
+                    band: band,
+                    distCenter: dc,
+                    smoothVal: 0.18,
+                    flashBoost: 0.0
+                  });
+                }
+              }
+              
+              // B. Cloudy Days — Speckled Pastel Noise Dots & Concentric Rings
+              const cloudyDots = [];
+              for (let i = 0; i < 160; i++) {
+                cloudyDots.push({
+                  xRel: Math.random(),
+                  yRel: Math.random(),
+                  r: 1.0 + Math.random() * 2.0,
+                  baseAlpha: 0.15 + Math.random() * 0.25,
+                  phase: Math.random() * Math.PI * 2,
+                  color: ['#A0C4E2', '#D0B8E8', '#9999AA', '#B0D0D8'][i % 4]
+                });
+              }
+              const cloudyRings = [
+                { rRel: 0.22, alpha: 0.35, phase: 0 },
+                { rRel: 0.32, alpha: 0.28, phase: 1.2 },
+                { rRel: 0.44, alpha: 0.20, phase: 2.4 },
+                { rRel: 0.58, alpha: 0.14, phase: 3.6 },
+                { rRel: 0.74, alpha: 0.08, phase: 4.8 }
+              ];
+              
+              // C. Paradise — 120 Universe Stars & Dynamic Constellations
+              const universeStars = [];
+              for (let i = 0; i < 120; i++) {
+                universeStars.push({
+                  xRel: Math.random(),
+                  yRel: Math.random(),
+                  r: 1.2 + Math.random() * 2.2,
+                  baseAlpha: 0.25 + Math.random() * 0.45,
+                  twinklePhase: Math.random() * Math.PI * 2,
+                  twinkleSpeed: 0.02 + Math.random() * 0.03,
+                  color: ['#FFA07A', '#FF69B4', '#FFD180', '#FF80AB', '#FFCC80'][i % 5],
+                  isTrebleStar: (i % 3 === 0)
+                });
+              }
+              const activeConstellations = [];
+              
+              // ================================================================
+              // 3. MAIN RENDER LOOP
+              // ================================================================
+              let animTime = 0;
+              
+              // Initial deck setup
               audio.src = encodeURI(tracks[currentIdx].file);
               audio.volume = 1.0;
               audio.muted = false;
@@ -3233,9 +3379,12 @@ const PROJECTS = {
                   initWebAudio();
                   if (currentIdx === i) {
                     if (audio.paused) {
-                      audio.play();
-                      btn.classList.add('playing');
-                      label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
+                      audio.volume = 1.0;
+                      audio.muted = false;
+                      audio.play().then(() => {
+                        btn.classList.add('playing');
+                        label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
+                      }).catch(err => console.warn(err));
                     } else {
                       audio.pause();
                       btn.classList.remove('playing');
@@ -3246,9 +3395,12 @@ const PROJECTS = {
                     btn.classList.add('active', 'playing');
                     currentIdx = i;
                     audio.src = encodeURI(t.file);
-                    audio.play();
-                    label.style.background = t.color;
-                    label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
+                    audio.volume = 1.0;
+                    audio.muted = false;
+                    audio.play().then(() => {
+                      label.style.background = t.color;
+                      label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
+                    }).catch(err => console.warn(err));
                   }
                 };
               });
@@ -3291,100 +3443,6 @@ const PROJECTS = {
                 }
               };
               
-              // ================================================================
-              // PROCEDURAL SIMPLEX NOISE ALGORITHM
-              // ================================================================
-              const SimplexNoise = (function() {
-                const p = new Uint8Array(256);
-                for (let i = 0; i < 256; i++) p[i] = (i * 151 + 73) & 255;
-                const perm = new Uint8Array(512), permMod12 = new Uint8Array(512);
-                for (let i = 0; i < 512; i++) {
-                  perm[i] = p[i & 255];
-                  permMod12[i] = perm[i] % 12;
-                }
-                const grad3 = new Float32Array([
-                  1,1,0, -1,1,0, 1,-1,0, -1,-1,0,
-                  1,0,1, -1,0,1, 1,0,-1, -1,0,-1,
-                  0,1,1, 0,-1,1, 0,1,-1, 0,-1,-1
-                ]);
-                return {
-                  noise2D: function(xin, yin) {
-                    const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
-                    const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
-                    let s = (xin + yin) * F2;
-                    let i = Math.floor(xin + s), j = Math.floor(yin + s);
-                    let t = (i + j) * G2;
-                    let X0 = i - t, Y0 = j - t;
-                    let x0 = xin - X0, y0 = yin - Y0;
-                    let i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
-                    let x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
-                    let x2 = x0 - 1.0 + 2.0 * G2, y2 = y0 - 1.0 + 2.0 * G2;
-                    let ii = i & 255, jj = j & 255;
-                    let gi0 = permMod12[ii + perm[jj]] * 3;
-                    let gi1 = permMod12[ii + i1 + perm[jj + j1]] * 3;
-                    let gi2 = permMod12[ii + 1 + perm[jj + 1]] * 3;
-                    let n0 = 0, n1 = 0, n2 = 0;
-                    let t0 = 0.5 - x0 * x0 - y0 * y0;
-                    if (t0 > 0) { t0 *= t0; n0 = t0 * t0 * (grad3[gi0] * x0 + grad3[gi0 + 1] * y0); }
-                    let t1 = 0.5 - x1 * x1 - y1 * y1;
-                    if (t1 > 0) { t1 *= t1; n1 = t1 * t1 * (grad3[gi1] * x1 + grad3[gi1 + 1] * y1); }
-                    let t2 = 0.5 - x2 * x2 - y2 * y2;
-                    if (t2 > 0) { t2 *= t2; n2 = t2 * t2 * (grad3[gi2] * x2 + grad3[gi2 + 1] * y2); }
-                    return 70.0 * (n0 + n1 + n2);
-                  }
-                };
-              })();
-              
-              // ================================================================
-              // PHYSICAL PARTICLES & STATE ARRAYS
-              // ================================================================
-              
-              // 1. Cloudy Days Rain Droplets
-              const fluidDroplets = [];
-              for (let i = 0; i < 85; i++) {
-                fluidDroplets.push({
-                  x: Math.random() * (window.innerWidth || 1440),
-                  y: Math.random() * (window.innerHeight || 900),
-                  mass: 0.2 + Math.random() * 0.7,
-                  scale: 1.5 + Math.random() * 3.5,
-                  opacity: 0.4 + Math.random() * 0.5,
-                  frictionThreshold: 0.75 + Math.random() * 0.6,
-                  state: 'stick',
-                  vy: 0,
-                  streakTrail: [],
-                  vibrate: 0
-                });
-              }
-              
-              // Bokeh Lights for Cloudy Days
-              const bokehLights = [];
-              for (let i = 0; i < 32; i++) {
-                bokehLights.push({
-                  x: Math.random() * (window.innerWidth || 1440),
-                  y: (window.innerHeight || 900) * (0.1 + Math.random() * 0.8),
-                  r: 55 + Math.random() * 95,
-                  baseAlpha: 0.25 + Math.random() * 0.35,
-                  hue: [38, 48, 195, 215, 340, 280][i % 6],
-                  driftX: (Math.random() - 0.5) * 0.25,
-                  driftY: (Math.random() - 0.5) * 0.15
-                });
-              }
-              
-              // Roadside Palm Trees / Light Poles for Paradise
-              const roadPoles = [];
-              for (let i = 0; i < 16; i++) {
-                roadPoles.push({
-                  z: i * 70 + 10,
-                  side: (i % 2 === 0) ? -1 : 1
-                });
-              }
-              
-              // LERP Interpolated Energy Quantities
-              let lerpedBass = 0.2;
-              let lerpedMid = 0.3;
-              let lerpedHigh = 0.2;
-              let animTime = 0;
-              
               function startVizLoop() {
                 if (animRunning) return;
                 animRunning = true;
@@ -3395,11 +3453,16 @@ const PROJECTS = {
                     return;
                   }
                   
+                  // High-DPI Canvas Scaling
+                  const dpr = Math.min(window.devicePixelRatio || 1, 2);
                   const W = window.innerWidth || 1440;
                   const H = window.innerHeight || 900;
-                  if (canvas.width !== W || canvas.height !== H) {
-                    canvas.width = W;
-                    canvas.height = H;
+                  if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
+                    canvas.width = W * dpr;
+                    canvas.height = H * dpr;
+                    canvas.style.width = W + 'px';
+                    canvas.style.height = H + 'px';
+                    ctx.scale(dpr, dpr);
                   }
                   
                   const track = tracks[currentIdx];
@@ -3416,376 +3479,298 @@ const PROJECTS = {
                     tonearm.style.transform = `rotate(10deg)`;
                   }
                   
-                  // REAL WEB AUDIO FFT FREQUENCY EXTRACTION
-                  let targetBass = 0.2, targetMid = 0.2, targetHigh = 0.2;
-                  
+                  // FREQUENCY EXTRACTION & SPLIT (fftSize: 512 -> 256 bins)
+                  let rawBass = 0, rawMid = 0, rawTreble = 0;
                   if (analyser && isPlaying && freqData) {
                     analyser.getByteFrequencyData(freqData);
                     
+                    // Bass: bins 0 to 25 (~0-10%)
                     let bSum = 0;
-                    for (let i = 0; i <= 6; i++) bSum += freqData[i];
-                    targetBass = (bSum / 7) / 255.0;
+                    for (let i = 0; i <= 25; i++) bSum += freqData[i];
+                    rawBass = (bSum / 26) / 255.0;
                     
+                    // Mid: bins 26 to 115 (~10-45%)
                     let mSum = 0;
-                    for (let i = 7; i <= 30; i++) mSum += freqData[i];
-                    targetMid = (mSum / 24) / 255.0;
+                    for (let i = 26; i <= 115; i++) mSum += freqData[i];
+                    rawMid = (mSum / 90) / 255.0;
                     
-                    let hSum = 0;
-                    for (let i = 31; i <= 90; i++) hSum += freqData[i];
-                    targetHigh = (hSum / 60) / 255.0;
-                  }
-                  
-                  // Musical Fallback if FFT data is zero
-                  if (targetBass < 0.05 && targetMid < 0.05) {
+                    // Treble: bins 116 to 255 (~45-100%)
+                    let tSum = 0;
+                    for (let i = 116; i <= 255; i++) tSum += freqData[i];
+                    rawTreble = (tSum / 140) / 255.0;
+                  } else if (isPlaying) {
+                    // Musical Fallback
                     const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
                     const beatPeriod = 60 / bpm;
                     const phase = (cTime % beatPeriod) / beatPeriod;
-                    if (isPlaying) {
-                      targetBass = (phase < 0.15) ? 0.92 : Math.max(0.12, Math.pow(1 - phase, 2.2) * 0.8);
-                      targetMid = 0.35 + Math.sin(cTime * 3.8) * 0.25;
-                      targetHigh = 0.3 + Math.cos(cTime * 5.2) * 0.2;
-                    } else {
-                      targetBass = 0.15 + Math.sin(animTime * 0.04) * 0.08;
-                      targetMid = 0.2;
-                      targetHigh = 0.15;
-                    }
+                    rawBass = (phase < 0.15) ? 0.75 : Math.max(0.08, Math.pow(1 - phase, 2.0) * 0.6);
+                    rawMid = 0.25 + Math.sin(cTime * 3.5) * 0.2;
+                    rawTreble = 0.2 + Math.cos(cTime * 5.0) * 0.18;
+                  } else {
+                    // Idle state
+                    rawBass = 0.05;
+                    rawMid = 0.08;
+                    rawTreble = 0.05;
                   }
                   
-                  // Smooth Exponential LERP (Zero Jitter)
-                  const lerpRate = 0.14;
-                  lerpedBass += (targetBass - lerpedBass) * lerpRate;
-                  lerpedMid += (targetMid - lerpedMid) * lerpRate;
-                  lerpedHigh += (targetHigh - lerpedHigh) * lerpRate;
+                  // Asymmetric Attack / Decay Smoothing
+                  smoothBass = applyAttackDecay(rawBass, smoothBass);
+                  smoothMid = applyAttackDecay(rawMid, smoothMid);
+                  smoothTreble = applyAttackDecay(rawTreble, smoothTreble);
+                  
+                  // Bass Peak / Onset Detection for "Hit" events
+                  const nowMs = performance.now();
+                  isBassHit = false;
+                  if (smoothBass > 0.40 && (smoothBass - prevSmoothBass) > 0.07 && (nowMs - lastHitTime) > 280) {
+                    isBassHit = true;
+                    lastHitTime = nowMs;
+                  }
+                  prevSmoothBass = smoothBass;
                   
                   ctx.globalCompositeOperation = 'source-over';
                   
-                  // Ensure 2D canvas is visible
-                  const canvas2d = document.getElementById('global-audio-viz');
-                  const webglCanvas = document.getElementById('paradise-three-canvas');
-                  if (canvas2d) canvas2d.style.display = 'block';
-                  if (webglCanvas) webglCanvas.style.display = 'none';
-                  
                   // ================================================================
-                  // 1. ⚡ "CLUB GOT BOOTS" — DEEP-SPACE RAVE LIGHT ARCHITECTURE
+                  // 1. CLUB GOT BOOTS — DIMMED DISCO LIGHT-SQUARE GRID (RAVE LIGHTING)
                   // ================================================================
                   if (track.genre === 'club') {
-                    ctx.fillStyle = '#020106';
+                    // Dark base
+                    ctx.fillStyle = '#030805';
                     ctx.fillRect(0, 0, W, H);
                     
-                    const vanX = W / 2;
-                    const vanY = H * 0.48;
-                    const ceilingY = H * 0.12;
-                    
-                    // Overhead Laser Spotlight Truss
-                    const numAnchors = 10;
-                    const anchors = [];
-                    for (let a = 0; a < numAnchors; a++) {
-                      const spread = (a / (numAnchors - 1) - 0.5);
-                      const ax = vanX + spread * (W * 0.72);
-                      const ay = ceilingY + Math.abs(spread) * 20;
-                      anchors.push({ x: ax, y: ay, spread: spread });
+                    // Trigger center flash on bass hit
+                    if (isBassHit) {
+                      discoSquares.forEach(sq => {
+                        if (sq.distCenter < 0.5) {
+                          sq.flashBoost = 0.45 * (1.0 - sq.distCenter / 0.5);
+                        }
+                      });
                     }
                     
-                    // 3D Perspective Tunnel Wireframe Rings
-                    const numRings = 16;
-                    const numSlices = 24;
+                    const marginX = W * 0.06;
+                    const marginY = H * 0.08;
+                    const gridW = W - marginX * 2;
+                    const gridH = H - marginY * 2;
+                    const cellW = gridW / gridCols;
+                    const cellH = gridH / gridRows;
+                    const gap = Math.max(4, Math.min(cellW, cellH) * 0.1);
                     
-                    ctx.save();
-                    for (let r = 0; r < numRings; r++) {
-                      const depth = ((r + (animTime * 0.025 * speedMultiplier)) % numRings) / numRings;
-                      const ringScale = Math.pow(depth, 2.2);
-                      const ringAlpha = 0.08 + ringScale * 0.65;
+                    discoSquares.forEach(sq => {
+                      // Decay flash boost over ~300ms
+                      sq.flashBoost = Math.max(0, sq.flashBoost - 0.05);
                       
-                      ctx.beginPath();
-                      for (let s = 0; s <= numSlices; s++) {
-                        const theta = (s / numSlices) * Math.PI * 2;
-                        const waveNoise = SimplexNoise.noise2D(Math.cos(theta) * 2.0, r * 0.3 + animTime * 0.04);
-                        const waveDisplace = Math.sin(theta * 3 + animTime * 0.04) * (15 + lerpedMid * 40) + waveNoise * (10 + lerpedBass * 25);
-                        
-                        const rx = (W * 0.52) * ringScale + waveDisplace * ringScale;
-                        const ry = (H * 0.44) * ringScale + waveDisplace * ringScale;
-                        
-                        const px = vanX + Math.cos(theta) * rx;
-                        const py = vanY + Math.sin(theta) * ry;
-                        
-                        if (s === 0) ctx.moveTo(px, py);
-                        else ctx.lineTo(px, py);
+                      // Map square to assigned frequency band
+                      let bandVal = (sq.band === 'bass') ? smoothBass : ((sq.band === 'mid') ? smoothMid : smoothTreble);
+                      
+                      // Target opacity range ~0.15 - 0.60
+                      let targetOpacity = 0.15 + bandVal * 0.45 + sq.flashBoost;
+                      targetOpacity = Math.max(0.15, Math.min(0.75, targetOpacity));
+                      sq.smoothVal = applyAttackDecay(targetOpacity, sq.smoothVal, 0.4, 0.1);
+                      
+                      // Scale range ~0.97 - 1.05
+                      const scale = 0.97 + (sq.smoothVal - 0.15) * 0.16;
+                      
+                      const cx = marginX + sq.col * cellW + cellW / 2;
+                      const cy = marginY + sq.row * cellH + cellH / 2;
+                      const sw = (cellW - gap) * scale;
+                      const sh = (cellH - gap) * scale;
+                      
+                      // Draw soft feathered square via canvas radial gradient
+                      const rad = Math.max(sw, sh) * 0.7;
+                      const sqGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+                      
+                      if (sq.flashBoost > 0.1) {
+                        sqGrad.addColorStop(0, `rgba(230, 255, 240, ${sq.smoothVal})`);
+                        sqGrad.addColorStop(0.5, `rgba(0, 255, 102, ${sq.smoothVal * 0.7})`);
+                        sqGrad.addColorStop(1, `rgba(0, 40, 16, ${sq.smoothVal * 0.15})`);
+                      } else {
+                        sqGrad.addColorStop(0, `rgba(0, 255, 102, ${sq.smoothVal})`);
+                        sqGrad.addColorStop(0.6, `rgba(0, 180, 70, ${sq.smoothVal * 0.5})`);
+                        sqGrad.addColorStop(1, `rgba(2, 20, 8, ${sq.smoothVal * 0.1})`);
                       }
-                      ctx.strokeStyle = `rgba(0, 255, 120, ${ringAlpha})`;
-                      ctx.lineWidth = 1.0 + lerpedBass * 2.0;
-                      ctx.stroke();
-                    }
-                    
-                    // Laser Beam Projection from Overhead Anchors
-                    anchors.forEach((anc, idx) => {
-                      ctx.fillStyle = '#2A2930';
+                      
+                      ctx.fillStyle = sqGrad;
                       ctx.beginPath();
-                      ctx.arc(anc.x, anc.y, 4.5, 0, Math.PI * 2);
+                      ctx.roundRect(cx - sw / 2, cy - sh / 2, sw, sh, 6);
                       ctx.fill();
-                      
-                      // Strobe Bloom on Sub-Bass Kick
-                      if (lerpedBass > 0.42) {
-                        const bloomR = 45 + (lerpedBass - 0.42) * 140;
-                        const flare = ctx.createRadialGradient(anc.x, anc.y, 0, anc.x, anc.y, bloomR);
-                        flare.addColorStop(0, `rgba(255, 255, 255, ${(lerpedBass - 0.42) * 0.9})`);
-                        flare.addColorStop(0.3, `rgba(0, 255, 102, ${(lerpedBass - 0.42) * 0.5})`);
-                        flare.addColorStop(1, 'transparent');
-                        ctx.fillStyle = flare;
-                        ctx.beginPath();
-                        ctx.arc(anc.x, anc.y, bloomR, 0, Math.PI * 2);
-                        ctx.fill();
-                      }
-                      
-                      const sweep = Math.sin(animTime * 0.035 + idx * 0.45) * (W * 0.22);
-                      ctx.beginPath();
-                      ctx.moveTo(anc.x, anc.y);
-                      ctx.lineTo(vanX + anc.spread * (W * 0.95) + sweep, H * 0.96);
-                      ctx.strokeStyle = (idx % 2 === 0) ? `rgba(0, 255, 102, ${0.3 + lerpedBass * 0.5})` : `rgba(57, 255, 20, ${0.3 + lerpedBass * 0.5})`;
-                      ctx.lineWidth = 1.2 + lerpedBass * 2.2;
-                      ctx.stroke();
                     });
-                    ctx.restore();
                   }
                   
                   // ================================================================
-                  // 2. 🌧️ "CLOUDY DAYS" — FLUID GLASS DYNAMICS & MELANCHOLIC BOKEH
+                  // 2. CLOUDY DAYS — CENTER GRAY CIRCLE WITH MOVING WAVES
                   // ================================================================
                   else if (track.genre === 'experimental') {
-                    // Deep Moody Twilight Gradient
-                    const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    skyGrad.addColorStop(0, '#060B14');
-                    skyGrad.addColorStop(0.5, '#0F1E32');
-                    skyGrad.addColorStop(1, '#0A1220');
-                    ctx.fillStyle = skyGrad;
+                    // Muted, melancholic background
+                    ctx.fillStyle = '#0B0D12';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Out-of-Focus City Bokeh Orbs
+                    const centerX = W / 2;
+                    const centerY = H * 0.48;
+                    const baseRadius = Math.min(W, H) * 0.16;
+                    
+                    // Wave speed & amplitude modulated by smoothed mid band (narrow calm range)
+                    const midFactor = Math.max(0, Math.min(1.0, smoothMid));
+                    const waveSpeed = 0.008 + midFactor * 0.012; // slow gentle ripple
+                    
+                    // Concentric Wave Rings Radiating Outward
                     ctx.save();
-                    ctx.globalCompositeOperation = 'screen';
-                    bokehLights.forEach((b, idx) => {
-                      b.x += b.driftX;
-                      b.y += b.driftY;
-                      if (b.x < -b.r) b.x = W + b.r;
-                      if (b.x > W + b.r) b.x = -b.r;
-                      if (b.y < -b.r) b.y = H + b.r;
-                      if (b.y > H + b.r) b.y = -b.r;
+                    cloudyRings.forEach(ring => {
+                      ring.phase += waveSpeed;
+                      const currentR = baseRadius + ((ring.phase % 1.0) * (Math.min(W, H) * 0.45));
+                      const progress = (currentR - baseRadius) / (Math.min(W, H) * 0.45);
+                      const ringAlpha = (1.0 - progress) * (0.12 + midFactor * 0.18);
                       
-                      const pulse = 1.0 + Math.sin(animTime * 0.02 + idx) * 0.15 + lerpedMid * 0.4;
-                      const rad = b.r * pulse;
-                      const alpha = b.baseAlpha * (0.8 + lerpedMid * 0.5);
-                      
-                      const bGrad = ctx.createRadialGradient(b.x, b.y, rad * 0.1, b.x, b.y, rad);
-                      bGrad.addColorStop(0, `hsla(${b.hue}, 85%, 65%, ${alpha})`);
-                      bGrad.addColorStop(0.6, `hsla(${b.hue}, 80%, 50%, ${alpha * 0.5})`);
-                      bGrad.addColorStop(1, 'transparent');
-                      
-                      ctx.fillStyle = bGrad;
                       ctx.beginPath();
-                      ctx.arc(b.x, b.y, rad, 0, Math.PI * 2);
-                      ctx.fill();
+                      ctx.arc(centerX, centerY, currentR, 0, Math.PI * 2);
+                      ctx.strokeStyle = `rgba(160, 196, 226, ${ringAlpha})`;
+                      ctx.lineWidth = 1.5 + midFactor * 1.0;
+                      ctx.stroke();
                     });
+                    
+                    // Center Gray Circle (Feathered via Canvas Radial Gradient)
+                    const coreGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, baseRadius * 1.3);
+                    coreGrad.addColorStop(0, '#262933');
+                    coreGrad.addColorStop(0.65, '#1A1C24');
+                    coreGrad.addColorStop(1, 'transparent');
+                    
+                    ctx.fillStyle = coreGrad;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, baseRadius * 1.3, 0, Math.PI * 2);
+                    ctx.fill();
                     ctx.restore();
                     
-                    // Physical Rain Droplets on Windshield Glass
+                    // Light Speckled Pastel Noise Dots (Density/Shimmer tied to Treble)
                     ctx.save();
-                    fluidDroplets.forEach(d => {
-                      // Droplet vibration to audio mid-frequencies (piano notes)
-                      d.vibrate = lerpedMid * 3.5;
+                    const trebleFactor = Math.max(0, Math.min(1.0, smoothTreble));
+                    cloudyDots.forEach(dot => {
+                      const shimmer = Math.sin(animTime * 0.03 + dot.phase);
+                      const dotAlpha = dot.baseAlpha * (0.8 + trebleFactor * 0.6) + shimmer * 0.08;
+                      const dx = dot.xRel * W;
+                      const dy = dot.yRel * H;
                       
-                      // Stick-Slip Gravity Motion
-                      if (d.state === 'stick') {
-                        // Bass transients or mass trigger slip
-                        if (lerpedBass > 0.48 || Math.random() < 0.003) {
-                          d.state = 'slip';
-                          d.vy = 0.5 + d.mass * 3.0;
-                        }
-                      } else if (d.state === 'slip') {
-                        d.y += d.vy * speedMultiplier;
-                        d.vy += 0.08 * d.mass;
-                        d.streakTrail.push({ x: d.x, y: d.y, alpha: 0.35 });
-                        if (d.streakTrail.length > 22) d.streakTrail.shift();
-                        
-                        if (Math.random() < 0.02) {
-                          d.state = 'stick';
-                          d.vy = 0;
-                        }
-                        if (d.y > H + 20) {
-                          d.y = -20;
-                          d.x = Math.random() * W;
-                          d.streakTrail = [];
-                          d.state = 'stick';
-                        }
-                      }
-                      
-                      // Draw Water Streak Trail
-                      if (d.streakTrail.length > 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(d.streakTrail[0].x, d.streakTrail[0].y);
-                        for (let t = 1; t < d.streakTrail.length; t++) {
-                          ctx.lineTo(d.streakTrail[t].x, d.streakTrail[t].y);
-                        }
-                        ctx.strokeStyle = `rgba(180, 220, 255, 0.22)`;
-                        ctx.lineWidth = d.scale * 0.8;
-                        ctx.stroke();
-                      }
-                      
-                      // Draw Realistic Glass Droplet
-                      const dropR = d.scale * (1.0 + d.vibrate * 0.15);
-                      const dGrad = ctx.createRadialGradient(d.x - dropR * 0.3, d.y - dropR * 0.3, 0, d.x, d.y, dropR);
-                      dGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-                      dGrad.addColorStop(0.4, 'rgba(180, 220, 255, 0.45)');
-                      dGrad.addColorStop(0.85, 'rgba(50, 90, 140, 0.25)');
-                      dGrad.addColorStop(1, 'rgba(255, 255, 255, 0.7)');
-                      
-                      ctx.fillStyle = dGrad;
+                      ctx.fillStyle = dot.color;
+                      ctx.globalAlpha = Math.max(0.05, Math.min(0.55, dotAlpha));
                       ctx.beginPath();
-                      ctx.arc(d.x, d.y, dropR, 0, Math.PI * 2);
+                      ctx.arc(dx, dy, dot.r * (1.0 + trebleFactor * 0.3), 0, Math.PI * 2);
                       ctx.fill();
                     });
                     ctx.restore();
                   }
                   
-// ================================================================
-                  // 3. 🌅 "PARADISE" — AMBIENT GOLDEN HORIZON & ETHEREAL BOKEH EMBER ENGINE
-                  // Pure, Unified, Zero Visual Clashes
+                  // ================================================================
+                  // 3. PARADISE — UNIVERSE VISUALIZER WITH STARS & CONSTELLATIONS
                   // ================================================================
                   else if (track.genre === 'pop') {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const manualSec = urlParams.has('test_sec') ? parseFloat(urlParams.get('test_sec')) : -1;
-                    const songTime = (manualSec >= 0) ? manualSec : (isPlaying ? audio.currentTime : (animTime * 0.016));
-                    
-                    // Unified Day-to-Night Ambient Palettes
-                    let bgTop = '#1C0628', bgMid = '#C2185B', bgBottom = '#FF8F00';
-                    let sunColorCore = '#FFFDE7', sunColorOuter = 'rgba(255, 143, 0, ';
-                    let emberHue = 38; // Golden amber
-                    
-                    if (songTime < 48) {
-                      // 0:00-0:48 Sunset (Golden & Magenta)
-                      bgTop = '#1F062E'; bgMid = '#AD1457'; bgBottom = '#FF8F00';
-                      sunColorCore = '#FFFDE7'; sunColorOuter = 'rgba(255, 143, 0, ';
-                      emberHue = 38;
-                    } else if (songTime < 66) {
-                      // 0:48-1:06 Tunnel 1 (Deep Emerald Ambient)
-                      bgTop = '#01140A'; bgMid = '#004D2E'; bgBottom = '#00E676';
-                      sunColorCore = '#E8F5E9'; sunColorOuter = 'rgba(0, 230, 118, ';
-                      emberHue = 150;
-                    } else if (songTime < 96) {
-                      // 1:06-1:36 Neon City (Deep Violet & Cyan)
-                      bgTop = '#090114'; bgMid = '#4A0E4E'; bgBottom = '#00E5FF';
-                      sunColorCore = '#E0F7FA'; sunColorOuter = 'rgba(0, 229, 255, ';
-                      emberHue = 195;
-                    } else if (songTime < 115) {
-                      // 1:36-1:55 Dusk (Ruby Twilight)
-                      bgTop = '#0B0214'; bgMid = '#3E0A24'; bgBottom = '#D84315';
-                      sunColorCore = '#FBE9E7'; sunColorOuter = 'rgba(216, 67, 21, ';
-                      emberHue = 16;
-                    } else if (songTime < 134) {
-                      // 1:55-2:14 Tunnel 2 (Emerald)
-                      bgTop = '#01140A'; bgMid = '#004D2E'; bgBottom = '#00E676';
-                      sunColorCore = '#E8F5E9'; sunColorOuter = 'rgba(0, 230, 118, ';
-                      emberHue = 150;
-                    } else if (songTime < 191) {
-                      // 2:14-3:11 Chorus Violin (Warm Rose Gold)
-                      bgTop = '#140322'; bgMid = '#6A1B4D'; bgBottom = '#FFA726';
-                      sunColorCore = '#FFF8E1'; sunColorOuter = 'rgba(255, 167, 38, ';
-                      emberHue = 35;
-                    } else {
-                      // 3:11-3:31 Midnight (Deep Sapphire Night)
-                      bgTop = '#020008'; bgMid = '#080314'; bgBottom = '#1A0D2E';
-                      sunColorCore = '#EDE7F6'; sunColorOuter = 'rgba(126, 87, 194, ';
-                      emberHue = 265;
-                    }
-                    
-                    const vanX = W / 2;
-                    const vanY = H * 0.48;
-                    
-                    // 1. Silky Smooth Panoramic Ambient Gradient
-                    const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    bgGrad.addColorStop(0, bgTop);
-                    bgGrad.addColorStop(0.48, bgMid);
-                    bgGrad.addColorStop(1, bgBottom);
-                    ctx.fillStyle = bgGrad;
+                    // Deep cosmic dark space
+                    ctx.fillStyle = '#06020C';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // 2. Soft Ambient Horizon Sun & Audio-Reactive Volumetric Corona
-                    ctx.save();
-                    const sunBaseR = Math.min(W, H) * 0.22;
-                    const sunRadius = sunBaseR * (1.0 + lerpedBass * 0.12);
+                    // Parallax Slow Drift
+                    const driftOffset = (animTime * 0.08) % W;
                     
-                    // Large Volumetric Corona Flare
-                    const coronaR = sunRadius * 2.2;
-                    const coronaGrad = ctx.createRadialGradient(vanX, vanY, 0, vanX, vanY, coronaR);
-                    coronaGrad.addColorStop(0, `${sunColorOuter}${0.75 + lerpedBass * 0.25})`);
-                    coronaGrad.addColorStop(0.35, `${sunColorOuter}${0.35 + lerpedBass * 0.2})`);
-                    coronaGrad.addColorStop(0.7, `${sunColorOuter}${0.1})`);
-                    coronaGrad.addColorStop(1, 'transparent');
-                    
-                    ctx.fillStyle = coronaGrad;
-                    ctx.beginPath();
-                    ctx.arc(vanX, vanY, coronaR, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Luminous Horizon Sun Core
-                    const sunCoreGrad = ctx.createRadialGradient(vanX, vanY, 0, vanX, vanY, sunRadius);
-                    sunCoreGrad.addColorStop(0, sunColorCore);
-                    sunCoreGrad.addColorStop(0.65, `${sunColorOuter}0.85)`);
-                    sunCoreGrad.addColorStop(1, 'transparent');
-                    ctx.fillStyle = sunCoreGrad;
-                    ctx.beginPath();
-                    ctx.arc(vanX, vanY, sunRadius, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
-                    
-                    // 3. Gentle Audio-Reactive Floating Bokeh Embers / Dust Motes
-                    ctx.save();
-                    ctx.globalCompositeOperation = 'screen';
-                    const numEmbers = 45;
-                    for (let e = 0; e < numEmbers; e++) {
-                      // Deterministic smooth drift
-                      const seedX = (e * 73.1 + animTime * 0.25) % W;
-                      const seedY = (H * 0.95 - (e * 23.7 + animTime * (0.4 + (e % 3) * 0.3) * (1.0 + lerpedBass * 1.5)) % (H * 0.9));
-                      const eSize = (2.0 + (e % 5) * 1.8) * (1.0 + lerpedMid * 0.4);
-                      const eAlpha = (0.2 + (e % 4) * 0.18) * (0.8 + lerpedBass * 0.6);
+                    // On Bass Hit: Spawn a new Constellation connecting 2-4 nearby stars
+                    if (isBassHit && universeStars.length >= 4) {
+                      const originIdx = Math.floor(Math.random() * universeStars.length);
+                      const p0 = universeStars[originIdx];
                       
-                      const eGrad = ctx.createRadialGradient(seedX, seedY, 0, seedX, seedY, eSize * 2.5);
-                      eGrad.addColorStop(0, `hsla(${emberHue}, 90%, 75%, ${eAlpha})`);
-                      eGrad.addColorStop(0.5, `hsla(${emberHue}, 85%, 55%, ${eAlpha * 0.4})`);
-                      eGrad.addColorStop(1, 'transparent');
+                      // Find closest neighbor stars
+                      const neighbors = [];
+                      universeStars.forEach((st, idx) => {
+                        if (idx !== originIdx) {
+                          const dist = Math.hypot(st.xRel - p0.xRel, st.yRel - p0.yRel);
+                          if (dist < 0.28) {
+                            neighbors.push({ idx: idx, dist: dist });
+                          }
+                        }
+                      });
                       
-                      ctx.fillStyle = eGrad;
-                      ctx.beginPath();
-                      ctx.arc(seedX, seedY, eSize * 2.5, 0, Math.PI * 2);
-                      ctx.fill();
-                    }
-                    ctx.restore();
-                    
-                    // 4. Subtle Audio Horizon Harmonic Waves (Gently ground the horizon without any clashing grid)
-                    ctx.save();
-                    ctx.globalCompositeOperation = 'source-over';
-                    
-                    // Deep Horizon Fog Base
-                    const fogGrad = ctx.createLinearGradient(0, vanY - 20, 0, H);
-                    fogGrad.addColorStop(0, 'transparent');
-                    fogGrad.addColorStop(0.4, 'rgba(10, 3, 16, 0.4)');
-                    fogGrad.addColorStop(1, 'rgba(6, 2, 10, 0.85)');
-                    ctx.fillStyle = fogGrad;
-                    ctx.fillRect(0, vanY, W, H - vanY);
-                    
-                    // 2 Clean Harmonic Audio Ribbons resting gently at the horizon
-                    for (let h = 0; h < 2; h++) {
-                      ctx.beginPath();
-                      ctx.moveTo(0, vanY + 15 + h * 25);
-                      for (let x = 0; x <= W; x += 20) {
-                        const waveVal = Math.sin(x * 0.005 + animTime * 0.03 + h * 2.0) * (6 + lerpedMid * 14)
-                                      + Math.cos(x * 0.012 - animTime * 0.02) * (3 + lerpedBass * 8);
-                        ctx.lineTo(x, vanY + 15 + h * 25 + waveVal);
+                      neighbors.sort((a, b) => a.dist - b.dist);
+                      if (neighbors.length >= 2) {
+                        const count = Math.min(3, neighbors.length);
+                        const selectedIdxs = [originIdx];
+                        for (let k = 0; k < count; k++) selectedIdxs.push(neighbors[k].idx);
+                        
+                        activeConstellations.push({
+                          starIdxs: selectedIdxs,
+                          startTime: nowMs,
+                          duration: 750 // 150ms fade in, 600ms fade out
+                        });
+                        
+                        // Keep max 4 active constellations
+                        if (activeConstellations.length > 4) activeConstellations.shift();
                       }
-                      ctx.strokeStyle = (h === 0) ? `${sunColorOuter}${0.35 + lerpedBass * 0.3})` : `rgba(255, 255, 255, ${0.15 + lerpedMid * 0.25})`;
-                      ctx.lineWidth = 1.5 + (1 - h) * lerpedBass;
+                    }
+                    
+                    // Draw Constellation Lines
+                    ctx.save();
+                    for (let c = activeConstellations.length - 1; c >= 0; c--) {
+                      const cons = activeConstellations[c];
+                      const elapsed = nowMs - cons.startTime;
+                      const progress = elapsed / cons.duration;
+                      
+                      if (progress >= 1.0) {
+                        activeConstellations.splice(c, 1);
+                        continue;
+                      }
+                      
+                      // Fade in ~150ms (first 20%), Fade out ~600ms (remaining 80%)
+                      let lineAlpha = 0;
+                      if (progress < 0.2) {
+                        lineAlpha = progress / 0.2;
+                      } else {
+                        lineAlpha = (1.0 - progress) / 0.8;
+                      }
+                      lineAlpha *= 0.55;
+                      
+                      ctx.beginPath();
+                      for (let k = 0; k < cons.starIdxs.length; k++) {
+                        const sObj = universeStars[cons.starIdxs[k]];
+                        const sx = (sObj.xRel * W + driftOffset) % W;
+                        const sy = sObj.yRel * H;
+                        if (k === 0) ctx.moveTo(sx, sy);
+                        else ctx.lineTo(sx, sy);
+                      }
+                      ctx.strokeStyle = `rgba(255, 160, 120, ${lineAlpha})`;
+                      ctx.lineWidth = 1.2;
                       ctx.stroke();
                     }
                     ctx.restore();
-                  }requestAnimationFrame(drawViz);
+                    
+                    // Draw Universe Stars (Warm Pink/Orange/Amber)
+                    ctx.save();
+                    const trebleSparkle = Math.max(0, Math.min(1.0, smoothTreble));
+                    universeStars.forEach(st => {
+                      const sx = (st.xRel * W + driftOffset) % W;
+                      const sy = st.yRel * H;
+                      
+                      // Organic gentle independent twinkle
+                      const twinkle = Math.sin(animTime * st.twinkleSpeed + st.twinklePhase);
+                      let starAlpha = st.baseAlpha + twinkle * 0.15;
+                      let starRadius = st.r;
+                      
+                      // Treble band adds extra sparkle to designated stars
+                      if (st.isTrebleStar) {
+                        starAlpha += trebleSparkle * 0.35;
+                        starRadius += trebleSparkle * 1.0;
+                      }
+                      
+                      starAlpha = Math.max(0.12, Math.min(0.85, starAlpha));
+                      
+                      // Feathered star glow via radial gradient
+                      const sGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, starRadius * 2.0);
+                      sGrad.addColorStop(0, st.color);
+                      sGrad.addColorStop(0.5, st.color);
+                      sGrad.addColorStop(1, 'transparent');
+                      
+                      ctx.globalAlpha = starAlpha;
+                      ctx.fillStyle = sGrad;
+                      ctx.beginPath();
+                      ctx.arc(sx, sy, starRadius * 2.0, 0, Math.PI * 2);
+                      ctx.fill();
+                    });
+                    ctx.restore();
+                  }
+                  
+                  requestAnimationFrame(drawViz);
                 }
                 
                 requestAnimationFrame(drawViz);
