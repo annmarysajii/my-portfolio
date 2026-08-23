@@ -3646,160 +3646,144 @@ const PROJECTS = {
                   }
                   
 // ================================================================
-                  // 3. 🌅 "PARADISE" — MINIMALIST SUNSET WAVE ENGINE (Ultra-Clean & Elegant)
+                  // 3. 🌅 "PARADISE" — AMBIENT GOLDEN HORIZON & ETHEREAL BOKEH EMBER ENGINE
+                  // Pure, Unified, Zero Visual Clashes
                   // ================================================================
                   else if (track.genre === 'pop') {
                     const urlParams = new URLSearchParams(window.location.search);
                     const manualSec = urlParams.has('test_sec') ? parseFloat(urlParams.get('test_sec')) : -1;
                     const songTime = (manualSec >= 0) ? manualSec : (isPlaying ? audio.currentTime : (animTime * 0.016));
                     
-                    // Smooth Cinematic Day-to-Night Color Palette Morphing
-                    let skyTop = '#1A062E', skyMid = '#D62262', skyBottom = '#FFB03A';
-                    let gridCol = 'rgba(255, 0, 128, ';
-                    let isTunnel = false;
+                    // Unified Day-to-Night Ambient Palettes
+                    let bgTop = '#1C0628', bgMid = '#C2185B', bgBottom = '#FF8F00';
+                    let sunColorCore = '#FFFDE7', sunColorOuter = 'rgba(255, 143, 0, ';
+                    let emberHue = 38; // Golden amber
                     
                     if (songTime < 48) {
-                      // Act 1 (0-48s): Warm Golden Sunset
-                      skyTop = '#1E0836'; skyMid = '#D81B60'; skyBottom = '#FFA726';
-                      gridCol = 'rgba(255, 0, 128, ';
+                      // 0:00-0:48 Sunset (Golden & Magenta)
+                      bgTop = '#1F062E'; bgMid = '#AD1457'; bgBottom = '#FF8F00';
+                      sunColorCore = '#FFFDE7'; sunColorOuter = 'rgba(255, 143, 0, ';
+                      emberHue = 38;
                     } else if (songTime < 66) {
-                      // Act 2 (48-66s): Cyber Green Tunnel
-                      isTunnel = true;
-                      skyTop = '#011A0E'; skyMid = '#00693E'; skyBottom = '#00FF9D';
-                      gridCol = 'rgba(0, 255, 150, ';
+                      // 0:48-1:06 Tunnel 1 (Deep Emerald Ambient)
+                      bgTop = '#01140A'; bgMid = '#004D2E'; bgBottom = '#00E676';
+                      sunColorCore = '#E8F5E9'; sunColorOuter = 'rgba(0, 230, 118, ';
+                      emberHue = 150;
                     } else if (songTime < 96) {
-                      // Act 3 (66-96s): Neon Magenta/Cyan City Twilight
-                      skyTop = '#0A0118'; skyMid = '#5B0E6D'; skyBottom = '#00E5FF';
-                      gridCol = 'rgba(0, 229, 255, ';
+                      // 1:06-1:36 Neon City (Deep Violet & Cyan)
+                      bgTop = '#090114'; bgMid = '#4A0E4E'; bgBottom = '#00E5FF';
+                      sunColorCore = '#E0F7FA'; sunColorOuter = 'rgba(0, 229, 255, ';
+                      emberHue = 195;
                     } else if (songTime < 115) {
-                      // Act 8 (96-115s): Deep Twilight Dusk (Sun has set)
-                      skyTop = '#080318'; skyMid = '#380B26'; skyBottom = '#C73E1D';
-                      gridCol = 'rgba(215, 60, 40, ';
+                      // 1:36-1:55 Dusk (Ruby Twilight)
+                      bgTop = '#0B0214'; bgMid = '#3E0A24'; bgBottom = '#D84315';
+                      sunColorCore = '#FBE9E7'; sunColorOuter = 'rgba(216, 67, 21, ';
+                      emberHue = 16;
                     } else if (songTime < 134) {
-                      // Tunnel 2 (115-134s)
-                      isTunnel = true;
-                      skyTop = '#011A0E'; skyMid = '#00693E'; skyBottom = '#00FF9D';
-                      gridCol = 'rgba(0, 255, 150, ';
+                      // 1:55-2:14 Tunnel 2 (Emerald)
+                      bgTop = '#01140A'; bgMid = '#004D2E'; bgBottom = '#00E676';
+                      sunColorCore = '#E8F5E9'; sunColorOuter = 'rgba(0, 230, 118, ';
+                      emberHue = 150;
                     } else if (songTime < 191) {
-                      // Chorus Violin (134-191s): Warm Amber Twilight
-                      skyTop = '#120422'; skyMid = '#7A163C'; skyBottom = '#FFA000';
-                      gridCol = 'rgba(255, 160, 0, ';
+                      // 2:14-3:11 Chorus Violin (Warm Rose Gold)
+                      bgTop = '#140322'; bgMid = '#6A1B4D'; bgBottom = '#FFA726';
+                      sunColorCore = '#FFF8E1'; sunColorOuter = 'rgba(255, 167, 38, ';
+                      emberHue = 35;
                     } else {
-                      // Outro (191-211s): Midnight Deep Space
-                      skyTop = '#020008'; skyMid = '#080314'; skyBottom = '#180B28';
-                      gridCol = 'rgba(120, 60, 220, ';
+                      // 3:11-3:31 Midnight (Deep Sapphire Night)
+                      bgTop = '#020008'; bgMid = '#080314'; bgBottom = '#1A0D2E';
+                      sunColorCore = '#EDE7F6'; sunColorOuter = 'rgba(126, 87, 194, ';
+                      emberHue = 265;
                     }
                     
                     const vanX = W / 2;
-                    const vanY = H * 0.46;
+                    const vanY = H * 0.48;
                     
-                    // 1. Panoramic Sky Gradient
-                    const sky = ctx.createLinearGradient(0, 0, 0, vanY);
-                    sky.addColorStop(0, skyTop);
-                    sky.addColorStop(0.6, skyMid);
-                    sky.addColorStop(1, skyBottom);
-                    ctx.fillStyle = sky;
-                    ctx.fillRect(0, 0, W, vanY);
+                    // 1. Silky Smooth Panoramic Ambient Gradient
+                    const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+                    bgGrad.addColorStop(0, bgTop);
+                    bgGrad.addColorStop(0.48, bgMid);
+                    bgGrad.addColorStop(1, bgBottom);
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(0, 0, W, H);
                     
-                    // 2. Glowing Minimalist Horizon Sun (Sunset Acts)
-                    if (!isTunnel && songTime < 191) {
-                      const sunR = Math.min(W, H) * 0.16;
-                      const sunY = vanY - sunR * 0.25;
+                    // 2. Soft Ambient Horizon Sun & Audio-Reactive Volumetric Corona
+                    ctx.save();
+                    const sunBaseR = Math.min(W, H) * 0.22;
+                    const sunRadius = sunBaseR * (1.0 + lerpedBass * 0.12);
+                    
+                    // Large Volumetric Corona Flare
+                    const coronaR = sunRadius * 2.2;
+                    const coronaGrad = ctx.createRadialGradient(vanX, vanY, 0, vanX, vanY, coronaR);
+                    coronaGrad.addColorStop(0, `${sunColorOuter}${0.75 + lerpedBass * 0.25})`);
+                    coronaGrad.addColorStop(0.35, `${sunColorOuter}${0.35 + lerpedBass * 0.2})`);
+                    coronaGrad.addColorStop(0.7, `${sunColorOuter}${0.1})`);
+                    coronaGrad.addColorStop(1, 'transparent');
+                    
+                    ctx.fillStyle = coronaGrad;
+                    ctx.beginPath();
+                    ctx.arc(vanX, vanY, coronaR, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Luminous Horizon Sun Core
+                    const sunCoreGrad = ctx.createRadialGradient(vanX, vanY, 0, vanX, vanY, sunRadius);
+                    sunCoreGrad.addColorStop(0, sunColorCore);
+                    sunCoreGrad.addColorStop(0.65, `${sunColorOuter}0.85)`);
+                    sunCoreGrad.addColorStop(1, 'transparent');
+                    ctx.fillStyle = sunCoreGrad;
+                    ctx.beginPath();
+                    ctx.arc(vanX, vanY, sunRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                    
+                    // 3. Gentle Audio-Reactive Floating Bokeh Embers / Dust Motes
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'screen';
+                    const numEmbers = 45;
+                    for (let e = 0; e < numEmbers; e++) {
+                      // Deterministic smooth drift
+                      const seedX = (e * 73.1 + animTime * 0.25) % W;
+                      const seedY = (H * 0.95 - (e * 23.7 + animTime * (0.4 + (e % 3) * 0.3) * (1.0 + lerpedBass * 1.5)) % (H * 0.9));
+                      const eSize = (2.0 + (e % 5) * 1.8) * (1.0 + lerpedMid * 0.4);
+                      const eAlpha = (0.2 + (e % 4) * 0.18) * (0.8 + lerpedBass * 0.6);
                       
-                      // Soft Volumetric Radial Glow
-                      const sunBloom = ctx.createRadialGradient(vanX, sunY, 0, vanX, sunY, sunR * 1.6);
-                      sunBloom.addColorStop(0, 'rgba(255, 240, 180, 0.95)');
-                      sunBloom.addColorStop(0.35, 'rgba(255, 140, 50, 0.45)');
-                      sunBloom.addColorStop(0.7, 'rgba(216, 27, 96, 0.2)');
-                      sunBloom.addColorStop(1, 'transparent');
+                      const eGrad = ctx.createRadialGradient(seedX, seedY, 0, seedX, seedY, eSize * 2.5);
+                      eGrad.addColorStop(0, `hsla(${emberHue}, 90%, 75%, ${eAlpha})`);
+                      eGrad.addColorStop(0.5, `hsla(${emberHue}, 85%, 55%, ${eAlpha * 0.4})`);
+                      eGrad.addColorStop(1, 'transparent');
                       
-                      ctx.save();
-                      ctx.fillStyle = sunBloom;
+                      ctx.fillStyle = eGrad;
                       ctx.beginPath();
-                      ctx.arc(vanX, sunY, sunR * 1.6, 0, Math.PI * 2);
+                      ctx.arc(seedX, seedY, eSize * 2.5, 0, Math.PI * 2);
                       ctx.fill();
-                      
-                      // Clean Horizon Sun Core
-                      const sunGrad = ctx.createLinearGradient(0, sunY - sunR, 0, sunY + sunR);
-                      sunGrad.addColorStop(0, '#FFF9C4');
-                      sunGrad.addColorStop(0.5, '#FF7043');
-                      sunGrad.addColorStop(1, '#C2185B');
-                      ctx.fillStyle = sunGrad;
-                      ctx.beginPath();
-                      ctx.arc(vanX, sunY, sunR, 0, Math.PI * 2);
-                      ctx.fill();
-                      
-                      // Elegant Mountain Ridge Silhouette
-                      ctx.fillStyle = '#0E041A';
-                      ctx.beginPath();
-                      ctx.moveTo(0, vanY);
-                      for (let mx = 0; mx <= W; mx += 30) {
-                        const my = vanY - (Math.sin(mx * 0.005 + 0.8) * 24 + Math.sin(mx * 0.012) * 12);
-                        ctx.lineTo(mx, my);
-                      }
-                      ctx.lineTo(W, vanY);
-                      ctx.closePath();
-                      ctx.fill();
-                      ctx.restore();
                     }
+                    ctx.restore();
                     
-                    // 3. Clean Highway Road Bed (Below Horizon)
-                    const roadGrad = ctx.createLinearGradient(0, vanY, 0, H);
-                    roadGrad.addColorStop(0, isTunnel ? '#011208' : '#080210');
-                    roadGrad.addColorStop(1, isTunnel ? '#022410' : '#140622');
-                    ctx.fillStyle = roadGrad;
+                    // 4. Subtle Audio Horizon Harmonic Waves (Gently ground the horizon without any clashing grid)
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'source-over';
+                    
+                    // Deep Horizon Fog Base
+                    const fogGrad = ctx.createLinearGradient(0, vanY - 20, 0, H);
+                    fogGrad.addColorStop(0, 'transparent');
+                    fogGrad.addColorStop(0.4, 'rgba(10, 3, 16, 0.4)');
+                    fogGrad.addColorStop(1, 'rgba(6, 2, 10, 0.85)');
+                    ctx.fillStyle = fogGrad;
                     ctx.fillRect(0, vanY, W, H - vanY);
                     
-                    // 4. Smooth Perspective Horizon Grid (Zero Clutter)
-                    ctx.save();
-                    const numGrid = 16;
-                    for (let g = 0; g < numGrid; g++) {
-                      const depth = ((g + (animTime * 0.03 * speedMultiplier)) % numGrid) / numGrid;
-                      const gy = vanY + Math.pow(depth, 2.4) * (H - vanY);
+                    // 2 Clean Harmonic Audio Ribbons resting gently at the horizon
+                    for (let h = 0; h < 2; h++) {
                       ctx.beginPath();
-                      ctx.moveTo(0, gy);
-                      ctx.lineTo(W, gy);
-                      ctx.strokeStyle = `${gridCol}${depth * 0.45})`;
-                      ctx.lineWidth = 1.0 + depth * 1.5;
-                      ctx.stroke();
-                    }
-                    
-                    // Converging Road Rails
-                    const roadBottomW = W * 0.72;
-                    ctx.beginPath();
-                    ctx.moveTo(vanX, vanY); ctx.lineTo(vanX - roadBottomW/2, H);
-                    ctx.moveTo(vanX, vanY); ctx.lineTo(vanX + roadBottomW/2, H);
-                    ctx.strokeStyle = isTunnel ? '#00FF9D' : '#00E5FF';
-                    ctx.lineWidth = 2.5 + lerpedBass * 1.5;
-                    ctx.stroke();
-                    
-                    // Center Road Markings
-                    ctx.beginPath();
-                    ctx.setLineDash([24 + lerpedBass * 12, 18]);
-                    ctx.lineDashOffset = -animTime * 4.0 * speedMultiplier;
-                    ctx.moveTo(vanX, vanY);
-                    ctx.lineTo(vanX, H);
-                    ctx.strokeStyle = isTunnel ? '#00FF9D' : '#FFD600';
-                    ctx.lineWidth = 3.0 + lerpedBass * 2.0;
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    
-                    // 5. Flowing Audio-Reactive Ribbon Waves Across the Road
-                    const numWaves = 3;
-                    for (let wIdx = 0; wIdx < numWaves; wIdx++) {
-                      ctx.beginPath();
-                      ctx.moveTo(0, H * 0.75);
-                      for (let x = 0; x <= W; x += 15) {
-                        const wave1 = Math.sin(x * 0.008 + animTime * 0.04 + wIdx * 1.2) * (18 + lerpedMid * 30);
-                        const wave2 = Math.cos(x * 0.015 - animTime * 0.03) * (10 + lerpedBass * 20);
-                        const wy = H * 0.76 + wave1 + wave2 + wIdx * 16;
-                        ctx.lineTo(x, wy);
+                      ctx.moveTo(0, vanY + 15 + h * 25);
+                      for (let x = 0; x <= W; x += 20) {
+                        const waveVal = Math.sin(x * 0.005 + animTime * 0.03 + h * 2.0) * (6 + lerpedMid * 14)
+                                      + Math.cos(x * 0.012 - animTime * 0.02) * (3 + lerpedBass * 8);
+                        ctx.lineTo(x, vanY + 15 + h * 25 + waveVal);
                       }
-                      ctx.strokeStyle = (wIdx === 0) ? `rgba(255, 0, 128, ${0.35 + lerpedBass * 0.4})` : ((wIdx === 1) ? `rgba(0, 229, 255, ${0.3 + lerpedMid * 0.35})` : `rgba(255, 180, 0, ${0.25 + lerpedBass * 0.3})`);
-                      ctx.lineWidth = 2.0 + lerpedBass * 1.5;
+                      ctx.strokeStyle = (h === 0) ? `${sunColorOuter}${0.35 + lerpedBass * 0.3})` : `rgba(255, 255, 255, ${0.15 + lerpedMid * 0.25})`;
+                      ctx.lineWidth = 1.5 + (1 - h) * lerpedBass;
                       ctx.stroke();
                     }
-                    
                     ctx.restore();
                   }requestAnimationFrame(drawViz);
                 }
