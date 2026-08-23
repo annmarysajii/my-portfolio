@@ -3096,8 +3096,16 @@ const PROJECTS = {
               ];
               
               const urlParams = new URLSearchParams(window.location.search);
-              let currentIdx = urlParams.has('test_track') ? parseInt(urlParams.get('test_track')) : 0;
-              if (isNaN(currentIdx) || currentIdx < 0 || currentIdx >= tracks.length) currentIdx = 0;
+              let currentIdx = 2; // Default to Paradise (track 2) so the newly built visualizer is active immediately
+              if (urlParams.has('track')) {
+                const trk = urlParams.get('track').toLowerCase();
+                if (trk === 'club' || trk === '0' || trk.includes('boot')) currentIdx = 0;
+                else if (trk === 'cloudy' || trk === '1' || trk.includes('cloud')) currentIdx = 1;
+                else if (trk === 'paradise' || trk === '2') currentIdx = 2;
+              } else if (urlParams.has('test_track')) {
+                currentIdx = parseInt(urlParams.get('test_track')) || 0;
+              }
+              if (isNaN(currentIdx) || currentIdx < 0 || currentIdx >= tracks.length) currentIdx = 2;
               
               const list = document.getElementById('track-list');
               tracks.forEach((t, i) => {
