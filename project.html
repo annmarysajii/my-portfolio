@@ -3647,8 +3647,8 @@ const PROJECTS = {
                   // 3. 🌌 "PARADISE" — WONG KAR-WAI SUNSET DRIVE (SEAMLESS CINEMATIC SKY)
                   // ================================================================
                   // ================================================================
-                  // PURE CINEMATIC GLSL RAYMARCHED ATMOSPHERE FOR "PARADISE"
-                  // Volumetric Sunset, Raymarched Wet Street, Wong Kar-wai Film Grain
+                  // FULLY IMMERSIVE CAR DASHBOARD POV & GLSL TRAVEL ENGINE FOR "PARADISE"
+                  // Clean Windshield View, Sub-Bass Reactive Dash, 3D Tunnel, Neon City & Night Progression
                   // ================================================================
                   else if (track.genre === 'pop') {
                     const canvas2d = document.getElementById('global-audio-viz');
@@ -3656,26 +3656,18 @@ const PROJECTS = {
                     if (canvas2d) canvas2d.style.display = 'none';
                     if (webglCanvas) webglCanvas.style.display = 'block';
                     
-                    if (!window.paradiseGLSLEngine && webglCanvas) {
+                    if (!window.paradiseImmersiveEngine && webglCanvas) {
                       const W = window.innerWidth || 1440;
                       const H = window.innerHeight || 900;
                       
                       const gl = webglCanvas.getContext('webgl', { antialias: false, powerPreference: 'high-performance' });
-                      if (!gl) {
-                        console.error('WebGL not supported');
-                        return;
-                      }
+                      if (!gl) return;
                       
-                      // Fullscreen Quad Geometry
                       const positionBuffer = gl.createBuffer();
                       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
                       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                        -1.0, -1.0,
-                         1.0, -1.0,
-                        -1.0,  1.0,
-                        -1.0,  1.0,
-                         1.0, -1.0,
-                         1.0,  1.0
+                        -1.0, -1.0,  1.0, -1.0, -1.0,  1.0,
+                        -1.0,  1.0,  1.0, -1.0,  1.0,  1.0
                       ]), gl.STATIC_DRAW);
                       
                       const vsSource = `
@@ -3693,12 +3685,11 @@ const PROJECTS = {
                         
                         uniform vec2 u_resolution;
                         uniform float u_time;
-                        uniform float u_act; // 0=highway, 1=highway-pulse, 2=tunnel, 3=city, 4=city-pulse, 5=dusk, 6=suspended, 7=warm, 8=outro
+                        uniform float u_song_time; // 0 to 211 seconds
                         uniform float u_bass;
                         uniform float u_mid;
                         uniform float u_high;
                         
-                        // Hash & Simplex Noise
                         float hash(vec2 p) {
                           p = fract(p * vec2(123.34, 456.21));
                           p += dot(p, p + 45.32);
@@ -3719,11 +3710,10 @@ const PROJECTS = {
                         float fbm(vec2 p) {
                           float v = 0.0;
                           float a = 0.5;
-                          vec2 shift = vec2(100.0);
                           mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-                          for (int i = 0; i < 5; ++i) {
+                          for (int i = 0; i < 4; ++i) {
                             v += a * noise(p);
-                            p = rot * p * 2.0 + shift;
+                            p = rot * p * 2.0 + vec2(10.0);
                             a *= 0.5;
                           }
                           return v;
@@ -3733,158 +3723,218 @@ const PROJECTS = {
                           vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
                           vec2 st = gl_FragCoord.xy / u_resolution.xy;
                           
-                          float t = u_time * 0.4;
-                          float horizon = -0.05;
+                          float sTime = u_song_time;
+                          bool isTunnel = (sTime >= 48.0 && sTime < 66.0) || (sTime >= 115.0 && sTime < 134.0);
+                          bool isCity = (sTime >= 66.0 && sTime < 96.0) || (sTime >= 134.0 && sTime < 191.0);
+                          bool isDusk = (sTime >= 96.0 && sTime < 115.0);
+                          bool isOutro = (sTime >= 191.0);
                           
+                          float nightFactor = clamp(sTime / 190.0, 0.0, 1.0);
+                          float speed = isTunnel ? 18.0 : (isOutro ? max(0.5, (211.0 - sTime) * 0.4) : (isCity ? 10.0 : 12.0));
+                          float travelZ = u_time * speed;
+                          
+                          float steerAngle = sin(u_time * 0.8) * 0.06 + sin(u_time * 0.3) * 0.04;
+                          uv.x -= steerAngle * 0.25;
+                          
+                          float horizon = -0.04;
                           vec3 col = vec3(0.0);
                           
-                          // -----------------------------------------------------------
-                          // 1. SKY & VOLUMETRIC ATMOSPHERE (Above Horizon)
-                          // -----------------------------------------------------------
-                          if (uv.y > horizon) {
-                            float skyH = (uv.y - horizon) / 0.65;
+                          // ===========================================================
+                          // 1. ENVIRONMENT (WINDSHIELD VIEW)
+                          // ===========================================================
+                          if (isTunnel) {
+                            // --- 3D CURVED TUNNEL TUBE ---
+                            float ty = uv.y - 0.1;
+                            float tx = uv.x;
+                            float r = length(vec2(tx, ty));
                             
-                            // Act-Specific Sky Color Palettes
-                            vec3 topSky, midSky, horizonGlow;
+                            float tunnelDist = 0.35 / max(abs(ty), 0.01);
+                            float tz = tunnelDist + travelZ;
                             
-                            if (u_act < 1.5) {
-                              // Act 1: Highway Sunset (Top #2D1B4E -> Mid #FF6B9D -> Horizon #FFD666)
-                              topSky = vec3(0.12, 0.04, 0.22);
-                              midSky = vec3(0.72, 0.12, 0.35);
-                              horizonGlow = vec3(1.0, 0.65, 0.22);
-                            } else if (u_act < 2.5) {
-                              // Act 2: Tunnel Atmosphere (Monochrome Fluorescent Green Haze)
-                              topSky = vec3(0.02, 0.15, 0.08);
-                              midSky = vec3(0.04, 0.45, 0.25);
-                              horizonGlow = vec3(0.1, 0.95, 0.55);
-                            } else if (u_act < 4.5) {
-                              // Act 3: Neon Night City (Deep Indigo -> Crimson Neon Bleed)
-                              topSky = vec3(0.03, 0.01, 0.08);
-                              midSky = vec3(0.22, 0.02, 0.18);
-                              horizonGlow = vec3(0.65, 0.05, 0.35);
-                            } else if (u_act < 5.5) {
-                              // Act 8: Highway Dusk (Deep Sapphire -> Twilight Purple -> Amber Horizon)
-                              topSky = vec3(0.04, 0.02, 0.14);
-                              midSky = vec3(0.28, 0.05, 0.22);
-                              horizonGlow = vec3(0.85, 0.32, 0.12);
-                            } else if (u_act < 7.5) {
-                              // Chorus Warm: Amber Boost
-                              topSky = vec3(0.08, 0.03, 0.15);
-                              midSky = vec3(0.55, 0.18, 0.12);
-                              horizonGlow = vec3(1.0, 0.72, 0.25);
-                            } else {
-                              // Outro: Quiet Night
-                              topSky = vec3(0.02, 0.01, 0.05);
-                              midSky = vec3(0.12, 0.03, 0.10);
-                              horizonGlow = vec3(0.35, 0.12, 0.22);
+                            float tileU = atan(ty, tx) * 4.0;
+                            float tileV = tz * 0.6;
+                            float tileGrid = step(0.92, fract(tileU)) + step(0.94, fract(tileV));
+                            
+                            float overheadLight = smoothstep(0.12, 0.02, abs(tx)) * step(0.0, ty);
+                            float lightPulse = step(0.45, fract(tz * 0.35));
+                            
+                            vec3 tunnelConcrete = vec3(0.03, 0.12, 0.06);
+                            vec3 tubeLightCol = vec3(0.1, 1.0, 0.55) * 1.8;
+                            
+                            col = tunnelConcrete + tileGrid * vec3(0.01, 0.08, 0.04);
+                            col += tubeLightCol * overheadLight * lightPulse;
+                            
+                            if (uv.y < horizon) {
+                              float gz = 0.22 / max(horizon - uv.y, 0.001);
+                              float gx = uv.x * gz;
+                              float isRoad = smoothstep(3.2, 3.0, abs(gx));
+                              float stripe = step(0.5, fract((gz + travelZ) * 0.25)) * smoothstep(0.06, 0.02, abs(gx));
+                              col = mix(col, vec3(0.02, 0.05, 0.03), isRoad);
+                              col += vec3(0.8, 1.0, 0.8) * stripe * isRoad;
                             }
-                            
-                            // Smooth Atmospheric Sky Gradient
-                            col = mix(horizonGlow, midSky, smoothstep(0.0, 0.45, skyH));
-                            col = mix(col, topSky, smoothstep(0.4, 1.0, skyH));
-                            
-                            // Volumetric Procedural Dusk Clouds
-                            vec2 cloudUV = vec2(uv.x * 1.5 + t * 0.02, uv.y * 2.8);
-                            float cloudNoise = fbm(cloudUV * 2.2);
-                            float clouds = smoothstep(0.38, 0.78, cloudNoise) * smoothstep(0.0, 0.3, skyH);
-                            vec3 cloudColor = mix(vec3(0.15, 0.02, 0.12), horizonGlow * 0.85, cloudNoise);
-                            col = mix(col, cloudColor, clouds * 0.45);
-                            
-                            // Horizon Sun Flare / City Light Dome
-                            float sunDist = length(vec2(uv.x, uv.y - horizon - 0.02));
-                            float sunGlow = exp(-sunDist * 8.0) * (1.0 + u_bass * 0.35);
-                            col += horizonGlow * sunGlow * 0.95;
-                            
-                            // Distant Mountain Ridges / Skyline Silhouette
-                            float ridge = noise(vec2(uv.x * 4.0, 0.0)) * 0.05 + 0.01;
-                            if (uv.y - horizon < ridge) {
-                              col = mix(vec3(0.04, 0.01, 0.08), col, 0.15);
-                            }
+                            col += vec3(0.05, 0.85, 0.45) * exp(-r * 3.5) * 0.65;
                           }
-                          
-                          // -----------------------------------------------------------
-                          // 2. RAYMARCHED WET HIGHWAY / CITY STREET (Below Horizon)
-                          // -----------------------------------------------------------
                           else {
-                            float groundDepth = (horizon - uv.y);
-                            float z = 0.22 / max(groundDepth, 0.001); // 3D perspective projection
-                            float x = uv.x * z;
-                            
-                            float roadWidth = 3.5;
-                            float isRoad = smoothstep(roadWidth + 0.2, roadWidth - 0.2, abs(x));
-                            
-                            // Asphalt Base Material
-                            vec3 asphaltCol = mix(vec3(0.02, 0.01, 0.03), vec3(0.06, 0.04, 0.08), isRoad);
-                            
-                            // Forward Scrolling Motion
-                            float scrollZ = z + u_time * 8.0;
-                            
-                            // Wet Asphalt Specular Sheen & Puddle Reflections
-                            float puddleNoise = fbm(vec2(x * 1.5, scrollZ * 0.8));
-                            float wetReflection = smoothstep(0.35, 0.85, puddleNoise) * isRoad;
-                            
-                            // Mirror Sky & Horizon Lights in Wet Puddles
-                            vec3 reflectedSky = mix(vec3(0.12, 0.02, 0.18), vec3(1.0, 0.55, 0.25), smoothstep(0.0, 0.25, groundDepth));
-                            if (u_act >= 2.5 && u_act <= 4.5) {
-                              // Neon City Reflections: Cyan & Magenta Shimmer
-                              float neonPuddle = sin(x * 2.5 + scrollZ * 0.4) * 0.5 + 0.5;
-                              vec3 neonRefl = mix(vec3(0.0, 0.95, 1.0), vec3(1.0, 0.0, 0.5), neonPuddle);
-                              reflectedSky = mix(reflectedSky, neonRefl, 0.65);
+                            // --- OUTSIDE HIGHWAY OR CITY ---
+                            if (uv.y > horizon) {
+                              float skyH = (uv.y - horizon) / 0.65;
+                              vec3 topSky, midSky, horizonGlow;
+                              
+                              if (!isCity && !isDusk && !isOutro) {
+                                topSky = vec3(0.14, 0.03, 0.24);
+                                midSky = vec3(0.75, 0.15, 0.35);
+                                horizonGlow = vec3(1.0, 0.68, 0.25);
+                              } else if (isDusk) {
+                                topSky = vec3(0.04, 0.01, 0.12);
+                                midSky = vec3(0.24, 0.04, 0.18);
+                                horizonGlow = vec3(0.72, 0.24, 0.10);
+                              } else if (isCity) {
+                                topSky = vec3(0.02, 0.01, 0.06);
+                                midSky = vec3(0.18, 0.02, 0.15);
+                                horizonGlow = (sTime >= 172.0 && sTime < 191.0) ? vec3(0.95, 0.65, 0.25) : vec3(0.65, 0.05, 0.35);
+                              } else {
+                                topSky = vec3(0.01, 0.01, 0.03);
+                                midSky = vec3(0.05, 0.02, 0.08);
+                                horizonGlow = vec3(0.15, 0.08, 0.18);
+                              }
+                              
+                              col = mix(horizonGlow, midSky, smoothstep(0.0, 0.45, skyH));
+                              col = mix(col, topSky, smoothstep(0.4, 1.0, skyH));
+                              
+                              float cloudNoise = fbm(vec2(uv.x * 1.8 + u_time * 0.02, uv.y * 3.0));
+                              float clouds = smoothstep(0.35, 0.75, cloudNoise) * smoothstep(0.0, 0.35, skyH);
+                              col = mix(col, horizonGlow * 0.9, clouds * (1.0 - nightFactor * 0.65) * 0.45);
+                              
+                              float ridge = noise(vec2(uv.x * 5.0, 0.0)) * 0.04 + 0.01;
+                              if (uv.y - horizon < ridge) {
+                                col = mix(vec3(0.02, 0.01, 0.05), col, 0.12);
+                              }
+                              
+                              if (!isDusk && !isCity && !isOutro) {
+                                float sunDist = length(vec2(uv.x, uv.y - horizon - 0.02));
+                                col += horizonGlow * exp(-sunDist * 7.5) * 0.95;
+                              }
+                              
+                              if (isCity) {
+                                for (int b = 0; b < 12; b++) {
+                                  float bx = (float(b) - 5.5) * 0.14;
+                                  float bw = 0.055;
+                                  float bh = 0.12 + hash(vec2(float(b), 1.0)) * 0.22;
+                                  
+                                  if (abs(uv.x - bx) < bw && (uv.y - horizon) < bh) {
+                                    col = vec3(0.02, 0.01, 0.05);
+                                    float winGrid = step(0.65, fract(uv.x * 120.0)) * step(0.65, fract(uv.y * 90.0));
+                                    col += vec3(1.0, 0.85, 0.4) * winGrid * 0.35;
+                                    
+                                    if (uv.y - horizon > bh - 0.08) {
+                                      vec3 neonCol = (mod(float(b), 3.0) == 0.0) ? vec3(0.0, 1.0, 0.95) : ((mod(float(b), 3.0) == 1.0) ? vec3(1.0, 0.0, 0.55) : vec3(1.0, 0.75, 0.1));
+                                      col += neonCol * 1.5;
+                                    }
+                                  }
+                                }
+                              }
                             }
-                            asphaltCol += reflectedSky * wetReflection * 0.75;
+                            else {
+                              // --- ROAD & WET ASPHALT ---
+                              float groundDepth = (horizon - uv.y);
+                              float z = 0.22 / max(groundDepth, 0.001);
+                              float x = uv.x * z;
+                              
+                              float isRoad = smoothstep(3.4, 3.2, abs(x));
+                              vec3 asphaltCol = mix(vec3(0.02, 0.01, 0.03), vec3(0.06, 0.04, 0.08), isRoad);
+                              
+                              float scrollZ = z + travelZ;
+                              float wetNoise = fbm(vec2(x * 1.4, scrollZ * 0.7));
+                              float wetPuddle = smoothstep(0.35, 0.85, wetNoise) * isRoad;
+                              
+                              vec3 reflCol = mix(vec3(0.1, 0.02, 0.15), vec3(1.0, 0.55, 0.25), smoothstep(0.0, 0.25, groundDepth));
+                              if (isCity) {
+                                float neonStripe = sin(x * 2.8 + scrollZ * 0.4) * 0.5 + 0.5;
+                                reflCol = mix(vec3(0.0, 0.95, 1.0), vec3(1.0, 0.0, 0.55), neonStripe);
+                              }
+                              asphaltCol += reflCol * wetPuddle * (isCity ? 0.95 : 0.65);
+                              
+                              float centerDashes = step(0.42, fract(scrollZ * 0.18)) * smoothstep(0.06, 0.02, abs(x));
+                              vec3 lineCol = vec3(1.0, 0.78, 0.15) * 1.5;
+                              asphaltCol = mix(asphaltCol, lineCol, centerDashes * isRoad);
+                              
+                              float shoulderL = smoothstep(0.05, 0.01, abs(x - 2.6));
+                              float shoulderR = smoothstep(0.05, 0.01, abs(x + 2.6));
+                              asphaltCol = mix(asphaltCol, vec3(0.95), (shoulderL + shoulderR) * isRoad);
+                              
+                              float guardL = smoothstep(0.12, 0.02, abs(x - 3.2));
+                              float guardR = smoothstep(0.12, 0.02, abs(x + 3.2));
+                              vec3 trailL = vec3(1.0, 0.0, 0.45) * (1.0 + u_bass * 0.8);
+                              vec3 trailR = vec3(0.0, 0.95, 1.0) * (1.0 + u_bass * 0.8);
+                              asphaltCol += (trailL * guardL + trailR * guardR) * 0.85;
+                              
+                              float fog = exp(-groundDepth * 6.5);
+                              col = mix(asphaltCol, vec3(0.08, 0.02, 0.12), fog);
+                            }
+                          }
+                          
+                          if (isCity) {
+                            vec2 rainUV = vec2(uv.x * 35.0 + uv.y * 3.0, uv.y * 10.0 + u_time * 22.0);
+                            float rain = smoothstep(0.88, 0.98, noise(rainUV)) * 0.45;
+                            col += vec3(0.7, 0.9, 1.0) * rain;
+                          }
+                          
+                          // ===========================================================
+                          // 2. SLEEK CAR DASHBOARD & STEERING WHEEL (BOTTOM OF VIEWPORT)
+                          // ===========================================================
+                          float dashY = -0.42 + sin(uv.x * 1.8) * 0.03;
+                          if (uv.y < dashY) {
+                            vec3 dashCol = vec3(0.025, 0.02, 0.035);
                             
-                            // Road Lane Markings
-                            // Center Yellow Dashed Line
-                            float centerDashes = step(0.4, fract(scrollZ * 0.18)) * smoothstep(0.06, 0.02, abs(x));
-                            vec3 centerLineCol = vec3(1.0, 0.78, 0.15) * 1.5;
-                            asphaltCol = mix(asphaltCol, centerLineCol, centerDashes * isRoad);
+                            vec2 gaugeL = vec2(uv.x + 0.38, uv.y + 0.48);
+                            vec2 gaugeR = vec2(uv.x - 0.38, uv.y + 0.48);
                             
-                            // Outer Solid White Shoulder Lines
-                            float shoulderL = smoothstep(0.05, 0.01, abs(x - 2.8));
-                            float shoulderR = smoothstep(0.05, 0.01, abs(x + 2.8));
-                            asphaltCol = mix(asphaltCol, vec3(0.95, 0.95, 1.0), (shoulderL + shoulderR) * isRoad);
+                            float distL = length(gaugeL);
+                            float distR = length(gaugeR);
                             
-                            // Side Guardrails & Glowing Neon Light Trails
-                            float guardL = smoothstep(0.12, 0.02, abs(x - 3.4));
-                            float guardR = smoothstep(0.12, 0.02, abs(x + 3.4));
-                            vec3 neonTrailL = vec3(1.0, 0.0, 0.45) * (1.0 + u_bass * 0.8);
-                            vec3 neonTrailR = vec3(0.0, 0.95, 1.0) * (1.0 + u_bass * 0.8);
-                            asphaltCol += neonTrailL * guardL * 0.85 + neonTrailR * guardR * 0.85;
+                            if (distL < 0.065 && distL > 0.058) {
+                              dashCol += vec3(1.0, 0.45, 0.1) * 1.5;
+                            }
+                            float needleAngle = -2.0 + (speed / 18.0) * 3.2 + u_bass * 0.35;
+                            float angL = atan(gaugeL.y, gaugeL.x);
+                            if (distL < 0.058 && abs(angL - needleAngle) < 0.06) {
+                              dashCol += vec3(1.0, 0.15, 0.0) * 2.0;
+                            }
                             
-                            // Distance Fog Depth Blend
-                            float fogFactor = exp(-groundDepth * 6.5);
-                            col = mix(asphaltCol, mix(vec3(0.06, 0.02, 0.12), vec3(1.0, 0.55, 0.25), 0.35), fogFactor);
+                            if (distR < 0.065 && distR > 0.058) {
+                              dashCol += vec3(0.0, 0.85, 1.0) * 1.5;
+                            }
+                            col = dashCol;
+                          }
+                          
+                          // Turning Steering Wheel
+                          vec2 wheelCenter = vec2(-0.28 + steerAngle * 0.18, -0.54);
+                          vec2 wheelUV = uv - wheelCenter;
+                          float wheelR = length(wheelUV);
+                          if (wheelR < 0.18 && wheelR > 0.15 && uv.y < -0.38) {
+                            vec3 wheelCol = vec3(0.04, 0.035, 0.05);
+                            wheelCol += col * 0.35;
+                            col = wheelCol;
+                          }
+                          
+                          // Windshield Pillars (A-Pillars)
+                          float pillarL = smoothstep(-0.68, -0.78, uv.x + uv.y * 0.4);
+                          float pillarR = smoothstep(0.68, 0.78, uv.x - uv.y * 0.4);
+                          if (pillarL > 0.01 || pillarR > 0.01) {
+                            col = mix(col, vec3(0.015, 0.01, 0.02), max(pillarL, pillarR));
                           }
                           
                           // -----------------------------------------------------------
-                          // 3. ANAMORPHIC HORIZONTAL LIGHT STREAKS & RAIN PARTICLES
+                          // 3. 35MM FILM GRAIN, VIGNETTE & WONG KAR-WAI COLOR GRADING
                           // -----------------------------------------------------------
-                          // Horizontal Anamorphic Lens Flare
-                          float flareY = abs(uv.y - horizon - 0.01);
-                          float anamorphic = exp(-flareY * 85.0) * exp(-abs(uv.x) * 1.8);
-                          vec3 flareColor = (u_act < 2.5) ? vec3(1.0, 0.65, 0.35) : vec3(0.0, 0.95, 0.85);
-                          col += flareColor * anamorphic * (0.65 + u_bass * 0.55);
-                          
-                          // Falling Rain Streaks (For City Acts)
-                          if (u_act >= 2.5 && u_act <= 5.0) {
-                            vec2 rainUV = vec2(uv.x * 40.0 + uv.y * 4.0, uv.y * 8.0 + u_time * 18.0);
-                            float rain = smoothstep(0.85, 0.98, noise(rainUV)) * 0.35;
-                            col += vec3(0.65, 0.85, 1.0) * rain;
-                          }
-                          
-                          // -----------------------------------------------------------
-                          // 4. 35MM FILM GRAIN & COLOR GRADING
-                          // -----------------------------------------------------------
-                          float grain = (hash(gl_FragCoord.xy + fract(u_time)) - 0.5) * 0.06;
+                          float grain = (hash(gl_FragCoord.xy + fract(u_time)) - 0.5) * 0.055;
                           col += grain;
                           
-                          // Vignette
-                          float vig = 1.0 - dot(uv * 0.85, uv * 0.85);
+                          float vig = 1.0 - dot(uv * 0.8, uv * 0.8);
                           col *= clamp(vig, 0.0, 1.0);
                           
-                          // Tone Curve (Deep cinematic blacks & rich highlights)
-                          col = pow(col, vec3(0.92));
-                          col = col / (col + vec3(0.85)) * 1.45;
+                          col = pow(col, vec3(0.90));
+                          col = col / (col + vec3(0.82)) * 1.45;
                           
                           gl_FragColor = vec4(col, 1.0);
                         }
@@ -3912,18 +3962,18 @@ const PROJECTS = {
                       const posLoc = gl.getAttribLocation(program, 'a_position');
                       const resLoc = gl.getUniformLocation(program, 'u_resolution');
                       const timeLoc = gl.getUniformLocation(program, 'u_time');
-                      const actLoc = gl.getUniformLocation(program, 'u_act');
+                      const songTimeLoc = gl.getUniformLocation(program, 'u_song_time');
                       const bassLoc = gl.getUniformLocation(program, 'u_bass');
                       const midLoc = gl.getUniformLocation(program, 'u_mid');
                       const highLoc = gl.getUniformLocation(program, 'u_high');
                       
-                      window.paradiseGLSLEngine = {
+                      window.paradiseImmersiveEngine = {
                         gl,
                         program,
                         posLoc,
                         resLoc,
                         timeLoc,
-                        actLoc,
+                        songTimeLoc,
                         bassLoc,
                         midLoc,
                         highLoc,
@@ -3931,9 +3981,9 @@ const PROJECTS = {
                       };
                     }
                     
-                    const pGLSL = window.paradiseGLSLEngine;
-                    if (pGLSL) {
-                      const gl = pGLSL.gl;
+                    const pEng = window.paradiseImmersiveEngine;
+                    if (pEng) {
+                      const gl = pEng.gl;
                       const W = window.innerWidth || 1440;
                       const H = window.innerHeight || 900;
                       
@@ -3943,38 +3993,22 @@ const PROJECTS = {
                         gl.viewport(0, 0, W, H);
                       }
                       
-                      // Compute Act Index from exact song timeline
                       const songTime = audio.currentTime || 0;
                       const urlParams = new URLSearchParams(window.location.search);
                       let manualSec = urlParams.has('test_sec') ? parseFloat(urlParams.get('test_sec')) : -1;
                       const currentSec = (manualSec >= 0) ? manualSec : songTime;
                       
-                      let actIdx = 0.0;
-                      if (currentSec < 18) actIdx = 0.0;       // highway
-                      else if (currentSec < 28) actIdx = 1.0;  // highway-pulse
-                      else if (currentSec < 48) actIdx = 0.0;  // highway
-                      else if (currentSec < 66) actIdx = 2.0;  // tunnel
-                      else if (currentSec < 86) actIdx = 3.0;  // city
-                      else if (currentSec < 96) actIdx = 4.0;  // city-pulse
-                      else if (currentSec < 115) actIdx = 5.0; // highway-dusk
-                      else if (currentSec < 134) actIdx = 2.0; // tunnel
-                      else if (currentSec < 153) actIdx = 3.0; // city
-                      else if (currentSec < 172) actIdx = 6.0; // suspended
-                      else if (currentSec < 191) actIdx = 7.0; // city-warm
-                      else actIdx = 8.0;                       // outro
+                      gl.useProgram(pEng.program);
+                      gl.bindBuffer(gl.ARRAY_BUFFER, pEng.positionBuffer);
+                      gl.enableVertexAttribArray(pEng.posLoc);
+                      gl.vertexAttribPointer(pEng.posLoc, 2, gl.FLOAT, false, 0, 0);
                       
-                      gl.useProgram(pGLSL.program);
-                      
-                      gl.bindBuffer(gl.ARRAY_BUFFER, pGLSL.positionBuffer);
-                      gl.enableVertexAttribArray(pGLSL.posLoc);
-                      gl.vertexAttribPointer(pGLSL.posLoc, 2, gl.FLOAT, false, 0, 0);
-                      
-                      gl.uniform2f(pGLSL.resLoc, W, H);
-                      gl.uniform1f(pGLSL.timeLoc, animTime * 0.02);
-                      gl.uniform1f(pGLSL.actLoc, actIdx);
-                      gl.uniform1f(pGLSL.bassLoc, lerpedBass);
-                      gl.uniform1f(pGLSL.midLoc, lerpedMid);
-                      gl.uniform1f(pGLSL.highLoc, lerpedHigh);
+                      gl.uniform2f(pEng.resLoc, W, H);
+                      gl.uniform1f(pEng.timeLoc, animTime * 0.02);
+                      gl.uniform1f(pEng.songTimeLoc, currentSec);
+                      gl.uniform1f(pEng.bassLoc, lerpedBass);
+                      gl.uniform1f(pEng.midLoc, lerpedMid);
+                      gl.uniform1f(pEng.highLoc, lerpedHigh);
                       
                       gl.drawArrays(gl.TRIANGLES, 0, 6);
                     }
