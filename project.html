@@ -2452,19 +2452,22 @@ const PROJECTS = {
               return;
           }
 
-          // 8. ORIGINAL TRACKS (THE 3D DJ BOOTH / TURNTABLE)
+          // 8. ORIGINAL TRACKS (THE REFINED INDUSTRIAL DJ STUDIO & ATMOSPHERE)
           if (id === 'original-tracks') {
               let htmlStr = styleBlock;
               htmlStr += `
               <style>
-                /* FULL-PAGE DJ STUDIO MODE */
+                /* ================================================================
+                   REFINED FULL-PAGE DJ STUDIO & AUDIO-VISUAL ATMOSPHERE
+                   Aesthetic: Teenage Engineering / Braun industrial audio minimalism
+                ================================================================ */
                 body.dj-studio-mode {
                   background: #040407 !important;
                   color: #FFFFFF !important;
                   overflow-x: hidden;
                 }
                 body.dj-studio-mode .nav {
-                  background: rgba(4, 4, 7, 0.75) !important;
+                  background: rgba(4, 4, 7, 0.8) !important;
                   backdrop-filter: blur(20px);
                   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
                 }
@@ -2478,7 +2481,7 @@ const PROJECTS = {
                   color: rgba(255, 255, 255, 0.6) !important;
                 }
                 
-                /* GLOBAL FULLSCREEN BACKGROUND CANVAS */
+                /* Fullscreen Fixed Canvas */
                 #global-audio-viz {
                   position: fixed;
                   inset: 0;
@@ -2488,42 +2491,42 @@ const PROJECTS = {
                   pointer-events: none;
                 }
                 
-                .dj-stage-container {
+                .dj-studio-stage {
                   position: relative;
                   z-index: 10;
                   width: 100%;
-                  max-width: 1240px;
+                  max-width: 1200px;
                   margin: 0 auto;
-                  padding: 2rem 1.5rem 4rem 1.5rem;
+                  padding: 2.5rem 1.5rem 4rem 1.5rem;
                   display: flex;
                   flex-direction: column;
                   align-items: center;
                 }
                 
-                /* DJ HEADER / HUD */
+                /* HUD & Header */
                 .dj-hud-header {
                   text-align: center;
                   margin-bottom: 2.5rem;
                   width: 100%;
                 }
-                .dj-live-pill {
+                .dj-status-badge {
                   display: inline-flex;
                   align-items: center;
                   gap: 8px;
                   background: rgba(255, 255, 255, 0.06);
-                  border: 1px solid rgba(255, 255, 255, 0.14);
-                  padding: 6px 18px;
+                  border: 1px solid rgba(255, 255, 255, 0.12);
+                  padding: 5px 16px;
                   border-radius: 30px;
-                  font-size: 0.8rem;
+                  font-size: 0.78rem;
                   font-weight: 700;
                   text-transform: uppercase;
                   letter-spacing: 2px;
                   color: #E8B000;
-                  margin-bottom: 1rem;
+                  margin-bottom: 0.85rem;
                   backdrop-filter: blur(12px);
                   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
                 }
-                .dj-live-dot {
+                .dj-status-dot {
                   width: 8px;
                   height: 8px;
                   border-radius: 50%;
@@ -2538,23 +2541,23 @@ const PROJECTS = {
                 
                 .dj-main-title {
                   font-family: 'Clash Display', sans-serif;
-                  font-size: clamp(2.4rem, 6vw, 4rem);
+                  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
                   font-weight: 700;
                   letter-spacing: -1.5px;
                   color: #FFFFFF;
                   margin: 0;
                   text-shadow: 0 4px 30px rgba(0,0,0,0.8);
                 }
-                .dj-meta-subtitle {
+                .dj-main-subtitle {
                   font-size: 1.05rem;
                   color: rgba(255, 255, 255, 0.65);
-                  max-width: 600px;
+                  max-width: 580px;
                   margin: 0.6rem auto 0 auto;
                   line-height: 1.5;
                 }
                 
-                /* MAIN WORKSTATION WORKSPACE */
-                .dj-workstation {
+                /* Main Workstation Deck */
+                .dj-deck-wrapper {
                   display: flex;
                   flex-wrap: wrap;
                   gap: 3.5rem;
@@ -2564,12 +2567,12 @@ const PROJECTS = {
                   margin-top: 1rem;
                 }
                 
-                /* TURNTABLE HARDWARE */
+                /* TURNTABLE HARDWARE CHASSIS */
                 .turntable-hardware {
                   position: relative;
                   width: 410px;
                   height: 350px;
-                  background: linear-gradient(145deg, #1d1c22, #0f0e13);
+                  background: linear-gradient(145deg, #1c1b22, #0d0c12);
                   border-radius: 28px;
                   box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.12), inset 0 -4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
                   display: flex;
@@ -2577,6 +2580,7 @@ const PROJECTS = {
                   justify-content: center;
                   flex-shrink: 0;
                   user-select: none;
+                  transition: box-shadow 0.5s;
                 }
                 
                 .platter {
@@ -2683,6 +2687,7 @@ const PROJECTS = {
                   border-top: 1px solid #555;
                 }
                 
+                /* Controls Strip */
                 .dj-controls-strip {
                   position: absolute;
                   right: 18px;
@@ -2753,7 +2758,6 @@ const PROJECTS = {
                   border-radius: 1px;
                 }
                 
-                /* SPEED 33/45 RPM BUTTON */
                 .speed-btn {
                   background: rgba(255,255,255,0.06);
                   border: 1px solid rgba(255,255,255,0.12);
@@ -2906,29 +2910,49 @@ const PROJECTS = {
                   border-radius: 2px;
                 }
                 
+                .keyboard-hints {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 1.5rem;
+                  margin-top: 1.5rem;
+                  font-size: 0.75rem;
+                  color: rgba(255,255,255,0.4);
+                }
+                .key-cap {
+                  display: inline-block;
+                  padding: 2px 6px;
+                  background: rgba(255,255,255,0.1);
+                  border: 1px solid rgba(255,255,255,0.2);
+                  border-radius: 4px;
+                  font-family: monospace;
+                  color: rgba(255,255,255,0.8);
+                }
+                
                 @media (max-width: 880px) {
                   .turntable-hardware { width: 330px; height: 290px; }
                   .platter { left: 16px; width: 235px; height: 235px; }
                   #vinyl-disc { width: 220px; height: 220px; }
                   .slider-track { height: 95px; }
-                  .dj-workstation { gap: 2rem; }
+                  .dj-deck-wrapper { gap: 2rem; }
+                  .keyboard-hints { display: none; }
                 }
               </style>
               
               <canvas id="global-audio-viz"></canvas>
               
-              <div class="dj-stage-container">
+              <div class="dj-studio-stage">
                 
                 <div class="dj-hud-header">
-                  <div class="dj-live-pill"><span class="dj-live-dot"></span> The DJ Studio</div>
+                  <div class="dj-status-badge"><span class="dj-status-dot"></span> The DJ Studio</div>
                   <h1 class="dj-main-title">Interactive Sound Lab</h1>
-                  <p class="dj-meta-subtitle">Direct the turntable needle, scrub the grooved vinyl, and watch the entire atmosphere transform in real-time to Annmary's original production tracks.</p>
+                  <p class="dj-main-subtitle">Direct the turntable needle, scrub the grooved vinyl, and experience real-time generative audio synthesis tailored to Annmary's original production tracks.</p>
                 </div>
                 
-                <div class="dj-workstation">
+                <div class="dj-deck-wrapper">
                   
                   <!-- 3D Turntable Deck -->
-                  <div class="turntable-hardware">
+                  <div class="turntable-hardware" id="turntable-hardware">
                     <div class="platter">
                       <div id="vinyl-disc">
                         <div class="groove" style="inset:8%;"></div>
@@ -2949,7 +2973,7 @@ const PROJECTS = {
                         </div>
                       </div>
                       <div class="fader-wrap" style="margin-top:10px;">
-                        <span class="ctrl-label" id="filter-label">FILTER</span>
+                        <span class="ctrl-label" id="filter-label">FLTR:OFF</span>
                         <div class="filter-dial" id="filter-dial" title="Click to cycle EQ filter (Clean / Lowpass / Highpass)"></div>
                       </div>
                       <div class="fader-wrap" style="margin-top:6px;">
@@ -2975,6 +2999,14 @@ const PROJECTS = {
                   </div>
                   
                 </div>
+                
+                <div class="keyboard-hints">
+                  <span><span class="key-cap">Space</span> Play / Pause</span>
+                  <span><span class="key-cap">↑</span> <span class="key-cap">↓</span> Volume</span>
+                  <span><span class="key-cap">←</span> <span class="key-cap">→</span> Skip 5s</span>
+                  <span><span class="key-cap">Scratch</span> Drag Vinyl</span>
+                </div>
+                
               </div>
               `;
               
@@ -2997,7 +3029,7 @@ const PROJECTS = {
                   tag: '84 BPM · Ambient Lo-Fi · Ethereal Synths', 
                   color: '#00F0FF',
                   glow: 'rgba(0, 240, 255, 0.5)',
-                  bgBase: '#030A18'
+                  bgBase: '#050811'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
@@ -3006,7 +3038,7 @@ const PROJECTS = {
                   tag: '118 BPM · Cosmic Pop · Vibrant Melodic Hooks', 
                   color: '#00F5D4',
                   glow: 'rgba(0, 245, 212, 0.5)',
-                  bgBase: '#05020D'
+                  bgBase: '#06020D'
                 }
               ];
               
@@ -3040,6 +3072,7 @@ const PROJECTS = {
               const filterDial = document.getElementById('filter-dial');
               const filterLabel = document.getElementById('filter-label');
               const speedBtn = document.getElementById('speed-btn');
+              const ttHardware = document.getElementById('turntable-hardware');
               
               let currentIdx = -1;
               let animRunning = false;
@@ -3183,19 +3216,18 @@ const PROJECTS = {
                 }
               };
               
-              // Full-Screen Particles & Waves
+              // Global Particles Cache
               let shockwaves = [];
-              let confettiParticles = [];
               let cloudParticles = [];
-              for (let i = 0; i < 36; i++) {
+              for (let i = 0; i < 28; i++) {
                 cloudParticles.push({
                   x: Math.random(),
                   y: Math.random(),
-                  radius: 120 + Math.random() * 220,
-                  speedX: (Math.random() - 0.5) * 0.0007,
-                  speedY: (Math.random() - 0.5) * 0.0005,
-                  hue: 190 + Math.random() * 40,
-                  baseAlpha: 0.16 + Math.random() * 0.2,
+                  radius: 140 + Math.random() * 260,
+                  speedX: (Math.random() - 0.5) * 0.0006,
+                  speedY: (Math.random() - 0.5) * 0.0004,
+                  hue: [195, 260, 210, 280][i % 4],
+                  baseAlpha: 0.12 + Math.random() * 0.16,
                   phase: Math.random() * Math.PI * 2
                 });
               }
@@ -3241,107 +3273,73 @@ const PROJECTS = {
                   
                   ctx.clearRect(0, 0, W, H);
                   
-                  // 1. CLUB GOT BOOTS (FULLSCREEN Cyberpunk Underground Club)
+                  // Ambient Turntable Underglow
+                  if (ttHardware && isPlaying) {
+                    ttHardware.style.boxShadow = `0 40px 80px rgba(0,0,0,0.7), 0 0 ${20 + bassEnergy * 40}px ${track.glow}`;
+                  }
+                  
+                  // ================================================================
+                  // 1. CLUB GOT BOOTS (Cyberpunk Club Minimalist Darkroom)
+                  // ================================================================
                   if (track.genre === 'club') {
-                    document.body.style.background = '#050508';
+                    document.body.style.background = '#040407';
                     
-                    // Full-Screen Perimeter Kick Glow
-                    if (bassEnergy > 0.62 && isPlaying) {
-                      const flash = ctx.createRadialGradient(W / 2, H / 2, 50, W / 2, H / 2, Math.max(W, H) * 0.9);
-                      flash.addColorStop(0, `rgba(255, 0, 85, ${bassEnergy * 0.45})`);
-                      flash.addColorStop(0.5, `rgba(0, 240, 255, ${bassEnergy * 0.2})`);
-                      flash.addColorStop(1, 'transparent');
-                      ctx.fillStyle = flash;
-                      ctx.fillRect(0, 0, W, H);
-                      
-                      if (Math.random() < 0.4) {
-                        shockwaves.push({ r: 80, alpha: 0.95 });
-                      }
-                    }
+                    // Subtle Bass Radial Glow
+                    const floorGlow = ctx.createRadialGradient(W / 2, H * 0.55, 60, W / 2, H * 0.55, Math.max(W, H) * 0.7);
+                    floorGlow.addColorStop(0, `rgba(255, 0, 85, ${0.15 + bassEnergy * 0.35})`);
+                    floorGlow.addColorStop(0.4, `rgba(0, 240, 255, ${0.08 + midEnergy * 0.15})`);
+                    floorGlow.addColorStop(1, 'transparent');
+                    ctx.fillStyle = floorGlow;
+                    ctx.fillRect(0, 0, W, H);
                     
-                    // Laser Beam Array Spanning Across the Full Screen
-                    const beamCount = 10;
+                    // Crisp Acoustic Laser Light Rays
+                    const beamCount = 8;
                     for (let b = 0; b < beamCount; b++) {
-                      const ang = (b / beamCount) * Math.PI + (audio.currentTime * 0.35);
-                      const len = Math.max(W, H) * 1.5;
+                      const ang = (b / beamCount) * Math.PI + (audio.currentTime * 0.25);
+                      const len = Math.max(W, H) * 1.4;
                       const bx = W / 2 + Math.cos(ang) * len;
-                      const by = H / 2 + Math.sin(ang) * len;
+                      const by = H * 0.55 + Math.sin(ang) * len;
                       ctx.beginPath();
-                      ctx.moveTo(W / 2, H / 2);
+                      ctx.moveTo(W / 2, H * 0.55);
                       ctx.lineTo(bx, by);
-                      ctx.strokeStyle = (b % 2 === 0) ? `rgba(255, 0, 85, ${0.15 + bassEnergy * 0.35})` : `rgba(0, 240, 255, ${0.15 + midEnergy * 0.35})`;
-                      ctx.lineWidth = 1.5 + bassEnergy * 3.5;
+                      ctx.strokeStyle = (b % 2 === 0) ? `rgba(255, 0, 85, ${0.1 + bassEnergy * 0.3})` : `rgba(0, 240, 255, ${0.1 + midEnergy * 0.25})`;
+                      ctx.lineWidth = 1 + bassEnergy * 2.5;
                       ctx.stroke();
                     }
                     
-                    // Expanding Shockwaves
+                    // Expanding Bass Shockwave Rings
+                    if (bassEnergy > 0.65 && isPlaying && Math.random() < 0.35) {
+                      shockwaves.push({ r: 80, alpha: 0.9 });
+                    }
                     for (let s = shockwaves.length - 1; s >= 0; s--) {
                       const sw = shockwaves[s];
                       ctx.beginPath();
-                      ctx.arc(W / 2, H / 2, sw.r, 0, Math.PI * 2);
-                      ctx.strokeStyle = `rgba(255, 0, 85, ${sw.alpha})`;
-                      ctx.lineWidth = 3;
+                      ctx.arc(W / 2, H * 0.55, sw.r, 0, Math.PI * 2);
+                      ctx.strokeStyle = `rgba(255, 0, 85, ${sw.alpha * 0.7})`;
+                      ctx.lineWidth = 2;
                       ctx.stroke();
-                      sw.r += 16;
-                      sw.alpha *= 0.88;
+                      sw.r += 14;
+                      sw.alpha *= 0.89;
                       if (sw.alpha < 0.02) shockwaves.splice(s, 1);
-                    }
-                    
-                    // 48-band Chromatic Equalizer along the Bottom Edge of Screen
-                    const numBars = 48;
-                    const barW = (W / numBars) - 4;
-                    for (let i = 0; i < numBars; i++) {
-                      const bin = Math.floor(i * (freqArray.length / numBars));
-                      const val = (freqArray[bin] || 0) / 255;
-                      const barH = Math.max(6, val * (H * 0.45));
-                      const x = i * (barW + 4) + 2;
-                      
-                      const grad = ctx.createLinearGradient(x, H, x, H - barH);
-                      grad.addColorStop(0, 'rgba(0, 240, 255, 0.85)');
-                      grad.addColorStop(0.65, 'rgba(255, 0, 110, 0.9)');
-                      grad.addColorStop(1, '#FFFFFF');
-                      
-                      ctx.fillStyle = grad;
-                      ctx.fillRect(x, H - barH, barW, barH);
                     }
                   }
                   
-                  // 2. CLOUDY DAYS (FULLSCREEN ETHEREAL TWILIGHT CLOUDSCAPE & GOLDEN GOD-RAYS)
+                  // ================================================================
+                  // 2. CLOUDY DAYS (Ethereal Ambient Twilight Cloudscape & Gentle Dust Motes)
+                  // ================================================================
                   else if (track.genre === 'experimental') {
-                    document.body.style.background = '#050B14';
+                    document.body.style.background = '#050811';
                     
-                    // Twilight Sky Horizon Gradient
+                    // Soft Twilight Gradient
                     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-                    skyGrad.addColorStop(0, '#040711');
-                    skyGrad.addColorStop(0.5, '#081224');
-                    skyGrad.addColorStop(1, '#050B14');
+                    skyGrad.addColorStop(0, '#03050c');
+                    skyGrad.addColorStop(0.5, '#061022');
+                    skyGrad.addColorStop(1, '#050811');
                     ctx.fillStyle = skyGrad;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // A. Volumetric Golden Sunbeams / God-Rays Piercing Down
-                    const rayCount = 7;
-                    for (let r = 0; r < rayCount; r++) {
-                      const rayAngle = (r - rayCount / 2) * 0.12 + Math.sin(audio.currentTime * 0.2 + r) * 0.04;
-                      const rayX = W * 0.5 + Math.tan(rayAngle) * H;
-                      const rayAlpha = (0.06 + midEnergy * 0.2 + highEnergy * 0.15);
-                      
-                      const rayGrad = ctx.createLinearGradient(W * 0.5, 0, rayX, H);
-                      rayGrad.addColorStop(0, `rgba(255, 220, 150, ${rayAlpha * 1.5})`);
-                      rayGrad.addColorStop(0.4, `rgba(0, 229, 255, ${rayAlpha * 0.8})`);
-                      rayGrad.addColorStop(1, 'transparent');
-                      
-                      ctx.beginPath();
-                      ctx.moveTo(W * 0.5 - 20, 0);
-                      ctx.lineTo(W * 0.5 + 20, 0);
-                      ctx.lineTo(rayX + 120, H);
-                      ctx.lineTo(rayX - 120, H);
-                      ctx.closePath();
-                      ctx.fillStyle = rayGrad;
-                      ctx.fill();
-                    }
-                    
-                    // B. Luminous Iridescent Cloud Banks (Teal, Lavender, Silver)
-                    cloudParticles.forEach((p, idx) => {
+                    // Luminous Gaussian Cloud Banks
+                    cloudParticles.forEach(p => {
                       p.x += p.speedX;
                       p.y += p.speedY;
                       if (p.x < -0.2) p.x = 1.2;
@@ -3351,15 +3349,12 @@ const PROJECTS = {
                       
                       const px = p.x * W;
                       const py = p.y * H;
-                      const pulse = 1 + (isPlaying ? midEnergy * 0.5 : 0);
+                      const pulse = 1 + (isPlaying ? midEnergy * 0.35 : 0);
                       const r = p.radius * pulse;
                       
-                      const cloudHues = [190, 260, 210, 280];
-                      const hue = cloudHues[idx % cloudHues.length];
-                      
                       const fogGrad = ctx.createRadialGradient(px, py, 0, px, py, r);
-                      fogGrad.addColorStop(0, `hsla(${hue}, 80%, 65%, ${p.baseAlpha * (isPlaying ? 1.4 : 0.7)})`);
-                      fogGrad.addColorStop(0.55, `hsla(${hue + 20}, 70%, 45%, ${p.baseAlpha * 0.4})`);
+                      fogGrad.addColorStop(0, `hsla(${p.hue}, 80%, 65%, ${p.baseAlpha * (isPlaying ? 1.2 : 0.6)})`);
+                      fogGrad.addColorStop(0.6, `hsla(${p.hue + 20}, 70%, 45%, ${p.baseAlpha * 0.35})`);
                       fogGrad.addColorStop(1, 'transparent');
                       
                       ctx.fillStyle = fogGrad;
@@ -3368,81 +3363,69 @@ const PROJECTS = {
                       ctx.fill();
                     });
                     
-                    // C. Shimmering Raindrop Crystal Particles
-                    if (!window.rainParticles) {
-                      window.rainParticles = Array.from({length: 45}, () => ({
+                    // Gentle Warm Dust Motes
+                    if (!window.dustMotes) {
+                      window.dustMotes = Array.from({length: 40}, () => ({
                         x: Math.random() * W,
                         y: Math.random() * H,
-                        speed: 1.5 + Math.random() * 3,
-                        len: 8 + Math.random() * 16,
-                        alpha: 0.2 + Math.random() * 0.5
+                        r: 1.2 + Math.random() * 2.5,
+                        speedY: -0.3 - Math.random() * 0.5,
+                        speedX: (Math.random() - 0.5) * 0.2,
+                        alpha: 0.15 + Math.random() * 0.35
                       }));
                     }
-                    window.rainParticles.forEach(rp => {
-                      rp.y += (rp.speed + bassEnergy * 4) * speedMultiplier;
-                      if (rp.y > H + 20) {
-                        rp.y = -20;
-                        rp.x = Math.random() * W;
-                      }
+                    window.dustMotes.forEach(dm => {
+                      dm.y += dm.speedY * (1 + midEnergy * 1.5);
+                      dm.x += dm.speedX;
+                      if (dm.y < -10) { dm.y = H + 10; dm.x = Math.random() * W; }
                       
                       ctx.beginPath();
-                      ctx.moveTo(rp.x, rp.y);
-                      ctx.lineTo(rp.x, rp.y + rp.len);
-                      ctx.strokeStyle = `rgba(180, 230, 255, ${rp.alpha * (0.5 + highEnergy * 0.8)})`;
-                      ctx.lineWidth = 1.2;
-                      ctx.stroke();
-                    });
-                    
-                    // D. Liquid Harmonic Horizon Waves
-                    const waveLayers = [
-                      { color: 'rgba(0, 229, 255, 0.4)', speed: 0.5, freq: 0.005, amp: 80, offset: 0 },
-                      { color: 'rgba(157, 78, 221, 0.3)', speed: 0.35, freq: 0.008, amp: 105, offset: 30 },
-                      { color: 'rgba(255, 170, 166, 0.2)', speed: 0.2, freq: 0.004, amp: 125, offset: -30 }
-                    ];
-                    
-                    waveLayers.forEach(w => {
-                      ctx.beginPath();
-                      ctx.moveTo(0, H);
-                      for (let x = 0; x <= W; x += 8) {
-                        const sinWave = Math.sin(x * w.freq + audio.currentTime * w.speed);
-                        const dynamicAmp = w.amp * (0.4 + midEnergy * 0.95 + highEnergy * 0.4);
-                        const y = (H * 0.58) + w.offset + sinWave * dynamicAmp;
-                        ctx.lineTo(x, y);
-                      }
-                      ctx.lineTo(W, H);
-                      ctx.fillStyle = w.color;
+                      ctx.arc(dm.x, dm.y, dm.r * (1 + highEnergy * 0.8), 0, Math.PI * 2);
+                      ctx.fillStyle = `rgba(255, 235, 180, ${dm.alpha * (0.6 + midEnergy * 0.8)})`;
                       ctx.fill();
                     });
+                    
+                    // Smooth Damped Horizon Ribbon
+                    ctx.beginPath();
+                    ctx.moveTo(0, H);
+                    for (let x = 0; x <= W; x += 12) {
+                      const wave = Math.sin(x * 0.004 + audio.currentTime * 0.4) * Math.cos(x * 0.002 - audio.currentTime * 0.2);
+                      const amp = 45 * (0.5 + midEnergy * 0.8);
+                      const y = H * 0.72 + wave * amp;
+                      ctx.lineTo(x, y);
+                    }
+                    ctx.lineTo(W, H);
+                    ctx.fillStyle = 'rgba(0, 229, 255, 0.08)';
+                    ctx.fill();
                   }
                   
-                  // 3. PARADISE (FULLSCREEN CELESTIAL UNIVERSE / COSMIC NEBULA OASIS)
+                  // ================================================================
+                  // 3. PARADISE (Celestial Universe Galaxy Vortex & 3D Warp Stars)
+                  // ================================================================
                   else if (track.genre === 'pop') {
-                    document.body.style.background = '#050508';
+                    document.body.style.background = '#06020D';
                     
-                    // Deep Celestial Space Radial Gradient
-                    const spaceGrad = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, Math.max(W, H) * 0.85);
-                    spaceGrad.addColorStop(0, `rgba(40, 10, 60, ${0.4 + bassEnergy * 0.35})`);
-                    spaceGrad.addColorStop(0.4, `rgba(15, 6, 35, ${0.3 + midEnergy * 0.25})`);
-                    spaceGrad.addColorStop(0.8, '#05020D');
-                    spaceGrad.addColorStop(1, '#020106');
+                    // Cosmic Space Ambient Bloom
+                    const spaceGrad = ctx.createRadialGradient(W / 2, H * 0.55, 40, W / 2, H * 0.55, Math.max(W, H) * 0.85);
+                    spaceGrad.addColorStop(0, `rgba(45, 10, 70, ${0.35 + bassEnergy * 0.3})`);
+                    spaceGrad.addColorStop(0.45, `rgba(15, 6, 35, ${0.25 + midEnergy * 0.2})`);
+                    spaceGrad.addColorStop(1, '#06020D');
                     ctx.fillStyle = spaceGrad;
                     ctx.fillRect(0, 0, W, H);
                     
-                    // 1. Swirling Spiral Galaxy Core
-                    const galaxyAngle = audio.currentTime * 0.2;
-                    const spiralArms = 3;
-                    const pointsPerArm = 40;
+                    // 3-Arm Spiral Galaxy Vortex
+                    const galaxyAngle = audio.currentTime * 0.18;
                     ctx.save();
-                    ctx.translate(W / 2, H / 2);
-                    for (let a = 0; a < spiralArms; a++) {
-                      const armBase = (a * Math.PI * 2) / spiralArms + galaxyAngle;
-                      for (let p = 0; p < pointsPerArm; p++) {
-                        const dist = (p / pointsPerArm) * Math.min(W, H) * 0.55 * (1 + midEnergy * 0.25);
+                    ctx.translate(W / 2, H * 0.55);
+                    for (let a = 0; a < 3; a++) {
+                      const armBase = (a * Math.PI * 2) / 3 + galaxyAngle;
+                      for (let p = 0; p < 35; p++) {
+                        const dist = (p / 35) * Math.min(W, H) * 0.52 * (1 + midEnergy * 0.2);
                         const theta = armBase + (p * 0.14);
                         const gx = Math.cos(theta) * dist;
                         const gy = Math.sin(theta) * dist;
-                        const starSize = (1 - p / pointsPerArm) * 3.5 + (p % 3 === 0 ? 2 : 1) + highEnergy * 2;
-                        const starAlpha = (1 - p / pointsPerArm) * (0.3 + midEnergy * 0.6);
+                        const starSize = (1 - p / 35) * 3.2 + (p % 3 === 0 ? 1.8 : 0.8) + highEnergy * 1.5;
+                        const starAlpha = (1 - p / 35) * (0.25 + midEnergy * 0.5);
                         
                         ctx.beginPath();
                         ctx.arc(gx, gy, Math.max(0.5, starSize), 0, Math.PI * 2);
@@ -3452,17 +3435,16 @@ const PROJECTS = {
                     }
                     ctx.restore();
                     
-                    // 2. 3D Warp Flying Stars
+                    // 3D Flying Warp Starfield
                     if (!window.universeStars) {
-                      window.universeStars = Array.from({length: 160}, () => ({
+                      window.universeStars = Array.from({length: 150}, () => ({
                         x: (Math.random() - 0.5) * 2000,
                         y: (Math.random() - 0.5) * 2000,
                         z: Math.random() * 1000,
                         hue: [180, 290, 45, 330][Math.floor(Math.random() * 4)]
                       }));
                     }
-                    
-                    const starSpeed = (isPlaying ? (3 + bassEnergy * 14) : 0.8) * speedMultiplier;
+                    const starSpeed = (isPlaying ? (2.5 + bassEnergy * 10) : 0.8) * speedMultiplier;
                     window.universeStars.forEach(st => {
                       st.z -= starSpeed;
                       if (st.z <= 1) {
@@ -3470,116 +3452,34 @@ const PROJECTS = {
                         st.x = (Math.random() - 0.5) * 2000;
                         st.y = (Math.random() - 0.5) * 2000;
                       }
-                      
                       const k = 400 / st.z;
                       const px = st.x * k + W / 2;
-                      const py = st.y * k + H / 2;
+                      const py = st.y * k + H * 0.55;
                       
                       if (px >= 0 && px <= W && py >= 0 && py <= H) {
-                        const sz = Math.max(0.8, (1 - st.z / 1000) * 4.5 + highEnergy * 2);
-                        const alpha = (1 - st.z / 1000) * (0.4 + midEnergy * 0.6);
-                        
-                        // Warp streaks on heavy bass
-                        if (bassEnergy > 0.55 && isPlaying) {
-                          const prevK = 400 / (st.z + starSpeed * 2.5);
-                          const prevX = st.x * prevK + W / 2;
-                          const prevY = st.y * prevK + H / 2;
-                          ctx.beginPath();
-                          ctx.moveTo(prevX, prevY);
-                          ctx.lineTo(px, py);
-                          ctx.strokeStyle = `hsla(${st.hue}, 90%, 75%, ${alpha})`;
-                          ctx.lineWidth = sz * 0.8;
-                          ctx.stroke();
-                        } else {
-                          ctx.beginPath();
-                          ctx.arc(px, py, sz, 0, Math.PI * 2);
-                          ctx.fillStyle = `hsla(${st.hue}, 90%, 80%, ${alpha})`;
-                          ctx.fill();
-                        }
+                        const sz = Math.max(0.8, (1 - st.z / 1000) * 4 + highEnergy * 1.8);
+                        const alpha = (1 - st.z / 1000) * (0.35 + midEnergy * 0.55);
+                        ctx.beginPath();
+                        ctx.arc(px, py, sz, 0, Math.PI * 2);
+                        ctx.fillStyle = `hsla(${st.hue}, 90%, 80%, ${alpha})`;
+                        ctx.fill();
                       }
                     });
                     
-                    // 3. Gravitational Cosmic Shockwave Rings on Bass Kicks
-                    if (bassEnergy > 0.65 && isPlaying && Math.random() < 0.45) {
-                      shockwaves.push({ r: 60, alpha: 0.95, color: '#00F5D4' });
+                    // Gravitational Pulse Rings
+                    if (bassEnergy > 0.65 && isPlaying && Math.random() < 0.35) {
+                      shockwaves.push({ r: 60, alpha: 0.9, color: '#00F5D4' });
                     }
                     for (let s = shockwaves.length - 1; s >= 0; s--) {
                       const sw = shockwaves[s];
                       ctx.beginPath();
-                      ctx.arc(W / 2, H / 2, sw.r, 0, Math.PI * 2);
-                      ctx.strokeStyle = sw.color ? `rgba(0, 245, 212, ${sw.alpha})` : `rgba(247, 37, 133, ${sw.alpha})`;
-                      ctx.lineWidth = 2.5;
+                      ctx.arc(W / 2, H * 0.55, sw.r, 0, Math.PI * 2);
+                      ctx.strokeStyle = sw.color ? `rgba(0, 245, 212, ${sw.alpha * 0.6})` : `rgba(247, 37, 133, ${sw.alpha * 0.6})`;
+                      ctx.lineWidth = 2;
                       ctx.stroke();
-                      sw.r += 15;
+                      sw.r += 14;
                       sw.alpha *= 0.90;
                       if (sw.alpha < 0.02) shockwaves.splice(s, 1);
-                    }
-                    
-                    // 4. Shooting Meteors on High Shimmer / Vocals
-                    if (!window.meteors) window.meteors = [];
-                    if (highEnergy > 0.42 && isPlaying && Math.random() < 0.25) {
-                      window.meteors.push({
-                        x: Math.random() * W,
-                        y: Math.random() * (H * 0.4),
-                        len: 120 + Math.random() * 160,
-                        speed: 16 + Math.random() * 14,
-                        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
-                        alpha: 1.0
-                      });
-                    }
-                    for (let m = window.meteors.length - 1; m >= 0; m--) {
-                      const met = window.meteors[m];
-                      const endX = met.x - Math.cos(met.angle) * met.len;
-                      const endY = met.y - Math.sin(met.angle) * met.len;
-                      
-                      const metGrad = ctx.createLinearGradient(met.x, met.y, endX, endY);
-                      metGrad.addColorStop(0, `rgba(255, 255, 255, ${met.alpha})`);
-                      metGrad.addColorStop(0.3, `rgba(255, 209, 102, ${met.alpha * 0.8})`);
-                      metGrad.addColorStop(1, 'transparent');
-                      
-                      ctx.beginPath();
-                      ctx.moveTo(met.x, met.y);
-                      ctx.lineTo(endX, endY);
-                      ctx.strokeStyle = metGrad;
-                      ctx.lineWidth = 2.5;
-                      ctx.stroke();
-                      
-                      met.x += Math.cos(met.angle) * met.speed;
-                      met.y += Math.sin(met.angle) * met.speed;
-                      met.alpha *= 0.94;
-                      if (met.alpha < 0.02 || met.x > W + 200 || met.y > H + 200) {
-                        window.meteors.splice(m, 1);
-                      }
-                    }
-                    
-                    // 5. Starlight Constellation Spectrum Pillars
-                    const numPills = 36;
-                    const pillW = (W / numPills) - 6;
-                    for (let i = 0; i < numPills; i++) {
-                      const bin = Math.floor(i * (freqArray.length / numPills));
-                      const val = (freqArray[bin] || 0) / 255;
-                      const pillH = Math.max(10, (val * 0.75 + midEnergy * 0.35) * (H * 0.48));
-                      const x = i * (pillW + 6) + 3;
-                      const y = H - pillH;
-                      
-                      const pillGrad = ctx.createLinearGradient(x, H, x, y);
-                      pillGrad.addColorStop(0, 'rgba(247, 37, 133, 0.9)');
-                      pillGrad.addColorStop(0.5, 'rgba(114, 9, 183, 0.85)');
-                      pillGrad.addColorStop(0.85, 'rgba(0, 245, 212, 0.95)');
-                      pillGrad.addColorStop(1, '#FFFFFF');
-                      
-                      ctx.fillStyle = pillGrad;
-                      ctx.beginPath();
-                      ctx.roundRect(x, y, pillW, pillH, [pillW / 2, pillW / 2, 3, 3]);
-                      ctx.fill();
-                      
-                      // Diamond Star Crown
-                      if (pillH > 35) {
-                        ctx.fillStyle = '#FFFFFF';
-                        ctx.beginPath();
-                        ctx.arc(x + pillW / 2, y - 4, 2.5 + highEnergy * 2, 0, Math.PI * 2);
-                        ctx.fill();
-                      }
                     }
                   }
                   
@@ -3631,7 +3531,6 @@ const PROJECTS = {
                       label.style.background = t.color;
                       label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
                       shockwaves = [];
-                      confettiParticles = [];
                       startVizLoop();
                     }).catch(e => console.log('Audio switch error:', e));
                   }
@@ -3647,8 +3546,7 @@ const PROJECTS = {
                 tonearm.style.transform = 'rotate(12deg)';
               };
               
-              
-              // KEYBOARD SHORTCUTS FOR DJ STUDIO (Space = Play/Pause, ArrowUp/Down = Volume)
+              // Global Keyboard Shortcuts
               if (!window.djKeyHandlerAttached) {
                 window.djKeyHandlerAttached = true;
                 window.addEventListener('keydown', (e) => {
@@ -3680,10 +3578,12 @@ const PROJECTS = {
                   }
                 });
               }
-
+              
               return;
-            }
-if (id === 'jasmine-album') {
+          }
+
+          // 9. JASMINE CONCEPT ALBUM
+          if (id === 'jasmine-album') {
               const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
