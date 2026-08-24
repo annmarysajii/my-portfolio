@@ -769,6 +769,31 @@ window.toggleTheme = function() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
 
+  // Clear hardcoded inline theme overrides on html element so CSS takes full effect
+  const el = document.documentElement;
+  if (next === 'dark') {
+    el.style.removeProperty('--bg');
+    el.style.removeProperty('--surf');
+    el.style.removeProperty('--ink');
+    el.style.removeProperty('--white');
+    el.style.removeProperty('--line');
+  } else {
+    // Re-apply project-specific light colors if applicable
+    const params = new URLSearchParams(window.location.search);
+    const pId = params.get('id');
+    if (pId === 'gobunny') {
+      el.style.setProperty('--bg', '#FFF2F0');
+      el.style.setProperty('--surf', '#FFFFFF');
+      el.style.setProperty('--ink', '#FF3522');
+      el.style.setProperty('--line', 'rgba(255, 53, 34, 0.2)');
+    } else if (pId === 'green-arrow') {
+      el.style.setProperty('--bg', '#EBF4ED');
+      el.style.setProperty('--surf', '#F4F9F5');
+      el.style.setProperty('--ink', '#2B5E39');
+      el.style.setProperty('--line', 'rgba(43, 94, 57, 0.2)');
+    }
+  }
+
   const icon = document.getElementById('themeIcon');
   if (icon) {
     icon.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon');
@@ -2783,6 +2808,9 @@ const PROJECTS = {
                   background-image: none !important;
                   color: #FFFFFF !important;
                   overflow-x: hidden;
+                  margin: 0;
+                  padding: 0;
+                  width: 100%;
                 }
                 body.dj-studio-mode {
                   background: #020204 !important;
@@ -2802,6 +2830,10 @@ const PROJECTS = {
                 body.dj-studio-mode .nav-logo,
                 body.dj-studio-mode .nav-back { color: #FFFFFF !important; }
                 body.dj-studio-mode .foot { display: none !important; }
+                body.dj-studio-mode .ph-foot { display: none !important; }
+                body.dj-studio-mode #themeBtn {
+                  display: none !important;
+                }
                 
                 /* Fullscreen Fixed Canvas */
                 #global-audio-viz {
@@ -2820,10 +2852,11 @@ const PROJECTS = {
                   width: 100%;
                   max-width: 1200px;
                   margin: 0 auto;
-                  padding: 2.2rem 1.5rem 3.5rem 1.5rem;
+                  padding: 5.5rem 1.5rem 4rem 1.5rem;
                   display: flex;
                   flex-direction: column;
                   align-items: center;
+                  box-sizing: border-box;
                 }
                 
                 /* HUD & Header */
@@ -2865,7 +2898,7 @@ const PROJECTS = {
                 
                 .dj-main-title {
                   font-family: 'Clash Display', sans-serif;
-                  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+                  font-size: clamp(2.2rem, 5vw, 3.8rem);
                   font-weight: 700;
                   letter-spacing: -1.5px;
                   color: #FFFFFF !important;
@@ -2890,6 +2923,7 @@ const PROJECTS = {
                   justify-content: center;
                   width: 100%;
                   margin-top: 1rem;
+                  box-sizing: border-box;
                 }
                 
                 /* TURNTABLE HARDWARE CHASSIS - FROSTED GLASSMORPHISM */
@@ -2908,6 +2942,7 @@ const PROJECTS = {
                   flex-shrink: 0;
                   user-select: none;
                   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                  box-sizing: border-box;
                 }
                 
                 .platter {
@@ -2979,7 +3014,7 @@ const PROJECTS = {
                 #tonearm {
                   position: absolute;
                   top: 22px;
-                  right: 82px; /* Clean gap from volume slider */
+                  right: 82px;
                   width: 16px;
                   height: 185px;
                   background: linear-gradient(to right, #777, #ddd, #888);
@@ -3014,62 +3049,6 @@ const PROJECTS = {
                   border-top: 1px solid #666;
                 }
                 
-                
-                /* Responsive Multi-Device Scaling for DJ Studio */
-                @media (max-width: 768px) {
-                  .dj-main-title {
-                    font-size: 2.1rem !important;
-                    line-height: 1.15 !important;
-                    padding: 0 1rem;
-                  }
-                  .dj-main-subtitle {
-                    font-size: 0.9rem !important;
-                    padding: 0 1rem;
-                  }
-                  .dj-deck-wrapper {
-                    gap: 1.5rem !important;
-                    padding: 0 0.5rem;
-                  }
-                  .turntable-hardware {
-                    width: 350px !important;
-                    max-width: 95vw !important;
-                    height: 300px !important;
-                    border-radius: 20px !important;
-                  }
-                  .platter {
-                    left: 12px !important;
-                    width: 230px !important;
-                    height: 230px !important;
-                  }
-                  #vinyl-disc {
-                    width: 215px !important;
-                    height: 215px !important;
-                  }
-                  #tonearm {
-                    right: 62px !important;
-                    height: 155px !important;
-                  }
-                  .slider-track {
-                    height: 95px !important;
-                  }
-                  .dj-playlist-hardware {
-                    width: 350px !important;
-                    max-width: 95vw !important;
-                  }
-                }
-                
-                @media (min-width: 769px) and (max-width: 1024px) {
-                  .dj-deck-wrapper {
-                    gap: 2rem !important;
-                  }
-                  .turntable-hardware {
-                    width: 400px !important;
-                  }
-                  .dj-playlist-hardware {
-                    width: 400px !important;
-                  }
-                }
-
                 /* Controls Strip */
                 .dj-controls-strip {
                   position: absolute;
@@ -3174,6 +3153,7 @@ const PROJECTS = {
                   flex-direction: column;
                   gap: 1.2rem;
                   transition: all 0.6s ease;
+                  box-sizing: border-box;
                 }
                 
                 .track-card-btn {
@@ -3190,6 +3170,7 @@ const PROJECTS = {
                   background: rgba(255, 255, 255, 0.05);
                   border: 1px solid rgba(255, 255, 255, 0.12);
                   color: #FFFFFF !important;
+                  box-sizing: border-box;
                 }
                 .track-card-btn:hover {
                   transform: translateX(4px);
@@ -3314,13 +3295,281 @@ const PROJECTS = {
                   color: #fff;
                 }
                 
+                /* ================================================================
+                   PERFECT ZERO-SCROLL ALL-IN-ONE MOBILE DJ STUDIO
+                   ================================================================ */
                 @media (max-width: 880px) {
-                  .turntable-hardware { width: 330px; height: 290px; }
-                  .platter { left: 16px; width: 235px; height: 235px; }
-                  #vinyl-disc { width: 220px; height: 220px; }
-                  .slider-track { height: 95px; }
-                  .dj-deck-wrapper { gap: 2rem; }
-                  .keyboard-hints { display: none; }
+                  html, body {
+                    overflow: hidden !important;
+                    height: 100vh !important;
+                    max-height: 100vh !important;
+                    width: 100% !important;
+                  }
+                  body.dj-studio-mode #main,
+                  body.dj-studio-mode .con,
+                  body.dj-studio-mode #dynamic-gallery {
+                    padding: 0 !important;
+                    margin: 0 auto !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    height: 100vh !important;
+                    overflow: hidden !important;
+                    box-sizing: border-box !important;
+                  }
+                  .dj-studio-stage {
+                    padding: 5.2rem 1rem 1.5rem 1rem !important;
+                    min-height: 100vh !important;
+                    width: 100% !important;
+                    max-width: 360px !important;
+                    margin: 0 auto !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    justify-content: flex-start !important;
+                    align-items: center !important;
+                    box-sizing: border-box !important;
+                  }
+                  .dj-hud-header {
+                    margin-bottom: 1.1rem !important;
+                    text-align: center !important;
+                    width: 100% !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    align-items: center !important;
+                  }
+                  .dj-status-badge {
+                    font-size: 0.65rem !important;
+                    padding: 3px 12px !important;
+                    margin-bottom: 0.65rem !important;
+                    letter-spacing: 1.5px !important;
+                  }
+                  .dj-main-title {
+                    font-size: 1.6rem !important;
+                    line-height: 1.15 !important;
+                    margin-bottom: 0.45rem !important;
+                    letter-spacing: -0.5px !important;
+                  }
+                  .dj-main-subtitle {
+                    font-size: 0.76rem !important;
+                    line-height: 1.4 !important;
+                    max-width: 320px !important;
+                    margin: 0 auto !important;
+                    opacity: 0.82 !important;
+                  }
+                  
+                  /* UNIFIED MASTER CONSOLE (ZERO-SCROLL FIT) */
+                  .dj-deck-wrapper {
+                    flex-direction: column !important;
+                    align-items: center !important;
+                    gap: 0 !important;
+                    width: 100% !important;
+                    margin: 0 auto !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
+                    background: rgba(14, 12, 22, 0.72) !important;
+                    backdrop-filter: blur(24px) saturate(180%) !important;
+                    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+                    border-radius: 22px !important;
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.75), inset 0 1px 1px rgba(255,255,255,0.2) !important;
+                    overflow: hidden !important;
+                  }
+                  
+                  /* TOP DECK: FULLY EQUIPPED TURNTABLE (PROPORTIONAL & TIGHT) */
+                  .turntable-hardware {
+                    position: relative !important;
+                    width: 100% !important;
+                    height: 185px !important;
+                    background: transparent !important;
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                    border: none !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    margin: 0 !important;
+                    display: block !important;
+                    overflow: visible !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+                    box-sizing: border-box !important;
+                  }
+                  
+                  /* Platter on the Left */
+                  .platter {
+                    left: 12px !important;
+                    top: 14px !important;
+                    position: absolute !important;
+                    width: 156px !important;
+                    height: 156px !important;
+                    border: 3px solid #363442 !important;
+                    box-shadow: 0 8px 22px rgba(0,0,0,0.75) !important;
+                  }
+                  #vinyl-disc {
+                    width: 142px !important;
+                    height: 142px !important;
+                  }
+                  #vinyl-label {
+                    width: 40% !important;
+                    height: 40% !important;
+                    font-size: 0.48rem !important;
+                    padding: 2px !important;
+                  }
+                  
+                  /* Tonearm positioned right next to the record with live physical needle drop */
+                  #tonearm {
+                    position: absolute !important;
+                    top: 16px !important;
+                    left: 182px !important;
+                    right: auto !important;
+                    height: 122px !important;
+                    width: 10px !important;
+                    transform-origin: 5px 12px !important;
+                    z-index: 15 !important;
+                    transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                  }
+                  .ta-base {
+                    width: 32px !important;
+                    height: 32px !important;
+                    left: -11px !important;
+                    top: 0 !important;
+                  }
+                  .ta-head {
+                    width: 18px !important;
+                    height: 32px !important;
+                    bottom: -6px !important;
+                    left: -4px !important;
+                  }
+                  
+                  /* CONTROLS STRIP (Volume Fader, EQ Filter, 33/45 RPM) on the Right */
+                  .dj-controls-strip {
+                    display: flex !important;
+                    position: absolute !important;
+                    right: 14px !important;
+                    top: 14px !important;
+                    bottom: 14px !important;
+                    flex-direction: column !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
+                    z-index: 12 !important;
+                    width: 48px !important;
+                  }
+                  .fader-wrap {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    align-items: center !important;
+                    gap: 2px !important;
+                  }
+                  .ctrl-label {
+                    font-size: 0.48rem !important;
+                    font-weight: 700 !important;
+                    letter-spacing: 0.5px !important;
+                  }
+                  .slider-track {
+                    height: 52px !important;
+                    width: 6px !important;
+                    border-radius: 3px !important;
+                  }
+                  .slider-knob {
+                    width: 18px !important;
+                    height: 10px !important;
+                    left: -6px !important;
+                    border-radius: 2px !important;
+                  }
+                  .filter-dial {
+                    width: 24px !important;
+                    height: 24px !important;
+                  }
+                  .filter-dial::after {
+                    top: 2px !important;
+                    left: 11px !important;
+                    width: 2px !important;
+                    height: 7px !important;
+                  }
+                  .speed-btn {
+                    padding: 1px 5px !important;
+                    font-size: 0.50rem !important;
+                    border-radius: 4px !important;
+                  }
+                  
+                  /* BOTTOM DECK: COMPACT PLAYLIST */
+                  .track-deck-panel {
+                    position: relative !important;
+                    width: 100% !important;
+                    background: transparent !important;
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                    border: none !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    padding: 0.75rem 0.85rem 0.95rem 0.85rem !important;
+                    z-index: 10 !important;
+                    margin: 0 !important;
+                    box-sizing: border-box !important;
+                  }
+                  .track-deck-panel > div:first-child {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
+                    font-size: 0.85rem !important;
+                    padding-bottom: 0.45rem !important;
+                    margin-bottom: 0.35rem !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                  }
+                  .track-deck-panel > div:first-child span:first-child {
+                    font-size: 0.88rem !important;
+                    font-weight: 700 !important;
+                  }
+                  .track-deck-panel > div:first-child span:last-child {
+                    font-size: 0.62rem !important;
+                    opacity: 0.7 !important;
+                  }
+                  #track-list {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 0.45rem !important;
+                    width: 100% !important;
+                  }
+                  .track-card-btn {
+                    flex: none !important;
+                    width: 100% !important;
+                    padding: 0.55rem 0.70rem !important;
+                    border-radius: 12px !important;
+                    gap: 0.70rem !important;
+                    background: rgba(255, 255, 255, 0.05) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+                    box-sizing: border-box !important;
+                  }
+                  .track-card-btn.active {
+                    background: rgba(255, 255, 255, 0.12) !important;
+                    border-color: var(--track-color, #E8B000) !important;
+                  }
+                  .track-play-icon {
+                    width: 30px !important;
+                    height: 30px !important;
+                    border-radius: 50% !important;
+                    flex-shrink: 0 !important;
+                  }
+                  .track-play-icon svg {
+                    width: 14px !important;
+                    height: 14px !important;
+                  }
+                  .track-title-text {
+                    font-size: 0.82rem !important;
+                    font-weight: 700 !important;
+                    white-space: normal !important;
+                  }
+                  .track-genre-tag {
+                    font-size: 0.65rem !important;
+                    margin-top: 1px !important;
+                  }
+                  .live-wave-bars {
+                    height: 12px !important;
+                  }
+                  .track-time-bar {
+                    margin-top: 4px !important;
+                    height: 2.5px !important;
+                  }
+                  .keyboard-hints {
+                    display: none !important;
+                  }
                 }
               </style>
               
@@ -3522,6 +3771,9 @@ const PROJECTS = {
 
               function syncMasterPlay(playRequested) {
                 const currentTrack = tracks[currentIdx];
+                if (tonearm) {
+                  tonearm.style.transform = playRequested ? 'rotate(32deg)' : 'rotate(10deg)';
+                }
                 if (currentTrack && currentTrack.video && bgVideo) {
                   audio.pause(); // Mute auxiliary audio to avoid double sound
                   if (playRequested) {
@@ -3820,23 +4072,26 @@ const PROJECTS = {
                 };
               });
               
+
               if (vinyl) {
                 let isScratching = false;
                 let lastAngle = 0;
-                vinyl.addEventListener('mousedown', (e) => {
+                
+                function handleScratchStart(clientX, clientY) {
                   initWebAudio();
                   isScratching = true;
                   const rect = vinyl.getBoundingClientRect();
                   const cx = rect.left + rect.width / 2;
                   const cy = rect.top + rect.height / 2;
-                  lastAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
-                });
-                window.addEventListener('mousemove', (e) => {
+                  lastAngle = Math.atan2(clientY - cy, clientX - cx);
+                }
+                
+                function handleScratchMove(clientX, clientY) {
                   if (!isScratching) return;
                   const rect = vinyl.getBoundingClientRect();
                   const cx = rect.left + rect.width / 2;
                   const cy = rect.top + rect.height / 2;
-                  const currentAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
+                  const currentAngle = Math.atan2(clientY - cy, clientX - cx);
                   let delta = currentAngle - lastAngle;
                   if (delta > Math.PI) delta -= Math.PI * 2;
                   if (delta < -Math.PI) delta += Math.PI * 2;
@@ -3847,8 +4102,24 @@ const PROJECTS = {
                   if (med && med.duration) {
                     med.currentTime = Math.max(0, Math.min(med.duration, med.currentTime + delta * 0.4));
                   }
-                });
+                }
+                
+                vinyl.addEventListener('mousedown', (e) => handleScratchStart(e.clientX, e.clientY));
+                window.addEventListener('mousemove', (e) => { if (isScratching) handleScratchMove(e.clientX, e.clientY); });
                 window.addEventListener('mouseup', () => { isScratching = false; });
+                
+                // Mobile Touch Scratching
+                vinyl.addEventListener('touchstart', (e) => {
+                  if (e.touches.length > 0) {
+                    handleScratchStart(e.touches[0].clientX, e.touches[0].clientY);
+                  }
+                }, { passive: true });
+                window.addEventListener('touchmove', (e) => {
+                  if (isScratching && e.touches.length > 0) {
+                    handleScratchMove(e.touches[0].clientX, e.touches[0].clientY);
+                  }
+                }, { passive: true });
+                window.addEventListener('touchend', () => { isScratching = false; });
               }
               
               function updateProgressBar() {
@@ -4362,6 +4633,12 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
     });
     </script>
     
+
+
+
+
+
+
 </body>
 
 </html>

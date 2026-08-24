@@ -1159,7 +1159,7 @@ button{cursor:none;font-family:inherit;}
       <li><a href="#animation">Work</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" style="background:none;border:1.5px solid var(--ink12);border-radius:2px;padding:.3rem .55rem;color:var(--ink5);font-size:.88rem;cursor:pointer;">◐</button></li>
+      <li><button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button></li>
       <li><a href="assets/portfolio-data/PORTFOLIO PDFS/ART DIRECTION PORTFOLIO.pdf" class="nav-cta" download>Resume</a></li>
     </ul>
   </div>
@@ -2136,15 +2136,13 @@ button{cursor:none;font-family:inherit;}
 
   }
 
-  // 3. Theme Toggle
+  // 3. Theme Toggle (Preserve User Preference)
   (function initTheme(){
     const saved = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
-    const btn = document.getElementById('themeBtn');
-    const icon = document.getElementById('themeIcon'); if (icon) icon.setAttribute('data-lucide', saved === 'dark' ? 'sun' : 'moon'); if (window.lucide) lucide.createIcons();
-
-
-
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.setAttribute('data-lucide', saved === 'dark' ? 'sun' : 'moon');
+    if (window.lucide) lucide.createIcons();
   })();
 
   window.toggleTheme = function(){
@@ -2157,21 +2155,10 @@ button{cursor:none;font-family:inherit;}
     if (icon) {
         icon.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon');
         if (window.lucide) lucide.createIcons();
-
-
-
     }
     const sf = document.getElementById('warp-sfx');
     if (sf) { sf.currentTime = 0; sf.play().catch(()=>{}); }
   };
-  
-  // Initialize theme icon on load
-  const curTh = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', curTh);
-  const initIcon = document.getElementById('themeIcon');
-  if (initIcon) {
-      initIcon.setAttribute('data-lucide', curTh === 'dark' ? 'sun' : 'moon');
-  }
 
   
   // 5. Sticky Nav
