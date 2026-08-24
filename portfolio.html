@@ -1889,7 +1889,7 @@ button{cursor:none;font-family:inherit;}
 
     <a href="project.html?id=original-tracks" class="card-img">
 
-     <div class="ph"><div class="ph-i"><i data-lucide="image"></i></div><span class="ph-t">Image coming soon</span></div>
+     <img src="assets/original_tracks_thumb.jpg" alt="Original Tracks — Interactive Sound Lab" loading="lazy">
 
      <div class="ov"><span class="ov-btn">View Project →</span></div>
 
@@ -2212,11 +2212,7 @@ button{cursor:none;font-family:inherit;}
     }
   });
 
-      // 8. Robust Image Preloader with True Shimmer & Decode
-  (function initMediaPreloaders() {
-    const data = window.PORTFOLIO_DATA;
-    if (!data) return;
-
+        (function initMediaPreloaders() {
     const coverOverrides = {
       'keep-yourself-safe': 'assets/vidtogif/KEEP_YOURSELF_SAFE.gif',
       'a-stray-dog': 'assets/vidtogif/A-STRAY-DOG.gif',
@@ -2245,99 +2241,83 @@ button{cursor:none;font-family:inherit;}
       'short-film-score': 'assets/short_film_score_thumb.jpg'
     };
 
-    document.querySelectorAll('a.card-img').forEach(a => {
-      const href = a.getAttribute('href');
+    function loadCard(a) {
+      if (a.dataset.mediaLoaded === 'true') return;
+      const href = a.getAttribute('href') || '';
       let id = null;
-      if (href && href.includes('id=')) {
+      if (href.includes('id=')) {
         id = href.split('id=')[1];
-      } else if (href && href.includes('jasmine_reader.html')) {
+      } else if (href.includes('jasmine_reader.html')) {
         id = 'jasmine-comic';
       }
       
-      if (id && data[id] && data[id].length > 0) {
-        let file = data[id].find(f => f.match(/\.(png|jpe?g|gif|webm|mp4|mov)$/i) || f.match(/youtube\.com|youtu\.be/i)) || data[id][0];
-        if (coverOverrides[id]) file = coverOverrides[id];
-        
-        if (!file) return;
-
-        const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
-
-        if (isYouTube) {
-          const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
-          const ytId = ytMatch ? ytMatch[1] : '';
-          const img = new Image();
-          img.onload = () => {
-            a.innerHTML = '';
-            a.appendChild(img);
-            requestAnimationFrame(() => a.classList.add('media-loaded'));
-          };
-          img.onerror = () => {
-            img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-            a.innerHTML = '';
-            a.appendChild(img);
-            a.classList.add('media-loaded');
-          };
-          img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-        } else if (file.match(/\.(mp4|mov|webm)$/i)) {
-          const video = document.createElement('video');
-          video.autoplay = true;
-          video.loop = true;
-          video.muted = true;
-          video.playsInline = true;
-          video.setAttribute('webkit-playsinline', 'true');
-          const onVideoReady = () => {
-            a.innerHTML = '';
-            a.appendChild(video);
-            requestAnimationFrame(() => a.classList.add('media-loaded'));
-          };
-          video.oncanplay = onVideoReady;
-          video.onloadeddata = onVideoReady;
-          video.onerror = () => a.classList.add('media-loaded');
-          video.src = file;
-          setTimeout(() => a.classList.add('media-loaded'), 800);
-        } else if (file.match(/\.(png|jpe?g|gif)$/i)) {
-          const img = new Image();
-          img.decoding = 'async';
-          
-          const showImage = () => {
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            img.style.display = 'block';
-            a.innerHTML = '';
-            a.appendChild(img);
-            requestAnimationFrame(() => {
-              a.classList.add('media-loaded');
-            });
-          };
-
-          if (img.decode) {
-            img.src = file;
-            img.decode().then(showImage).catch(() => {
-              img.onload = showImage;
-              img.onerror = () => a.classList.add('media-loaded');
-            });
-          } else {
-            img.onload = showImage;
-            img.onerror = () => a.classList.add('media-loaded');
-            img.src = file;
-          }
-        } else if (file.match(/\.(pdf)$/i)) {
-          a.innerHTML = `<div class="ph" style="aspect-ratio:4/3;"><i data-lucide="file-text" class="ph-icon" style="width:32px;height:32px;margin-bottom:.5rem;"></i><span class="ph-label">PDF Document</span></div>`;
-          a.classList.add('media-loaded');
-        } else if (file.match(/\.(mp3|wav|m4a)$/i)) {
-          a.innerHTML = `<div style="width:100%; aspect-ratio:4/3; background: var(--surf); display:flex; align-items:center; justify-content:center; overflow:hidden; border: 1px solid var(--line); border-radius:2px;"><div style="width:100px; height:100px; border-radius:50%; background: #111; position:relative; display:flex; align-items:center; justify-content:center; box-shadow: 2px 4px 12px rgba(0,0,0,0.15);"><div style="position:absolute; inset:8px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:16px; border-radius:50%; border:1px solid #222;"></div><div style="position:absolute; inset:24px; border-radius:50%; border:1px solid #222;"></div><div style="width:34px; height:34px; border-radius:50%; background:#D02F5A; display:flex; align-items:center; justify-content:center;"><div style="width:6px; height:6px; border-radius:50%; background:var(--surf);"></div></div></div></div>`;
-          a.classList.add('media-loaded');
-        }
+      let file = coverOverrides[id];
+      const data = window.PORTFOLIO_DATA;
+      if (!file && data && data[id] && data[id].length > 0) {
+        file = data[id].find(f => f.match(/\.(png|jpe?g|gif|webm|mp4|mov)$/i) || f.match(/youtube\.com|youtu\.be/i)) || data[id][0];
       }
-    });
+      
+      if (!file) return;
+      a.dataset.mediaLoaded = 'true';
 
-    if (window.lucide) window.lucide.createIcons();
+      const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
 
+      if (isYouTube) {
+        const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
+        const ytId = ytMatch ? ytMatch[1] : '';
+        const img = new Image();
+        img.onload = () => {
+          a.innerHTML = '';
+          a.appendChild(img);
+          a.classList.add('media-loaded');
+        };
+        img.onerror = () => {
+          img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+          a.innerHTML = '';
+          a.appendChild(img);
+          a.classList.add('media-loaded');
+        };
+        img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+      } else if (file.match(/\.(mp4|mov|webm)$/i)) {
+        const video = document.createElement('video');
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('webkit-playsinline', 'true');
+        const onVideoReady = () => {
+          a.innerHTML = '';
+          a.appendChild(video);
+          a.classList.add('media-loaded');
+        };
+        video.oncanplay = onVideoReady;
+        video.onloadeddata = onVideoReady;
+        video.onerror = () => a.classList.add('media-loaded');
+        video.src = file;
+        setTimeout(() => a.classList.add('media-loaded'), 600);
+      } else {
+        const img = new Image();
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.display = 'block';
+        img.onload = () => {
+          a.innerHTML = '';
+          a.appendChild(img);
+          a.classList.add('media-loaded');
+        };
+        img.onerror = () => {
+          a.classList.add('media-loaded');
+        };
+        img.src = file;
+      }
+    }
 
-
+    document.querySelectorAll('a.card-img').forEach(loadCard);
+    setInterval(() => {
+      document.querySelectorAll('a.card-img:not([data-media-loaded])').forEach(loadCard);
+    }, 200);
   })();
-
 
   // 10. Interactive Avatar Pop-Out & Responsive Frictionless Dismissal
   (function() {

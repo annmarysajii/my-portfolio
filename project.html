@@ -2061,6 +2061,40 @@ const PROJECTS = {
           if (media.length === 0) {
               gal.innerHTML = `<div class="gallery-hero"><div class="tape tape-tl"></div><div class="tape tape-tr"></div><span class="ph-label">Media coming soon</span></div>`;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2166,6 +2200,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2224,6 +2292,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2267,6 +2369,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2301,6 +2437,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2416,6 +2586,40 @@ const PROJECTS = {
                   };
               }
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2465,6 +2669,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -2492,6 +2730,40 @@ const PROJECTS = {
               
               gal.innerHTML = htmlStr;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -3052,7 +3324,8 @@ const PROJECTS = {
                 }
               </style>
               
-              <canvas id="global-audio-viz"></canvas>
+              <video id="global-video-bg" playsinline muted loop style="position:fixed; inset:0; width:100vw; height:100vh; object-fit:cover; z-index:0; pointer-events:none; opacity:0; transition:opacity 0.6s ease; filter: brightness(0.75) contrast(1.05);"></video>
+              <canvas id="global-audio-viz" style="position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none;"></canvas>
               <canvas id="paradise-three-canvas" style="position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; display:none;"></canvas>
               
               <div class="dj-studio-stage">
@@ -3129,25 +3402,28 @@ const PROJECTS = {
               const tracks = [
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', 
+                  video: null,
                   name: 'Club Got Boots', 
                   genre: 'club', 
-                  tag: '128 BPM · Generative Light Architecture · Rave Mood', 
+                  tag: '128 BPM', 
                   color: '#00FF66',
                   glow: 'rgba(0, 255, 102, 0.5)'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Cloudy days.m4a', 
+                  video: 'assets/portfolio-data/music_video/cloudydays_stream.mp4',
                   name: 'Cloudy Days', 
                   genre: 'experimental', 
-                  tag: '84 BPM · Fluid Glass Dynamics · Melancholic Bokeh', 
+                  tag: '84 BPM', 
                   color: '#38BDF8',
                   glow: 'rgba(56, 189, 248, 0.45)'
                 },
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a', 
+                  video: 'assets/portfolio-data/music_video/paradise_stream.mp4',
                   name: 'Paradise', 
                   genre: 'pop', 
-                  tag: '118 BPM · Wong Kar-wai Sunset Drive · Step-Printing', 
+                  tag: '118 BPM', 
                   color: '#FF007F',
                   glow: 'rgba(255, 0, 127, 0.5)'
                 }
@@ -3197,6 +3473,98 @@ const PROJECTS = {
               const speedBtn = document.getElementById('speed-btn');
               
               let animRunning = false;
+
+              // ================================================================
+              // ZERO-LAG UNIFIED MEDIA CONTROLLER (HARDWARE AV LOCKSTEP)
+              // ================================================================
+              const bgVideo = document.getElementById('global-video-bg');
+              
+              function getActiveMedia() {
+                const currentTrack = tracks[currentIdx];
+                return (currentTrack && currentTrack.video && bgVideo) ? bgVideo : audio;
+              }
+              
+              function loadTrackVideo(idx) {
+                if (!bgVideo) return;
+                const t = tracks[idx];
+                if (t && t.video) {
+                  if (!bgVideo.src.includes(encodeURI(t.video)) && !bgVideo.src.endsWith(t.video)) {
+                    bgVideo.src = encodeURI(t.video);
+                    bgVideo.load();
+                  }
+                  bgVideo.muted = false; // Video provides native hardware audio for 0ms lag
+                  bgVideo.volume = audio.volume;
+                } else {
+                  bgVideo.pause();
+                  bgVideo.muted = true;
+                }
+              }
+              
+              
+              function updatePlayIcons() {
+                const active = getActiveMedia();
+                const isPlaying = !active.paused && !active.ended && active.currentTime > 0;
+                
+                tracks.forEach((t, i) => {
+                  const btn = document.getElementById(`tbtn-${i}`);
+                  const icon = document.getElementById(`ticon-${i}`);
+                  if (!btn || !icon) return;
+                  
+                  if (i === currentIdx && isPlaying) {
+                    btn.classList.add('playing');
+                    icon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.5"/><rect x="14" y="4" width="4" height="16" rx="1.5"/></svg>`;
+                  } else {
+                    btn.classList.remove('playing');
+                    icon.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>`;
+                  }
+                });
+              }
+
+              function syncMasterPlay(playRequested) {
+                const currentTrack = tracks[currentIdx];
+                if (currentTrack && currentTrack.video && bgVideo) {
+                  audio.pause(); // Mute auxiliary audio to avoid double sound
+                  if (playRequested) {
+                    bgVideo.volume = audio.volume;
+                    bgVideo.muted = audio.muted || audio.volume <= 0.01;
+                    bgVideo.play().then(() => updatePlayIcons()).catch(e => console.warn('Video play note:', e));
+                  } else {
+                    bgVideo.pause();
+                    updatePlayIcons();
+                  }
+                } else {
+                  if (bgVideo) bgVideo.pause();
+                  if (playRequested) {
+                    audio.play().then(() => updatePlayIcons()).catch(e => console.warn('Audio play note:', e));
+                  } else {
+                    audio.pause();
+                    updatePlayIcons();
+                  }
+                }
+                setTimeout(updatePlayIcons, 50);
+              }
+              loadTrackVideo(currentIdx);
+              
+              // Hook video sync and icon update to audio/video events
+              audio.addEventListener('play', () => { syncVideoState(true); updatePlayIcons(); });
+              audio.addEventListener('pause', () => { syncVideoState(false); updatePlayIcons(); });
+              if (bgVideo) {
+                bgVideo.addEventListener('play', () => updatePlayIcons());
+                bgVideo.addEventListener('pause', () => updatePlayIcons());
+              }
+              audio.addEventListener('seeking', () => {
+                if (bgVideo && tracks[currentIdx] && tracks[currentIdx].video) {
+                  bgVideo.currentTime = audio.currentTime;
+                }
+              });
+              audio.addEventListener('timeupdate', () => {
+                if (bgVideo && tracks[currentIdx] && tracks[currentIdx].video && !bgVideo.paused) {
+                  if (Math.abs(bgVideo.currentTime - audio.currentTime) > 0.25) {
+                    bgVideo.currentTime = audio.currentTime;
+                  }
+                }
+              });
+
               let vRot = 0;
               let speedMultiplier = 1.0;
               
@@ -3210,24 +3578,32 @@ const PROJECTS = {
               
               function initWebAudio() {
                 try {
-                  if (!audioCtx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) {
-                      audioCtx = new AudioContext();
-                      analyser = audioCtx.createAnalyser();
-                      analyser.fftSize = 512; // 256 frequency bins
-                      analyser.smoothingTimeConstant = 0.75;
-                      freqData = new Uint8Array(analyser.frequencyBinCount);
-                      
-                      if (!audioSrcNode && audio) {
-                        audioSrcNode = audioCtx.createMediaElementSource(audio);
-                        audioSrcNode.connect(analyser);
-                        analyser.connect(audioCtx.destination);
-                      }
-                    }
+                  const AudioContext = window.AudioContext || window.webkitAudioContext;
+                  if (!audioCtx && AudioContext) {
+                    audioCtx = new AudioContext();
                   }
                   if (audioCtx && audioCtx.state === 'suspended') {
                     audioCtx.resume();
+                  }
+                  
+                  // Chromium/WebKit blocks createMediaElementSource on file:// URLs (outputs zeroes / mutes audio)
+                  // On file:// we keep native direct audio speaker output; on http/https we connect the live AnalyserNode
+                  const isLocalFile = (window.location.protocol === 'file:');
+                  if (!isLocalFile && audioCtx && !analyser) {
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 512;
+                    analyser.smoothingTimeConstant = 0.60;
+                    freqData = new Uint8Array(analyser.frequencyBinCount);
+                    
+                    if (!audioSrcNode && audio) {
+                      try {
+                        audioSrcNode = audioCtx.createMediaElementSource(audio);
+                        audioSrcNode.connect(analyser);
+                        analyser.connect(audioCtx.destination);
+                      } catch (e) {
+                        console.warn('AudioSource routing note:', e);
+                      }
+                    }
                   }
                 } catch (e) {
                   console.warn('Web Audio note:', e);
@@ -3254,24 +3630,42 @@ const PROJECTS = {
               // 2. DATA STRUCTURES FOR THE 3 SCENES
               // ================================================================
               
-              // A. Club Got Boots — 10x6 Disco Light-Square Grid
+              // A. Club Got Boots — 10x6 Instrument Frequency-Strata Light Grid
+              // Rows represent physical audio frequency spectrum (Bottom = Sub-Bass -> Top = Hi-Hats/Air)
+              // Columns represent fine sub-bands and stereo spread within each instrument register
               const gridCols = 10;
               const gridRows = 6;
               const discoSquares = [];
+              
+              // Frequency register descriptions per row (Row 5 at bottom = sub-bass, Row 0 at top = air)
+              const rowBands = [
+                { row: 0, name: 'Air / Ultra-Treble', minBin: 170, maxBin: 255, attack: 0.55, decay: 0.09 },
+                { row: 1, name: 'Hi-Hats / Shakers', minBin: 110, maxBin: 170, attack: 0.60, decay: 0.08 },
+                { row: 2, name: 'Vocals / Lead Synths', minBin: 55, maxBin: 110, attack: 0.50, decay: 0.08 },
+                { row: 3, name: 'Chords / Snare Body', minBin: 25, maxBin: 55, attack: 0.50, decay: 0.08 },
+                { row: 4, name: 'Bassline / Low Groove', minBin: 8, maxBin: 25, attack: 0.52, decay: 0.07 },
+                { row: 5, name: 'Kick / 808 Sub-Bass', minBin: 1, maxBin: 8, attack: 0.65, decay: 0.06 }
+              ];
+              
               for (let r = 0; r < gridRows; r++) {
+                const rInfo = rowBands[r];
                 for (let c = 0; c < gridCols; c++) {
-                  // Distance from center (0 = center, 1 = corner)
-                  const dc = Math.hypot((c - (gridCols - 1) / 2) / (gridCols / 2), (r - (gridRows - 1) / 2) / (gridRows / 2));
-                  let band = 'treble';
-                  if (dc < 0.45) band = 'bass';
-                  else if (dc < 0.85) band = 'mid';
+                  // Sub-bin partition across the 10 columns for granular per-column reactivity
+                  const binRange = (rInfo.maxBin - rInfo.minBin) / gridCols;
+                  const startBin = Math.floor(rInfo.minBin + c * binRange);
+                  const endBin = Math.max(startBin + 1, Math.floor(startBin + binRange));
+                  
+                  const isCenterKick = (r === 5 || r === 4) && (c >= 3 && c <= 6);
                   
                   discoSquares.push({
                     col: c,
                     row: r,
-                    band: band,
-                    distCenter: dc,
-                    smoothVal: 0.18,
+                    startBin: startBin,
+                    endBin: endBin,
+                    isKickCore: isCenterKick,
+                    attack: rInfo.attack,
+                    decay: rInfo.decay,
+                    smoothed: 0.0,
                     flashBoost: 0.0
                   });
                 }
@@ -3317,6 +3711,25 @@ const PROJECTS = {
               // 3. MAIN RENDER LOOP
               // ================================================================
               let animTime = 0;
+              // ================================================================
+              // PRO AUDIO DSP ENGINE: ROLLING AVERAGE ONSET & EQUAL-LOUDNESS
+              // ================================================================
+              const bassHistory = [];
+              const trebleHistory = [];
+              let lastKickTime = 0;
+              let lastSnareTime = 0;
+              
+              // Perceptual Equal-Loudness (A-Weighting) Multipliers per Row (Row 0=Air to Row 5=Sub)
+              const rowGains = [1.80, 1.65, 1.35, 1.20, 1.30, 1.15];
+              // Instrument Stratum Chromatic Signatures (Row 0=Air to Row 5=Sub)
+              const rowColors = [
+                { primary: '#A78BFA', mid: 'rgba(167, 139, 250, 0.50)', dark: 'rgba(50, 30, 90, 0.05)', label: 'AIR // 16k', labelColor: 'rgba(167, 139, 250, 0.60)' },
+                { primary: '#00E5FF', mid: 'rgba(0, 229, 255, 0.50)',   dark: 'rgba(0, 50, 70, 0.05)',   label: 'HATS // 8k', labelColor: 'rgba(0, 229, 255, 0.60)' },
+                { primary: '#FF007F', mid: 'rgba(255, 0, 127, 0.50)',   dark: 'rgba(70, 0, 35, 0.05)',   label: 'LEAD // 3k', labelColor: 'rgba(255, 0, 127, 0.60)' },
+                { primary: '#FFB700', mid: 'rgba(255, 183, 0, 0.50)',   dark: 'rgba(70, 50, 0, 0.05)',   label: 'CHORD // 1k', labelColor: 'rgba(255, 183, 0, 0.60)' },
+                { primary: '#00FF88', mid: 'rgba(0, 255, 136, 0.50)',   dark: 'rgba(0, 60, 30, 0.05)',   label: 'BASS // 200', labelColor: 'rgba(0, 255, 136, 0.60)' },
+                { primary: '#00FF55', mid: 'rgba(0, 255, 85, 0.55)',    dark: 'rgba(0, 50, 20, 0.05)',   label: 'SUB // 40Hz', labelColor: 'rgba(0, 255, 85, 0.70)' }
+              ];
               
               // Initial deck setup
               audio.src = encodeURI(tracks[currentIdx].file);
@@ -3351,7 +3764,9 @@ const PROJECTS = {
                   let y = e.clientY - rect.top;
                   y = Math.max(0, Math.min(y, rect.height));
                   let vol = 1 - (y / rect.height);
-                  audio.volume = Math.max(0, Math.min(1, vol));
+                  const clampedVol = Math.max(0, Math.min(1, vol));
+                  audio.volume = clampedVol;
+                  if (bgVideo) bgVideo.volume = clampedVol;
                   volKnob.style.top = `${y}px`;
                 };
                 volSlider.addEventListener('mousedown', (e) => { isDraggingVol = true; updateVol(e); });
@@ -3379,16 +3794,14 @@ const PROJECTS = {
                 if (!btn) return;
                 btn.onclick = () => {
                   initWebAudio();
+                  const active = getActiveMedia();
                   if (currentIdx === i) {
-                    if (audio.paused) {
-                      audio.volume = 1.0;
-                      audio.muted = false;
-                      audio.play().then(() => {
-                        btn.classList.add('playing');
-                        label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
-                      }).catch(err => console.warn(err));
+                    if (active.paused) {
+                      syncMasterPlay(true);
+                      btn.classList.add('playing');
+                      label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
                     } else {
-                      audio.pause();
+                      syncMasterPlay(false);
                       btn.classList.remove('playing');
                       label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PAUSED</span>';
                     }
@@ -3396,13 +3809,13 @@ const PROJECTS = {
                     document.querySelectorAll('.track-card-btn').forEach(b => b.classList.remove('active', 'playing'));
                     btn.classList.add('active', 'playing');
                     currentIdx = i;
-                    audio.src = encodeURI(t.file);
-                    audio.volume = 1.0;
-                    audio.muted = false;
-                    audio.play().then(() => {
-                      label.style.background = t.color;
-                      label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
-                    }).catch(err => console.warn(err));
+                    loadTrackVideo(i);
+                    if (!t.video) {
+                      audio.src = encodeURI(t.file);
+                    }
+                    syncMasterPlay(true);
+                    label.style.background = t.color;
+                    label.innerHTML = t.name.toUpperCase() + '<br><span style="font-size:0.5rem;opacity:0.8;">PLAYING</span>';
                   }
                 };
               });
@@ -3430,20 +3843,24 @@ const PROJECTS = {
                   vRot += delta * (180 / Math.PI);
                   vinyl.style.transform = `rotate(${vRot}deg)`;
                   lastAngle = currentAngle;
-                  if (audio.duration) {
-                    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + delta * 0.4));
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, Math.min(med.duration, med.currentTime + delta * 0.4));
                   }
                 });
                 window.addEventListener('mouseup', () => { isScratching = false; });
               }
               
-              audio.ontimeupdate = () => {
-                if (currentIdx !== -1 && audio.duration) {
-                  const pct = (audio.currentTime / audio.duration) * 100;
+              function updateProgressBar() {
+                const med = getActiveMedia();
+                if (med && med.duration && currentIdx !== -1) {
+                  const pct = (med.currentTime / med.duration) * 100;
                   const prog = document.getElementById(`tprog-${currentIdx}`);
                   if (prog) prog.style.width = pct + '%';
                 }
-              };
+              }
+              audio.ontimeupdate = updateProgressBar;
+              if (bgVideo) bgVideo.ontimeupdate = updateProgressBar;
               
               function startVizLoop() {
                 if (animRunning) return;
@@ -3468,8 +3885,9 @@ const PROJECTS = {
                   }
                   
                   const track = tracks[currentIdx];
-                  const isPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
-                  const cTime = isPlaying ? audio.currentTime : (animTime * 0.016);
+                  const activeMedia = getActiveMedia();
+                  const isPlaying = !activeMedia.paused && !activeMedia.ended && activeMedia.currentTime > 0;
+                  const cTime = isPlaying ? activeMedia.currentTime : (animTime * 0.016);
                   
                   animTime += 1;
                   
@@ -3532,252 +3950,293 @@ const PROJECTS = {
                   ctx.globalCompositeOperation = 'source-over';
                   
                   // ================================================================
-                  // 1. CLUB GOT BOOTS — DIMMED DISCO LIGHT-SQUARE GRID (RAVE LIGHTING)
+                  // 1. CLUB GOT BOOTS — IMMERSIVE RAVE LIGHT ARCHITECTURE (STAGE & LASER)
+                  // ================================================================
+                  // ================================================================
+                  // 1. CLUB GOT BOOTS — HARMONIC CHROMATIC RAVE STAGE (TOUCHDESIGNER GRADE)
+                  // ================================================================
+                  // ================================================================
+                  // 1. CLUB GOT BOOTS — BOILER ROOM / RAVE LASER HORIZON & OSCILLOSCOPE STAGE
                   // ================================================================
                   if (track.genre === 'club') {
-                    // Dark base
-                    ctx.fillStyle = '#030805';
+                    // Deep warehouse carbon black
+                    ctx.fillStyle = '#020403';
                     ctx.fillRect(0, 0, W, H);
                     
-                    // Trigger center flash on bass hit
-                    if (isBassHit) {
-                      discoSquares.forEach(sq => {
-                        if (sq.distCenter < 0.5) {
-                          sq.flashBoost = 0.45 * (1.0 - sq.distCenter / 0.5);
-                        }
-                      });
+                    const activeGain = (audio.muted || audio.volume <= 0.01) ? 0 : audio.volume;
+                    
+                    // 1. Audio Energy Extraction from Real FFT Data
+                    let subEnergy = 0;    // Kick / Sub (40Hz)
+                    let bassEnergy = 0;   // Bassline (150Hz)
+                    let midEnergy = 0;    // Chords / Claps (1kHz)
+                    let leadEnergy = 0;   // Leads (3kHz)
+                    let hatEnergy = 0;    // Hi-Hats (8kHz)
+                    let airEnergy = 0;    // Air / Sizzle (16kHz)
+                    
+                    if (freqData && isPlaying && freqData[10] > 0) {
+                      // Live Web Audio AnalyserNode (when active on http)
+                      let sSum = 0, bSum = 0, mSum = 0, hSum = 0;
+                      for (let b = 1; b <= 6; b++) sSum += freqData[b];
+                      for (let b = 7; b <= 20; b++) bSum += freqData[b];
+                      for (let b = 21; b <= 70; b++) mSum += freqData[b];
+                      for (let b = 71; b <= 200; b++) hSum += freqData[b];
+                      subEnergy = (sSum / 6) / 255.0;
+                      bassEnergy = (bSum / 14) / 255.0;
+                      midEnergy = (mSum / 50) / 255.0;
+                      hatEnergy = (hSum / 130) / 255.0;
+                    } else if (isPlaying && window.TRACK_SPECTRUM && window.TRACK_SPECTRUM['club']) {
+                      const cData = window.TRACK_SPECTRUM['club'];
+                      const fIdx = Math.floor(audio.currentTime * cData.fps);
+                      if (cData.frames && fIdx < cData.frames.length) {
+                        const f = cData.frames[fIdx];
+                        airEnergy = (f[0] || 0) * 1.5;
+                        hatEnergy = (f[1] || 0) * 1.4;
+                        leadEnergy = (f[2] || 0) * 1.2;
+                        midEnergy = (f[3] || 0) * 1.1;
+                        bassEnergy = (f[4] || 0) * 1.2;
+                        subEnergy = (f[5] || 0) * 1.3;
+                      }
                     }
                     
-                    const marginX = W * 0.06;
-                    const marginY = H * 0.08;
-                    const gridW = W - marginX * 2;
-                    const gridH = H - marginY * 2;
-                    const cellW = gridW / gridCols;
-                    const cellH = gridH / gridRows;
-                    const gap = Math.max(4, Math.min(cellW, cellH) * 0.1);
+                    subEnergy = Math.max(0, Math.min(1.0, subEnergy * activeGain));
+                    bassEnergy = Math.max(0, Math.min(1.0, bassEnergy * activeGain));
+                    midEnergy = Math.max(0, Math.min(1.0, midEnergy * activeGain));
+                    hatEnergy = Math.max(0, Math.min(1.0, hatEnergy * activeGain));
+                    airEnergy = Math.max(0, Math.min(1.0, airEnergy * activeGain));
                     
-                    discoSquares.forEach(sq => {
-                      // Decay flash boost over ~300ms
-                      sq.flashBoost = Math.max(0, sq.flashBoost - 0.05);
-                      
-                      // Map square to assigned frequency band
-                      let bandVal = (sq.band === 'bass') ? smoothBass : ((sq.band === 'mid') ? smoothMid : smoothTreble);
-                      
-                      // Target opacity range ~0.15 - 0.60
-                      let targetOpacity = 0.15 + bandVal * 0.45 + sq.flashBoost;
-                      targetOpacity = Math.max(0.15, Math.min(0.75, targetOpacity));
-                      sq.smoothVal = applyAttackDecay(targetOpacity, sq.smoothVal, 0.4, 0.1);
-                      
-                      // Scale range ~0.97 - 1.05
-                      const scale = 0.97 + (sq.smoothVal - 0.15) * 0.16;
-                      
-                      const cx = marginX + sq.col * cellW + cellW / 2;
-                      const cy = marginY + sq.row * cellH + cellH / 2;
-                      const sw = (cellW - gap) * scale;
-                      const sh = (cellH - gap) * scale;
-                      
-                      // Draw soft feathered square via canvas radial gradient
-                      const rad = Math.max(sw, sh) * 0.7;
-                      const sqGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
-                      
-                      if (sq.flashBoost > 0.1) {
-                        sqGrad.addColorStop(0, `rgba(230, 255, 240, ${sq.smoothVal})`);
-                        sqGrad.addColorStop(0.5, `rgba(0, 255, 102, ${sq.smoothVal * 0.7})`);
-                        sqGrad.addColorStop(1, `rgba(0, 40, 16, ${sq.smoothVal * 0.15})`);
-                      } else {
-                        sqGrad.addColorStop(0, `rgba(0, 255, 102, ${sq.smoothVal})`);
-                        sqGrad.addColorStop(0.6, `rgba(0, 180, 70, ${sq.smoothVal * 0.5})`);
-                        sqGrad.addColorStop(1, `rgba(2, 20, 8, ${sq.smoothVal * 0.1})`);
-                      }
-                      
-                      ctx.fillStyle = sqGrad;
-                      ctx.beginPath();
-                      ctx.roundRect(cx - sw / 2, cy - sh / 2, sw, sh, 6);
-                      ctx.fill();
-                    });
-                  }
-                  
-                  // ================================================================
-                  // 2. CLOUDY DAYS — CENTER GRAY CIRCLE WITH MOVING WAVES
-                  // ================================================================
-                  else if (track.genre === 'experimental') {
-                    // Muted, melancholic background
-                    ctx.fillStyle = '#0B0D12';
-                    ctx.fillRect(0, 0, W, H);
+                    // 2. Rolling Average Kick Onset Detection (Moving Window)
+                    bassHistory.push(subEnergy);
+                    if (bassHistory.length > 30) bassHistory.shift();
+                    const avgBass = bassHistory.reduce((a, b) => a + b, 0) / (bassHistory.length || 1);
                     
-                    const centerX = W / 2;
-                    const centerY = H * 0.48;
-                    const baseRadius = Math.min(W, H) * 0.16;
+                    let kickPunch = 0;
+                    const isDynamicKick = (subEnergy > avgBass * 1.28 + 0.06) && (nowMs - lastKickTime > 200) && activeGain > 0;
+                    if (isDynamicKick) {
+                      lastKickTime = nowMs;
+                    }
                     
-                    // Wave speed & amplitude modulated by smoothed mid band (narrow calm range)
-                    const midFactor = Math.max(0, Math.min(1.0, smoothMid));
-                    const waveSpeed = 0.008 + midFactor * 0.012; // slow gentle ripple
+                    const timeSinceKick = nowMs - lastKickTime;
+                    if (timeSinceKick < 350 && activeGain > 0) {
+                      kickPunch = (1.0 - (timeSinceKick / 350));
+                      kickPunch = Math.pow(kickPunch, 2.0); // Snappy exponential decay
+                    }
                     
-                    // Concentric Wave Rings Radiating Outward
+                    // Smooth continuous bands for fluid motion
+                    smoothBass = applyAttackDecay(subEnergy, smoothBass, 0.85, 0.12);
+                    smoothMid = applyAttackDecay(midEnergy, smoothMid, 0.70, 0.08);
+                    smoothTreble = applyAttackDecay(hatEnergy, smoothTreble, 0.90, 0.16);
+                    
+                    // 3. PERSPECTIVE LASER HORIZON WIREFRAME (Floor & Ceiling Grid)
+                    const horizonY = H * 0.52;
+                    const fov = Math.min(W, H) * 0.85;
+                    const gridSpeed = (cTime * 180) % 100;
+                    
                     ctx.save();
-                    cloudyRings.forEach(ring => {
-                      ring.phase += waveSpeed;
-                      const currentR = baseRadius + ((ring.phase % 1.0) * (Math.min(W, H) * 0.45));
-                      const progress = (currentR - baseRadius) / (Math.min(W, H) * 0.45);
-                      const ringAlpha = (1.0 - progress) * (0.12 + midFactor * 0.18);
+                    
+                    // Perspective Floor Lines
+                    const numVLines = 18;
+                    for (let i = -numVLines / 2; i <= numVLines / 2; i++) {
+                      const xNorm = i / (numVLines / 2);
+                      const topX = W / 2 + xNorm * (W * 0.15);
+                      const botX = W / 2 + xNorm * (W * 1.15);
                       
+                      const lineAlpha = (1.0 - Math.abs(xNorm) * 0.6) * (0.08 + smoothBass * 0.18 + kickPunch * 0.25);
+                      ctx.strokeStyle = kickPunch > 0.3 ? `rgba(235, 255, 245, ${lineAlpha})` : `rgba(0, 255, 102, ${lineAlpha})`;
+                      ctx.lineWidth = 1;
                       ctx.beginPath();
-                      ctx.arc(centerX, centerY, currentR, 0, Math.PI * 2);
-                      ctx.strokeStyle = `rgba(160, 196, 226, ${ringAlpha})`;
-                      ctx.lineWidth = 1.5 + midFactor * 1.0;
+                      ctx.moveTo(topX, horizonY);
+                      ctx.lineTo(botX, H);
                       ctx.stroke();
-                    });
+                    }
                     
-                    // Center Gray Circle (Feathered via Canvas Radial Gradient)
-                    const coreGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, baseRadius * 1.3);
-                    coreGrad.addColorStop(0, '#262933');
-                    coreGrad.addColorStop(0.65, '#1A1C24');
-                    coreGrad.addColorStop(1, 'transparent');
+                    // Horizontal Depth Rings (Moving forward in perspective)
+                    for (let d = 1; d <= 8; d++) {
+                      const z = (d * 50 - gridSpeed) / 400;
+                      if (z > 0.02 && z < 1.0) {
+                        const y = horizonY + Math.pow(z, 2.2) * (H - horizonY);
+                        const hAlpha = (1.0 - z) * z * (0.15 + smoothBass * 0.35 + kickPunch * 0.40);
+                        ctx.strokeStyle = `rgba(0, 255, 102, ${hAlpha})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(W, y);
+                        ctx.stroke();
+                      }
+                    }
                     
-                    ctx.fillStyle = coreGrad;
-                    ctx.beginPath();
-                    ctx.arc(centerX, centerY, baseRadius * 1.3, 0, Math.PI * 2);
-                    ctx.fill();
                     ctx.restore();
                     
-                    // Light Speckled Pastel Noise Dots (Density/Shimmer tied to Treble)
+                    // 4. KINETIC AUDIO OSCILLOSCOPE WAVEFORM RIBBON (Across the Horizon)
                     ctx.save();
-                    const trebleFactor = Math.max(0, Math.min(1.0, smoothTreble));
-                    cloudyDots.forEach(dot => {
-                      const shimmer = Math.sin(animTime * 0.03 + dot.phase);
-                      const dotAlpha = dot.baseAlpha * (0.8 + trebleFactor * 0.6) + shimmer * 0.08;
-                      const dx = dot.xRel * W;
-                      const dy = dot.yRel * H;
+                    const numWavePoints = 120;
+                    const waveAmp = (25 + smoothBass * 80 + kickPunch * 60) * activeGain;
+                    
+                    // Sub-Bass Glow Ribbon
+                    ctx.beginPath();
+                    for (let i = 0; i <= numWavePoints; i++) {
+                      const wx = (i / numWavePoints) * W;
+                      const normX = (i / numWavePoints - 0.5) * 2;
+                      const envelope = Math.cos(normX * Math.PI * 0.5); // Center taper
                       
-                      ctx.fillStyle = dot.color;
-                      ctx.globalAlpha = Math.max(0.05, Math.min(0.55, dotAlpha));
-                      ctx.beginPath();
-                      ctx.arc(dx, dy, dot.r * (1.0 + trebleFactor * 0.3), 0, Math.PI * 2);
-                      ctx.fill();
-                    });
+                      const freqWave = Math.sin(i * 0.35 + cTime * 8.0) * (smoothMid * 0.6);
+                      const kickWave = Math.sin(i * 0.15 - cTime * 12.0) * (smoothBass * 0.8);
+                      const hatSpark = (Math.random() - 0.5) * (smoothTreble * 18);
+                      
+                      const wy = horizonY + (freqWave + kickWave) * waveAmp * envelope + hatSpark;
+                      if (i === 0) ctx.moveTo(wx, wy);
+                      else ctx.lineTo(wx, wy);
+                    }
+                    
+                    ctx.strokeStyle = kickPunch > 0.2 ? `rgba(245, 255, 250, ${0.4 + kickPunch * 0.5})` : `rgba(0, 255, 102, ${0.25 + smoothBass * 0.45})`;
+                    ctx.lineWidth = 2.0 + kickPunch * 1.5;
+                    ctx.stroke();
                     ctx.restore();
+                    
+                    // 5. TRANSIENT LASER HORIZON BEAM ON BEAT DROPS
+                    if (kickPunch > 0.05 && activeGain > 0) {
+                      ctx.save();
+                      // Intense Core Laser Line
+                      ctx.strokeStyle = `rgba(255, 255, 255, ${kickPunch * 0.85})`;
+                      ctx.lineWidth = 2.0;
+                      ctx.beginPath();
+                      ctx.moveTo(0, horizonY);
+                      ctx.lineTo(W, horizonY);
+                      ctx.stroke();
+                      
+                      // Volumetric Laser Haze
+                      const laserHaze = ctx.createLinearGradient(0, horizonY - 40 * kickPunch, 0, horizonY + 40 * kickPunch);
+                      laserHaze.addColorStop(0, 'rgba(0, 255, 102, 0)');
+                      laserHaze.addColorStop(0.5, `rgba(0, 255, 102, ${kickPunch * 0.35})`);
+                      laserHaze.addColorStop(1, 'rgba(0, 255, 102, 0)');
+                      ctx.fillStyle = laserHaze;
+                      ctx.fillRect(0, horizonY - 40 * kickPunch, W, 80 * kickPunch);
+                      ctx.restore();
+                    }
+                    
+                    // 6. ATMOSPHERIC HI-HAT STARDUST PARTICLES (Warehouse Smoke Glitter)
+                    if (cloudyDots && isPlaying && activeGain > 0) {
+                      ctx.save();
+                      const trebleSpark = Math.max(0, smoothTreble);
+                      for (let i = 0; i < 40; i++) {
+                        const pt = cloudyDots[i];
+                        const px = (pt.xRel * W + cTime * 25) % W;
+                        const py = pt.yRel * H;
+                        const pAlpha = (pt.baseAlpha * 0.4 + trebleSpark * 0.6) * activeGain;
+                        const pSize = 1.0 + (trebleSpark * 2.0);
+                        
+                        ctx.fillStyle = (i % 3 === 0) ? `rgba(235, 255, 245, ${pAlpha})` : `rgba(0, 255, 102, ${pAlpha})`;
+                        ctx.beginPath();
+                        ctx.arc(px, py, pSize, 0, Math.PI * 2);
+                        ctx.fill();
+                      }
+                      ctx.restore();
+                    }
+                    
+                    // 7. SUBTLE HARDWARE TELEMETRY BADGES
+                    ctx.font = '600 9px "SF Mono", "Fira Code", monospace';
+                    ctx.fillStyle = 'rgba(0, 255, 102, 0.40)';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`128 BPM // ACID RAVE MATRIX // PEAK: ${Math.round(smoothBass * 100)}%`, W * 0.05, H * 0.94);
+                    
+                    // 8. CINEMATIC STAGE VIGNETTE
+                    const vignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
+                    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                    vignette.addColorStop(1, 'rgba(1, 3, 2, 0.85)');
+                    ctx.fillStyle = vignette;
+                    ctx.fillRect(0, 0, W, H);
+                  }
+
+                  else if (track.genre === 'experimental') {
+                    // 1. Render Synchronized Cloudy Days Music Video (Pure & Clean)
+                    if (bgVideo && bgVideo.readyState >= 2) {
+                      const vW = bgVideo.videoWidth || 1280;
+                      const vH = bgVideo.videoHeight || 720;
+                      const scale = Math.max(W / vW, H / vH);
+                      const sW = vW * scale;
+                      const sH = vH * scale;
+                      const sX = (W - sW) / 2;
+                      const sY = (H - sH) / 2;
+                      ctx.drawImage(bgVideo, sX, sY, sW, sH);
+                    } else {
+                      ctx.fillStyle = '#080B10';
+                      ctx.fillRect(0, 0, W, H);
+                    }
+                    
+                    // 2. Cinematic Soft Stage Vignette (Clean contrast for deck)
+                    const expVignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
+                    expVignette.addColorStop(0, 'rgba(8, 11, 16, 0.15)');
+                    expVignette.addColorStop(1, 'rgba(3, 5, 8, 0.80)');
+                    ctx.fillStyle = expVignette;
+                    ctx.fillRect(0, 0, W, H);
                   }
                   
                   // ================================================================
                   // 3. PARADISE — UNIVERSE VISUALIZER WITH STARS & CONSTELLATIONS
                   // ================================================================
                   else if (track.genre === 'pop') {
-                    // Deep cosmic dark space
-                    ctx.fillStyle = '#06020C';
+                    // 1. Render Synchronized Paradise Music Video (Pure & Clean)
+                    if (bgVideo && bgVideo.readyState >= 2) {
+                      const vW = bgVideo.videoWidth || 1280;
+                      const vH = bgVideo.videoHeight || 720;
+                      const scale = Math.max(W / vW, H / vH);
+                      const sW = vW * scale;
+                      const sH = vH * scale;
+                      const sX = (W - sW) / 2;
+                      const sY = (H - sH) / 2;
+                      ctx.drawImage(bgVideo, sX, sY, sW, sH);
+                    } else {
+                      ctx.fillStyle = '#0B0512';
+                      ctx.fillRect(0, 0, W, H);
+                    }
+                    
+                    // 2. Cinematic Wong Kar-wai Warm Dark Vignette
+                    const popVignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
+                    popVignette.addColorStop(0, 'rgba(15, 6, 22, 0.15)');
+                    popVignette.addColorStop(1, 'rgba(4, 2, 7, 0.80)');
+                    ctx.fillStyle = popVignette;
                     ctx.fillRect(0, 0, W, H);
-                    
-                    // Parallax Slow Drift
-                    const driftOffset = (animTime * 0.08) % W;
-                    
-                    // On Bass Hit: Spawn a new Constellation connecting 2-4 nearby stars
-                    if (isBassHit && universeStars.length >= 4) {
-                      const originIdx = Math.floor(Math.random() * universeStars.length);
-                      const p0 = universeStars[originIdx];
-                      
-                      // Find closest neighbor stars
-                      const neighbors = [];
-                      universeStars.forEach((st, idx) => {
-                        if (idx !== originIdx) {
-                          const dist = Math.hypot(st.xRel - p0.xRel, st.yRel - p0.yRel);
-                          if (dist < 0.28) {
-                            neighbors.push({ idx: idx, dist: dist });
-                          }
-                        }
-                      });
-                      
-                      neighbors.sort((a, b) => a.dist - b.dist);
-                      if (neighbors.length >= 2) {
-                        const count = Math.min(3, neighbors.length);
-                        const selectedIdxs = [originIdx];
-                        for (let k = 0; k < count; k++) selectedIdxs.push(neighbors[k].idx);
-                        
-                        activeConstellations.push({
-                          starIdxs: selectedIdxs,
-                          startTime: nowMs,
-                          duration: 750 // 150ms fade in, 600ms fade out
-                        });
-                        
-                        // Keep max 4 active constellations
-                        if (activeConstellations.length > 4) activeConstellations.shift();
-                      }
-                    }
-                    
-                    // Draw Constellation Lines
-                    ctx.save();
-                    for (let c = activeConstellations.length - 1; c >= 0; c--) {
-                      const cons = activeConstellations[c];
-                      const elapsed = nowMs - cons.startTime;
-                      const progress = elapsed / cons.duration;
-                      
-                      if (progress >= 1.0) {
-                        activeConstellations.splice(c, 1);
-                        continue;
-                      }
-                      
-                      // Fade in ~150ms (first 20%), Fade out ~600ms (remaining 80%)
-                      let lineAlpha = 0;
-                      if (progress < 0.2) {
-                        lineAlpha = progress / 0.2;
-                      } else {
-                        lineAlpha = (1.0 - progress) / 0.8;
-                      }
-                      lineAlpha *= 0.55;
-                      
-                      ctx.beginPath();
-                      for (let k = 0; k < cons.starIdxs.length; k++) {
-                        const sObj = universeStars[cons.starIdxs[k]];
-                        const sx = (sObj.xRel * W + driftOffset) % W;
-                        const sy = sObj.yRel * H;
-                        if (k === 0) ctx.moveTo(sx, sy);
-                        else ctx.lineTo(sx, sy);
-                      }
-                      ctx.strokeStyle = `rgba(255, 160, 120, ${lineAlpha})`;
-                      ctx.lineWidth = 1.2;
-                      ctx.stroke();
-                    }
-                    ctx.restore();
-                    
-                    // Draw Universe Stars (Warm Pink/Orange/Amber)
-                    ctx.save();
-                    const trebleSparkle = Math.max(0, Math.min(1.0, smoothTreble));
-                    universeStars.forEach(st => {
-                      const sx = (st.xRel * W + driftOffset) % W;
-                      const sy = st.yRel * H;
-                      
-                      // Organic gentle independent twinkle
-                      const twinkle = Math.sin(animTime * st.twinkleSpeed + st.twinklePhase);
-                      let starAlpha = st.baseAlpha + twinkle * 0.15;
-                      let starRadius = st.r;
-                      
-                      // Treble band adds extra sparkle to designated stars
-                      if (st.isTrebleStar) {
-                        starAlpha += trebleSparkle * 0.35;
-                        starRadius += trebleSparkle * 1.0;
-                      }
-                      
-                      starAlpha = Math.max(0.12, Math.min(0.85, starAlpha));
-                      
-                      // Feathered star glow via radial gradient
-                      const sGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, starRadius * 2.0);
-                      sGrad.addColorStop(0, st.color);
-                      sGrad.addColorStop(0.5, st.color);
-                      sGrad.addColorStop(1, 'transparent');
-                      
-                      ctx.globalAlpha = starAlpha;
-                      ctx.fillStyle = sGrad;
-                      ctx.beginPath();
-                      ctx.arc(sx, sy, starRadius * 2.0, 0, Math.PI * 2);
-                      ctx.fill();
-                    });
-                    ctx.restore();
                   }
-                  
+
                   requestAnimationFrame(drawViz);
                 }
                 
                 requestAnimationFrame(drawViz);
               }
               
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
               return;
           }
@@ -3831,6 +4290,40 @@ const PROJECTS = {
               albumHtml += '</div>';
               gal.innerHTML = albumHtml;
               // Kick off visualizer loop immediately for ambient background
+                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
+              window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.code === 'Space') {
+                  e.preventDefault();
+                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
+                  if (activeBtn) activeBtn.click();
+                } else if (e.code === 'ArrowUp') {
+                  e.preventDefault();
+                  const newVol = Math.min(1.0, audio.volume + 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
+                  audio.muted = false;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowDown') {
+                  e.preventDefault();
+                  const newVol = Math.max(0.0, audio.volume - 0.1);
+                  audio.volume = newVol;
+                  if (bgVideo) bgVideo.volume = newVol;
+                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
+                } else if (e.code === 'ArrowLeft') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.max(0, med.currentTime - 5);
+                  }
+                } else if (e.code === 'ArrowRight') {
+                  e.preventDefault();
+                  const med = getActiveMedia();
+                  if (med && med.duration) {
+                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
+                  }
+                }
+              });
               startVizLoop();
 
               return;
@@ -3849,6 +4342,8 @@ const PROJECTS = {
   }, 50);
 </script>
 
+  <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
+  <script src="scripts/track_spectrum.js?v=20260824"></script>
   <script src="scripts/data.js?v=1787342124"></script>
   <script src="scripts/motion.js?v=1787342124"></script>
   <script src="https://unpkg.com/lucide@latest"></script>

@@ -2,6 +2,10 @@
 backup-clean-*/
 *.fixed
 *.test
+# Backups and temp files
+backup-clean-*/
+*.fixed
+*.test
 *.badchars.txt
 *.fixed2
 garbage.txt
@@ -11,3 +15,7 @@ Portfolio_Content_Organizer.*
 ~$*.xlsx
 *.tmp
 
+# Raw uncompressed video masters (>100MB, exceeds GitHub push limit)
+assets/portfolio-data/music_video/cloudydays.mp4
+assets/portfolio-data/music_video/video_paradise.mp4
+assets/portfolio-data/music_video/*_web.mp4
