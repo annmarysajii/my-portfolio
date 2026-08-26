@@ -39,6 +39,16 @@ html{scroll-behavior:smooth;}
   --sh2:3px 5px 0 rgba(17,16,9,.1),0 10px 30px rgba(17,16,9,.1);
   --sh3:4px 7px 0 rgba(17,16,9,.12),0 20px 50px rgba(17,16,9,.13);
 
+  /* === MULTI-COLORED SECTION CRAFT PAPER PALETTE === */
+  --sec-hero-bg: #F9F6F0;
+  --sec-anim-bg: #EEF4FA;   /* Blueprint Blue */
+  --sec-illus-bg: #FAF0ED;  /* Sugar-Paper Red / Terracotta */
+  --sec-video-bg: #F0F5EE;  /* Studio Sage Green */
+  --sec-design-bg: #FAF5E8; /* Manila / Kraft Yellow */
+  --sec-music-bg: #F2EFF9;  /* Muted Indigo / Periwinkle */
+  --sec-about-bg: #111009;  /* Dark Studio Board */
+  --sec-contact-bg: #F9F6F0;
+
   /* === AESTHETIC OVERHAUL TOKENS === */
   --red-v:    #C0392B;
   --mustard:  #F2A93B;
@@ -56,6 +66,15 @@ html{scroll-behavior:smooth;}
   --sh1:2px 3px 0 rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
   --sh2:3px 5px 0 rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);
   --sh3:4px 7px 0 rgba(0,0,0,.4),0 20px 50px rgba(0,0,0,.35);
+
+  --sec-hero-bg: #0E0D13;
+  --sec-anim-bg: #101824;   /* Deep Blueprint Navy */
+  --sec-illus-bg: #201214;  /* Deep Ember Wine */
+  --sec-video-bg: #121A14;  /* Deep Studio Pine */
+  --sec-design-bg: #1E1A10; /* Deep Amber Ochre */
+  --sec-music-bg: #161322;  /* Deep Midnight Periwinkle */
+  --sec-about-bg: #08070D;  /* Deep Blackboard */
+  --sec-contact-bg: #0E0D13;
 }
 
 [data-theme="dark"] .about,[data-theme="dark"] .dl-sec,[data-theme="dark"] .foot{background:#08070D!important;}
@@ -92,14 +111,15 @@ body{
 
 body::before{
   content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='5' result='clouds'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' result='grain'/%3E%3CfeBlend in='clouds' in2='grain' mode='multiply'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
-  background-size:400px 400px;
-  opacity:0.20;mix-blend-mode:multiply;
+  background-image:url("assets/svg-opt/paper-light-tile.webp");
+  background-size:900px 900px;
+  opacity:0.38;mix-blend-mode:multiply;
 }
 
 [data-theme="dark"] body::before{
-  mix-blend-mode:overlay;
-  opacity:0.14;
+  background-image:url("assets/svg-opt/paper-dark-tile.webp");
+  mix-blend-mode:screen;
+  opacity:0.30;
 }
 
 img,video{display:block;max-width:100%;}
@@ -247,7 +267,10 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
 ================================================================ */
 
-.hero{min-height:100svh;display:flex;flex-direction:column;padding-top:76px;}
+.hero{height:100vh;min-height:680px;max-height:920px;display:flex;flex-direction:column;padding-top:76px;}
+@media (max-width: 900px), (max-height: 650px) {
+  .hero{height:auto;min-height:auto;max-height:none;}
+}
 
 .hero-body{
 
@@ -439,13 +462,98 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
 /* ================================================================
 
-   SECTIONS
+   SECTIONS — Multi-colored craft paper system
 
 ================================================================ */
 
 .sec{padding:5.5rem 0;position:relative;}
 
-.sec:nth-child(even){background:var(--surf);}
+#hero { background-color: var(--sec-hero-bg); }
+#animation { background-color: var(--sec-anim-bg); }
+#illustration { background-color: var(--sec-illus-bg); }
+#videography { background-color: var(--sec-video-bg); }
+#graphic-design { background-color: var(--sec-design-bg); }
+#music { background-color: var(--sec-music-bg); }
+#about { background-color: var(--sec-about-bg); }
+#contact { background-color: var(--sec-contact-bg); }
+
+/* Section numbers tailored to primary palette */
+#animation .sec-num { color: #3B72B9; }
+#illustration .sec-num { color: #D94638; }
+#videography .sec-num { color: #438A5E; }
+#graphic-design .sec-num { color: #C08800; }
+#music .sec-num { color: #7B5EB6; }
+
+[data-theme="dark"] #animation .sec-num { color: #7098F8; }
+[data-theme="dark"] #illustration .sec-num { color: #F06A58; }
+[data-theme="dark"] #videography .sec-num { color: #5CB87A; }
+[data-theme="dark"] #graphic-design .sec-num { color: #F2C030; }
+[data-theme="dark"] #music .sec-num { color: #A78BFA; }
+
+/* Decorative scrapbook stickers */
+.scrapbook-sticker {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.14));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.scrapbook-sticker:hover {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.sticker-anim-stars {
+  top: 2.5rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  width: 95px;
+  transform: rotate(8deg);
+}
+.sticker-illus-daisy {
+  top: 2rem;
+  right: clamp(2rem, 6vw, 4.5rem);
+  width: 80px;
+  transform: rotate(-6deg);
+}
+.sticker-illus-heart {
+  top: 5.8rem;
+  right: clamp(5rem, 9vw, 8rem);
+  width: 65px;
+  transform: rotate(12deg);
+}
+.sticker-video-washi {
+  top: 2rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  width: 140px;
+  transform: rotate(-3deg);
+}
+.sticker-design-ribbon {
+  top: 2rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  width: 95px;
+  transform: rotate(5deg);
+}
+.sticker-music-cloud {
+  top: 2rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  width: 110px;
+  transform: rotate(-4deg);
+}
+.sticker-music-sun {
+  top: 5.5rem;
+  right: clamp(5.5rem, 9vw, 8.5rem);
+  width: 60px;
+  transform: rotate(10deg);
+}
+.sticker-about-butterfly {
+  top: 2rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  width: 75px;
+  transform: rotate(-8deg);
+}
+
+@media(max-width: 768px) {
+  .scrapbook-sticker { display: none !important; }
+}
 
 /* ================================================================
    DOWNLOADS BAND
@@ -536,13 +644,32 @@ body, a, button, input, textarea, select { cursor: none !important; }
     linear-gradient(#F2EFEB, #F2EFEB) bottom right / 6px 6px no-repeat;
 }
 
-.sec-intro{font-size:1rem;line-height:1.75;color:var(--ink5);max-width:520px;margin-top:.65rem;}
+.sec-desc{font-size:1rem;color:var(--ink5);max-width:520px;line-height:1.7;}
 
-.sec-dl{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border:1.5px solid var(--ink12);border-radius:2px;font-size:.875rem;font-weight:600;color:var(--ink);white-space:nowrap;margin-top:.25rem;transition:background .2s,border-color .2s,color .2s,transform .15s;}
+.sec-more{font-size:.875rem;font-weight:600;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap;padding-top:.4rem;}
+.sec-more:hover{gap:.6rem;}
 
-.sec-dl:hover{background:var(--ink);border-color:var(--ink);color:var(--bg);transform:translateY(-1px);}
+/* ================================================================
+   SCRAPBOOK PHYSICS ENTRANCE ANIMATIONS (GPU-Accelerated)
+================================================================ */
 
+.rv {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
 
+.rv.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+.d4 { transition-delay: 0.32s; }
 
 /* ================================================================
 
@@ -556,8 +683,22 @@ body, a, button, input, textarea, select { cursor: none !important; }
   background:var(--white);border:1.5px solid var(--ink12);
   border-radius:255px 15px 225px 15px/15px 225px 15px 255px;
   display:flex;flex-direction:column;box-shadow:var(--sh1);position:relative;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  opacity: 0;
+  transform: translateY(32px) scale(0.95) rotate(0deg);
+  transition: opacity 0.55s ease-out,
+              transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s var(--ease);
+  will-change: opacity, transform;
 }
+
+.card.in {
+  opacity: 1;
+}
+
+.card.in:nth-child(4n+1) { transform: translateY(0) scale(1) rotate(-0.5deg); }
+.card.in:nth-child(4n+2) { transform: translateY(0) scale(1) rotate(0.4deg); }
+.card.in:nth-child(4n+3) { transform: translateY(0) scale(1) rotate(-0.3deg); }
+.card.in:nth-child(4n+4) { transform: translateY(0) scale(1) rotate(0.6deg); }
 
 /* ================================================================
    REALISTIC VERTICAL CORNER TAPES — authentic washi & masking tape
@@ -576,50 +717,53 @@ body, a, button, input, textarea, select { cursor: none !important; }
   background-repeat: no-repeat;
   background-position: center top;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,0.18));
-  transform: rotate(-3.5deg);
-  opacity: 0.95;
-  transition: transform 0.3s var(--ease);
+  opacity: 0;
+  transform: translateY(-10px) rotate(0deg) scale(0.8);
+  transition: opacity 0.4s ease 0.18s,
+              transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s;
 }
 
-.card:nth-child(4n+1)::before {
+.card.in:nth-child(4n+1)::before {
   background-image: url('assets/svg-opt/tape-mustard.webp');
   left: 14px;
   top: -16px;
-  transform: rotate(-3.5deg);
+  opacity: 0.95;
+  transform: translateY(0) rotate(-3.5deg) scale(1);
 }
 
-.card:nth-child(4n+2)::before {
+.card.in:nth-child(4n+2)::before {
   background-image: url('assets/svg-opt/tape-coral.webp');
   left: 18px;
   top: -18px;
-  transform: rotate(2.5deg);
+  opacity: 0.95;
+  transform: translateY(0) rotate(2.5deg) scale(1);
 }
 
-.card:nth-child(4n+3)::before {
+.card.in:nth-child(4n+3)::before {
   background-image: url('assets/svg-opt/tape-slate.webp');
   left: 12px;
   top: -16px;
-  transform: rotate(-2deg);
+  opacity: 0.95;
+  transform: translateY(0) rotate(-2deg) scale(1);
 }
 
-.card:nth-child(4n+4)::before {
+.card.in:nth-child(4n+4)::before {
   background-image: url('assets/svg-opt/tape-striped.webp');
   left: 16px;
   top: -17px;
-  transform: rotate(3deg);
+  opacity: 0.95;
+  transform: translateY(0) rotate(3deg) scale(1);
 }
-
-.card:nth-child(4n+1){transform:rotate(-.5deg);}
-
-.card:nth-child(4n+2){transform:rotate(.4deg);}
-
-.card:nth-child(4n+3){transform:rotate(-.3deg);}
-
-.card:nth-child(4n+4){transform:rotate(.6deg);}
 
 .card:hover{transform:rotate(0) translateY(-8px)!important;box-shadow:var(--sh3);}
 
-
+/* Graceful Fallback if JS disabled */
+body:not(.js-on) .rv,
+body:not(.js-on) .card,
+body:not(.js-on) .card::before {
+  opacity: 1 !important;
+  transform: none !important;
+}
 
 .card-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surf);border-bottom:1.5px solid var(--ink12);}
 
@@ -1438,7 +1582,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- 01 ANIMATION -->
 
 <section class="sec" id="animation">
-
+ <img class="scrapbook-sticker sticker-anim-stars" src="assets/svg-opt/stickers/sticker-stars.webp" alt="" width="95" height="77" loading="lazy" />
  <div class="con">
 
   <div class="sec-hd">
@@ -1567,7 +1711,8 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- 02 ILLUSTRATION -->
 
 <section class="sec" id="illustration">
-
+ <img class="scrapbook-sticker sticker-illus-daisy" src="assets/svg-opt/stickers/sticker-daisy.webp" alt="" width="80" height="71" loading="lazy" />
+ <img class="scrapbook-sticker sticker-illus-heart" src="assets/svg-opt/stickers/sticker-heart.webp" alt="" width="65" height="57" loading="lazy" />
  <div class="con">
 
   <div class="sec-hd">
@@ -1682,7 +1827,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- 03 VIDEOGRAPHY -->
 
 <section class="sec" id="videography">
-
+ <img class="scrapbook-sticker sticker-video-washi" src="assets/svg-opt/stickers/washi-plaid.webp" alt="" width="140" height="40" loading="lazy" />
  <div class="con">
 
   <div class="sec-hd">
@@ -1782,7 +1927,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- 04 GRAPHIC DESIGN -->
 
 <section class="sec" id="graphic-design">
-
+ <img class="scrapbook-sticker sticker-design-ribbon" src="assets/svg-opt/stickers/sticker-ribbon-grid.webp" alt="" width="95" height="90" loading="lazy" />
  <div class="con">
 
   <div class="sec-hd">
@@ -1950,7 +2095,8 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- 05 MUSIC -->
 
 <section class="sec" id="music">
-
+ <img class="scrapbook-sticker sticker-music-cloud" src="assets/svg-opt/stickers/sticker-cloud.webp" alt="" width="110" height="62" loading="lazy" />
+ <img class="scrapbook-sticker sticker-music-sun" src="assets/svg-opt/stickers/sticker-doodle-sun.webp" alt="" width="60" height="47" loading="lazy" />
  <div class="con">
 
   <div class="sec-hd">
@@ -2034,7 +2180,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <!-- ABOUT -->
 
 <section class="about" id="about">
-
+ <img class="scrapbook-sticker sticker-about-butterfly" src="assets/svg-opt/stickers/sticker-doodle-butterfly.webp" alt="" width="75" height="66" loading="lazy" />
  <div class="con">
 
   <div class="about-g">
@@ -2291,6 +2437,26 @@ body, a, button, input, textarea, select { cursor: none !important; }
     if (sf) { sf.currentTime = 0; sf.play().catch(()=>{}); }
   };
 
+  // 4. Scrapbook Physics Reveal Observer
+  (function initScrollObserver() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.rv, .card, .sec-hd').forEach(el => el.classList.add('in'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -30px 0px',
+      threshold: 0.06
+    });
+
+    document.querySelectorAll('.rv, .card, .sec-hd').forEach(el => observer.observe(el));
+  })();
   
   // 5. Sticky Nav
   const nav = document.getElementById('nav');
@@ -2732,8 +2898,8 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
   // 11. BFCache Restoration
   window.addEventListener('pageshow', function(event) {
-    document.querySelectorAll('.rv, .reveal, .sec, .hero, .about, .contact').forEach(el => {
-      el.classList.add('show', 'visible');
+    document.querySelectorAll('.rv, .card, .reveal, .sec, .hero, .about, .contact').forEach(el => {
+      el.classList.add('show', 'visible', 'in');
     });
   });
   </script>

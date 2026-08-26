@@ -19,3 +19,10 @@ Portfolio_Content_Organizer.*
 assets/portfolio-data/music_video/cloudydays.mp4
 assets/portfolio-data/music_video/video_paradise.mp4
 assets/portfolio-data/music_video/*_web.mp4
+
+# Raw uncompressed reference assets & temp test files
+assets/paper texture refs/
+assets/realistic-tape-collection/
+assets/scrapbook assets for reference/
+assets/svg assets for portfolio/
+_tmp_*.html
