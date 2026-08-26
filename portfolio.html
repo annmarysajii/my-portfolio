@@ -159,27 +159,29 @@ button{cursor:none;font-family:inherit;}
 
 ================================================================ */
 
-#cur {
+body, a, button, input, textarea, select { cursor: none !important; }
+@media (pointer: coarse) {
+  body, a, button, input, textarea, select { cursor: auto !important; }
+}
+
+#star-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   pointer-events: none;
-  z-index: 999999;
+  z-index: 10000;
   transform: translate(-50%, -50%);
-  transition: transform 0.12s cubic-bezier(0.2, 0, 0.1, 1), opacity 0.2s;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.45));
+  transition: transform 0.1s var(--ease-out);
+  will-change: left, top;
 }
-#cur.hov {
-  transform: translate(-50%, -50%) scale(1.75);
-  filter: drop-shadow(0 0 6px rgba(255, 0, 85, 0.8)) drop-shadow(0 0 12px rgba(255, 0, 85, 0.5));
-}
-[data-theme="dark"] #cur, body.dj-studio-mode #cur {
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.65));
-}
-[data-theme="dark"] #cur.hov, body.dj-studio-mode #cur.hov {
-  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9)) drop-shadow(0 0 14px rgba(255, 0, 85, 0.7));
+
+#star-cursor img,
+#star-cursor svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 #bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
@@ -312,6 +314,20 @@ button{cursor:none;font-family:inherit;}
 
   margin-bottom:.75rem;
 
+}
+
+.hero-title {
+  margin: 0 0 0.75rem;
+  line-height: 1;
+}
+.hero-title img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 800px;
+}
+@media (max-width: 680px) {
+  .hero-title img { max-width: 100%; }
 }
 
 .hero-role{
@@ -571,54 +587,42 @@ button{cursor:none;font-family:inherit;}
 }
 
 /* ================================================================
-   TAPE ACCENTS — upgraded: sheen gradient, torn clip-path ends, soft shadow
+   TAPE ACCENTS — hand-torn paper tape with sheen
 ================================================================ */
 
-/* Torn-end clip-path: jagged on left and right short edges, straight top/bottom */
-.card::before{
-  content:'';position:absolute;top:-9px;left:50%;
-  transform:translateX(-50%) rotate(-1.5deg);
-  width:52px;height:15px;
-  border-radius:0;z-index:2;
-  /* Yellow tape */
-  background:linear-gradient(
-    160deg,
-    rgba(255,255,255,0.30) 0%,
-    rgba(232,176,0,0.72) 30%,
-    rgba(232,176,0,0.65) 70%,
-    rgba(255,255,255,0.18) 100%
-  );
-  box-shadow:0 2px 5px rgba(17,16,9,0.20),inset 0 1px 0 rgba(255,255,255,0.35);
-  clip-path:polygon(
-    0% 8%, 3% 0%, 6% 14%, 9% 2%, 12% 10%, 15% 0%,
-    85% 0%, 88% 12%, 91% 2%, 94% 10%, 97% 0%, 100% 8%,
-    100% 92%, 97% 100%, 94% 86%, 91% 98%, 88% 88%, 85% 100%,
-    15% 100%, 12% 88%, 9% 98%, 6% 86%, 3% 100%, 0% 92%
+.card::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 90px;
+  height: 32px;
+  z-index: 2;
+  --tape-color: var(--mustard);
+  background: linear-gradient(100deg,
+    rgba(255,255,255,0.05) 0%,
+    var(--tape-color) 15%,
+    var(--tape-color) 85%,
+    rgba(255,255,255,0.05) 100%);
+  opacity: 0.85;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  clip-path: polygon(
+    0% 20%, 4% 0%, 10% 15%, 18% 2%, 26% 18%, 34% 4%, 42% 20%,
+    50% 5%, 58% 18%, 66% 3%, 74% 17%, 82% 5%, 90% 19%, 96% 0%, 100% 20%,
+    100% 80%, 96% 100%, 90% 82%, 82% 98%, 74% 84%, 66% 99%, 58% 83%,
+    50% 97%, 42% 82%, 34% 98%, 26% 84%, 18% 100%, 10% 85%, 4% 99%, 0% 80%
   );
 }
 
-.card:nth-child(3n+2)::before{
-  background:linear-gradient(
-    160deg,
-    rgba(255,255,255,0.28) 0%,
-    rgba(24,80,168,0.42) 30%,
-    rgba(24,80,168,0.36) 70%,
-    rgba(255,255,255,0.15) 100%
-  );
-  transform:translateX(-50%) rotate(1.2deg);
-  box-shadow:0 2px 5px rgba(17,16,9,0.20),inset 0 1px 0 rgba(255,255,255,0.30);
+.card:nth-child(3n+2)::before {
+  --tape-color: var(--slate);
+  transform: translateX(-50%) rotate(1.2deg);
 }
 
-.card:nth-child(3n+3)::before{
-  background:linear-gradient(
-    160deg,
-    rgba(255,255,255,0.28) 0%,
-    rgba(217,48,32,0.40) 30%,
-    rgba(217,48,32,0.34) 70%,
-    rgba(255,255,255,0.15) 100%
-  );
-  transform:translateX(-50%) rotate(-.7deg);
-  box-shadow:0 2px 5px rgba(17,16,9,0.20),inset 0 1px 0 rgba(255,255,255,0.30);
+.card:nth-child(3n+3)::before {
+  --tape-color: var(--red-v);
+  transform: translateX(-50%) rotate(-0.7deg);
 }
 
 .card:nth-child(4n+1){transform:rotate(-.5deg);}
@@ -928,7 +932,7 @@ button{cursor:none;font-family:inherit;}
 
 /* Touch & Cursor safety */
 @media (pointer: coarse), (hover: none) {
-    #cur { display: none !important; }
+    #star-cursor { display: none !important; }
     body, button, a, input, textarea, select, canvas { cursor: auto !important; }
 }
 
@@ -1247,23 +1251,15 @@ button{cursor:none;font-family:inherit;}
 
 <canvas id="bg-c"></canvas>
 
-<div id="cur">
-  <svg id="csq" width="32" height="32" viewBox="0 0 30 30">
-    <defs>
-      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-        <line x1="0" y1="0" x2="3" y2="3" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.25"/>
-        <line x1="3" y1="0" x2="0" y2="3" stroke="currentColor" stroke-width="0.3" stroke-opacity="0.12"/>
-      </pattern>
-      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
-    </defs>
-    <!-- Outer High-Contrast Stroke Layer -->
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round" opacity="0.85"/>
-    <!-- Main Star Body -->
-    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="var(--ink)" filter="url(#rf)"/>
-    <!-- Textured Pattern Overlay -->
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
-    <!-- Precision Center Pinpoint Dot -->
-    <circle cx="15" cy="15" r="2" fill="#E8B000" stroke="#FFFFFF" stroke-width="0.75"/>
+<div id="star-cursor">
+  <img src="assets/svg-opt/cursor-star-mustard.svg" width="28" height="28" alt=""
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+  <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs><pattern id="cp" width="2" height="2" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="2" y2="2" stroke="#2C2A29" stroke-width="0.3" stroke-opacity="0.18"/>
+    </pattern></defs>
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="#F2A93B" stroke="#2C2A29" stroke-width="0.8" stroke-linejoin="round"/>
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="url(#cp)"/>
   </svg>
 </div>
 
@@ -1305,7 +1301,10 @@ button{cursor:none;font-family:inherit;}
 
     <div>
 
-      <h1 class="hero-name rv">Annmary<br>Saji.</h1>
+      <h1 class="hero-title rv" aria-label="Annmary Saji">
+        <img src="assets/svg-opt/hero_name.webp" alt="Annmary Saji"
+             width="800" height="200" loading="eager" decoding="async" />
+      </h1>
 
       <p class="hero-role rv d1">Interdisciplinary Visual Storyteller</p>
 
@@ -1403,23 +1402,23 @@ button{cursor:none;font-family:inherit;}
 
     <div class="dl-feat">
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/ART DIRECTION PORTFOLIO.pdf" class="dl-btn" download><span class="dl-ico iy"><i data-lucide="folder"></i></span><span class="dl-txt"><span class="dl-lbl">Combined PDF</span>Full Portfolio</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/ART DIRECTION PORTFOLIO.pdf" class="dl-btn" download><span class="dl-ico iy"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5C2 3.9 2.7 3.5 3.5 3.5H7L8.5 5H15.5C16.3 5 17 5.7 17 6.5V13.5C17 14.3 16.3 15 15.5 15H2.5C1.7 15 1 14.3 1 13.5V5Z"/></svg></span><span class="dl-txt"><span class="dl-lbl">Combined PDF</span>Full Portfolio</span></a>
 
-      <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="file-text"></i></span><span class="dl-txt"><span class="dl-lbl">CV</span>Download Resume</span></a>
+      <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" class="dl-btn" download><span class="dl-ico ib"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2H12L16 6V16C16 16.6 15.6 17 15 17H3C2.4 17 2 16.6 2 16V3C2 2.4 2.4 2 3 2Z"/><line x1="5" y1="9" x2="13" y2="9"/><line x1="5" y1="12" x2="11" y2="12"/><polyline points="12,2 12,7 16,7"/></svg></span><span class="dl-txt"><span class="dl-lbl">CV</span>Download Resume</span></a>
 
     </div>
 
     <div class="dl-grid">
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/NewVisual development portfolio.pdf" class="dl-btn" download><span class="dl-ico ib"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4" r="2"/><path d="m14 8-3.5 3.5-3.5-2L3 12"/><path d="M10.5 11.5 12 16l3.5 4"/><path d="m7 16-3 4"/><path d="m14 8 3 2 4-1"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Animation & Visual Dev</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/NewVisual development portfolio.pdf" class="dl-btn" download><span class="dl-ico ib"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="3.5" r="1.8"/><path d="M9 5.5V10.5L6 14.5"/><path d="M9 10.5L12 14.5"/><path d="M6.5 7.5L4 10"/><path d="M9 7.5L12.5 8.5"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Animation & Visual Dev</span></a>
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_ComicPortfolio.pdf" class="dl-btn" download><span class="dl-ico ir"><i data-lucide="palette"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Illustration & Comics</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_ComicPortfolio.pdf" class="dl-btn" download><span class="dl-ico ir"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7.5"/><circle cx="6.5" cy="6.5" r="1.2"/><circle cx="11.5" cy="6" r="1"/><circle cx="6" cy="11" r="0.9"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Illustration & Comics</span></a>
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_Production_Portfolio_2026 (1).pdf" class="dl-btn" download><span class="dl-ico ib"><i data-lucide="film"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Videography & Motion</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_Production_Portfolio_2026 (1).pdf" class="dl-btn" download><span class="dl-ico ib"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><line x1="5" y1="4" x2="5" y2="14"/><line x1="13" y1="4" x2="13" y2="14"/><circle cx="9" cy="9" r="2.5"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Videography & Motion</span></a>
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/Brand Design Portfolio - Annmary Saji.pdf" class="dl-btn" download><span class="dl-ico ig"><i data-lucide="pen-tool"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Graphic & Brand Design</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/Brand Design Portfolio - Annmary Saji.pdf" class="dl-btn" download><span class="dl-ico ig"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L16 16H2L9 2Z"/><circle cx="9" cy="11" r="2"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Graphic & Brand Design</span></a>
 
-      <a href="assets/portfolio-data/PORTFOLIO PDFS/ART DIRECTION PORTFOLIO.pdf" class="dl-btn" download><span class="dl-ico iy"><i data-lucide="music"></i></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Music & Art Direction</span></a>
+      <a href="assets/portfolio-data/PORTFOLIO PDFS/AnnmarySaji_Production_Portfolio_2026 (1).pdf" class="dl-btn" download><span class="dl-ico iy"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><line x1="5" y1="4" x2="5" y2="14"/><line x1="13" y1="4" x2="13" y2="14"/><line x1="2" y1="7" x2="5" y2="7"/><line x1="13" y1="7" x2="16" y2="7"/><line x1="2" y1="11" x2="5" y2="11"/><line x1="13" y1="11" x2="16" y2="11"/></svg></span><span class="dl-txt"><span class="dl-lbl">Portfolio PDF</span>Production Portfolio</span></a>
 
     </div>
 
@@ -2481,29 +2480,37 @@ button{cursor:none;font-family:inherit;}
     }
   })();
 
-  // 9. Canvas Stars Background & Cursor
-  const cur = document.getElementById('cur');
-  const sf = document.getElementById('sf');
-  const csq = document.getElementById('csq');
-  let mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my, lx = mx, ly = my, ang = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  // === ZERO-LAG STAR CURSOR ===
+  (function() {
+    const cur = document.getElementById('star-cursor');
+    if (!cur || window.matchMedia('(pointer: coarse)').matches) {
+      if (cur) cur.style.display = 'none';
+      return;
+    }
 
-  (function loop() {
-    cx += (mx - cx) * 0.16; cy += (my - cy) * 0.16;
-    if (cur) { cur.style.left = cx + 'px'; cur.style.top = cy + 'px'; }
-    const spd = Math.hypot(mx - lx, my - ly); lx = mx; ly = my;
-    ang += 1.5 + spd * 0.8;
-    if (csq) csq.style.transform = 'rotate(' + ang + 'deg)';
-    requestAnimationFrame(loop);
+    // Direct position assignment — NO lerp, NO rAF interpolation, NO CSS transition on left/top
+    window.addEventListener('mousemove', (e) => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top  = e.clientY + 'px';
+    }, { passive: true });
+
+    // Scale on hover over interactive elements
+    const hoverSel = 'a, button, .card, .dl-btn, .soc, input, textarea, [role="button"]';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hoverSel)) {
+        cur.style.transform = 'translate(-50%,-50%) scale(1.25)';
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(hoverSel)) {
+        cur.style.transform = 'translate(-50%,-50%) scale(1)';
+      }
+    });
+
+    // Hide when cursor leaves the browser window
+    document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
   })();
-
-  document.addEventListener('mouseover', e => {
-    const h = !!e.target.closest('a,button,.card,.soc,.dl-btn');
-    const d = !!e.target.closest('.about,.foot,.dl-sec');
-    if (cur) cur.classList.toggle('hov', h);
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (sf) sf.setAttribute('fill', d ? '#E8B000' : h ? '#D93020' : (isDark ? '#F0EEF5' : '#111009'));
-  });
 
   const bgC = document.getElementById('bg-c');
   if (bgC) {

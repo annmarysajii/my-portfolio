@@ -125,27 +125,29 @@ img{display:block;max-width:100%;}
 
 /* CURSOR & CANVAS */
 
-#cur {
+body, a, button, input, textarea, select { cursor: none !important; }
+@media (pointer: coarse) {
+  body, a, button, input, textarea, select { cursor: auto !important; }
+}
+
+#star-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   pointer-events: none;
-  z-index: 999999;
+  z-index: 10000;
   transform: translate(-50%, -50%);
-  transition: transform 0.12s cubic-bezier(0.2, 0, 0.1, 1), opacity 0.2s;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.45));
+  transition: transform 0.1s var(--ease-out);
+  will-change: left, top;
 }
-#cur.hov {
-  transform: translate(-50%, -50%) scale(1.75);
-  filter: drop-shadow(0 0 6px rgba(255, 0, 85, 0.8)) drop-shadow(0 0 12px rgba(255, 0, 85, 0.5));
-}
-[data-theme="dark"] #cur, body.dj-studio-mode #cur {
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(232, 176, 0, 0.65));
-}
-[data-theme="dark"] #cur.hov, body.dj-studio-mode #cur.hov {
-  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9)) drop-shadow(0 0 14px rgba(255, 0, 85, 0.7));
+
+#star-cursor img,
+#star-cursor svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 #bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
@@ -444,7 +446,7 @@ img{display:block;max-width:100%;}
 
 
 @media (pointer: coarse), (hover: none), (max-width: 1024px) {
-  #cur { display: none !important; }
+  #star-cursor { display: none !important; }
   body, button, a, input, textarea, select, canvas { cursor: auto !important; }
 }
 
@@ -551,23 +553,15 @@ img{display:block;max-width:100%;}
 
 <canvas id="bg-c"></canvas>
 
-<div id="cur">
-  <svg id="csq" width="32" height="32" viewBox="0 0 30 30">
-    <defs>
-      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-        <line x1="0" y1="0" x2="3" y2="3" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.25"/>
-        <line x1="3" y1="0" x2="0" y2="3" stroke="currentColor" stroke-width="0.3" stroke-opacity="0.12"/>
-      </pattern>
-      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
-    </defs>
-    <!-- Outer High-Contrast Stroke Layer -->
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round" opacity="0.85"/>
-    <!-- Main Star Body -->
-    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="var(--ink)" filter="url(#rf)"/>
-    <!-- Textured Pattern Overlay -->
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
-    <!-- Precision Center Pinpoint Dot -->
-    <circle cx="15" cy="15" r="2" fill="#E8B000" stroke="#FFFFFF" stroke-width="0.75"/>
+<div id="star-cursor">
+  <img src="assets/svg-opt/cursor-star-mustard.svg" width="28" height="28" alt=""
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+  <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs><pattern id="cp" width="2" height="2" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="2" y2="2" stroke="#2C2A29" stroke-width="0.3" stroke-opacity="0.18"/>
+    </pattern></defs>
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="#F2A93B" stroke="#2C2A29" stroke-width="0.8" stroke-linejoin="round"/>
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="url(#cp)"/>
   </svg>
 </div>
 
@@ -619,42 +613,37 @@ img{display:block;max-width:100%;}
 
 // CURSOR
 
-const cur=document.getElementById('cur');
-
-const sf=document.getElementById('sf');
-
-const csq=document.getElementById('csq');
-
-let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lx=mx,ly=my,ang=0;
-
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-
-(function loop(){
-
-  cx+=(mx-cx)*.16;cy+=(my-cy)*.16;
-
-  cur.style.left=cx+'px';cur.style.top=cy+'px';
-
-  const spd=Math.hypot(mx-lx,my-ly);lx=mx;ly=my;
-
-  ang+=1.5+spd*.8;csq.style.transform='rotate('+ang+'deg)';
-
-  requestAnimationFrame(loop);
-
-})();
-
-document.addEventListener('mouseover',e=>{
-  const isInteractive = !!e.target.closest('a, button, .card, .gallery-img, .back-btn, .portfolio-btn, .track-card-btn, .orbit-item, .slider-track, #vinyl-disc, .filter-dial, .speed-btn');
-  cur.classList.toggle('hov', isInteractive);
-
-  const isDark = (document.documentElement.getAttribute('data-theme') === 'dark') || document.body.classList.contains('dj-studio-mode');
-  
-  if (cur.classList.contains('hov')) {
-    sf.setAttribute('fill', '#FF0055');
-  } else {
-    sf.setAttribute('fill', isDark ? '#FFF7D6' : '#111009');
+// === ZERO-LAG STAR CURSOR ===
+(function() {
+  const cur = document.getElementById('star-cursor');
+  if (!cur || window.matchMedia('(pointer: coarse)').matches) {
+    if (cur) cur.style.display = 'none';
+    return;
   }
-});
+
+  // Direct position assignment — NO lerp, NO rAF interpolation, NO CSS transition on left/top
+  window.addEventListener('mousemove', (e) => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  }, { passive: true });
+
+  // Scale on hover over interactive elements
+  const hoverSel = 'a, button, .card, .gallery-img, .back-btn, .portfolio-btn, .track-card-btn, .orbit-item, .slider-track, #vinyl-disc, .filter-dial, .speed-btn, input, textarea, [role="button"]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverSel)) {
+      cur.style.transform = 'translate(-50%,-50%) scale(1.25)';
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverSel)) {
+      cur.style.transform = 'translate(-50%,-50%) scale(1)';
+    }
+  });
+
+  // Hide when cursor leaves the browser window
+  document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
+})();
 
 
 
@@ -818,11 +807,6 @@ window.toggleTheme = function() {
   if (icon) {
     icon.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon');
     if (window.lucide) window.lucide.createIcons();
-  }
-
-  const sf = document.getElementById('sf');
-  if (sf && !document.querySelector('#cur').classList.contains('hov')) {
-    sf.setAttribute('fill', next === 'dark' ? '#FFF7D6' : '#111009');
   }
 };
 
