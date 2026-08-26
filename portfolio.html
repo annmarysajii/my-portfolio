@@ -68,7 +68,13 @@ html{scroll-behavior:smooth;}
 [data-theme="dark"] .aw-n{color:var(--ink)!important;}
 [data-theme="dark"] .about .about-link{color:rgba(242,239,235,.6)!important;}
 [data-theme="dark"] .about .about-link:hover{color:#F2EFEB!important;}
-[data-theme="dark"] body{background-image:radial-gradient(circle,rgba(242,239,235,.06) 1px,transparent 1px);background-color:var(--bg)!important;color:var(--ink)!important;}
+[data-theme="dark"] body{
+  background-image:
+    linear-gradient(to right, rgba(242, 239, 235, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 239, 235, 0.035) 1px, transparent 1px);
+  background-color:var(--bg)!important;
+  color:var(--ink)!important;
+}
 [data-theme="dark"] .nav.sc{background:rgba(14,13,19,.94)!important;}
 
 [data-theme="dark"] .foot-logo,[data-theme="dark"] .foot-copy,[data-theme="dark"] .foot-back,[data-theme="dark"] .foot-egg{color:rgba(242,239,235,.55)!important;}
@@ -77,21 +83,23 @@ html{scroll-behavior:smooth;}
 body{
   font-family:var(--fb);color:var(--ink);overflow-x:hidden;cursor:none;
   background-color:var(--bg);font-size:16px;line-height:1.6;
-  background-image:radial-gradient(circle,rgba(17,16,9,.08) 1px,transparent 1px);
+  background-image:
+    linear-gradient(to right, rgba(44, 42, 41, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(44, 42, 41, 0.045) 1px, transparent 1px);
   background-size:24px 24px;
   transition:background-color .35s ease,color .35s ease;
 }
 
 body::before{
   content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px;
-  opacity:0.16;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='5' result='clouds'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' result='grain'/%3E%3CfeBlend in='clouds' in2='grain' mode='multiply'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
+  background-size:400px 400px;
+  opacity:0.20;mix-blend-mode:multiply;
 }
 
 [data-theme="dark"] body::before{
   mix-blend-mode:overlay;
-  opacity:0.12;
+  opacity:0.14;
 }
 
 img,video{display:block;max-width:100%;}
@@ -439,34 +447,6 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
 .sec:nth-child(even){background:var(--surf);}
 
-.sec:not(:first-child)::before{
-
-  content:'';position:absolute;top:-1px;left:0;right:0;height:18px;background:inherit;
-
-  /* Organic deckled edge — points vary in height/spacing for a hand-torn paper feel */
-  clip-path:polygon(
-    0 0,
-    0.8% 85%, 2.1% 20%, 3.7% 72%, 5.2% 8%,
-    6.9% 68%, 8.3% 18%, 10.1% 80%, 11.8% 5%,
-    13.4% 62%, 15.6% 28%, 17.2% 78%, 19.0% 12%,
-    20.9% 55%, 22.8% 90%, 24.3% 22%, 26.1% 74%,
-    28.0% 10%, 29.9% 65%, 31.5% 30%, 33.7% 82%,
-    35.6% 6%, 37.1% 58%, 39.0% 18%, 41.2% 70%,
-    43.1% 88%, 44.8% 20%, 46.7% 62%, 48.4% 8%,
-    50.3% 75%, 52.0% 28%, 53.9% 84%, 55.8% 14%,
-    57.5% 60%, 59.2% 36%, 61.1% 78%, 63.0% 5%,
-    64.7% 68%, 66.6% 22%, 68.3% 80%, 70.2% 15%,
-    72.1% 55%, 74.0% 88%, 75.7% 18%, 77.6% 72%,
-    79.5% 8%, 81.2% 64%, 83.1% 30%, 84.8% 76%,
-    86.7% 12%, 88.4% 60%, 90.3% 85%, 92.0% 20%,
-    93.9% 70%, 95.6% 5%, 97.5% 62%, 99.2% 40%,
-    100% 100%, 100% 0
-  );
-
-  z-index:2;
-
-}
-
 /* ================================================================
    DOWNLOADS BAND
 ================================================================ */
@@ -570,55 +550,63 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
 ================================================================ */
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.4rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.8rem;}
 
 .card{
-
-  background:var(--white);border:1.5px solid var(--ink12);border-radius:3px;
-
+  background:var(--white);border:1.5px solid var(--ink12);
+  border-radius:255px 15px 225px 15px/15px 225px 15px 255px;
   display:flex;flex-direction:column;box-shadow:var(--sh1);position:relative;
-
   transition:transform .3s var(--ease),box-shadow .3s var(--ease);
-
 }
 
 /* ================================================================
-   TAPE ACCENTS — hand-torn paper tape with sheen
+   REALISTIC VERTICAL CORNER TAPES — authentic washi & masking tape
 ================================================================ */
 
 .card::before {
   content: '';
   position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-1.5deg);
-  width: 90px;
-  height: 32px;
-  z-index: 2;
-  --tape-color: var(--mustard);
-  background: linear-gradient(100deg,
-    rgba(255,255,255,0.05) 0%,
-    var(--tape-color) 15%,
-    var(--tape-color) 85%,
-    rgba(255,255,255,0.05) 100%);
-  opacity: 0.85;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  clip-path: polygon(
-    0% 20%, 4% 0%, 10% 15%, 18% 2%, 26% 18%, 34% 4%, 42% 20%,
-    50% 5%, 58% 18%, 66% 3%, 74% 17%, 82% 5%, 90% 19%, 96% 0%, 100% 20%,
-    100% 80%, 96% 100%, 90% 82%, 82% 98%, 74% 84%, 66% 99%, 58% 83%,
-    50% 97%, 42% 82%, 34% 98%, 26% 84%, 18% 100%, 10% 85%, 4% 99%, 0% 80%
-  );
+  top: -16px;
+  left: 14px;
+  width: 36px;
+  height: 82px;
+  z-index: 10;
+  pointer-events: none;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.18));
+  transform: rotate(-3.5deg);
+  opacity: 0.95;
+  transition: transform 0.3s var(--ease);
 }
 
-.card:nth-child(3n+2)::before {
-  --tape-color: var(--slate);
-  transform: translateX(-50%) rotate(1.2deg);
+.card:nth-child(4n+1)::before {
+  background-image: url('assets/svg-opt/tape-mustard.webp');
+  left: 14px;
+  top: -16px;
+  transform: rotate(-3.5deg);
 }
 
-.card:nth-child(3n+3)::before {
-  --tape-color: var(--red-v);
-  transform: translateX(-50%) rotate(-0.7deg);
+.card:nth-child(4n+2)::before {
+  background-image: url('assets/svg-opt/tape-coral.webp');
+  left: 18px;
+  top: -18px;
+  transform: rotate(2.5deg);
+}
+
+.card:nth-child(4n+3)::before {
+  background-image: url('assets/svg-opt/tape-slate.webp');
+  left: 12px;
+  top: -16px;
+  transform: rotate(-2deg);
+}
+
+.card:nth-child(4n+4)::before {
+  background-image: url('assets/svg-opt/tape-striped.webp');
+  left: 16px;
+  top: -17px;
+  transform: rotate(3deg);
 }
 
 .card:nth-child(4n+1){transform:rotate(-.5deg);}
@@ -1321,7 +1309,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
     <div>
 
       <h1 class="hero-title rv" aria-label="Annmary Saji">
-        <img src="assets/svg-opt/hero_name.webp" alt="Annmary Saji"
+        <img id="heroTitleImg" src="assets/svg-opt/hero_name.webp" alt="Annmary Saji"
              width="800" height="200" loading="eager" decoding="async" />
       </h1>
 
@@ -2270,10 +2258,18 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
   }
 
+  function updateHeroImage(theme) {
+    const img = document.getElementById('heroTitleImg');
+    if (img) {
+      img.src = theme === 'dark' ? 'assets/svg-opt/hero_name_dark.webp' : 'assets/svg-opt/hero_name.webp';
+    }
+  }
+
   // 3. Theme Toggle (Preserve User Preference)
   (function initTheme(){
     const saved = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
+    updateHeroImage(saved);
     const icon = document.getElementById('themeIcon');
     if (icon) icon.setAttribute('data-lucide', saved === 'dark' ? 'sun' : 'moon');
     if (window.lucide) lucide.createIcons();
@@ -2284,6 +2280,7 @@ body, a, button, input, textarea, select { cursor: none !important; }
     const next = isDark ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+    updateHeroImage(next);
 
     const icon = document.getElementById('themeIcon');
     if (icon) {
