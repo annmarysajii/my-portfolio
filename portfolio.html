@@ -558,7 +558,77 @@ body, a, button, input, textarea, select { cursor: none !important; }
 
 .sec-num{font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.5rem;}
 
-.sec-title{font-family:var(--fd);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1;letter-spacing:-.025em;}
+.sec-title{
+  font-family:var(--fd);
+  font-size:clamp(2rem,4vw,3.25rem);
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-.025em;
+  position:relative;
+  display:inline-block;
+}
+
+.sec-title .ch {
+  display:inline-block;
+  transition:transform 0.15s cubic-bezier(0.16,1,0.3,1),filter 0.15s cubic-bezier(0.16,1,0.3,1),opacity 0.15s cubic-bezier(0.16,1,0.3,1);
+  will-change:transform,filter;
+}
+
+/* Illustration & Comics: Halftone dot overlay */
+#illustration .sec-title::after {
+  content: '';
+  position: absolute;
+  inset: -6px -10px;
+  background-image: radial-gradient(circle, rgba(44,42,41,0.22) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1);
+  border-radius: 3px;
+  z-index: 1;
+}
+#illustration .sec-title:hover::after { opacity: 1; }
+[data-theme="dark"] #illustration .sec-title::after {
+  background-image: radial-gradient(circle, rgba(240,238,245,0.28) 1.5px, transparent 1.5px);
+}
+
+/* Graphic Design & Brand: Alignment grid & corner handles */
+#graphic-design .sec-title::before {
+  content: '';
+  position: absolute;
+  inset: -8px -14px;
+  border: 1px dashed rgba(44,42,41,0.30);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1);
+}
+#graphic-design .sec-title:hover::before { opacity: 1; }
+
+#graphic-design .sec-title::after {
+  content: '';
+  position: absolute;
+  inset: -8px -14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1);
+  background:
+    linear-gradient(var(--ink-deep, #2C2A29), var(--ink-deep, #2C2A29)) top left / 6px 6px no-repeat,
+    linear-gradient(var(--ink-deep, #2C2A29), var(--ink-deep, #2C2A29)) top right / 6px 6px no-repeat,
+    linear-gradient(var(--ink-deep, #2C2A29), var(--ink-deep, #2C2A29)) bottom left / 6px 6px no-repeat,
+    linear-gradient(var(--ink-deep, #2C2A29), var(--ink-deep, #2C2A29)) bottom right / 6px 6px no-repeat;
+}
+#graphic-design .sec-title:hover::after { opacity: 0.65; }
+
+[data-theme="dark"] #graphic-design .sec-title::before {
+  border-color: rgba(240,238,245,0.35);
+}
+[data-theme="dark"] #graphic-design .sec-title::after {
+  background:
+    linear-gradient(#F0EEF5, #F0EEF5) top left / 6px 6px no-repeat,
+    linear-gradient(#F0EEF5, #F0EEF5) top right / 6px 6px no-repeat,
+    linear-gradient(#F0EEF5, #F0EEF5) bottom left / 6px 6px no-repeat,
+    linear-gradient(#F0EEF5, #F0EEF5) bottom right / 6px 6px no-repeat;
+}
 
 .sec-intro{font-size:1rem;line-height:1.75;color:var(--ink5);max-width:520px;margin-top:.65rem;}
 
@@ -2480,36 +2550,39 @@ body, a, button, input, textarea, select { cursor: none !important; }
     }
   })();
 
-  // === ZERO-LAG STAR CURSOR ===
+  // === ZERO-LAG STAR CURSOR & MOUSE TRACKING ===
+  let mx = -9999, my = -9999;
   (function() {
     const cur = document.getElementById('star-cursor');
-    if (!cur || window.matchMedia('(pointer: coarse)').matches) {
-      if (cur) cur.style.display = 'none';
-      return;
-    }
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (cur && isTouch) cur.style.display = 'none';
 
     // Direct position assignment — NO lerp, NO rAF interpolation, NO CSS transition on left/top
     window.addEventListener('mousemove', (e) => {
-      cur.style.left = e.clientX + 'px';
-      cur.style.top  = e.clientY + 'px';
+      mx = e.clientX;
+      my = e.clientY;
+      if (cur && !isTouch) {
+        cur.style.left = mx + 'px';
+        cur.style.top  = my + 'px';
+      }
     }, { passive: true });
 
     // Scale on hover over interactive elements
     const hoverSel = 'a, button, .card, .dl-btn, .soc, input, textarea, [role="button"]';
     document.addEventListener('mouseover', (e) => {
-      if (e.target.closest(hoverSel)) {
+      if (cur && !isTouch && e.target.closest(hoverSel)) {
         cur.style.transform = 'translate(-50%,-50%) scale(1.25)';
       }
     });
     document.addEventListener('mouseout', (e) => {
-      if (e.target.closest(hoverSel)) {
+      if (cur && !isTouch && e.target.closest(hoverSel)) {
         cur.style.transform = 'translate(-50%,-50%) scale(1)';
       }
     });
 
     // Hide when cursor leaves the browser window
-    document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
+    document.addEventListener('mouseleave', () => { if (cur) cur.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { if (cur) cur.style.opacity = '1'; });
   })();
 
   const bgC = document.getElementById('bg-c');
@@ -2619,6 +2692,97 @@ body, a, button, input, textarea, select { cursor: none !important; }
       }
     });
   }
+
+  // 10. Section Title Micro-Interactions
+  (function initSectionInteractions() {
+    function wrapChars(el) {
+      if (!el || el.dataset.wrapped) return;
+      el.dataset.wrapped = '1';
+      function processNode(node) {
+        if (node.nodeType === 3) { // TEXT_NODE
+          const text = node.textContent;
+          const frag = document.createDocumentFragment();
+          for (const char of text) {
+            if (char === ' ' || char === '\n' || char === '\t') {
+              frag.appendChild(document.createTextNode(char));
+            } else {
+              const span = document.createElement('span');
+              span.className = 'ch';
+              span.textContent = char;
+              frag.appendChild(span);
+            }
+          }
+          node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === 1 && node.nodeName !== 'BR') {
+          Array.from(node.childNodes).forEach(processNode);
+        }
+      }
+      Array.from(el.childNodes).forEach(processNode);
+    }
+
+    // Wrap all section titles
+    document.querySelectorAll('.sec-title').forEach(wrapChars);
+
+    // 01 Animation: Squash & Stretch on hover
+    const animHead = document.querySelector('#animation .sec-title');
+    if (animHead) {
+      animHead.addEventListener('mouseover', (e) => {
+        if (e.target.classList.contains('ch')) {
+          e.target.style.transform = 'scaleX(1.08) scaleY(0.92) translateY(-2px)';
+        }
+      });
+      animHead.addEventListener('mouseout', (e) => {
+        if (e.target.classList.contains('ch')) {
+          e.target.style.transform = '';
+        }
+      });
+    }
+
+    // 03 Videography: Camera shutter flick & motion blur
+    const vidHead = document.querySelector('#videography .sec-title');
+    if (vidHead) {
+      vidHead.addEventListener('mouseenter', () => {
+        const chars = vidHead.querySelectorAll('.ch');
+        chars.forEach((ch, i) => {
+          setTimeout(() => {
+            ch.style.filter = 'blur(2px)';
+            ch.style.transform = 'translateX(4px)';
+            setTimeout(() => {
+              ch.style.filter = '';
+              ch.style.transform = '';
+            }, 120);
+          }, i * 18);
+        });
+      });
+    }
+
+    // 05 Music: Wind-chime wave effect
+    const musicHead = document.querySelector('#music .sec-title');
+    if (musicHead) {
+      const chars = [...musicHead.querySelectorAll('.ch')];
+      function onMove(e) {
+        const rect = musicHead.getBoundingClientRect();
+        const relX = e.clientX - rect.left;
+        const width = rect.width;
+        chars.forEach((ch, i) => {
+          const chX = (i / chars.length) * width;
+          const dist = Math.abs(relX - chX);
+          const wave = Math.max(0, 1 - dist / 85);
+          ch.style.transform = 'translateY(' + (-wave * 8) + 'px)';
+        });
+      }
+      function onLeave() {
+        chars.forEach(ch => { ch.style.transform = ''; });
+      }
+      musicHead.addEventListener('mouseenter', () => {
+        musicHead.addEventListener('mousemove', onMove);
+      });
+      musicHead.addEventListener('mouseleave', () => {
+        musicHead.removeEventListener('mousemove', onMove);
+        onLeave();
+      });
+    }
+  })();
 
   // 11. BFCache Restoration
   window.addEventListener('pageshow', function(event) {
