@@ -12,6 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/AfterimagePass.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BokehPass.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/BokehShader.js"></script>
+  <script src="scripts/data.js?v=1787342124"></script>
 
   <meta property="og:site_name" content="Annmary Saji — Portfolio" />
   <meta property="og:type" content="website" />
@@ -50,19 +51,35 @@ html{scroll-behavior:smooth;}
   --fb:'General Sans',system-ui,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
 
-  /* === AESTHETIC OVERHAUL TOKENS === */
-  --red-v:    #C0392B;
-  --mustard:  #F2A93B;
-  --sage:     #8A9B6E;
-  --slate:    #5C7A99;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --sh-card:  0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1);
+  /* === STUDIO PLAYGROUND DESIGN TOKENS === */
+  --brand-blue: #1E3FC4;
+  --brand-red: #E8432E;
+  --brand-yellow: #FFCC00;
+  --accent-teal: #2BC9B5;
+  --accent-pink: #FF5FA2;
+  --accent-purple: #8B5CF6;
+  --accent-orange: #FF8A3D;
+  --pop-sh-sm: 2px 2px 0 var(--ink);
+  --pop-sh: 3px 3px 0 var(--ink);
+  --pop-sh-lg: 5px 5px 0 var(--ink);
+  --pop-sh-hover: 4px 5px 0 var(--ink);
 }
 
 [data-theme="dark"]{
   --ink:#F2EFEB;--ink-deep:#F2EFEB;--ink5:rgba(242,239,235,.72);--ink12:rgba(242,239,235,.15);--ink07:rgba(242,239,235,.08);
   --bg:#0E0D13;--paper:#0E0D13;--surf:#1A1826;--white:#14131D;
   --blue:#7098F8;--red:#F05040;--yel:#F2C030;
+  --brand-blue: #5C7CFA;
+  --brand-red: #FF6B6B;
+  --brand-yellow: #FFD43B;
+  --accent-teal: #38D9A9;
+  --accent-pink: #FF85C0;
+  --accent-purple: #B197FC;
+  --accent-orange: #FFA94D;
+  --pop-sh-sm: 2px 2px 0 rgba(0,0,0,0.6);
+  --pop-sh: 3px 3px 0 rgba(0,0,0,0.8);
+  --pop-sh-lg: 5px 5px 0 rgba(0,0,0,0.9);
+  --pop-sh-hover: 4px 5px 0 rgba(0,0,0,0.85);
 }
 
 [data-theme="dark"] body{
@@ -106,11 +123,6 @@ img{display:block;max-width:100%;}
 
 /* CURSOR & CANVAS */
 
-body, a, button, input, textarea, select { cursor: none !important; }
-@media (pointer: coarse) {
-  body, a, button, input, textarea, select { cursor: auto !important; }
-}
-
 #star-cursor {
   position: fixed;
   top: 0;
@@ -118,10 +130,17 @@ body, a, button, input, textarea, select { cursor: none !important; }
   width: 32px;
   height: 32px;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 999999;
   transform: translate(-50%, -50%);
-  transition: transform 0.1s var(--ease-out);
-  will-change: left, top;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: left, top, transform;
+}
+
+html.has-custom-cursor #star-cursor {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 #star-cursor img,
@@ -129,6 +148,29 @@ body, a, button, input, textarea, select { cursor: none !important; }
   width: 100%;
   height: 100%;
   display: block;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+}
+
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor select,
+  html.has-custom-cursor .card,
+  html.has-custom-cursor .gallery-img,
+  html.has-custom-cursor .back-btn,
+  html.has-custom-cursor .portfolio-btn,
+  html.has-custom-cursor .track-card-btn {
+    cursor: none !important;
+  }
+}
+
+@media (pointer: coarse) {
+  #star-cursor { display: none !important; }
+  *, body, a, button, input, textarea, select { cursor: auto !important; }
 }
 
 #bg-c{position:fixed;inset:0;z-index:-1;pointer-events:none;}
@@ -192,6 +234,8 @@ body, a, button, input, textarea, select { cursor: none !important; }
   font-weight:700;line-height:.97;letter-spacing:-.03em;
 
   margin-bottom:1rem;
+
+  color:var(--accent, var(--ink));
 
 }
 
@@ -431,23 +475,24 @@ body, a, button, input, textarea, select { cursor: none !important; }
   body, button, a, input, textarea, select, canvas { cursor: auto !important; }
 }
 
+
+@keyframes lineBoil {
+  0%, 100% { filter: url(#boil-1); }
+  33.3%    { filter: url(#boil-2); }
+  66.6%    { filter: url(#boil-3); }
+}
+.line-boil {
+  animation: lineBoil 0.28s steps(1) infinite;
+}
+
 </style>
 
   <link rel="stylesheet" href="css/motion.css?v=20260822_1"/>
 
 <style>
-/* Smooth Page Load Overlay */
+/* Obsolete overlay disabled in favor of Option B slip transition */
 #page-transition-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 999999;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.loaded #page-transition-overlay {
-    opacity: 0;
+    display: none !important;
 }
 </style>
 
@@ -525,9 +570,422 @@ body, a, button, input, textarea, select { cursor: none !important; }
 }
 @media(prefers-reduced-motion:reduce){ body::before { display: none !important; } }
 </style>
+
+<style>
+/* === OPTION B: SEAMLESS PAGE TRANSITION OVERLAY === */
+.page-trans-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg, #F9F6F0);
+  background-image: radial-gradient(circle, rgba(24, 23, 21, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.22s ease;
+}
+[data-theme="dark"] .page-trans-overlay {
+  background: #0E0D13;
+  background-image: radial-gradient(circle, rgba(242, 239, 235, 0.06) 1px, transparent 1px);
+}
+.page-trans-overlay.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* === OPTION C: PRODUCTION BINDER TABS === */
+.binder-tabs-nav {
+  position: sticky;
+  top: 65px;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surf);
+  padding: 8px 12px;
+  border-radius: 30px;
+  border: 1.5px solid var(--ink12);
+  backdrop-filter: blur(12px);
+  margin: 2rem 0 2.5rem 0;
+  overflow-x: auto;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.binder-tab {
+  background: none;
+  border: 1.5px solid transparent;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink5);
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.binder-tab .tab-num {
+  font-family: monospace;
+  font-size: 0.72rem;
+  opacity: 0.85;
+  font-weight: 800;
+}
+.binder-tab:hover {
+  color: var(--ink);
+  background: rgba(0,0,0,0.06);
+}
+.binder-tab.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+[data-theme="dark"] .binder-tab.active {
+  background: var(--yel);
+  color: #181715;
+  border-color: var(--yel);
+}
+
+/* === OPTION C: TACTILE INTERACTIVE BEFORE / AFTER COMPARISON SLIDER === */
+.comparison-slider-wrapper {
+  margin: 3rem 0;
+  background: var(--white);
+  border: 1.5px solid var(--ink12);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.06);
+  position: relative;
+}
+.comparison-slider-header {
+  margin-bottom: 16px;
+}
+.cs-badge {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #E8F0FE;
+  color: #1850A8;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+[data-theme="dark"] .cs-badge { background: #1C2638; color: #7098F8; }
+.cs-title {
+  font-family: var(--fd);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+}
+.cs-sub {
+  font-size: 0.88rem;
+  color: var(--ink5);
+  margin: 0;
+}
+
+.cs-quick-presets {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: var(--surf);
+  padding: 4px;
+  border-radius: 20px;
+  border: 1px solid var(--ink12);
+}
+.cs-preset-btn {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink5);
+  padding: 4px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cs-preset-btn:hover {
+  color: var(--ink);
+}
+.cs-preset-btn.active {
+  background: var(--ink);
+  color: var(--bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+[data-theme="dark"] .cs-preset-btn.active {
+  background: var(--yel);
+  color: #181715;
+}
+
+.comparison-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: pan-y;
+  border: 1.5px solid var(--ink12);
+  background: var(--surf);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 6px 20px rgba(0,0,0,0.06);
+  outline: none;
+}
+.comparison-slider:focus-visible {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(24, 80, 168, 0.25);
+}
+.comparison-slider.is-dragging {
+  cursor: grabbing !important;
+}
+.comp-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+.comp-img-after {
+  clip-path: inset(0 calc(100% - var(--split-pos, 50%)) 0 0);
+}
+.comp-tag {
+  position: absolute;
+  bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  z-index: 5;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.tag-before { right: 14px; background: rgba(18, 17, 25, 0.85); color: #FFF; border: 1px solid rgba(255,255,255,0.15); }
+.tag-after { left: 14px; background: rgba(217, 48, 32, 0.9); color: #FFF; border: 1px solid rgba(255,255,255,0.2); }
+
+.comp-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split-pos, 50%);
+  width: 3px;
+  background: #FFFFFF;
+  z-index: 10;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.handle-pill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 58px;
+  height: 38px;
+  border-radius: 20px;
+  background: #181715;
+  color: #FFFDF8;
+  border: 2px solid #FFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, color 0.2s;
+}
+.comparison-slider.is-dragging .handle-pill {
+  transform: translate(-50%, -50%) scale(1.18);
+  background: #FFC72C;
+  color: #181715;
+  border-color: #181715;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
+.handle-grip-lines {
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  line-height: 1;
+  font-weight: 900;
+}
+.handle-hint {
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+  opacity: 0.8;
+}
+.cs-tactile-hint {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--ink5);
+  text-align: center;
+  font-weight: 500;
+}
+
+/* === OPTION C: PRODUCTION FIELD NOTES POST-ITS === */
+.field-notes-dossier {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 3rem 0;
+}
+.field-note-postit {
+  position: relative;
+  padding: 1.6rem 1.4rem;
+  border-radius: 2px 4px 14px 2px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  color: #181715;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.field-note-postit:hover {
+  transform: translateY(-4px) rotate(0deg) !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+}
+.note-yellow {
+  background: #FEF49A;
+  border: 1px solid rgba(217, 180, 0, 0.4);
+  transform: rotate(-1.2deg);
+}
+.note-pink {
+  background: #FED1D6;
+  border: 1px solid rgba(230, 110, 130, 0.4);
+  transform: rotate(1.4deg);
+}
+.note-blue {
+  background: #D8ECF8;
+  border: 1px solid rgba(100, 170, 230, 0.4);
+  transform: rotate(-0.8deg);
+}
+[data-theme="dark"] .note-yellow { background: #2D2A12; color: #FFF; border-color: rgba(232, 176, 0, 0.3); }
+[data-theme="dark"] .note-pink { background: #331A22; color: #FFF; border-color: rgba(251, 113, 133, 0.3); }
+[data-theme="dark"] .note-blue { background: #132433; color: #FFF; border-color: rgba(112, 152, 248, 0.3); }
+
+.tape-strip {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 1px;
+}
+[data-theme="dark"] .tape-strip { background: rgba(255, 255, 255, 0.15); }
+.note-title {
+  font-family: 'Caveat', cursive, var(--fb);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+.note-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* === STUDIO PASSPORT DOCK IN PROJECT PAGE === */
+.passport-dock-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1.5px solid var(--ink);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-family: var(--fb);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, color 0.2s;
+}
+.passport-dock-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+.passport-dock-icon { font-size: 1rem; }
+.passport-badge-count {
+  background: var(--red);
+  color: #FFF;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 12px;
+}
+[data-theme="dark"] .passport-dock-btn {
+  background: #1C1A27;
+  color: #F2EFEB;
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* Toast */
+.stamp-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 24px;
+  background: #181715;
+  color: #FFF;
+  border-left: 4px solid #FFC72C;
+  border-radius: 6px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  z-index: 9999;
+  animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes toastSlide {
+  from { opacity: 0; transform: translateY(20px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.toast-stamp-icon { font-size: 1.3rem; }
+.toast-h { font-size: 0.72rem; font-weight: 800; color: #FFC72C; text-transform: uppercase; }
+.toast-desc { font-size: 0.8rem; font-weight: 600; }
+</style>
+
 </head>
 
 <body>
+<!-- SVG Filter Defs for Hand-Drawn Line Boil -->
+<svg class="svg-defs" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;">
+  <defs>
+    <filter id="boil-1" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" seed="1" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="boil-2" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" result="noise" seed="42" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="boil-3" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.038" numOctaves="2" result="noise" seed="99" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.8" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+</svg>
 <div id="page-transition-overlay"></div>
 
 
@@ -593,41 +1051,63 @@ body, a, button, input, textarea, select { cursor: none !important; }
 <script>
 
 // CURSOR & MOUSE TRACKING
-let mx = -9999, my = -9999, cx = -9999, cy = -9999;
-(function() {
+(function initProjectCustomCursor() {
   const cur = document.getElementById('star-cursor');
-  const isTouch = window.matchMedia('(pointer: coarse)').matches;
-  if (cur && isTouch) cur.style.display = 'none';
+  if (!cur) return;
 
-  // Direct position assignment — NO lerp, NO rAF interpolation, NO CSS transition on left/top
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch) {
+    cur.style.display = 'none';
+    return;
+  }
+
+  let isOverInteractive = false;
+
   window.addEventListener('mousemove', (e) => {
-    mx = cx = e.clientX;
-    my = cy = e.clientY;
-    if (cur && !isTouch) {
-      cur.style.left = mx + 'px';
-      cur.style.top  = my + 'px';
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+
+    if (!document.documentElement.classList.contains('has-custom-cursor')) {
+      document.documentElement.classList.add('has-custom-cursor');
     }
   }, { passive: true });
 
-  // Scale on hover over interactive elements
-  const hoverSel = 'a, button, .card, .gallery-img, .back-btn, .portfolio-btn, .track-card-btn, .orbit-item, .slider-track, #vinyl-disc, .filter-dial, .speed-btn, input, textarea, [role="button"]';
+  const hoverSel = 'a, button, .card, .gallery-img, .back-btn, .portfolio-btn, .track-card-btn, .orbit-item, .slider-track, #vinyl-disc, .filter-dial, .speed-btn, input, textarea, [role="button"], [role="link"], label';
+
   document.addEventListener('mouseover', (e) => {
-    if (cur && !isTouch && e.target.closest(hoverSel)) {
-      cur.style.transform = 'translate(-50%,-50%) scale(1.25)';
+    if (e.target.closest(hoverSel)) {
+      isOverInteractive = true;
+      cur.style.transform = 'translate(-50%, -50%) scale(1.35) rotate(12deg)';
     }
-  });
+  }, { passive: true });
+
   document.addEventListener('mouseout', (e) => {
-    if (cur && !isTouch && e.target.closest(hoverSel)) {
-      cur.style.transform = 'translate(-50%,-50%) scale(1)';
+    if (e.target.closest(hoverSel)) {
+      isOverInteractive = false;
+      cur.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
     }
+  }, { passive: true });
+
+  window.addEventListener('mousedown', () => {
+    cur.style.transform = 'translate(-50%, -50%) scale(0.85) rotate(-10deg)';
+  }, { passive: true });
+
+  window.addEventListener('mouseup', () => {
+    cur.style.transform = isOverInteractive 
+      ? 'translate(-50%, -50%) scale(1.35) rotate(12deg)'
+      : 'translate(-50%, -50%) scale(1) rotate(0deg)';
+  }, { passive: true });
+
+  document.addEventListener('mouseleave', () => {
+    document.documentElement.classList.remove('has-custom-cursor');
   });
 
-  // Hide when cursor leaves the browser window
-  document.addEventListener('mouseleave', () => { if (cur) cur.style.opacity = '0'; });
-  document.addEventListener('mouseenter', () => { if (cur) cur.style.opacity = '1'; });
+  document.addEventListener('mouseenter', (e) => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+    document.documentElement.classList.add('has-custom-cursor');
+  });
 })();
-
-
 
 // CANVAS STARS
 
@@ -698,6 +1178,9 @@ if(bgC){
   }));
 
 
+
+  let cx = -9999, cy = -9999;
+  window.addEventListener('mousemove', (e) => { cx = e.clientX; cy = e.clientY; }, { passive: true });
 
   function bgFrame(){
 
@@ -841,6 +1324,19 @@ window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{pass
 const PROJECTS = {
 
   'keep-yourself-safe':{
+    comparison: {
+      title: 'Environment Layout Concept vs. Final Cel Composite',
+      desc: 'Drag the divider to compare pencil exploratory rough layout against the final color composite.',
+      before: 'assets/portfolio-data/Keep yourself safe/concept images/exploration (3).webp',
+      after: 'assets/portfolio-data/Keep yourself safe/shots (5).webp',
+      beforeLabel: '✏️ Layout Concept',
+      afterLabel: '✨ Final Cel Composite'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '⏱️ Timing & Boiling Lines (12 FPS)', text: 'Animated entirely frame-by-frame on 2s (12 FPS) in Clip Studio Paint to maintain an organic, tactile boil texture that enhances the protagonist\'s nervous tension.' },
+      { type: 'pink', title: '🎬 Annecy IAFF 2025 Selection', text: 'Selected for the prestigious Paris Lyon Singapore programme at Annecy International Animation Film Festival 2025.' },
+      { type: 'blue', title: '🎵 Rhythm-First Sound Pipeline', text: 'Composed and mixed sound cues before keyframing so comedic beats snap synchronously on beat markers.' }
+    ],
 
     title:'Keep Yourself Safe',
 
@@ -879,6 +1375,18 @@ const PROJECTS = {
   },
 
   'dear-friend':{
+    comparison: {
+      title: 'Interior Perspective Rough vs. Final Staging',
+      desc: 'Drag to compare perspective environment rough with the final layered gothic lighting pass.',
+      before: 'assets/portfolio-data/Dear friend/room layout.webp',
+      after: 'assets/portfolio-data/Dear friend/rain7.webp',
+      beforeLabel: '✏️ Perspective Thumbnail',
+      afterLabel: '✨ Final Gothic Lighting'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🕯️ Gothic Color Scripting', text: 'Muted blues, desaturated ochre, and warm candleglow were balanced to evoke 19th-century atmospheric tension without relying on pitch black voids.' },
+      { type: 'pink', title: '🏰 Layered Multiplane Environments', text: 'Painted digital environment layers enabled parallax camera tracking in After Effects without breaking the hand-painted storybook feel.' }
+    ],
 
     title:'Dear Friend',
 
@@ -917,6 +1425,17 @@ const PROJECTS = {
   },
 
   'jasmine-visdev':{
+    comparison: {
+      title: 'Ensemble Performance Concept vs. Final Cast Lineup',
+      desc: 'Slide to compare early full ensemble color staging with the final stylized character design lineup.',
+      before: 'assets/portfolio-data/Jasmine_Visdev/full_band_color_16_9.webp',
+      after: 'assets/portfolio-data/Jasmine_Visdev/character designs.webp',
+      beforeLabel: '✏️ Ensemble Color Key',
+      afterLabel: '✨ Character Cast Lineup'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🎷 Neon Club Atmosphere', text: 'Utilizing warm magenta and midnight blue complementary lighting to capture the sultry, rhythmic energy of a live jazz club.' }
+    ],
 
     title:'Jasmine — Visual Development',
 
@@ -1030,38 +1549,52 @@ const PROJECTS = {
   },
 
   'chase':{
+    videoFirst: true,
+    comparison: {
+      title: 'Action Standoff Anticipation vs. Akira Slide Climax',
+      desc: 'Slide to compare wide-angle bridge anticipation posing against the high-octane Akira motorcycle slide keyframe.',
+      before: 'assets/portfolio-data/Chase_storyboard/anticipation pose.webp',
+      after: 'assets/portfolio-data/Chase_storyboard/akira slide.webp',
+      beforeLabel: '✏️ Standoff Anticipation',
+      afterLabel: '✨ Akira Slide Climax'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🛹 Character Contrast & Dynamic Silhouettes', text: 'Mika\'s loose oversized yellow streetwear and fluid skateboard carves provide an energetic visual counterpoint to Jane\'s sleek tactical leather and motorized pursuit.' },
+      { type: 'pink', title: '🗺️ 3D Spatial Continuity & Camera Staging', text: 'Designed an isometric 3D floor plan mapping Mika\'s rooftop skylight drop, through narrow alleys and congested traffic, onto the canal bridge climax.' },
+      { type: 'blue', title: '🎵 Rhythm, Music & Spacing Pipeline', text: 'Choreographed and edited animatic cuts directly against music beats to dial in comedic beats, dramatic pauses, and the explosive Akira motorcycle slide.' }
+    ],
 
-    title:'Chase — Storyboard',
+    title:'The Chase — Kinetic Storyboard & Action Staging',
 
     year:'2023',
 
-    discipline:'Animation',
+    discipline:'Animation / Storyboard',
 
-    context:'Academic storyboard exercise',
+    context:'Academic Storyboard & Action Staging Pitch',
 
-    badge:null,
+    badge:'Action-Comedy Storyboard Pitch',
 
-    role:'Storyboard Artist',
+    role:'Storyboard Artist — Story, Character Design & Action Choreography',
 
-    tools:['Clip Studio Paint'],
+    tools:['Clip Studio Paint','Storyboard That','Traditional Sketchbook'],
 
-    overview:`Chase is a storyboard exercise for a kinetic chase sequence spanning three distinct environments: a bridge, a motorbike, and a boat. The project focused on spatial continuity across rapid environment changes, maintaining clear screen direction and building tempo through panel rhythm and staging choices.`,
+    overview:`The Chase is an action-comedy storyboard pitch following Mika (21), an agile undercover skateboarder, pursued by Jane (22), a sharp government operative on a high-speed motorcycle. The sequence spans rooftop skylights, congested city traffic, and an arched stone bridge over a canal, culminating in an iconic Akira motorcycle slide and an audacious leap onto a passing cargo ship.`,
 
-    process:`The sequence was planned from a bird's-eye flow diagram before moving into thumbnail panels. Key beats were identified for pacing — the shift from bridge to bike required a continuity solution that preserved urgency without spatial confusion. Boat sequences used low angles to emphasise speed.`,
+    process:`The production began with physical red-pencil thumbnail sketches and comedic dialogue beats before establishing a 3D isometric environment floor plan. The sequence was choreographed to maintain rock-solid spatial continuity and clear 180-degree screen direction across rapid multi-environment transitions. Animatics were cut to music to refine action timing and spacing.`,
 
     images:[
 
-      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — bridge sequence, opening'},
+      {emoji:'<i data-lucide="image"></i>',label:'Character turnaround — Mika & Jane'},
 
-      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — motorbike transition panels'},
+      {emoji:'<i data-lucide="image"></i>',label:'3D isometric floor plan & camera staging'},
 
-      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — speed/motion staging study'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard Part 1 — Rooftop infiltration & alleyway drop'},
 
-      {emoji:'<i data-lucide="image"></i>',label:'Storyboard — boat sequence, key beats'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard Part 2 — Multi-lane traffic pursuit'},
 
-      {emoji:'<i data-lucide="image"></i>',label:'Spatial diagram — screen direction planning'},
+      {emoji:'<i data-lucide="image"></i>',label:'Storyboard Part 3 — Akira slide & bridge confrontation'},
 
-      {emoji:'<i data-lucide="image"></i>',label:'Final storyboard — closing sequence'}
+      {emoji:'<i data-lucide="image"></i>',label:'Physical sketchbook — Red pencil thumbnails & dialogue beats'}
 
     ]
 
@@ -1144,6 +1677,17 @@ const PROJECTS = {
   },
 
   'wellbeing-planner':{
+    comparison: {
+      title: 'Early Concept Thumbnail vs. Final Published Comic Frame',
+      desc: 'Slide to inspect the evolution from initial pencil brainstorming to polished published editorial page.',
+      before: 'assets/portfolio-data/Campus wellbeing comic/PREVIOUS IDEAS/1.webp',
+      after: 'assets/portfolio-data/Campus wellbeing comic/FINAL IMAGE.webp',
+      beforeLabel: '✏️ Early Draft Idea',
+      afterLabel: '✨ Final Polished Comic'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🧠 Empathy-Driven Storytelling', text: 'Translating stressful student experiences into comforting, humorous visual vignettes with warm pastel gouache textures.' }
+    ],
 
     title:'Campus Wellbeing Comic Planner & Campus for All',
 
@@ -1400,6 +1944,18 @@ const PROJECTS = {
   },
 
   'gobunny':{
+    comparison: {
+      title: 'Brand Pattern System vs. 3D Packaged Products',
+      desc: 'Slide to compare the 2D brand pattern and mascot emblem against the final 3D packaged beverage cans.',
+      before: 'assets/portfolio-data/GoBunny_brand/Your paragraph text (33).webp',
+      after: 'assets/portfolio-data/GoBunny_brand/Copy of ART DIRECTION PORTFOLIO (3).webp',
+      beforeLabel: '🐾 2D Brand Pattern',
+      afterLabel: '✨ 3D Product Cans'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🍓 High-Chroma Strawberry Red', text: 'Engineered a signature electric strawberry red (#FF3522) paired with cream white to guarantee instant recognition across retail shelves.' },
+      { type: 'pink', title: '📦 Omnichannel Packaging Suite', text: 'Designed packaging from beverage cans to gift boxes, maintaining cohesive badge geometry and tactile character expressions.' }
+    ],
 
     title:'GoBunny',
 
@@ -1514,6 +2070,17 @@ const PROJECTS = {
   },
 
   'green-arrow':{
+    comparison: {
+      title: 'Primary Vector Geometry vs. Event Poster Execution',
+      desc: 'Slide to compare vector identity lockup with full typographic campaign poster.',
+      before: 'assets/portfolio-data/Green arrow/LOGO GREEN ARROW.webp',
+      after: 'assets/portfolio-data/Green arrow/3.webp',
+      beforeLabel: '✏️ Vector Lockup',
+      afterLabel: '✨ Event Campaign Poster'
+    },
+    fieldNotes: [
+      { type: 'yellow', title: '🌿 Organic Color Harmonization', text: 'Crafted a 5-shade botanical palette (#243E36 forest to #E0EEC6 matcha) suited for soy-based ink printing on recycled kraft paper.' }
+    ],
 
     title:'Green Arrow — Mock Brand Identity',
 
@@ -1895,11 +2462,104 @@ const PROJECTS = {
 
 
 
+// Format string for captions and alt text
+function formatName(str) {
+    let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
+    const overrides = {
+        '3': 'Campaign Poster & Graphic System',
+        '4': 'Digital Web Ad — 01',
+        '5': 'Digital Web Ad — 02',
+        '6': 'Merchandise & Apparel Mockup',
+        '7': 'Eco Packaging & Product Suite',
+        'GO BUNNY': 'Primary Logo Lockup',
+        'Your paragraph text (33)': 'Brand Pattern & Texture',
+        'Your paragraph text (35)': 'Badge Logo & Emblem',
+        'Your paragraph text (36)': 'Logo Inverse Lockup',
+        'Your paragraph text (30)': 'Cafe Frontage Mockup',
+        'Your paragraph text (37)': 'Social Media Campaign Ad',
+        'It is time for some strawberries': 'Mobile Ordering UI',
+        'ART DIRECTION PORTFOLIO (1)': 'Billboard Mockup',
+        'ART DIRECTION PORTFOLIO': 'Gift Box Packaging',
+        'Copy of ART DIRECTION PORTFOLIO (3)': 'Cider Beverage Cans',
+        'LOGO GREEN ARROW': 'Primary Lockup',
+        'EcoFuture Color Pallette': 'Color Palette System',
+        'presents': 'Brand Event Collateral',
+        'GLOW SQUARE poster': 'Campaign Square Poster',
+        'GLOW Web Ad Square (300 x 250 px)': 'Digital Web Campaign Ad',
+        'GLOW PRESENTATION Backdrop (1)': 'Presentation Stage Backdrop',
+        'GLOW PPT SLIDE': 'Presentation Slide Deck',
+        'ntu banner': 'NTU Campus Web Banner',
+        'wssbanner': 'WSS Event Web Banner'
+    };
+    if (overrides[rawName]) return overrides[rawName];
+    let name = rawName.replace(/[-_]/g, ' ').replace(/\s*\(\d+\)\s*/g, ' ').trim();
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function renderMedia(file, isComic = false, explicitCaption = '') {
+    const isVideo = !!file.match(/\.(mp4|mov|webm)$/i);
+    const isAudio = !!file.match(/\.(m4a|mp3|wav)$/i);
+    const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
+    const isPDF = !!file.match(/\.pdf$/i);
+    const name = explicitCaption || '';
+    
+    let el = '';
+    if (isYouTube) {
+        const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
+        if (ytMatch && ytMatch[1]) {
+            const ytId = ytMatch[1];
+            if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
+                const thumbUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                el = `<div class="media-el full-width yt-fallback" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:8px; overflow:hidden; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
+                    <img src="${thumbUrl}" alt="Video preview" style="width:100%; height:100%; object-fit:cover; opacity:0.6;" onerror="this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg'">
+                    <a href="${watchUrl}" target="_blank" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; color:white; transition:transform 0.2s;">
+                        <svg width="68" height="48" viewBox="0 0 68 48"><path fill="#FF0000" d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 .13 34 .13s-21.79 0-27.1.14c-2.93.78-4.64 3.26-5.42 6.19C1.34 11.55 1.34 24 1.34 24s0 12.45.14 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 47.87 34 47.87s21.79 0 27.1-.14c2.93-.78 4.64-3.26 5.42-6.19C66.66 36.45 66.66 24 66.66 24s0-12.45-.14-16.26z"/><path fill="#FFFFFF" d="M45 24 27 14v20z"/></svg>
+                        <div style="margin-top:1rem; font-family:'Clash Display',sans-serif; font-size:1.2rem; background:rgba(0,0,0,0.75); padding:0.5rem 1.25rem; border-radius:6px; text-align:center;">Watch on YouTube<br><span style="font-size:0.85rem; font-family:'General Sans',sans-serif; font-weight:normal; color:#ddd;">(Click to open)</span></div>
+                    </a>
+                </div>`;
+            } else {
+                const embedUrl = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
+                el = `<iframe class="media-el full-width" src="${embedUrl}" style="width:100%; aspect-ratio:16/9; display:block; border-radius:8px; border:none; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+            }
+        }
+    } else if (isVideo) {
+        el = `<video class="media-el full-width" src="${file}" controls playsinline webkit-playsinline style="width:100%; height:auto; display:block; background:var(--surf); border-radius:8px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
+    } else if (isAudio) {
+        el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
+          <div style="width:90px; height:90px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          </div>
+          <audio src="${file}" controls playsinline webkit-playsinline style="width:100%; outline:none; height:40px;"></audio>
+        </div>`;
+    } else if (isPDF) {
+        el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
+          <div style="width:80px; height:80px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <a href="${file}" target="_blank" class="sec-dl" style="margin:0; background:var(--ink); color:var(--bg); border:none; padding:0.6rem 1.2rem; cursor:pointer;">Open PDF Document ↗</a>
+        </div>`;
+    } else {
+        el = `<div class="media-el" style="break-inside: avoid; margin-bottom: 2rem; position: relative;">
+          <img src="${file}" alt="" loading="lazy" decoding="async" style="width:100%; height:auto; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 4px 15px rgba(0,0,0,0.04);">
+        </div>`;
+    }
+    
+    const captionHtml = name ? `<div class="media-caption">${name}</div>` : '';
+    return `<div class="masonry-item ${isYouTube || isVideo ? 'full-width' : ''}">
+        ${el}
+        ${captionHtml}
+    </div>`;
+}
+
 // RENDER
-  const id = new URLSearchParams(location.search).get('id');
-  const p = PROJECTS[id];
-  if (p) { document.title = `${p.title} — Annmary Saji`; window.scrollTo(0, 0); }
-  const main = document.getElementById('main');
+const id = new URLSearchParams(location.search).get('id');
+const p = PROJECTS[id];
+if (p) { document.title = `${p.title} — Annmary Saji`; window.scrollTo(0, 0); }
+const main = document.getElementById('main');
+
+const rawMedia = (typeof PORTFOLIO_DATA !== 'undefined' && PORTFOLIO_DATA[id]) ? PORTFOLIO_DATA[id] : [];
+const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().includes('image coming soon') && !f.toLowerCase().includes('placeholder'));
   
   if (p) {
       if (id === 'original-tracks') {
@@ -1920,9 +2580,100 @@ const PROJECTS = {
               bs.forEach(b => badges += `<span class="badge bs">${b}</span>`);
           }
           
+          // Featured Animatic / Primary Film Video Block (when videoFirst is true)
+          let heroVideoHtml = '';
+          const primaryVideo = media && media.length ? media.find(f => typeof f === 'string' && (f.includes('youtu.be') || f.includes('youtube.com') || f.match(/\.(mp4|mov|webm)$/i))) : null;
+          if (p.videoFirst && primaryVideo) {
+            heroVideoHtml = `
+              <div class="cs-section" id="sec-animatic" style="margin-top:2.5rem; margin-bottom:1.5rem;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
+                  <span class="cs-badge" style="background:#FFEAEA; color:#DC2626;"><i data-lucide="play" style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:3px;"></i> Featured Animatic</span>
+                  <h3 class="cs-title" style="margin:0;">Full Animated Sequence</h3>
+                </div>
+                <div class="masonry-container">
+                  ${renderMedia(primaryVideo).replace('masonry-item', 'masonry-item full-width')}
+                </div>
+              </div>
+            `;
+          }
+
+          // Binder Tabs (Strictly Sequential Dynamic Numbering)
+          let tabIdx = 1;
+          let tabs = [];
+          tabs.push(`<a href="#sec-overview" class="binder-tab active"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Brief &amp; Overview</a>`);
+          if (heroVideoHtml) {
+            tabs.push(`<a href="#sec-animatic" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Animatic</a>`);
+          }
+          if (p.comparison) {
+            tabs.push(`<a href="#sec-visdev" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> VisDev &amp; Slider</a>`);
+          }
+          tabs.push(`<a href="#sec-gallery" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Production &amp; Media</a>`);
+          if (p.fieldNotes && p.fieldNotes.length) {
+            tabs.push(`<a href="#sec-fieldnotes" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Field Notes</a>`);
+          }
+          let binderTabs = `<div class="binder-tabs-nav">${tabs.join('')}</div>`;
+
+          // Comparison Slider Block with Tactile Presets & Keyboard Support
+          let compHtml = '';
+          if (p.comparison) {
+            compHtml = `
+              <div class="comparison-slider-wrapper" id="sec-visdev">
+                <div class="comparison-slider-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                  <div>
+                    <span class="cs-badge">Interactive VisDev Dossier</span>
+                    <h3 class="cs-title">${p.comparison.title}</h3>
+                    <p class="cs-sub">${p.comparison.desc}</p>
+                  </div>
+                  <div class="cs-quick-presets">
+                    <button type="button" class="cs-preset-btn" data-pos="12">Before</button>
+                    <button type="button" class="cs-preset-btn active" data-pos="50">50/50 Split</button>
+                    <button type="button" class="cs-preset-btn" data-pos="88">After</button>
+                  </div>
+                </div>
+                <div class="comparison-slider" id="comp-slider" style="--split-pos: 50%;" tabindex="0" role="slider" aria-label="Before and After Comparison" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                  <img src="${p.comparison.before}" class="comp-img comp-img-before" alt="Rough / Before" loading="lazy">
+                  <img src="${p.comparison.after}" class="comp-img comp-img-after" alt="Final / After" loading="lazy">
+                  <span class="comp-tag tag-before">${p.comparison.beforeLabel}</span>
+                  <span class="comp-tag tag-after">${p.comparison.afterLabel}</span>
+                  <div class="comp-handle">
+                    <div class="handle-pill">
+                      <span class="handle-grip-lines">|||</span>
+                      <span class="handle-hint">DRAG</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="cs-tactile-hint">
+                  <span>💡 Drag the tactile handle, click anywhere on the image, or press ← / → arrow keys to compare</span>
+                </div>
+              </div>
+            `;
+          }
+
+          // Field Notes Block
+          let notesHtml = '';
+          if (p.fieldNotes && p.fieldNotes.length) {
+            notesHtml = `
+              <div id="sec-fieldnotes" style="margin-top:3.5rem;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
+                  <span class="cs-badge" style="background:#FFF0D4; color:#B45309;">Production Diary</span>
+                  <h3 class="cs-title" style="margin:0;">Studio Field Notes &amp; Pipeline Insights</h3>
+                </div>
+                <div class="field-notes-dossier">
+                  ${p.fieldNotes.map(n => `
+                    <div class="field-note-postit note-${n.type}">
+                      <div class="tape-strip"></div>
+                      <h4 class="note-title">${n.title}</h4>
+                      <p class="note-text">${n.text}</p>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }
+
           main.innerHTML = `
         <div class="con">
-          <div class="proj-header">
+          <div class="proj-header" id="sec-overview">
             <div class="proj-disc-tag">${p.discipline}${p.context ? ' &bull; ' + p.context : ''}</div>
             <h1 class="proj-title">${p.title}</h1>
             ${badges ? `<div class="proj-badges" style="margin-top:0.75rem;">${badges}</div>` : ''}
@@ -1935,7 +2686,7 @@ const PROJECTS = {
             
             ${p.overview ? `
             <div class="proj-overview-box" style="margin-top:2rem; max-width:820px;">
-              <p style="font-size:1.15rem; line-height:1.75; color:var(--ink); opacity:0.9; margin:0;">${p.overview}</p>
+              <p style="font-size:1.15rem; line-height:1.75; color:var(--ink); opacity:0.92; margin:0;">${p.overview}</p>
             </div>` : ''}
             
             ${p.tools && p.tools.length ? `
@@ -1943,103 +2694,44 @@ const PROJECTS = {
               <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink5); margin-right:0.25rem;">Apps / Tools Used:</span>
               ${p.tools.map(t => `<span class="tool" style="font-size:0.85rem; font-weight:600;">${t}</span>`).join('')}
             </div>` : ''}
+
+            ${binderTabs}
           </div>
-          <div id="dynamic-gallery"></div>
+
+          ${heroVideoHtml}
+
+          ${compHtml}
+
+          <div id="sec-gallery">
+            <div id="dynamic-gallery"></div>
+          </div>
+
+          ${notesHtml}
+
           <div class="ph-foot" style="margin-top: 4rem; padding-bottom: 4rem;">
               <a href="portfolio.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
           </div>
         </div>
           `;
       }
+  } else {
+      // No matching project for this id — show a friendly not-found state instead of a blank page.
+      main.innerHTML = `
+        <div class="con" style="padding:7rem 1.5rem 6rem; text-align:center;">
+          <h1 class="proj-title" style="margin-bottom:1rem;">Project not found</h1>
+          <p style="opacity:0.75; margin-bottom:2rem;">This project may have moved or the link is out of date.</p>
+          <a href="portfolio.html" class="nav-back"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Portfolio</a>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
   }
 
-  // Format string for captions and alt text
-  function formatName(str) {
-      let rawName = str.split('/').pop().replace(/\.[^/.]+$/, "");
-      const overrides = {
-          'GO BUNNY': 'Primary Logo Lockup',
-          'Your paragraph text (33)': 'Brand Pattern',
-          'Your paragraph text (35)': 'Badge Logo',
-          'Your paragraph text (36)': 'Logo Inverse',
-          'Your paragraph text (30)': 'Cafe Frontage Mockup',
-          'Your paragraph text (37)': 'Social Media Campaign Ad',
-          'It is time for some strawberries': 'Mobile Ordering UI',
-          'ART DIRECTION PORTFOLIO (1)': 'Billboard Mockup',
-          'ART DIRECTION PORTFOLIO': 'Gift Box Packaging',
-          'Copy of ART DIRECTION PORTFOLIO (3)': 'Cider Beverage Cans',
-          'LOGO GREEN ARROW': 'Primary Lockup',
-          'EcoFuture Color Pallette': 'Color Palette',
-          'GLOW SQUARE poster': 'Campaign Square Poster',
-          'GLOW Web Ad Square (300 x 250 px)': 'Digital Web Campaign Ad',
-          'GLOW PRESENTATION Backdrop (1)': 'Presentation Stage Backdrop',
-          'GLOW PPT SLIDE': 'Presentation Slide Deck',
-          'ntu banner': 'NTU Campus Web Banner',
-          'wssbanner': 'WSS Event Web Banner'
-      };
-      if (overrides[rawName]) return overrides[rawName];
-      let name = rawName.replace(/[-_]/g, ' ').replace(/\s*\(\d+\)\s*/g, ' ').trim();
-      return name.charAt(0).toUpperCase() + name.slice(1);
-  }
 
-  function renderMedia(file, isComic = false, explicitCaption = '') {
-      const isVideo = !!file.match(/\.(mp4|mov|webm)$/i);
-      const isAudio = !!file.match(/\.(m4a|mp3|wav)$/i);
-      const isYouTube = !!file.match(/youtube\.com|youtu\.be/i);
-      const isPDF = !!file.match(/\.pdf$/i);
-      const name = explicitCaption || '';
-      
-      let el = '';
-      if (isYouTube) {
-          const ytMatch = file.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\?]+)/);
-          if (ytMatch && ytMatch[1]) {
-              const ytId = ytMatch[1];
-              if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                  const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
-                  const thumbUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-                  el = `<div class="media-el full-width yt-fallback" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:8px; overflow:hidden; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
-                      <img src="${thumbUrl}" alt="Video preview" style="width:100%; height:100%; object-fit:cover; opacity:0.6;" onerror="this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg'">
-                      <a href="${watchUrl}" target="_blank" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; color:white; transition:transform 0.2s;">
-                          <svg width="68" height="48" viewBox="0 0 68 48"><path fill="#FF0000" d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 .13 34 .13s-21.79 0-27.1.14c-2.93.78-4.64 3.26-5.42 6.19C1.34 11.55 1.34 24 1.34 24s0 12.45.14 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 47.87 34 47.87s21.79 0 27.1-.14c2.93-.78 4.64-3.26 5.42-6.19C66.66 36.45 66.66 24 66.66 24s0-12.45-.14-16.26z"/><path fill="#FFFFFF" d="M45 24 27 14v20z"/></svg>
-                          <div style="margin-top:1rem; font-family:'Clash Display',sans-serif; font-size:1.2rem; background:rgba(0,0,0,0.75); padding:0.5rem 1.25rem; border-radius:6px; text-align:center;">Watch on YouTube<br><span style="font-size:0.85rem; font-family:'General Sans',sans-serif; font-weight:normal; color:#ddd;">(Click to open)</span></div>
-                      </a>
-                  </div>`;
-              } else {
-                  const embedUrl = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
-                  el = `<iframe class="media-el full-width" src="${embedUrl}" style="width:100%; aspect-ratio:16/9; display:block; border-radius:8px; border:none; break-inside: avoid; margin-bottom: 2rem; box-shadow:0 12px 30px rgba(0,0,0,0.15);" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
-              }
-          }
-      } else if (isVideo) {
-          el = `<video class="media-el full-width" src="${file}" controls playsinline webkit-playsinline style="width:100%; height:auto; display:block; background:var(--surf); border-radius:8px; break-inside: avoid; margin-bottom: 2rem;"></video>`;
-      } else if (isAudio) {
-          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
-            <div style="width:90px; height:90px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-            </div>
-            <audio src="${file}" controls playsinline webkit-playsinline style="width:100%; outline:none; height:40px;"></audio>
-          </div>`;
-      } else if (isPDF) {
-          el = `<div class="media-el" style="background:var(--surf); border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:2rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; aspect-ratio:4/3; break-inside: avoid; margin-bottom: 2rem;">
-            <div style="width:80px; height:80px; border-radius:50%; background:var(--ink07); display:flex; align-items:center; justify-content:center;">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
-            <a href="${file}" target="_blank" class="sec-dl" style="margin:0; background:var(--ink); color:var(--bg); border:none; padding:0.6rem 1.2rem; cursor:pointer;">Open PDF Document ↗</a>
-          </div>`;
-      } else {
-          el = `<div class="media-el" style="break-inside: avoid; margin-bottom: 2rem; position: relative;">
-            <img src="${file}" alt="" loading="lazy" decoding="async" style="width:100%; height:auto; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 4px 15px rgba(0,0,0,0.04);">
-          </div>`;
-      }
-      
-      const captionHtml = name ? `<div class="media-caption">${name}</div>` : '';
-      return `<div class="masonry-item ${isYouTube || isVideo ? 'full-width' : ''}">
-          ${el}
-          ${captionHtml}
-      </div>`;
-  }
 
   let checkData = setInterval(() => {
       if (window.PORTFOLIO_DATA) {
           clearInterval(checkData);
+          if (!p) return; // no project to populate a gallery for
           const data = window.PORTFOLIO_DATA;
           
           if (id === 'original-tracks') {
@@ -2052,16 +2744,18 @@ const PROJECTS = {
               document.body.style.backgroundColor = '#020204';
               document.body.style.color = '#FFFFFF';
           } else if (id === 'gobunny') {
-              document.documentElement.style.setProperty('--bg', '#FFF2F0');
-              document.documentElement.style.setProperty('--surf', '#FFFFFF');
-              document.documentElement.style.setProperty('--ink', '#FF3522');
-              document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.2)');
+              // High Readability: Warm airy background, rich charcoal body text, signature strawberry accent
+              document.documentElement.style.setProperty('--bg', '#FFF7F5');
+              document.documentElement.style.setProperty('--surf', '#FFEFEA');
+              document.documentElement.style.setProperty('--accent', '#FF3522');
+              document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.15)');
               (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
           } else if (id === 'green-arrow') {
-              document.documentElement.style.setProperty('--bg', '#EBF4ED');
-              document.documentElement.style.setProperty('--surf', '#F4F9F5');
-              document.documentElement.style.setProperty('--ink', '#2B5E39');
-              document.documentElement.style.setProperty('--line', 'rgba(43, 94, 57, 0.2)');
+              // High Readability: Sage tinted background, rich charcoal body text, deep botanical accent
+              document.documentElement.style.setProperty('--bg', '#F3F8F5');
+              document.documentElement.style.setProperty('--surf', '#E5EFE8');
+              document.documentElement.style.setProperty('--accent', '#243E36');
+              document.documentElement.style.setProperty('--line', 'rgba(36, 62, 54, 0.15)');
               (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
           }
 
@@ -2071,42 +2765,6 @@ const PROJECTS = {
           const gal = document.getElementById('dynamic-gallery');
           if (media.length === 0) {
               gal.innerHTML = `<div class="gallery-hero"><div class="tape tape-tl"></div><div class="tape tape-tr"></div><span class="ph-label">Media coming soon</span></div>`;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -2210,70 +2868,34 @@ const PROJECTS = {
               }
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
 
           // 2. GOBUNNY CASE STUDY
           if (id === 'gobunny') {
-              const logoPrimary = findFile('GO BUNNY.png');
-              const pattern = findFile('Your paragraph text (33).png');
-              const badge = findFile('Your paragraph text (35).png');
-              const inverse = findFile('Your paragraph text (36).png');
-              const mobileUI = findFile('It is time for some strawberries');
-              const social = findFile('Your paragraph text (37).png');
-              const billboard = findFile('ART DIRECTION PORTFOLIO (1).png');
-              const cafeFront = findFile('Your paragraph text (30).png');
-              const cans = findFile('Copy of ART DIRECTION PORTFOLIO (3).png');
-              const box = findFile('ART DIRECTION PORTFOLIO.png');
-              const packBlue = findFile('3.png');
-              const packOrange = findFile('4.png');
+              const logoPrimary = findFile('GO BUNNY');
+              const pattern = findFile('Your paragraph text (33)');
+              const badge = findFile('Your paragraph text (35)');
+              const inverse = findFile('Your paragraph text (36)');
+              const mobileUI = findFile('It is time for some strawberries') || findFile('strawberries');
+              const social = findFile('Your paragraph text (37)');
+              const billboard = findFile('ART DIRECTION PORTFOLIO (1)');
+              const cafeFront = findFile('Your paragraph text (30)');
+              const cans = findFile('Copy of ART DIRECTION PORTFOLIO (3)');
+              const box = media.find(f => f.endsWith('ART DIRECTION PORTFOLIO.webp') || f.endsWith('ART DIRECTION PORTFOLIO.png'));
+              const packBlue = findFile('/3.') || findFile('3.webp');
+              const packOrange = findFile('/4.') || findFile('4.webp');
               
               let htmlStr = styleBlock;
               htmlStr += `
               <div class="cs-section">
-                  <h2 class="cs-heading">Color Palette</h2>
+                  <h2 class="cs-heading">Color Palette System</h2>
                   <div class="cs-palettes">
-                      <div class="cs-color"><div class="cs-swatch" style="background:#FF3522;"></div><span class="cs-hex">#FF3522</span><span style="font-size:0.75rem; color:var(--ink5);">Vivid Red (Primary)</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#FFB6D9;"></div><span class="cs-hex">#FFB6D9</span><span style="font-size:0.75rem; color:var(--ink5);">Light Pink (Mascot)</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#FF3522;"></div><span class="cs-hex">#FF3522</span><span style="font-size:0.75rem; color:var(--ink5);">Strawberry Red (Primary)</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#FFB6D9;"></div><span class="cs-hex">#FFB6D9</span><span style="font-size:0.75rem; color:var(--ink5);">Cheeky Pink (Mascot)</span></div>
                       <div class="cs-color"><div class="cs-swatch" style="background:#FFE4D6; border: 1px solid rgba(0,0,0,0.1);"></div><span class="cs-hex">#FFE4D6</span><span style="font-size:0.75rem; color:var(--ink5);">Light Peach</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#FFFFFF; border: 1px solid rgba(0,0,0,0.1);"></div><span class="cs-hex">#FFFFFF</span><span style="font-size:0.75rem; color:var(--ink5);">Pure White</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#FFFFFF; border: 1px solid rgba(0,0,0,0.1);"></div><span class="cs-hex">#FFFFFF</span><span style="font-size:0.75rem; color:var(--ink5);">Pure Cream White</span></div>
                   </div>
               </div>`;
               
@@ -2302,42 +2924,6 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -2345,20 +2931,20 @@ const PROJECTS = {
           // 3. GREEN ARROW CASE STUDY
           if (id === 'green-arrow') {
               const logo = findFile('LOGO GREEN ARROW');
-              const posters = findFiles('3.png').concat(findFiles('presents'));
-              const digital = findFiles('4.png').concat(findFiles('5.png'));
-              const merch = findFiles('6.png').concat(findFiles('7.png'));
+              const posters = media.filter(f => f.includes('/3.') || f.toLowerCase().includes('presents') || f.toLowerCase().includes('color pallette'));
+              const digital = media.filter(f => f.includes('/4.') || f.includes('/5.'));
+              const merch = media.filter(f => f.includes('/6.') || f.includes('/7.'));
               
               let htmlStr = styleBlock;
               htmlStr += `
               <div class="cs-section">
-                  <h2 class="cs-heading">Color Palette</h2>
+                  <h2 class="cs-heading">Color Palette System</h2>
                   <div class="cs-palettes">
-                      <div class="cs-color"><div class="cs-swatch" style="background:#243E36;"></div><span class="cs-hex">#243E36</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#7CA982;"></div><span class="cs-hex">#7CA982</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#E0EEC6;"></div><span class="cs-hex">#E0EEC6</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#C2A83E;"></div><span class="cs-hex">#C2A83E</span></div>
-                      <div class="cs-color"><div class="cs-swatch" style="background:#F1F7ED;"></div><span class="cs-hex">#F1F7ED</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#243E36;"></div><span class="cs-hex">#243E36</span><span style="font-size:0.75rem; color:var(--ink5);">Deep Pine</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#7CA982;"></div><span class="cs-hex">#7CA982</span><span style="font-size:0.75rem; color:var(--ink5);">Sage Green</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#E0EEC6;"></div><span class="cs-hex">#E0EEC6</span><span style="font-size:0.75rem; color:var(--ink5);">Matcha Light</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#C2A83E;"></div><span class="cs-hex">#C2A83E</span><span style="font-size:0.75rem; color:var(--ink5);">Warm Ochre</span></div>
+                      <div class="cs-color"><div class="cs-swatch" style="background:#F1F7ED;"></div><span class="cs-hex">#F1F7ED</span><span style="font-size:0.75rem; color:var(--ink5);">Soft Ecru</span></div>
                   </div>
               </div>`;
               
@@ -2379,42 +2965,6 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -2425,8 +2975,8 @@ const PROJECTS = {
               const squareAd = findFile('GLOW Web Ad Square');
               const backdrop = findFile('GLOW PRESENTATION Backdrop');
               const ppt = findFile('GLOW PPT SLIDE');
-              const ntuBanner = findFile('ntu banner.png');
-              const wssBanner = findFile('wssbanner.png');
+              const ntuBanner = findFile('ntu banner');
+              const wssBanner = findFile('wssbanner');
               
               let htmlStr = styleBlock;
               htmlStr += `<div class="cs-section"><h2 class="cs-heading">Campaign Posters & Digital Ads</h2><div class="masonry-container">`;
@@ -2447,42 +2997,6 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -2490,7 +3004,7 @@ const PROJECTS = {
           // 5. CAO INTERNSHIP COMIC SERIES & NANGELI COMIC READER
           if (id === 'internship-comics' || id === 'nangele') {
               const isNangeli = (id === 'nangele');
-              const comicMedia = media.filter(f => f.match(/\.(png|jpe?g)$/i));
+              const comicMedia = media.filter(f => f.match(/\.(webp|png|jpe?g|gif)$/i));
               
               let htmlStr = styleBlock;
               if (!isNangeli) {
@@ -2596,42 +3110,6 @@ const PROJECTS = {
                       btnBook.style.color = 'var(--ink)';
                   };
               }
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -2679,43 +3157,110 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
+              return;
+          }
+
+          // 6.5. CHASE STORYBOARD CASE STUDY (PARSED FROM THE CHASE.PDF)
+          if (id === 'chase') {
+              const video = findFile('youtu.be');
+              const pdfDoc = findFile('THE CHASE.pdf');
+              const charDesign = findFile('chase_doc_p02');
+              const floorPlan = findFile('chase_doc_p03');
+              const boardPart1 = findFile('chase_doc_p05');
+              const boardPart2 = findFile('chase_doc_p06');
+              const boardPart3 = findFile('chase_doc_p07');
+              const sketchThumb = findFile('chase_doc_p08');
+              const akiraSlide = findFile('akira slide');
+              const anticipation = findFile('anticipation pose');
+              const bye2 = findFile('bye2');
+              const scene21 = findFile('scene2.1shot');
+              
+              let htmlStr = styleBlock;
+              
+              // 1. Storyboard Pitch Header Card
+              htmlStr += `
+              <div class="cs-section">
+                <div style="background:var(--surf); padding:2.5rem; border-radius:14px; border:1px solid var(--line); margin-bottom:2.5rem;">
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1.5rem;">
+                    <div style="max-width:700px;">
+                      <div style="display:inline-flex; align-items:center; gap:6px; background:#FFF0D4; color:#B45309; font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; padding:4px 10px; border-radius:4px; margin-bottom:0.8rem;">
+                        <i data-lucide="clapperboard" style="width:14px; height:14px;"></i> Action-Comedy Storyboard Pitch
+                      </div>
+                      <h2 style="font-family:'Clash Display', sans-serif; font-size:2.2rem; margin:0 0 0.8rem 0; color:var(--ink); font-weight:700;">The Chase — Pitch &amp; Action Staging</h2>
+                      <p style="font-size:1.05rem; line-height:1.7; color:var(--ink5); margin:0 0 1.2rem 0;">
+                        An adrenaline-fueled kinetic chase sequence following <strong>Mika (21)</strong>, an undercover skateboard agent, pursued by <strong>Jane (22)</strong>, a relentless government agent on a high-speed motorcycle. Choreographed to study 3D spatial continuity, lens foreshortening, and rhythm across rapid urban transitions.
+                      </p>
+                      <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                        <div style="background:var(--bg); padding:0.6rem 1.2rem; border-radius:8px; border:1px solid var(--line); font-size:0.88rem; font-weight:600; color:var(--ink);">
+                          🛹 <strong>Mika (21):</strong> Skateboarder / Secret Agent (Agile, Streetwise)
+                        </div>
+                        <div style="background:var(--bg); padding:0.6rem 1.2rem; border-radius:8px; border:1px solid var(--line); font-size:0.88rem; font-weight:600; color:var(--ink);">
+                          🏍️ <strong>Jane (22):</strong> Govt Agent (Tactical, Motorized Pursuit)
+                        </div>
+                      </div>
+                    </div>
+                    ${pdfDoc ? `
+                    <a href="${pdfDoc}" target="_blank" style="display:inline-flex; align-items:center; gap:0.6rem; padding:0.85rem 1.5rem; background:var(--ink); color:var(--bg); font-weight:700; font-size:0.9rem; border-radius:30px; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,0.15); transition:transform 0.2s;">
+                      <i data-lucide="file-text" style="width:16px; height:16px;"></i>
+                      <span>View Pitch PDF</span>
+                    </a>` : ''}
+                  </div>
+                </div>
+              </div>`;
+
+
+              // 3. 3D Spatial Continuity & Floor Plan
+              if (floorPlan || charDesign) {
+                  htmlStr += `
+                  <div class="cs-section">
+                    <h2 class="cs-heading">Spatial Continuity &amp; Character Design</h2>
+                    <div class="masonry-container">
+                      ${floorPlan ? renderMedia(floorPlan, false, '3D Isometric Floor Plan & Camera Staging') : ''}
+                      ${charDesign ? renderMedia(charDesign, false, 'Character Design Sheets — Mika & Jane') : ''}
+                    </div>
+                  </div>`;
+              }
+
+              // 4. Sequential Storyboard Sheets (Act I, II, III)
+              htmlStr += `
+              <div class="cs-section">
+                <h2 class="cs-heading">Sequential Production Storyboards</h2>
+                <div class="masonry-container">
+                  ${boardPart1 ? renderMedia(boardPart1, false, 'Act I: Rooftop Skylight Infiltration & Alleyway Drop') : ''}
+                  ${boardPart2 ? renderMedia(boardPart2, false, 'Act II: Multi-Lane Traffic Slalom & Motorcycle Pursuit') : ''}
+                  ${boardPart3 ? renderMedia(boardPart3, false, 'Act III: The Bridge Showdown & Akira Motorcycle Slide') : ''}
+                </div>
+              </div>`;
+
+              // 5. Keyframe & Climax Highlights
+              htmlStr += `
+              <div class="cs-section">
+                <h2 class="cs-heading">Keyframe Action &amp; Sketchbook Ideation</h2>
+                <div class="masonry-container">
+                  ${akiraSlide ? renderMedia(akiraSlide, false, 'Akira Slide — Keyframe Breakdown') : ''}
+                  ${anticipation ? renderMedia(anticipation, false, 'Anticipation Posing & Speed Line Dynamics') : ''}
+                  ${scene21 ? renderMedia(scene21, false, 'Scene 2.1 Shot — Kinetic Camera Staging') : ''}
+                  ${bye2 ? renderMedia(bye2, false, 'Climax Escape — Jumping onto Passing Boat') : ''}
+                  ${sketchThumb ? renderMedia(sketchThumb, false, 'Physical Sketchbook — Red Pencil Dialogue Beats & Thumbnails') : ''}
+                </div>
+              </div>`;
+
+              // 6. Reflection Callout
+              htmlStr += `
+              <div class="cs-section">
+                <div style="background:var(--surf); border-left:4px solid var(--blue); padding:1.8rem 2rem; border-radius:0 12px 12px 0; border:1px solid var(--line); border-left-width:4px;">
+                  <h3 style="font-family:'Clash Display', sans-serif; font-size:1.35rem; margin:0 0 0.6rem 0; color:var(--ink); display:flex; align-items:center; gap:8px;">
+                    💡 Storyboarding Reflection &amp; Rhythm Pipeline
+                  </h3>
+                  <p style="font-size:1.02rem; line-height:1.65; color:var(--ink5); margin:0 0 0.8rem 0; font-style:italic;">
+                    "Very interesting to do and have to often delete and add boards so as to fit the action much better. I really think editing to music helps you think about timing better and this was overall a very interesting mod to do. Thinking a lot about timing and spacing."
+                  </p>
+                  <span style="font-size:0.85rem; font-weight:700; color:var(--ink); text-transform:uppercase; letter-spacing:0.05em;">— Annmary Sajji &bull; Production Diary</span>
+                </div>
+              </div>`;
+
+              gal.innerHTML = htmlStr;
               return;
           }
 
@@ -2740,42 +3285,6 @@ const PROJECTS = {
               htmlStr += `</div></div>`;
               
               gal.innerHTML = htmlStr;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -4513,7 +5022,7 @@ const PROJECTS = {
           // 9. JASMINE CONCEPT ALBUM
           // 9. JASMINE CONCEPT ALBUM
           if (id === 'jasmine-album') {
-              const imgs = media.filter(f => f.match(/\/\d\.(png|jpe?g)$/i)).sort();
+              const imgs = media.filter(f => f.match(/\/\d\.(webp|png|jpe?g)$/i)).sort();
               const audios = media.filter(f => f.match(/\.(wav|mp3|m4a)$/i));
               
               let albumHtml = styleBlock + `
@@ -4546,42 +5055,6 @@ const PROJECTS = {
               }
               albumHtml += '</div>';
               gal.innerHTML = albumHtml;
-              // Kick off visualizer loop immediately for ambient background
-                            // Keyboard Spacebar Play/Pause, Volume, and Skip Controls
-              window.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.code === 'Space') {
-                  e.preventDefault();
-                  const activeBtn = document.getElementById(`tbtn-${currentIdx}`);
-                  if (activeBtn) activeBtn.click();
-                } else if (e.code === 'ArrowUp') {
-                  e.preventDefault();
-                  const newVol = Math.min(1.0, audio.volume + 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) { bgVideo.volume = newVol; bgVideo.muted = false; }
-                  audio.muted = false;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowDown') {
-                  e.preventDefault();
-                  const newVol = Math.max(0.0, audio.volume - 0.1);
-                  audio.volume = newVol;
-                  if (bgVideo) bgVideo.volume = newVol;
-                  if (volKnob && volSlider) volKnob.style.top = `${(1 - newVol) * volSlider.clientHeight}px`;
-                } else if (e.code === 'ArrowLeft') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.max(0, med.currentTime - 5);
-                  }
-                } else if (e.code === 'ArrowRight') {
-                  e.preventDefault();
-                  const med = getActiveMedia();
-                  if (med && med.duration) {
-                    med.currentTime = Math.min(med.duration, med.currentTime + 5);
-                  }
-                }
-              });
-              startVizLoop();
 
               return;
           }
@@ -4624,6 +5097,215 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
 
 
 
+
+
+<!-- Option B: Page Transition Overlay -->
+<div id="page-trans" class="page-trans-overlay" aria-hidden="true"></div>
+
+<!-- Option C: Studio Passport Floating Dock Button -->
+<button class="passport-dock-btn" id="btn-open-passport" aria-label="Open Studio Passport">
+  <span class="passport-dock-icon">📔</span>
+  <span class="passport-dock-txt">Studio Passport</span>
+  <span class="passport-badge-count" id="passport-dock-count">0/6</span>
+</button>
+
+<script>
+// === OPTION C: TACTILE INTERACTIVE SLIDER LOGIC ===
+function initComparisonSliders() {
+  const wrappers = document.querySelectorAll('.comparison-slider-wrapper');
+  wrappers.forEach(wrap => {
+    const slider = wrap.querySelector('.comparison-slider');
+    if (!slider || slider.dataset.initialized) return;
+    slider.dataset.initialized = 'true';
+
+    // Adaptive aspect-ratio detection to prevent abnormal cropping
+    const imgBefore = slider.querySelector('.comp-img-before');
+    const imgAfter = slider.querySelector('.comp-img-after');
+    
+    function applyNaturalRatio() {
+      const bw = imgBefore ? (imgBefore.naturalWidth || 0) : 0;
+      const bh = imgBefore ? (imgBefore.naturalHeight || 0) : 0;
+      const aw = imgAfter ? (imgAfter.naturalWidth || 0) : 0;
+      const ah = imgAfter ? (imgAfter.naturalHeight || 0) : 0;
+      
+      let nw = bw || aw;
+      let nh = bh || ah;
+      
+      // If both images are loaded, prefer the wider ratio to avoid lateral cropping of panoramic artwork
+      if (bw && bh && aw && ah) {
+        const ratioB = bw / bh;
+        const ratioA = aw / ah;
+        if (Math.abs(ratioB - ratioA) > 0.15) {
+          if (ratioA > ratioB) {
+            nw = aw;
+            nh = ah;
+          } else {
+            nw = bw;
+            nh = bh;
+          }
+        }
+      }
+
+      if (nw && nh) {
+        const ratio = nw / nh;
+        slider.style.aspectRatio = `${nw} / ${nh}`;
+        if (ratio < 0.85) {
+          // Tall portrait (e.g. comic pages, vertical posters)
+          slider.style.maxWidth = `${Math.min(540, Math.round(620 * ratio))}px`;
+        } else if (ratio <= 1.25) {
+          // Square or near-square (e.g. 1:1 brand identity, square color keys)
+          slider.style.maxWidth = '580px';
+        } else {
+          slider.style.maxWidth = '100%';
+        }
+      }
+    }
+
+    if (imgBefore) {
+      if (imgBefore.complete && imgBefore.naturalWidth > 0) {
+        applyNaturalRatio();
+      } else {
+        imgBefore.addEventListener('load', applyNaturalRatio);
+      }
+    }
+    if (imgAfter && (!imgAfter.complete || imgAfter.naturalWidth === 0)) {
+      imgAfter.addEventListener('load', applyNaturalRatio);
+    }
+
+    const presetBtns = wrap.querySelectorAll('.cs-preset-btn');
+    let currentPct = 50;
+
+    function setPosition(pct, isSmooth = false) {
+      pct = Math.max(2, Math.min(98, pct));
+      currentPct = pct;
+      if (isSmooth) {
+        slider.style.transition = '--split-pos 0.25s cubic-bezier(0.2, 0.9, 0.3, 1)';
+        setTimeout(() => { slider.style.transition = ''; }, 260);
+      }
+      slider.style.setProperty('--split-pos', pct + '%');
+      slider.setAttribute('aria-valuenow', Math.round(pct));
+
+      // Update preset buttons active state
+      presetBtns.forEach(btn => {
+        const bPos = parseFloat(btn.dataset.pos);
+        btn.classList.toggle('active', Math.abs(bPos - pct) < 18);
+      });
+    }
+
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const pos = parseFloat(btn.dataset.pos);
+        setPosition(pos, true);
+      });
+    });
+
+    let isDown = false;
+    function updateFromClientX(clientX) {
+      const rect = slider.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const pct = (x / rect.width) * 100;
+      setPosition(pct, false);
+    }
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      slider.classList.add('is-dragging');
+      updateFromClientX(e.clientX);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDown) {
+        e.preventDefault();
+        updateFromClientX(e.clientX);
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDown) {
+        isDown = false;
+        slider.classList.remove('is-dragging');
+      }
+    });
+
+    slider.addEventListener('touchstart', (e) => {
+      isDown = true;
+      slider.classList.add('is-dragging');
+      if (e.touches.length) updateFromClientX(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDown && e.touches.length) {
+        updateFromClientX(e.touches[0].clientX);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      if (isDown) {
+        isDown = false;
+        slider.classList.remove('is-dragging');
+      }
+    });
+
+    // Keyboard accessibility (← / → arrow keys)
+    slider.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setPosition(currentPct - 5, true);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setPosition(currentPct + 5, true);
+      }
+    });
+  });
+}
+
+// === OPTION B: PAGE TRANSITION INTERCEPTOR ===
+(function initPageTransitions() {
+  const overlay = document.getElementById('page-trans');
+  if (!overlay) return;
+
+  window.addEventListener('pageshow', () => {
+    overlay.classList.remove('active');
+  });
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || a.target === '_blank' || href.startsWith('javascript:')) return;
+    if (href.startsWith('http://') || href.startsWith('https://')) return;
+
+    e.preventDefault();
+    overlay.classList.add('active');
+    setTimeout(() => {
+      window.location.href = href;
+    }, 220);
+  });
+})();
+
+// === PASSPORT DOCK LINKING ===
+(function initPassportDock() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('annmary_studio_stamps') || '{}');
+    const count = Object.keys(saved).length;
+    const badge = document.getElementById('passport-dock-count');
+    if (badge) badge.textContent = `${count}/6`;
+
+    const passBtn = document.getElementById('btn-open-passport');
+    if (passBtn) {
+      passBtn.addEventListener('click', () => {
+        window.location.href = 'portfolio.html#open-passport';
+      });
+    }
+  } catch(e) {}
+})();
+
+// Initialize sliders after DOM ready
+window.addEventListener('DOMContentLoaded', initComparisonSliders);
+setTimeout(initComparisonSliders, 400);
+</script>
 
 </body>
 

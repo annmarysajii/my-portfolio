@@ -32,10 +32,19 @@ window.PORTFOLIO_DATA = {
   ],
   "chase": [
     "https://youtu.be/QMuH2Njl0yg",
-    "assets/portfolio-data/Chase_storyboard/scene2.1shot.webp",
-    "assets/portfolio-data/Chase_storyboard/anticipation pose.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p01.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p02.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p03.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p05.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p06.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p07.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p08.webp",
+    "assets/portfolio-data/Chase_storyboard/extracted/chase_doc_p09.webp",
     "assets/portfolio-data/Chase_storyboard/akira slide.webp",
-    "assets/portfolio-data/Chase_storyboard/bye2.webp"
+    "assets/portfolio-data/Chase_storyboard/anticipation pose.webp",
+    "assets/portfolio-data/Chase_storyboard/bye2.webp",
+    "assets/portfolio-data/Chase_storyboard/scene2.1shot.webp",
+    "assets/portfolio-data/Chase_storyboard/THE CHASE.pdf"
   ],
   "dear-friend": [
     "https://youtu.be/BPYEYUmrWfg",
@@ -208,6 +217,7 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/obesity/7.webp"
   ],
   "original-tracks": [
+    "assets/original_tracks_thumb.jpg",
     "assets/portfolio-data/Original demo tracks/Club got boots (2).m4a",
     "assets/portfolio-data/Original demo tracks/Paradise demo (2).m4a"
   ],

@@ -68,21 +68,44 @@ body::after{
 
 
 
-/* ── CURSOR ── */
-
-#cur{
-
-  position:fixed;top:0;left:0;width:30px;height:30px;
-
-  pointer-events:none;z-index:9999;
-
-  transform:translate(-50%,-50%);transition:transform .1s;
-
+/* ── UNIFIED STAR CURSOR ── */
+#star-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  visibility: visible;
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: left, top, transform;
 }
 
-#cur.hov{transform:translate(-50%,-50%) scale(2.2);}
+#star-cursor.hov {
+  transform: translate(-50%, -50%) scale(1.65) rotate(12deg);
+}
 
+#star-cursor img,
+#star-cursor svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
+}
 
+@media (pointer: fine) {
+  body, a, button, input, select {
+    cursor: none !important;
+  }
+}
+
+@media (pointer: coarse) {
+  #star-cursor { display: none !important; }
+  *, body, a, button { cursor: auto !important; }
+}
 
 /* ── FALLING STARS canvas ── */
 
@@ -346,32 +369,16 @@ body::after{
 
 
 
-<div id="cur">
-
-  <svg id="csq" width="30" height="30" viewBox="0 0 30 30">
-
-    <defs>
-
-      <pattern id="pg" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-
-        <line x1="0" y1="0" x2="3" y2="3" stroke="rgba(17,16,9,0.25)" stroke-width="0.4"/>
-
-        <line x1="3" y1="0" x2="0" y2="3" stroke="rgba(17,16,9,0.12)" stroke-width="0.3"/>
-
-      </pattern>
-
-      <filter id="rf"><feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="n" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/></filter>
-
+<div id="star-cursor">
+  <img src="assets/svg-opt/cursor-star-mustard.png" width="32" height="32" alt=""
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+  <svg width="32" height="32" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs><pattern id="cp" width="2" height="2" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="2" y2="2" stroke="#2C2A29" stroke-width="0.3" stroke-opacity="0.18"/>
     </defs>
-
-    <path id="sf" d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" filter="url(#rf)"/>
-
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="url(#pg)" filter="url(#rf)"/>
-
-    <path d="M15,1.5 L17.7,9.8 L26.6,9.8 L19.7,14.8 L22.2,23.1 L15,18.2 L7.8,23.1 L10.3,14.8 L3.4,9.8 L12.3,9.8 Z" fill="none" stroke="rgba(17,16,9,0.28)" stroke-width="0.6" filter="url(#rf)"/>
-
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="#F2A93B" stroke="#2C2A29" stroke-width="0.8" stroke-linejoin="round"/>
+    <path d="M14 2.5C14.3 5.1 15.8 8.4 17.2 9.6C20.1 10.2 23.8 10 25.2 10.8C23.4 12.4 20.8 14.9 20.1 16.6C21 19.4 21.8 23.1 21 24.7C19.1 23.2 16.2 21.1 14 20.5C11.8 21.1 8.9 23.2 7 24.7C6.2 23.1 7 19.4 7.9 16.6C7.2 14.9 4.6 12.4 2.8 10.8C4.2 10 7.9 10.2 10.8 9.6C12.2 8.4 13.7 5.1 14 2.5Z" fill="url(#cp)"/>
   </svg>
-
 </div>
 
 
@@ -422,44 +429,35 @@ body::after{
 
 <script>
 
-/* ── CURSOR — paper star, speed-reactive ── */
+/* ── UNIFIED STAR CURSOR — smooth speed-reactive rotation & hover scale ── */
+const starCur = document.getElementById('star-cursor');
+let mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my, lx = mx, ly = my, ang = 0;
 
-const cur=document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+}, { passive: true });
 
-const sf=document.getElementById('sf');
-
-const csq=document.getElementById('csq');
-
-let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lx=mx,ly=my,ang=0;
-
-sf.setAttribute('fill','#111009');
-
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-
-(function curLoop(){
-
-  cx+=(mx-cx)*.16;cy+=(my-cy)*.16;
-
-  cur.style.left=cx+'px';cur.style.top=cy+'px';
-
-  const spd=Math.hypot(mx-lx,my-ly);lx=mx;ly=my;
-
-  ang+=1.5+spd*.8;
-
-  csq.style.transform='rotate('+ang+'deg)';
-
+(function curLoop() {
+  cx += (mx - cx) * 0.22;
+  cy += (my - cy) * 0.22;
+  if (starCur) {
+    starCur.style.left = cx + 'px';
+    starCur.style.top = cy + 'px';
+    const spd = Math.hypot(mx - lx, my - ly);
+    lx = mx; ly = my;
+    ang += 0.8 + spd * 0.45;
+    const imgEl = starCur.querySelector('img, svg');
+    if (imgEl && !starCur.classList.contains('hov')) {
+      imgEl.style.transform = `rotate(${ang}deg)`;
+    }
+  }
   requestAnimationFrame(curLoop);
-
 })();
 
-document.addEventListener('mouseover',e=>{
-
-  const h=!!e.target.closest('button,a');
-
-  cur.classList.toggle('hov',h);
-
-  sf.setAttribute('fill',h ? '#D93020':'#111009');
-
+document.addEventListener('mouseover', e => {
+  const h = !!e.target.closest('button, a, .gw-opt, .c');
+  if (starCur) starCur.classList.toggle('hov', h);
 });
 
 
@@ -634,6 +632,12 @@ window.go=function(filter){
 
   if(sfx) sfx.play().catch(e=>console.log('SFX play prevented:',e));
 
+  // Safety net: guarantee navigation even if the canvas animation below
+  // stalls (backgrounded tab, throttled rAF, slow device, etc).
+  let navigated = false;
+  const forceNav = () => { if(!navigated){ navigated = true; location.href = dest; } };
+  const navTimeout = setTimeout(forceNav, 3200);
+
   document.getElementById('gw').classList.add('out');
 
   setTimeout(()=>document.getElementById('affirm').classList.add('show'),150);
@@ -686,7 +690,7 @@ window.go=function(filter){
 
       if(prog<1)requestAnimationFrame(frame);
 
-      else{const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);setTimeout(()=>location.href=dest,40);}
+      else{const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);clearTimeout(navTimeout);setTimeout(forceNav,40);}
 
     })();
 
@@ -748,19 +752,53 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
     visibility: visible !important;
     opacity: 1 !important;
 }
+
+/* Option B: Page Transition Overlay */
+.page-trans-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg, #FAF8F4);
+  background-image: radial-gradient(circle, rgba(17, 16, 9, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.22s ease;
+}
+.page-trans-overlay.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
 </style>
 
+<div id="page-trans" class="page-trans-overlay" aria-hidden="true"></div>
 
 <script>
-    // BFCache fix for blank pages on back button navigation
+    // BFCache fix & page transition
     window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            document.body.classList.remove('page-exit');
-        }
+        document.body.classList.remove('page-exit');
+        const overlay = document.getElementById('page-trans');
+        if (overlay) overlay.classList.remove('active');
     });
-    </script>
-    
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || a.target === '_blank' || href.startsWith('javascript:')) return;
+      if (href.startsWith('http://') || href.startsWith('https://')) return;
+
+      e.preventDefault();
+      const overlay = document.getElementById('page-trans');
+      if (overlay) {
+        overlay.classList.add('active');
+        setTimeout(() => { window.location.href = href; }, 220);
+      } else {
+        window.location.href = href;
+      }
+    });
+</script>
 </body>
-
 </html>
-

@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Force reveal all elements immediately on iPad / all screens
     const forceShow = () => {
-        document.querySelectorAll('.sec, .card, .gw-header, .sec-title, .gallery-h, .text-block, .reveal, .rv').forEach(el => {
-            el.classList.add('visible', 'show');
+        document.querySelectorAll('.sec, .card, .gw-header, .sec-title, .gallery-h, .text-block, .reveal, .rv, .sec-hd').forEach(el => {
+            el.classList.add('visible', 'show', 'in');
         });
     };
     forceShow();
