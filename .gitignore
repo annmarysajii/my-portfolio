@@ -26,3 +26,8 @@ assets/realistic-tape-collection/
 assets/scrapbook assets for reference/
 assets/svg assets for portfolio/
 _tmp_*.html
+
+# Orphaned/unused legacy media - not referenced by any page, kept locally only
+assets/hero-collage.gif
+assets/reel.mp4
+assets/master_reel.mp4
