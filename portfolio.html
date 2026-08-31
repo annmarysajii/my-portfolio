@@ -12043,6 +12043,73 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
 #graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
 #music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
+
+/* --- Contact continues About's red world (site-wide "bold covers, calm
+   pages" plan): same red family, same paper-texture technique, and the
+   same "starts muted, comes alive on interaction" language used on the
+   About section's desk objects, applied here to the social/resume link
+   list. Scoped entirely to #contact so nothing outside this section is
+   touched. Deliberately does not change with the light/dark toggle,
+   same as #about -- these are the fixed bold "cover" moments. */
+#contact.contact {
+  --c-red: #A32717;
+  --c-cream: #FDF4E3;
+  --c-cream-dim: #F4DFB4;
+  --c-ink: #201C16;
+  --c-gold: #FEB21A;
+  background: var(--c-red) !important;
+  color: var(--c-cream) !important;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+#contact.contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  background-image: url("assets/svg-opt/paper-light-tile.webp");
+  background-size: 340px 340px;
+}
+#contact .con, #contact .contact-g { position: relative; z-index: 1; }
+
+#contact .contact-h { color: var(--c-cream) !important; }
+#contact .contact-email { color: var(--blue) !important; }
+#contact .contact-email::after { background: var(--blue) !important; }
+
+/* Social/resume links: muted until noticed, come alive on hover/focus --
+   same idea as the About desk objects going from dim to full color. */
+#contact .soc {
+  background: rgba(253, 244, 227, 0.1) !important;
+  border-color: rgba(253, 244, 227, 0.32) !important;
+  color: var(--c-cream-dim) !important;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, border-color 0.2s ease !important;
+}
+#contact .soc-i { background: rgba(253, 244, 227, 0.14) !important; color: var(--c-cream) !important; }
+#contact .soc:hover, #contact .soc:focus-visible {
+  opacity: 1;
+  background: var(--c-cream) !important;
+  border-color: var(--c-ink) !important;
+  color: var(--c-ink) !important;
+  transform: translateX(4px) translateY(-2px) !important;
+}
+#contact .soc:hover .soc-i, #contact .soc:focus-visible .soc-i {
+  background: var(--c-gold) !important;
+  color: var(--c-ink) !important;
+}
+
+/* Send button used to hover to red, which now blends into the section
+   itself -- hover to gold instead so it still reads as a clear state
+   change. */
+#contact .fsub:hover {
+  background: var(--c-gold) !important;
+  color: var(--c-ink) !important;
+  border-color: var(--c-gold) !important;
+}
 </style>
 </head>
 <body>
