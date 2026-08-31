@@ -12093,21 +12093,24 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #music .stamp-rv.in          { transform: rotate(7deg) !important; }
 
 /* --- Contact continues About's red world (site-wide "bold covers, calm
-   pages" plan): same red family, same paper-texture technique, and the
-   same "starts muted, comes alive on interaction" language used on the
-   About section's desk objects, applied here to the social/resume link
-   list. Scoped entirely to #contact so nothing outside this section is
-   touched. Deliberately does not change with the light/dark toggle,
-   same as #about -- these are the fixed bold "cover" moments. */
+   pages" plan). Originally a deeper shade of red than About, but that
+   created a hard visible seam -- two flat color blocks meeting at a
+   line, reading as two sections instead of one. Now the exact same red
+   as About (--red: #D93020), same texture technique, same opacity: the
+   seam disappears because there's no color difference left to draw one.
+   Contact still reads as its own moment through layout/content (the
+   form, the CTA), not through a different color. Deliberately does not
+   change with the light/dark toggle, same as #about -- these are the
+   fixed bold "cover" moments. */
 #contact.contact {
-  --c-red: #A32717;
+  --c-red: #D93020;
   --c-cream: #FDF4E3;
   --c-cream-dim: #F4DFB4;
   --c-ink: #201C16;
   --c-gold: #FEB21A;
   /* Fixed sky-blue for this section only -- var(--blue) is theme-reactive
      and its light-mode value (#1850A8) sits at almost the exact same
-     luminance as --c-red, so the email link nearly vanished. This section
+     luminance as red, so the email link nearly vanished. This section
      doesn't toggle with the theme (same as About), so it needs its own
      fixed blue, tuned for contrast against --c-red specifically. */
   --c-blue: #B8D4FF;
@@ -12117,21 +12120,19 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   isolation: isolate;
   overflow: hidden;
 }
-/* --c-red is notably darker than About's --red (#D93020). The site's own
-   [data-theme="dark"] convention (see body::before above) already swaps
-   to paper-dark-tile.webp + mix-blend-mode:screen for dark backgrounds,
-   because multiply against a dark base compresses the grain toward black
-   and reads as a flat gradient. Same fix applies here, independent of the
-   site theme toggle, since this section is a fixed cover moment. */
+/* Same light-tile + multiply technique as About's .bp-stage::before,
+   same opacity -- now that --c-red matches --red exactly, this is a
+   byte-for-byte continuation of About's texture rather than a separate
+   treatment that happened to look similar. */
 #contact.contact::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.22;
-  background-image: url("assets/svg-opt/paper-dark-tile.webp");
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  background-image: url("assets/svg-opt/paper-light-tile.webp");
   background-size: 340px 340px;
 }
 #contact .con, #contact .contact-g { position: relative; z-index: 1; }
