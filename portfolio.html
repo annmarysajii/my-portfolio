@@ -2182,6 +2182,19 @@ body::before {
   color: rgba(250,248,244,0.6);
 }
 
+.foot-visits {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.75;
+  line-height: 0;
+}
+
+.foot-visits img {
+  display: block;
+  height: 18px;
+  border-radius: 3px;
+}
+
 .foot-egg {
   font-size: 0.78rem;
   color: rgba(250,248,244,0.4);
@@ -4454,7 +4467,7 @@ body::before {
   background: transparent !important;
 }
 [data-theme="dark"] .hero-sketchbook .hero-role {
-  color: #2BC9B5 !important;
+  color: #7AA2F7 !important;
 }
 [data-theme="dark"] .hero-sketchbook .hero-bio {
   color: #E2DFEB !important;
@@ -4610,7 +4623,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   height: 100% !important;
   pointer-events: none !important;
   z-index: 0 !important;
-  opacity: 0.15 !important;
+  opacity: 0.85 !important;
 }
 .con,
 .hero-sketchbook,
@@ -9968,6 +9981,8 @@ a[href*="gobunny"] img {
   display: none !important;
   width: 100% !important;
   height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
 }
 
 .passport-slot.unlocked .slot-locked-placeholder {
@@ -10122,7 +10137,11 @@ a[href*="gobunny"] img {
 
 
 /* ================================================================
-   AUTHORITATIVE STUDIO PASSPORT & AUTHENTIC RUBBER VISA STAMPS
+   STUDIO PASSPORT — plain paper spread, solid-border chips (matching
+   the rest of the site's badge style, not a separate dashed-doodle
+   language), and loose overlapping ink stamps instead of a bounded
+   UI grid. No personal ID card here on purpose: this tracks the
+   VISITOR'S exploring progress, not Annmary's own credentials.
 ================================================================ */
 
 .passport-dock-btn {
@@ -10183,17 +10202,31 @@ a[href*="gobunny"] img {
 }
 
 .passport-booklet-wrap {
-  background: #101B30 !important;
-  background-image: radial-gradient(circle at 50% 50%, #1D2E4E 0%, #0F192C 100%) !important;
-  border: 3px solid #E8AF30 !important;
-  border-radius: 20px !important;
-  padding: 12px !important;
-  box-shadow: 0 35px 80px rgba(0,0,0,0.8) !important;
+  background: #FBF8EA !important;
+  border: 3px solid #171410 !important;
+  border-radius: 28px !important;
+  padding: 0 !important;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.45) !important;
   position: relative !important;
-  max-width: 880px !important;
+  max-width: 820px !important;
   width: 100% !important;
   margin: auto !important;
   animation: passportPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+/* Perforation strip near the top edge, like a tear-off visa booklet. */
+.passport-booklet-wrap::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 9px !important;
+  left: 26px !important;
+  right: 26px !important;
+  height: 3px !important;
+  background-image: radial-gradient(circle, rgba(23,20,16,0.4) 1.3px, transparent 1.4px) !important;
+  background-size: 9px 3px !important;
+  background-repeat: repeat-x !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
 }
 
 @keyframes passportPop {
@@ -10207,9 +10240,9 @@ a[href*="gobunny"] img {
   justify-content: center !important;
   width: 32px !important;
   height: 32px !important;
-  background: #E8AF30 !important;
-  color: #1E1C1A !important;
-  border: 2px solid #2B2825 !important;
+  background: #171410 !important;
+  color: #FBF8EA !important;
+  border: 2px solid #FBF8EA !important;
   border-radius: 50% !important;
   position: absolute !important;
   top: -12px !important;
@@ -10218,7 +10251,7 @@ a[href*="gobunny"] img {
   cursor: pointer !important;
   font-weight: 900 !important;
   font-size: 15px !important;
-  box-shadow: 2px 2px 0 #2B2825 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
   transition: transform 0.15s ease !important;
 }
 
@@ -10226,660 +10259,403 @@ a[href*="gobunny"] img {
   transform: scale(1.1) !important;
 }
 
+/* A plain paper texture (not a "digital" dot grid) -- subtle, tileable,
+   already used nowhere else so it's a clean, cheap addition. */
 .passport-booklet-body {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  background: #FAF8F5 !important;
-  border-radius: 12px !important;
+  background-color: #FBF8EA !important;
+  /* Faint ledger/security-print grid instead of a photographed paper
+     tile -- procedural lines never show a visible repeat seam, and read
+     as printed rule lines rather than a texture photo. Actual grain
+     comes from the feTurbulence <svg> overlay below (reuses the same
+     filmGrainFilter already defined site-wide), which tiles seamlessly
+     because it's noise, not a photo. */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(23,20,16,0.05) 0px, rgba(23,20,16,0.05) 1px, transparent 1px, transparent 21px),
+    repeating-linear-gradient(90deg, rgba(23,20,16,0.05) 0px, rgba(23,20,16,0.05) 1px, transparent 1px, transparent 21px) !important;
+  border-radius: 25px !important;
   overflow: hidden !important;
   position: relative !important;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.06) !important;
+  border: none !important;
+  box-shadow: none !important;
+  /* Without this, the grain overlay's mix-blend-mode:multiply blends
+     against whatever is painted BEHIND the whole modal (the blurred
+     page underneath), not just this box -- isolate contains it here. */
+  isolation: isolate !important;
 }
 
 @media (max-width: 768px) {
   .passport-booklet-body {
-    grid-template-columns: 1fr !important;
-    max-height: 80vh !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    max-height: 85vh !important;
     overflow-y: auto !important;
+  }
+  .passport-page {
+    min-width: 0 !important;
   }
 }
 
 .passport-spine-crease {
   position: absolute !important;
-  top: 0; bottom: 0; left: 50% !important;
-  width: 20px !important;
+  top: 20px; bottom: 20px; left: 50% !important;
+  width: 0 !important;
+  border-left: 2px dotted rgba(23,20,16,0.35) !important;
   transform: translateX(-50%) !important;
-  background: linear-gradient(90deg, rgba(0,0,0,0.14), rgba(0,0,0,0.02) 45%, transparent 50%, rgba(0,0,0,0.02) 55%, rgba(0,0,0,0.14)) !important;
   pointer-events: none !important;
-  z-index: 10 !important;
+  z-index: 1 !important;
+}
+
+/* Soft gutter shadow either side of the spine, for a little page depth
+   instead of a perfectly flat sheet. */
+.passport-spine-crease::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important; bottom: 0 !important;
+  left: 50% !important;
+  width: 34px !important;
+  transform: translateX(-50%) !important;
+  background: linear-gradient(90deg, transparent, rgba(23,20,16,0.07), transparent) !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+  .passport-spine-crease { display: none !important; }
 }
 
 .passport-page {
-  padding: 1.3rem 1.5rem !important;
+  padding: 1.4rem 1.6rem !important;
   position: relative !important;
-  background-color: #FAF8F5 !important;
-  background-image: 
-    repeating-linear-gradient(0deg, rgba(43,40,37,0.03) 0, rgba(43,40,37,0.03) 1px, transparent 1px, transparent 18px),
-    repeating-linear-gradient(90deg, rgba(43,40,37,0.03) 0, rgba(43,40,37,0.03) 1px, transparent 1px, transparent 18px) !important;
+  z-index: 2 !important;
+  background: none !important;
+  color: #171410 !important;
+  min-width: 0 !important;
 }
 
-/* Left Page Header */
 .passport-top-header {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  background: #132238 !important;
-  color: #FFFDF8 !important;
-  padding: 6px 10px !important;
-  border-radius: 6px !important;
-  margin-bottom: 0.8rem !important;
-  border-left: 3px solid #E8AF30 !important;
-}
-
-.passport-crest-title {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
-
-.crest-icon {
-  color: #E8AF30 !important;
-  font-size: 1.15rem !important;
+  gap: 10px !important;
+  margin-bottom: 0.5rem !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  flex-direction: row !important;
 }
 
 .passport-country-txt {
   font-family: var(--fd) !important;
-  font-size: 0.68rem !important;
   font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  color: #FFFDF8 !important;
+  font-size: 0.92rem !important;
+  color: #171410 !important;
+  border: 1.75px dotted #171410 !important;
+  border-radius: 10px !important;
+  padding: 7px 12px !important;
+  display: inline-block !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  position: relative !important;
+  /* Slight cyan/magenta fringe, like an offset-press color plate a
+     fraction out of register -- kept sub-pixel so it reads as printed,
+     not glitchy. */
+  text-shadow: 0.5px 0.5px 0 rgba(0,150,190,0.3), -0.5px -0.5px 0 rgba(210,30,90,0.25) !important;
+}
+
+.passport-code-badge {
+  font-family: var(--fd) !important;
+  font-weight: 800 !important;
+  font-size: 0.68rem !important;
+  color: #171410 !important;
+  border: 1.75px dotted #171410 !important;
+  border-radius: 8px !important;
+  padding: 4px 9px !important;
+  background: none !important;
+  flex-shrink: 0 !important;
 }
 
 .passport-doc-type {
   font-size: 0.56rem !important;
   font-weight: 700 !important;
-  color: #E8AF30 !important;
-  letter-spacing: 0.03em !important;
+  color: rgba(23,20,16,0.55) !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  margin: 6px 2px 0.8rem !important;
 }
 
-.passport-code-badge {
-  font-family: var(--fd) !important;
+.passport-intro-line {
   font-size: 0.76rem !important;
-  font-weight: 900 !important;
-  color: #E8AF30 !important;
-  background: rgba(255,255,255,0.1) !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
+  line-height: 1.45 !important;
+  color: rgba(23,20,16,0.72) !important;
+  margin: 0 0 0.9rem !important;
+  max-width: 30ch !important;
 }
 
-/* Identity Card Row */
 .passport-id-card-row {
   display: flex !important;
-  gap: 0.85rem !important;
   align-items: center !important;
-  margin-bottom: 0.75rem !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.9rem !important;
 }
 
 .passport-photo-frame {
-  width: 90px !important;
-  height: 110px !important;
-  border: 2px solid #2B2825 !important;
-  border-radius: 6px !important;
-  position: relative !important;
-  background: #EFECE6 !important;
-  overflow: hidden !important;
-  flex-shrink: 0 !important;
-  box-shadow: 2px 2px 0 #2B2825 !important;
-}
-
-.passport-id-img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-  filter: saturate(0.82) contrast(1.05) !important;
-}
-
-.photo-corner-tl, .photo-corner-tr, .photo-corner-bl, .photo-corner-br {
-  position: absolute !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-color: #E8AF30 !important;
-  border-style: solid !important;
-  pointer-events: none !important;
-}
-
-.photo-corner-tl { top: 2px; left: 2px; border-width: 2px 0 0 2px !important; }
-.photo-corner-tr { top: 2px; right: 2px; border-width: 2px 2px 0 0 !important; }
-.photo-corner-bl { bottom: 2px; left: 2px; border-width: 0 0 2px 2px !important; }
-.photo-corner-br { bottom: 2px; right: 2px; border-width: 0 2px 2px 0 !important; }
-
-.photo-consular-watermark {
-  position: absolute !important;
-  bottom: 6px !important;
-  right: 6px !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 64px !important;
+  height: 64px !important;
   border-radius: 50% !important;
-  border: 1.5px solid rgba(200,90,72,0.85) !important;
-  box-shadow: inset 0 0 0 2.5px rgba(200,90,72,0.85) !important;
-  background: rgba(255,253,248,0.35) !important;
-  color: #C85A48 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 0.42rem !important;
-  font-weight: 900 !important;
-  line-height: 1.15 !important;
-  text-align: center !important;
-  transform: rotate(-6deg) !important;
-  letter-spacing: 0.03em !important;
-  mix-blend-mode: multiply !important;
+  flex-shrink: 0 !important;
+  background: rgba(255,255,255,0.4) !important;
+  border: 1.75px dotted rgba(23,20,16,0.6) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
 }
 
 .passport-meta-table {
   flex: 1 !important;
+  min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 2px !important;
+  gap: 5px !important;
 }
 
 .meta-row {
   display: flex !important;
   flex-direction: column !important;
-  border-bottom: 1px solid rgba(43,40,37,0.1) !important;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.6) !important;
-  padding-bottom: 2px !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
 }
 
 .meta-lbl {
-  font-size: 0.46rem !important;
-  color: #A09B92 !important;
+  font-size: 0.52rem !important;
+  color: rgba(23,20,16,0.48) !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.07em !important;
+  letter-spacing: 0.06em !important;
 }
 
 .meta-val {
   font-family: var(--fd) !important;
-  font-size: 0.86rem !important;
-  color: #1E1C1A !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.01em !important;
+  font-size: 0.8rem !important;
+  color: #171410 !important;
+  font-weight: 800 !important;
 }
 
-.doc-no-val {
-  color: #C85A48 !important;
-}
-
-/* Endorsement Tracker Ribbon */
 .passport-endorsement-ribbon {
-  background: #FFFFFF !important;
-  border: 1.5px solid #2B2825 !important;
+  background: rgba(255,255,255,0.35) !important;
+  border: 2px solid #171410 !important;
+  border-radius: 16px !important;
+  padding: 12px 14px !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+}
+
+/* Machine Readable Zone — the strip of letters/numbers/chevrons along
+   the bottom of a real passport photo page. */
+.passport-mrz-code {
+  margin-top: 0.7rem !important;
+  font-family: 'Consolas', 'Courier New', monospace !important;
+  font-size: 0.56rem !important;
+  line-height: 1.35 !important;
+  background: rgba(255,255,255,0.28) !important;
+  border: 1.5px dotted rgba(23,20,16,0.4) !important;
   border-radius: 8px !important;
-  padding: 5px 8px !important;
-  margin-bottom: 0.7rem !important;
-  box-shadow: 2px 2px 0 #2B2825 !important;
+  padding: 7px 9px !important;
+  color: #171410 !important;
+  letter-spacing: 0.06em !important;
+  font-weight: bold !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-all !important;
 }
 
 .endorsement-label-row {
   display: flex !important;
   justify-content: space-between !important;
+  align-items: baseline !important;
   font-family: var(--fd) !important;
-  font-size: 0.65rem !important;
+  font-size: 0.78rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
-  margin-bottom: 4px !important;
+  color: #171410 !important;
+  margin-bottom: 8px !important;
+}
+
+#passport-status-txt {
+  font-size: 0.56rem !important;
+  font-weight: 700 !important;
+  color: rgba(23,20,16,0.48) !important;
+  letter-spacing: 0.04em !important;
 }
 
 .endorsement-stars-track {
   display: grid !important;
-  grid-template-columns: repeat(6, 1fr) !important;
-  gap: 3px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
 }
 
 .star-pill {
-  padding: 2px 1px !important;
+  padding: 6px 4px !important;
   text-align: center !important;
   font-family: var(--fd) !important;
-  font-size: 0.54rem !important;
+  font-size: 0.56rem !important;
   font-weight: 800 !important;
-  background: #FAF8F5 !important;
-  border: 1px solid rgba(43,40,37,0.2) !important;
-  border-radius: 4px !important;
-  color: #8C8780 !important;
+  background: transparent !important;
+  border: 1.75px dotted rgba(23,20,16,0.5) !important;
+  border-radius: 999px !important;
+  color: #171410 !important;
   transition: all 0.2s ease !important;
   white-space: nowrap !important;
-}
-
-.star-pill.endorsed {
-  background: #E8AF30 !important;
-  color: #1E1C1A !important;
-  border-color: #2B2825 !important;
-  box-shadow: 1px 1px 0 #2B2825 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .star-pill .star-glyph {
-  color: #C85A48 !important;
+  color: inherit !important;
+  opacity: 0.55 !important;
+}
+
+.star-pill.endorsed {
+  border-color: transparent !important;
+  color: #FFFDF8 !important;
 }
 
 .star-pill.endorsed .star-glyph {
-  color: #1E1C1A !important;
+  color: #FFFDF8 !important;
+  opacity: 0.85 !important;
 }
 
-/* Each endorsement matches the ink color of its own visa stamp below —
-   one consistent color per discipline instead of a single generic "unlocked" gold,
-   so the tracker and the stamp always agree on what a color means. */
-#pdot-1.endorsed { background: #1D3557 !important; border-color: #1D3557 !important; color: #FFFDF8 !important; }
-#pdot-2.endorsed { background: #C85A48 !important; border-color: #C85A48 !important; color: #FFFDF8 !important; }
-#pdot-3.endorsed { background: #2A9D8F !important; border-color: #2A9D8F !important; color: #FFFDF8 !important; }
-#pdot-4.endorsed { background: #D48B06 !important; border-color: #D48B06 !important; color: #FFFDF8 !important; }
-#pdot-5.endorsed { background: #7B2CBF !important; border-color: #7B2CBF !important; color: #FFFDF8 !important; }
-#pdot-6.endorsed { background: #E8AF30 !important; border-color: #2B2825 !important; color: #1E1C1A !important; }
-#pdot-1.endorsed .star-glyph, #pdot-2.endorsed .star-glyph, #pdot-3.endorsed .star-glyph,
-#pdot-4.endorsed .star-glyph, #pdot-5.endorsed .star-glyph { color: #FFFDF8 !important; }
+/* Each endorsement pill fills with the SAME ink color as its own visa
+   stamp illustration on the right page, so one hue means one discipline
+   everywhere in the passport (colors read straight off the SVGs). */
+#pdot-1.endorsed { background: #0A65FF !important; }
+#pdot-2.endorsed { background: #D71440 !important; }
+#pdot-3.endorsed { background: #21B253 !important; }
+#pdot-4.endorsed { background: #C99700 !important; color: #FFFDF8 !important; }
+#pdot-4.endorsed .star-glyph { color: #FFFDF8 !important; }
+#pdot-5.endorsed { background: #B337D2 !important; }
+#pdot-6.endorsed { background: #F046A1 !important; }
 
-/* Machine Readable MRZ Band */
-.passport-mrz-code {
-  font-family: 'Consolas', 'Courier New', monospace !important;
-  font-size: 0.6rem !important;
-  line-height: 1.25 !important;
-  background: #EFECE6 !important;
-  border: 1px solid rgba(43,40,37,0.2) !important;
-  border-radius: 4px !important;
-  padding: 4px 6px !important;
-  color: #1E1C1A !important;
-  letter-spacing: 0.08em !important;
-  font-weight: bold !important;
-}
-
-/* Right Page Header */
 .passport-right-header {
   display: flex !important;
   justify-content: space-between !important;
-  align-items: center !important;
-  border-bottom: 1.5px solid #2B2825 !important;
-  padding-bottom: 4px !important;
-  margin-bottom: 0.75rem !important;
+  align-items: baseline !important;
+  border-bottom: 2px dotted rgba(23,20,16,0.4) !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 0.6rem !important;
   font-family: var(--fd) !important;
-  font-size: 0.7rem !important;
-  font-weight: 900 !important;
-  color: #1E1C1A !important;
+  font-size: 0.8rem !important;
+  font-weight: 800 !important;
+  color: #171410 !important;
+}
+
+.passport-visa-heading {
+  text-shadow: 0.5px 0.5px 0 rgba(0,150,190,0.3), -0.5px -0.5px 0 rgba(210,30,90,0.25) !important;
 }
 
 .passport-page-num {
-  color: #6B665F !important;
-  font-size: 0.65rem !important;
+  color: rgba(23,20,16,0.48) !important;
+  font-size: 0.6rem !important;
+  font-weight: 700 !important;
 }
 
-/* Visas Grid (Clean & Non-overlapping) */
+/* Visa stamps sit loose on the page -- no bounding box per stamp,
+   each one rotated and nudged so the set overlaps like a real,
+   well-used passport page instead of a tidy UI grid. */
 .passport-stamps-grid {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  column-gap: 12px !important;
-  row-gap: 10px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  column-gap: 0 !important;
+  row-gap: 0 !important;
 }
 
-/* Stamp Slots */
-.passport-slot {
+.passport-slot,
+.passport-slot.unlocked,
+.passport-slot:not(.unlocked) {
   position: relative !important;
-  min-height: 72px !important;
+  height: 112px !important;
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  background: transparent !important;
+  background: none !important;
   border: none !important;
-  transition: transform 0.15s ease !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  text-align: initial !important;
 }
 
-.passport-slot:hover {
-  transform: scale(1.03) !important;
-}
-
-/* Locked Placeholder State */
-.slot-locked-placeholder {
-  width: 100% !important;
+.consular-stamp-img {
+  display: block !important;
+  margin: 0 auto !important;
   height: 100% !important;
-  border: 1.5px dashed rgba(43,40,37,0.2) !important;
-  border-radius: 8px !important;
-  background: rgba(255,255,255,0.4) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  padding: 4px !important;
-  text-align: center !important;
+  max-height: 104px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  transition: filter 0.3s ease, transform 0.15s ease !important;
 }
 
-.slot-sealed-icon { font-size: 0.8rem !important; opacity: 0.45 !important; }
-.slot-sealed-title { font-family: var(--fd) !important; font-size: 0.62rem !important; font-weight: 800 !important; color: #8C8780 !important; }
-.slot-sealed-hint { font-size: 0.52rem !important; color: #A09B92 !important; }
-
-/* Unlocked Stamp Container */
-.slot-unlocked-stamp {
-  display: none !important;
-  width: 100% !important;
-  height: 100% !important;
+/* Locked = a faded ghost of the real stamp (same asset, no extra
+   image needed) so the eventual collage has no empty grid gaps.
+   Unlocked = full color, with the existing ink-thud pop-in. */
+.passport-slot:not(.unlocked) .consular-stamp-img {
+  filter: grayscale(1) opacity(0.32) !important;
 }
 
-.passport-slot.unlocked .slot-locked-placeholder {
-  display: none !important;
-}
-
-.passport-slot.unlocked .slot-unlocked-stamp {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+.passport-slot.unlocked .consular-stamp-img {
+  /* Soft shadow so the stamp reads as pressed into the paper, not
+     floating flat on top of it. */
+  filter: drop-shadow(1.5px 4px 2.5px rgba(23,20,16,0.3)) !important;
   animation: inkThudStamp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
 }
 
-/* ────────────────────────────────────────────────────────────
-   AUTHENTIC INK RUBBER STAMPS (COMPACT & CLEAN)
-──────────────────────────────────────────────────────────── */
+.passport-slot:hover .consular-stamp-img {
+  transform: scale(1.08) !important;
+}
 
-/* 01 ANIMATION: Circular Double-Ring Inked Stamp */
+/* Each column pulled inward toward the gutter so the left set and
+   right set of stamps overlap loosely instead of sitting apart in two
+   clean columns. */
+#slot-animation { transform: rotate(-7deg) translate(24px, 6px) !important; }
+#slot-illustration { transform: rotate(6deg) translate(-34px, 12px) !important; z-index: 2 !important; }
+#slot-videography { transform: rotate(4deg) translate(30px, -6px) !important; }
+#slot-graphic-design { transform: rotate(-6deg) translate(-38px, -2px) !important; z-index: 2 !important; }
+#slot-music { transform: rotate(-4deg) translate(26px, -10px) !important; }
+#slot-mastery { transform: rotate(5deg) translate(-34px, -16px) scale(1.1) !important; z-index: 3 !important; }
 
-.rubber-stamp-circle 
-.rubber-stamp-circle 
+/* One-time confetti burst when the Master Seal lands (the "finished"
+   moment) -- pure CSS, triggered by the same .unlocked class the JS
+   already adds, no extra script needed. */
+#slot-mastery.unlocked::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: -16px !important;
+  background-image:
+    radial-gradient(circle, #FFDD00 3px, transparent 3.5px),
+    radial-gradient(circle, #F046A1 3px, transparent 3.5px),
+    radial-gradient(circle, #0A65FF 2.5px, transparent 3px),
+    radial-gradient(circle, #21B253 2.5px, transparent 3px),
+    radial-gradient(circle, #D71440 2.5px, transparent 3px) !important;
+  background-position: 4% 12%, 92% 4%, 100% 78%, 8% 94%, 50% 0% !important;
+  background-repeat: no-repeat !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  animation: masterBurst 0.8s ease-out 0.15s both !important;
+}
 
-
-
-
-
-
-/* 02 ILLUSTRATION: Octagonal Double-Line Inked Stamp */
-
-
-
-
-
-
-
-
-/* 03 VIDEOGRAPHY: Rectangular Film Reel Notch Stamp */
-
-
-
-
-
-
-
-/* 04 GRAPHIC DESIGN: Oval Swiss Typographic Stamp */
-
-
-
-
-
-
-
-/* 05 MUSIC: Wavy Audio Frequency Stamp */
-
-
-
-
-
-
-/* 06 MASTER SEAL: Gold Foil Consular Emblem */
-
-
-
-
-
+@keyframes masterBurst {
+  0% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.6) rotate(12deg); }
+}
 
 .passport-footer-note {
   font-size: 0.62rem !important;
-  font-weight: 800 !important;
-  color: #6B665F !important;
+  font-weight: 700 !important;
+  color: rgba(23,20,16,0.5) !important;
   text-align: center !important;
-  margin-top: 6px !important;
+  margin-top: 4px !important;
 }
 
-/* Visas Grid (Clean & Non-overlapping) */
-.passport-stamps-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  column-gap: 12px !important;
-  row-gap: 14px !important;
-  padding: 4px 0 !important;
-}
-
-.passport-slot {
-  position: relative !important;
-  height: 90px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  background: transparent !important;
-  border: none !important;
-  transition: transform 0.15s ease !important;
-}
-
-.passport-slot:hover {
-  transform: scale(1.04) !important;
-}
-
-/* Locked Placeholder State — an intentional "unstamped" slot, not an
-   empty template: a solid muted card with a dashed seal-ring icon
-   standing in for the ink that hasn't landed yet. */
-.slot-locked-placeholder {
-  width: 100% !important;
-  height: 100% !important;
-  border: 1px solid rgba(43,40,37,0.13) !important;
-  border-radius: 10px !important;
-  background: linear-gradient(160deg, rgba(43,40,37,0.055), rgba(43,40,37,0.02)) !important;
-  box-shadow: inset 0 1px 2px rgba(43,40,37,0.06) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 3px !important;
-  padding: 4px !important;
-  text-align: center !important;
-}
-
-.slot-sealed-icon {
-  width: 22px !important;
-  height: 22px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 50% !important;
-  border: 1.3px dashed rgba(43,40,37,0.32) !important;
-  color: #8C8780 !important;
-  opacity: 0.75 !important;
-  margin-bottom: 1px !important;
-}
-.slot-sealed-icon svg { width: 12px !important; height: 12px !important; display: block !important; }
-.slot-sealed-title { font-family: var(--fd) !important; font-size: 0.6rem !important; font-weight: 800 !important; color: #78736B !important; letter-spacing: 0.02em !important; }
-.slot-sealed-hint { font-size: 0.48rem !important; font-weight: 700 !important; color: #A8A297 !important; text-transform: uppercase !important; letter-spacing: 0.06em !important; }
-
-/* Note: the passport page itself stays a fixed cream/paper color in both
-   site themes (no dark-mode background swap upstream), so the locked-slot
-   styling above intentionally has no [data-theme="dark"] variant either. */
-
-/* Base ink-stamp card: color + text rules shared by every discipline.
-   Shape (circle/octagon/oval/hexagon/rect) is layered on below per
-   discipline so each visa reads as its own physical stamp, not a
-   recolored copy of the same rounded rectangle. */
-.consular-stamp {
-  position: relative !important;
-  width: 100% !important;
-  min-height: 68px !important;
-  height: 68px !important;
-  border-radius: 8px !important;
-  padding: 4px 6px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 1px !important;
-  text-align: center !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  transition: transform 0.15s ease !important;
-}
-
-.c-dep {
-  font-size: 0.44rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  line-height: 1.05 !important;
-  margin: 0 !important;
-}
-
-.c-role {
-  font-family: var(--fd) !important;
-  font-size: 0.7rem !important;
-  font-weight: 900 !important;
-  line-height: 1.1 !important;
-  margin: 1px 0 !important;
-}
-
-.c-sub {
-  font-size: 0.44rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.03em !important;
-  line-height: 1 !important;
-  margin: 0 !important;
-}
-
-/* Ink color per discipline -- the SAME color as its endorsement pill above,
-   so one hue always means one discipline everywhere in the passport. */
-.stamp-c-blue {
-  border: 1.75px solid #1D3557 !important;
-  color: #1D3557 !important;
-  background: rgba(29, 53, 87, 0.045) !important;
-  transform: rotate(-2.5deg) !important;
-}
-
-.stamp-c-red {
-  border: 1.75px solid #C85A48 !important;
-  color: #C85A48 !important;
-  background: rgba(200, 90, 72, 0.045) !important;
-  transform: rotate(2deg) !important;
-}
-
-.stamp-c-teal {
-  border: 1.75px solid #2A9D8F !important;
-  color: #2A9D8F !important;
-  background: rgba(42, 157, 143, 0.045) !important;
-  transform: rotate(-1.5deg) !important;
-}
-
-.stamp-c-gold {
-  border: 1.75px solid #D48B06 !important;
-  color: #A36B00 !important;
-  background: rgba(212, 139, 6, 0.045) !important;
-  transform: rotate(2.5deg) !important;
-}
-
-.stamp-c-purple {
-  border: 1.75px solid #7B2CBF !important;
-  color: #7B2CBF !important;
-  background: rgba(123, 44, 191, 0.045) !important;
-  transform: rotate(-2deg) !important;
-}
-
-.stamp-c-master {
-  border: 2px double #E8AF30 !important;
-  color: #A36B00 !important;
-  background: radial-gradient(circle, rgba(232, 175, 48, 0.22), transparent 70%) !important;
-  box-shadow: 0 0 10px rgba(232, 175, 48, 0.3) !important;
-  transform: rotate(0deg) !important;
-}
-
-/* ----------------------------------------------------------------
-   AUTHENTIC STAMP SILHOUETTES -- one shape per discipline, like
-   real customs stamps, instead of six identical colored chips.
-------------------------------------------------------------------- */
-
-/* 01 ANIMATION -- circular double-ring stamp */
-.stamp-anim-ink .consular-stamp {
-  width: 78px !important;
-  height: 78px !important;
-  min-height: 78px !important;
-  border-radius: 50% !important;
-  margin: 0 auto !important;
-}
-.stamp-anim-ink .consular-stamp::before {
-  content: '' !important;
-  position: absolute !important;
-  inset: 5px !important;
-  border: 1px solid currentColor !important;
-  border-radius: 50% !important;
-  opacity: 0.5 !important;
-  pointer-events: none !important;
-}
-
-/* 02 ILLUSTRATION -- octagonal customs stamp */
-.stamp-illus-ink .consular-stamp {
-  width: 82px !important;
-  height: 82px !important;
-  min-height: 82px !important;
-  border-radius: 0 !important;
-  clip-path: polygon(29% 0%, 71% 0%, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0% 71%, 0% 29%) !important;
-  margin: 0 auto !important;
-}
-
-/* 03 VIDEOGRAPHY -- rectangular film-reel stamp with sprocket rules */
-.stamp-video-ink .consular-stamp {
-  width: 100% !important;
-  height: 70px !important;
-  min-height: 70px !important;
-  border-radius: 4px !important;
-}
-.stamp-video-ink .consular-stamp::before,
-.stamp-video-ink .consular-stamp::after {
-  content: '' !important;
-  position: absolute !important;
-  left: 11px !important;
-  right: 11px !important;
-  border-top: 1.5px dotted currentColor !important;
-  opacity: 0.35 !important;
-}
-.stamp-video-ink .consular-stamp::before { top: 6px !important; }
-.stamp-video-ink .consular-stamp::after { bottom: 6px !important; }
-
-/* 04 GRAPHIC DESIGN -- oval Swiss-style stamp */
-.stamp-design-ink .consular-stamp {
-  width: 102px !important;
-  height: 68px !important;
-  min-height: 68px !important;
-  border-radius: 50% !important;
-  margin: 0 auto !important;
-}
-
-/* 05 MUSIC -- hexagonal frequency stamp */
-.stamp-music-ink .consular-stamp {
-  width: 88px !important;
-  height: 78px !important;
-  min-height: 78px !important;
-  border-radius: 6px !important;
-  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0% 50%) !important;
-  margin: 0 auto !important;
-}
-
-/* 06 MASTER SEAL -- gold foil circular emblem with fine inner ring */
-.stamp-master-ink .consular-stamp {
-  width: 86px !important;
-  height: 86px !important;
-  min-height: 86px !important;
-  border-radius: 50% !important;
-  margin: 0 auto !important;
-}
-.stamp-master-ink .consular-stamp::before {
-  content: '' !important;
-  position: absolute !important;
-  inset: 6px !important;
-  border: 1px solid #E8AF30 !important;
-  border-radius: 50% !important;
-  opacity: 0.65 !important;
-  pointer-events: none !important;
-}
 
 /* ================================================================
    SECTION 04: VECTOR BEZIER CURVE WARPER PLAYGROUND
@@ -11433,6 +11209,194 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   z-index: 14 !important;
   box-shadow: 0 3px 8px rgba(0,0,0,0.25) !important;
 }
+
+/* Hero Spacing below Fixed Navigation */
+.hero {
+  position: relative !important;
+  padding-top: calc(72px + clamp(2rem, 4vw, 3.8rem)) !important;
+  padding-bottom: clamp(2rem, 4vw, 3.5rem) !important;
+  padding-left: clamp(1rem, 3.5vw, 3rem) !important;
+  padding-right: clamp(1rem, 3.5vw, 3rem) !important;
+  box-sizing: border-box !important;
+}
+
+/* ================================================================
+   HERO REFINEMENT PASS
+   - fit the full spread in one viewport, no scroll needed to see it
+   - even left/right "page" widths (true book spread, not lopsided)
+   - de-jitter + de-teal the availability badge
+   - legible ink-stamp seal instead of cramped sticker text
+   - finished, aligned Field Log card (was loose text + stray bullets)
+   - tasteful red / blue / yellow across dark & light mode
+================================================================ */
+.hero {
+  min-height: calc(100vh - 72px) !important;
+  padding-top: calc(72px + clamp(0.6rem, 2.2vh, 1.6rem)) !important;
+  padding-bottom: clamp(0.6rem, 2vh, 1.25rem) !important;
+}
+
+.hero-sketchbook {
+  gap: clamp(1.4rem, 3vw, 2.4rem) !important;
+  padding: clamp(1.15rem, 2.6vh, 2rem) clamp(1.25rem, 3vw, 2.6rem) !important;
+}
+
+/* The decorative spine/gutter/bookmark were hand-tuned to the old
+   1.15fr/0.95fr split (centred at 54.8%). Now that the two-column
+   grid below is a true 1fr/1fr, they have to sit at the real 50% too,
+   or the drawn centreline reads as off-centre and the right page
+   looks narrower than it actually is. Harmless on the single-column
+   mobile layout, where this is just "horizontal centre". */
+.book-spine-stitch,
+.hero-sketchbook::after,
+.hero-bookmark-ribbon {
+  left: 50% !important;
+}
+
+/* Two-column book spread — desktop/tablet only. The mobile layout
+   below 901px already collapses .hero-sketchbook to a single column
+   (see the existing 900px breakpoint); these three rules are only
+   about spacing *between* the two pages, so they'd fight that
+   collapsed layout (and did — this used to force two columns back on
+   at every width, squeezing everything into an unreadable strip on
+   phones) if left unscoped. */
+@media (min-width: 901px) {
+  .hero-sketchbook {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  /* Right page needs the same breathing room the left page gets —
+     the video's hard rectangular edge was sitting flush against the
+     outer border while text on the left had natural padding around
+     it. */
+  .book-page-right {
+    padding-top: calc(clamp(1.8rem, 3.2vw, 2.5rem) + 22px) !important;
+    padding-right: calc(clamp(1.5rem, 2.8vw, 2.4rem) + 10px) !important;
+  }
+  .hero-vis {
+    max-width: 410px !important;
+  }
+}
+
+.hero-title img,
+#heroTitleImg {
+  max-width: min(340px, 100%) !important;
+  margin-bottom: 0 !important;
+}
+
+.hero-bio {
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+  margin-bottom: clamp(0.65rem, 1.6vh, 1.1rem) !important;
+}
+
+.disc-row {
+  margin: clamp(0.55rem, 1.4vh, 1rem) 0 !important;
+}
+
+.metrics {
+  margin-top: clamp(0.55rem, 1.4vh, 1.1rem) !important;
+  padding: clamp(0.55rem, 1.2vh, 0.75rem) 1rem !important;
+}
+
+.hero-foot {
+  margin-top: clamp(0.6rem, 1.6vh, 1.1rem) !important;
+  padding: clamp(0.45rem, 1vh, 0.6rem) 1.2rem !important;
+}
+
+/* Kill the hand-drawn "boil" filter on the hire badge — it's built for
+   illustration linework, not body text, and just reads as jitter here */
+.hero-badge-pill {
+  animation: none !important;
+}
+
+/* Off-brand teal → warm red, matching the Field Log pulse dot so both
+   "live" indicators in the spread read as one consistent system */
+.hero-badge-pill .pulse-dot {
+  background: #C85A48 !important;
+  box-shadow: 0 0 0 2px rgba(200, 90, 72, 0.22) !important;
+}
+
+/* Annecy badge: a legible ink-stamp pill instead of a cramped sticker.
+   Blue ink balances the red + yellow washi tape already on the page.
+   Pulled in tighter to the corner (was overhanging into the switcher
+   bar/video below it) and sized down to match. */
+.hero-seal-sticker {
+  top: -14px !important;
+  right: -14px !important;
+  width: 98px !important;
+  height: 50px !important;
+  border-radius: 25px !important;
+  background: #2B4C7E !important;
+  border: 2px solid #FFFDF8 !important;
+  box-shadow: 0 8px 18px rgba(43, 76, 126, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+  padding: 3px 5px !important;
+}
+[data-theme="dark"] .hero-seal-sticker {
+  background: #3A5FA0 !important;
+  border-color: #14131C !important;
+}
+.seal-inner {
+  gap: 0px !important;
+}
+.seal-star {
+  font-size: 0.6rem !important;
+  color: #F5BA42 !important;
+}
+.seal-title {
+  font-size: 0.68rem !important;
+  letter-spacing: 0.02em !important;
+}
+.seal-sub {
+  font-size: 0.4rem !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Field Log — a finished, tab-labelled card: real divider, no stray
+   bullet separators, three even columns that align in both themes */
+.hero-director-strip {
+  padding: 9px 12px 10px !important;
+}
+.director-log-top {
+  padding-bottom: 6px !important;
+  margin-bottom: 6px !important;
+  border-bottom: 1.5px dashed rgba(43, 40, 37, 0.18) !important;
+}
+[data-theme="dark"] .director-log-top {
+  border-bottom-color: rgba(245, 240, 230, 0.18) !important;
+}
+.d-pill-tag {
+  background: #C85A48 !important;
+  color: #FFFDF8 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  box-shadow: 1.5px 1.5px 0 #2B2825 !important;
+}
+[data-theme="dark"] .d-pill-tag {
+  box-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.8) !important;
+}
+.d-pulse-red {
+  background: #FFFDF8 !important;
+  box-shadow: 0 0 6px rgba(255, 253, 248, 0.8) !important;
+}
+.director-pipeline-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 4px !important;
+}
+.d-pipe-item {
+  text-align: center !important;
+  line-height: 1.3 !important;
+}
+.d-pipe-item:not(:last-child) {
+  border-right: 1px dashed rgba(43, 40, 37, 0.2) !important;
+  padding-right: 6px !important;
+}
+[data-theme="dark"] .d-pipe-item:not(:last-child) {
+  border-right-color: rgba(245, 240, 230, 0.18) !important;
+}
+.d-pipe-sep {
+  display: none !important;
+}
+
 
 /* Hero Spacing below Fixed Navigation */
 .hero {
@@ -12046,36 +12010,6 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 }
 .bp-fact-val { flex: 1 1 auto; text-align: left; color: var(--ink); }
 
-/* -------- responsive -------- */
-@media (max-width: 860px) {
-  .bp-stage { min-height: 0; padding: 3rem 0; }
-  .bp-container {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-    gap: 2.4rem;
-  }
-  .bp-intro-block { align-items: center; }
-  .bp-kicker { align-self: center; }
-  .bp-tagline { max-width: 52ch; }
-  .bp-desk-cluster {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-items: center;
-    align-items: center;
-    gap: 1.1rem .25rem;
-    max-width: 280px;
-    margin: .4rem auto 0;
-  }
-  .bp-float { width: 54px; transform: rotate(var(--frot, 0deg)); }
-  .bp-float:hover, .bp-float:focus-visible, .bp-float[aria-expanded="true"] {
-    transform: rotate(var(--frot, 0deg)) translateY(-5px) scale(1.1);
-  }
-  .bp-cta { margin-top: .6rem; }
-  .bp-rig { max-width: 320px; }
-  .bp-objects { flex-wrap: nowrap; }
-  .bp-obj-caption { font-size: .6rem; padding: .12rem .36rem; }
-}
 
 /* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
    Content fix (see earlier commit) trimmed these to just "01"-"05"; this
@@ -12279,11 +12213,11 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     <div class="hero-tape-top" aria-hidden="true"></div>
     <div class="hero-tape-bottom" aria-hidden="true"></div>
     <div class="hero-bookmark-ribbon" aria-hidden="true"></div>
-    <div class="hero-seal-sticker" title="Official Selection Annecy IAFF 2025">
+    <div class="hero-seal-sticker" title="Screened at Annecy IAFF 2025 — Paris-Lyon-Singapour Programme">
       <div class="seal-inner">
         <span class="seal-star">★</span>
         <span class="seal-title">ANNECY '25</span>
-        <span class="seal-sub">OFFICIAL SELECTION</span>
+        <span class="seal-sub">PARIS · LYON · SG</span>
       </div>
     </div>
     <!-- Center Stitched Spine & Gutter Crease -->
@@ -13531,6 +13465,10 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
   <span class="foot-copy">2026 · BFA Animation, NTU ADM</span>
 
+  <span class="foot-visits">
+   <img src="https://visitor-badge.laobi.icu/badge?page_id=annmarysajii.my-portfolio&left_color=%23111009&right_color=%23111009&left_text=visits" alt="Visitor count" loading="lazy" referrerpolicy="no-referrer" width="55" height="20">
+  </span>
+
   <a href="game.html" class="foot-egg">Curious what happens when you go offline?</a>
 
   <a href="index.html" class="foot-back">Back to start</a>
@@ -13902,44 +13840,51 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReduced) return;
 
+    // Each section's doodle types are its own thematic icon set (plus a neutral
+    // "dot" for texture) so the falling elements read as belonging to that
+    // section's topic, not a generic assortment. Colors are assigned per TYPE
+    // (see typeColor map below), not randomly per particle, and are drawn from
+    // the same accent hues already used on that section's tags/numerals.
     const sectionsConfig = [
       {
         id: 'hero',
         canvasId: 'canvas-hero',
-        types: ['sparkle', 'star5', 'cross', 'spiral', 'asterisk', 'heart', 'burst', 'dot'],
-        palette: ['#FF5A5F', '#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EC4899', '#06B6D4', '#FBBF24']
+        // one representative color per discipline below, so the hero doodles
+        // visually summarize the whole site rather than a random rainbow
+        types: ['sparkle', 'star5', 'heart', 'spiral', 'dot'],
+        palette: ['#3B82F6', '#E05A47', '#10B981', '#EC008C', '#8B5CF6']
       },
       {
         id: 'animation',
         canvasId: 'canvas-animation',
-        types: ['pegHole', 'squashBall', 'celFrame', 'timingChart', 'sparkle', 'star5', 'dot'],
-        palette: ['#38BDF8', '#3B82F6', '#FBBF24', '#EF4444', '#60A5FA']
+        types: ['pegHole', 'squashBall', 'celFrame', 'timingChart', 'dot'],
+        palette: ['#3B72B9', '#60A5FA']
       },
       {
         id: 'illustration',
         canvasId: 'canvas-illustration',
-        types: ['penNib', 'speechBubble', 'actionSpeed', 'sparkle', 'heart', 'star5', 'dot'],
-        palette: ['#E05A47', '#8B5CF6', '#F59E0B', '#FB7185', '#EC4899']
+        types: ['penNib', 'speechBubble', 'actionSpeed', 'dot'],
+        palette: ['#D94638', '#FB7185']
       },
       {
         id: 'videography',
         canvasId: 'canvas-videography',
-        types: ['sprocketHole', 'viewfinder', 'recCircle', 'soundWave', 'sparkle', 'cross', 'dot'],
-        palette: ['#EF4444', '#10B981', '#22C55E', '#06B6D4', '#34D399']
+        types: ['sprocketHole', 'viewfinder', 'recCircle', 'soundWave', 'dot'],
+        palette: ['#EF4444', '#438A5E']
       },
       {
         id: 'graphic-design',
         canvasId: 'canvas-graphic-design',
-        types: ['cmykCrosshair', 'bezierHandle', 'swatchChip', 'sparkle', 'cross', 'dot'],
-        palette: ['#00AEEF', '#EC008C', '#F59E0B', '#F97316', '#FBBF24']
+        types: ['cmykCrosshair', 'bezierHandle', 'swatchChip', 'dot'],
+        palette: ['#00AEEF', '#EC008C']
       },
       {
         id: 'music',
         canvasId: 'canvas-music',
-        types: ['musicNote', 'trebleClef', 'soundWave', 'sparkle', 'star5', 'dot'],
-        palette: ['#8B5CF6', '#6366F1', '#F59E0B', '#EC4899', '#A78BFA']
+        types: ['musicNote', 'trebleClef', 'soundWave', 'dot'],
+        palette: ['#7B5EB6', '#6366F1']
       },
-      
+
     ];
 
     // Global mouse tracking across viewport
@@ -14282,22 +14227,32 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         if (sec) cachedRect = sec.getBoundingClientRect();
       }, { passive: true });
 
-      const count = Math.max(30, Math.min(44, Math.round((width * height) / 29000)));
-      
-      const particles = Array.from({ length: count }, () => ({
-        x: Math.random() * (width || 1200),
-        y: Math.random() * (height || 800),
-        r: 4.8 + Math.random() * 7.5,
-        type: cfg.types[Math.floor(Math.random() * cfg.types.length)],
-        color: cfg.palette[Math.floor(Math.random() * cfg.palette.length)],
-        vy: -0.12 - Math.random() * 0.2,
-        rot: Math.random() * Math.PI * 2,
-        vRot: (Math.random() - 0.5) * 0.012,
-        sway: Math.random() * Math.PI * 2,
-        swaySpeed: 0.012 + Math.random() * 0.014,
-        baseAlpha: 0.14 + Math.random() * 0.13,
-        hoverFactor: 0
-      }));
+      // Deterministic type -> color assignment (cycled across the section's
+      // small palette) instead of a random color per particle, so a given
+      // shape always renders in the same hue and hover doesn't produce
+      // mismatched color/shape pairings.
+      const typeColor = {};
+      cfg.types.forEach((t, i) => { typeColor[t] = cfg.palette[i % cfg.palette.length]; });
+
+      const count = Math.max(18, Math.min(28, Math.round((width * height) / 42000)));
+
+      const particles = Array.from({ length: count }, () => {
+        const type = cfg.types[Math.floor(Math.random() * cfg.types.length)];
+        return {
+          x: Math.random() * (width || 1200),
+          y: Math.random() * (height || 800),
+          r: 4.8 + Math.random() * 7.5,
+          type,
+          color: typeColor[type],
+          vy: 0.1 + Math.random() * 0.14, // gentle downward fall
+          rot: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.006,
+          sway: Math.random() * Math.PI * 2,
+          swaySpeed: 0.007 + Math.random() * 0.007,
+          baseAlpha: 0.14 + Math.random() * 0.13,
+          hoverFactor: 0
+        };
+      });
 
       const state = {
         sec, cvs, ctx,
@@ -14339,8 +14294,8 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
           p.y += p.vy;
           p.sway += p.swaySpeed;
           p.rot += p.vRot + p.hoverFactor * 0.02;
-          const curX = p.x + Math.sin(p.sway) * 10;
-          if (p.y < -30) { p.y = h + 25; p.x = Math.random() * w; }
+          const curX = p.x + Math.sin(p.sway) * 5;
+          if (p.y > h + 30) { p.y = -25; p.x = Math.random() * w; }
 
           let targetHover = 0;
           if (globalMouseX > -1000) {
@@ -15826,6 +15781,9 @@ window.addEventListener('load', () => {
     });
   })();
 
+  // ================================================================
+  // BACKSTAGE PASS — 5 scrapbook objects + shared reveal panel
+  // ================================================================
   (function initBackstagePass() {
     const panel = document.getElementById('bp-panel');
     if (!panel) return;
@@ -15950,10 +15908,27 @@ window.addEventListener('load', () => {
   // ================================================================
   window.unlockedVisas = window.unlockedVisas || new Set();
 
+  // The 6 illustrated stamp SVGs are real vector artwork (crisp at any
+  // screen size) but still ~500KB combined -- not worth downloading until
+  // someone actually opens the passport, especially on mobile data. Swap
+  // data-src -> src the first time the modal opens; every open after that
+  // is a no-op (images are already loaded and browser-cached).
+  let passportAssetsLoaded = false;
+  function loadPassportStampAssets() {
+    if (passportAssetsLoaded) return;
+    passportAssetsLoaded = true;
+    document.querySelectorAll('.consular-stamp-img[data-src]').forEach(img => {
+      img.src = img.getAttribute('data-src');
+      img.removeAttribute('data-src');
+    });
+  }
+
   window.togglePassportModal = function() {
     const modal = document.getElementById('passport-modal');
     if (!modal) return;
+    const opening = !modal.classList.contains('open');
     modal.classList.toggle('open');
+    if (opening) loadPassportStampAssets();
   };
 
   window.unlockStamp = function(disciplineId) {
@@ -16019,62 +15994,76 @@ window.addEventListener('load', () => {
 <div class="passport-modal-backdrop" id="passport-modal" onclick="if(event.target===this) togglePassportModal()">
   <div class="passport-booklet-wrap">
     <div class="passport-close-btn" onclick="togglePassportModal()" title="Close Passport">✕</div>
-    
+
     <div class="passport-booklet-body">
-      <!-- Center Book Spine Stitch & Crease -->
+      <!-- Tactile grain — reuses the site-wide filmGrainFilter (already
+           defined once, elsewhere on the page) instead of a photographed
+           paper tile, so there's no visible repeat seam. -->
+      <svg class="passport-grain" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.32;">
+        <rect width="100%" height="100%" filter="url(#filmGrainFilter)" />
+      </svg>
+
+      <!-- Faint security-print watermark (tiny repeated star, near-
+           invisible) -- the kind of anti-forgery pattern real passport
+           paper has. -->
+      <svg class="passport-watermark" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.05;">
+        <defs>
+          <pattern id="passportWatermarkPattern" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(9)">
+            <path d="M14 3 L16.6 10.2 L24 10.4 L18.1 15 L20.3 22.1 L14 17.9 L7.7 22.1 L9.9 15 L4 10.4 L11.4 10.2 Z" fill="#171410"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#passportWatermarkPattern)" />
+      </svg>
+
+      <!-- Center Book Spine -->
       <div class="passport-spine-crease" aria-hidden="true"></div>
 
-      <!-- LEFT PAGE: OFFICIAL PASSPORT IDENTITY PAGE -->
+      <!-- LEFT PAGE: intro + progress tracker (no personal ID card —
+           this passport tracks what YOU'VE explored, not Annmary's
+           own credentials) -->
       <div class="passport-page passport-page-left">
-        
-        <!-- Official Consular Header -->
         <div class="passport-top-header">
-          <div class="passport-crest-title">
-            <span class="crest-icon">⚜</span>
-            <div>
-              <div class="passport-country-txt">REPUBLIC OF CREATIVE PRACTICE</div>
-              <div class="passport-doc-type">OFFICIAL FIELD PASSPORT · PASSEPORT</div>
-            </div>
-          </div>
+          <span class="passport-country-txt">REPUBLIC OF CREATIVE PRACTICE</span>
           <span class="passport-code-badge">SGP</span>
         </div>
-        
-        <!-- Identity Row (Photo & Meta Table) -->
+        <div class="passport-doc-type">OFFICIAL FIELD PASSPORT · PASSEPORT</div>
+
+        <!-- Not a portrait of Annmary — this passport belongs to whoever's
+             exploring it, so the "holder" is a generic, cheerful stand-in. -->
         <div class="passport-id-card-row">
-          <div class="passport-photo-frame">
-            <img src="assets/portfolio-data/My profile/my_new_avatar_tight.png" alt="Annmary Saji" class="passport-id-img" />
-            <div class="photo-corner-tl"></div>
-            <div class="photo-corner-tr"></div>
-            <div class="photo-corner-bl"></div>
-            <div class="photo-corner-br"></div>
-            <div class="photo-consular-watermark">PASSED<br>2026</div>
+          <div class="passport-photo-frame" aria-hidden="true">
+            <!-- filter="url(#boil-1)" reuses the site's existing hand-
+                 drawn wobble filter (defined once, elsewhere on the
+                 page) so the smiley doesn't read as a clean vector shape. -->
+            <svg viewBox="0 0 64 64" width="100%" height="100%">
+              <g filter="url(#boil-1)" transform="rotate(-3 32 32)">
+                <circle cx="32" cy="32" r="26" fill="#FFDD00" stroke="#171410" stroke-width="2.75"/>
+                <circle cx="21.5" cy="26" r="3.6" fill="#171410"/>
+                <circle cx="41" cy="27" r="3" fill="#171410"/>
+                <path d="M19 37 Q32 51 45 36" fill="none" stroke="#171410" stroke-width="3.25" stroke-linecap="round"/>
+              </g>
+            </svg>
           </div>
-          
           <div class="passport-meta-table">
             <div class="meta-row">
               <span class="meta-lbl">Type/Type</span>
-              <strong class="meta-val">P &lt; ART</strong>
+              <strong class="meta-val">V &lt; ART</strong>
             </div>
             <div class="meta-row">
               <span class="meta-lbl">Surname/Nom</span>
-              <strong class="meta-val">SAJI</strong>
+              <strong class="meta-val">ART</strong>
             </div>
             <div class="meta-row">
               <span class="meta-lbl">Given Names/Prénoms</span>
-              <strong class="meta-val">ANNMARY</strong>
+              <strong class="meta-val">I LOVE</strong>
             </div>
             <div class="meta-row">
               <span class="meta-lbl">Profession/Spécialité</span>
-              <strong class="meta-val">ANIMATOR · ART DIRECTOR</strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-lbl">Document No.</span>
-              <strong class="meta-val doc-no-val">AMS-2026-SG</strong>
+              <strong class="meta-val">ADMIRING ART</strong>
             </div>
           </div>
         </div>
 
-        <!-- Endorsement Tracker Ribbon -->
         <div class="passport-endorsement-ribbon">
           <div class="endorsement-label-row">
             <span>CONSULAR ENDORSEMENTS</span>
@@ -16090,120 +16079,42 @@ window.addEventListener('load', () => {
           </div>
         </div>
 
-        <!-- Machine Readable MRZ Code -->
         <div class="passport-mrz-code">
-          P&lt;SGSAJI&lt;&lt;ANNMARY&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
-          AMS2026SG4SGP0410302F2606018&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06
+          V&lt;SGART&lt;&lt;ILOVE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+          EXP2026SG4SGP0410302F3012311&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06
         </div>
       </div>
 
-      <!-- RIGHT PAGE: OFFICIAL INKED VISA STAMPS -->
+      <!-- RIGHT PAGE: loose, overlapping ink stamps -->
       <div class="passport-page passport-page-right">
         <div class="passport-right-header">
           <span class="passport-visa-heading">VISAS / ENTRIES</span>
           <span class="passport-page-num">PAGE 03</span>
         </div>
 
-                <div class="passport-stamps-grid">
-          <!-- 01 ANIMATION VISA STAMP -->
+        <div class="passport-stamps-grid">
           <div class="passport-slot" id="slot-animation" onclick="triggerSlotJump('animation')">
-            <div class="slot-unlocked-stamp stamp-anim-ink">
-              <div class="consular-stamp stamp-c-blue">
-                <span class="c-dep">IMMIGRATION BUREAU</span>
-                <strong class="c-role">01 ANIMATION</strong>
-                <span class="c-sub">★ 24 FPS VERIFIED ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">01 ANIMATION</span>
-              <span class="slot-sealed-hint">Pending Entry</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/animation.svg" alt="Animation visa stamp" width="180" height="178" />
           </div>
-
-          <!-- 02 ILLUSTRATION VISA STAMP -->
           <div class="passport-slot" id="slot-illustration" onclick="triggerSlotJump('illustration')">
-            <div class="slot-unlocked-stamp stamp-illus-ink">
-              <div class="consular-stamp stamp-c-red">
-                <span class="c-dep">COMICS &amp; VISDEV</span>
-                <strong class="c-role">02 ILLUSTRATION</strong>
-                <span class="c-sub">★ NTU ADM PASSED ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">02 ILLUSTRATION</span>
-              <span class="slot-sealed-hint">Pending Entry</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/illustration.svg" alt="Illustration visa stamp" width="163" height="164" />
           </div>
-
-          <!-- 03 VIDEOGRAPHY VISA STAMP -->
           <div class="passport-slot" id="slot-videography" onclick="triggerSlotJump('videography')">
-            <div class="slot-unlocked-stamp stamp-video-ink">
-              <div class="consular-stamp stamp-c-teal">
-                <span class="c-dep">MOTION PICTURES</span>
-                <strong class="c-role">03 VIDEO &amp; FILM</strong>
-                <span class="c-sub">★ 4K CINEMA ENTRY ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">03 VIDEOGRAPHY</span>
-              <span class="slot-sealed-hint">Pending Entry</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/videography.svg" alt="Videography visa stamp" width="283" height="166" />
           </div>
-
-          <!-- 04 GRAPHIC DESIGN VISA STAMP -->
           <div class="passport-slot" id="slot-graphic-design" onclick="triggerSlotJump('graphic-design')">
-            <div class="slot-unlocked-stamp stamp-design-ink">
-              <div class="consular-stamp stamp-c-gold">
-                <span class="c-dep">BRAND IDENTITY</span>
-                <strong class="c-role">04 GRAPHIC DESIGN</strong>
-                <span class="c-sub">★ BEZIER SYSTEM ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">04 GRAPHIC DESIGN</span>
-              <span class="slot-sealed-hint">Pending Entry</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/design.svg" alt="Graphic Design visa stamp" width="224" height="166" />
           </div>
-
-          <!-- 05 MUSIC VISA STAMP -->
           <div class="passport-slot" id="slot-music" onclick="triggerSlotJump('music')">
-            <div class="slot-unlocked-stamp stamp-music-ink">
-              <div class="consular-stamp stamp-c-purple">
-                <span class="c-dep">AUDIO FREQUENCY</span>
-                <strong class="c-role">05 MUSIC &amp; SOUND</strong>
-                <span class="c-sub">★ 440 HZ CLEARED ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">05 MUSIC &amp; SOUND</span>
-              <span class="slot-sealed-hint">Pending Entry</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/music.svg" alt="Music visa stamp" width="162" height="163" />
           </div>
-
-          <!-- 06 MASTER SEAL VISA STAMP -->
           <div class="passport-slot" id="slot-mastery" onclick="triggerSlotJump('hero')">
-            <div class="slot-unlocked-stamp stamp-master-ink">
-              <div class="consular-stamp stamp-c-master">
-                <span class="c-dep">INTERDISCIPLINARY</span>
-                <strong class="c-role">MASTER SEAL</strong>
-                <span class="c-sub">★ ALL VISAS ENDORSED ★</span>
-              </div>
-            </div>
-            <div class="slot-locked-placeholder">
-              <span class="slot-sealed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3.2 2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="slot-sealed-title">06 MASTER SEAL</span>
-              <span class="slot-sealed-hint">Needs All 5 Visas</span>
-            </div>
+            <img class="consular-stamp-img" data-src="assets/passport/stamps/master.svg" alt="Master Seal — all visas endorsed" width="208" height="166" />
           </div>
         </div>
 
         <div class="passport-footer-note">
-          ✦ Explore a section below to earn its stamp — click any unlocked visa to jump back to it.
+          ✦ Click any visa to jump to that section.
         </div>
       </div>
     </div>
