@@ -12033,6 +12033,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   border: 3px solid #FFFDF8 !important;
   box-shadow: 0 4px 12px rgba(20, 19, 26, 0.28), 0 1.5px 4px rgba(20, 19, 26, 0.18) !important;
   margin: 0 0 0.3rem 0 !important;
+  position: relative !important;
 }
 [data-theme="dark"] .sec-num {
   border-color: #14131C !important;
@@ -12043,6 +12044,53 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
 #graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
 #music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
+
+/* ================================================================
+   DISCIPLINE STAMP -- a small second ink-stamp beside the section
+   number (clapperboard / torn-corner / play+timecode / colour-chip /
+   cassette), echoing the passport-stamp language from About. Purely
+   decorative, aria-hidden. Uses its own .stamp-rv class rather than
+   .rv so its press-in (scale+rotate snap) never fights the shared
+   .rv slide-fade rules -- same observer, separate motion.
+================================================================ */
+.disc-stamp {
+  position: absolute;
+  bottom: -0.55rem;
+  right: -0.95rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  border: 2px solid #FFFDF8;
+  box-shadow: 0 3px 9px rgba(20, 19, 26, 0.25);
+  pointer-events: none;
+}
+[data-theme="dark"] .disc-stamp { border-color: #14131C; }
+.disc-stamp svg { width: 1.05rem; height: 1.05rem; display: block; }
+
+.stamp-rv {
+  transition: opacity 0.35s var(--ease), transform 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+.js-on .sec .stamp-rv {
+  opacity: 0;
+  transform: scale(0.4) rotate(-25deg);
+}
+.js-on .stamp-rv.d2 { transition-delay: 0.22s; }
+.stamp-rv.in { opacity: 1; }
+
+#animation .disc-stamp      { background: #1E3FC4 !important; color: #FFFDF8 !important; }
+#illustration .disc-stamp   { background: #E8432E !important; color: #FFFDF8 !important; }
+#videography .disc-stamp    { background: #2BC9B5 !important; color: #14131A !important; }
+#graphic-design .disc-stamp { background: #FFCC00 !important; color: #14131A !important; }
+#music .disc-stamp          { background: #8B5CF6 !important; color: #FFFDF8 !important; }
+
+#animation .stamp-rv.in      { transform: rotate(8deg) !important; }
+#illustration .stamp-rv.in   { transform: rotate(-7deg) !important; }
+#videography .stamp-rv.in    { transform: rotate(9deg) !important; }
+#graphic-design .stamp-rv.in { transform: rotate(-8deg) !important; }
+#music .stamp-rv.in          { transform: rotate(7deg) !important; }
 
 /* --- Contact continues About's red world (site-wide "bold covers, calm
    pages" plan): same red family, same paper-texture technique, and the
@@ -12501,7 +12549,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">01</p>
+    <p class="sec-num rv">01<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><rect x="3" y="3" width="18" height="5" rx="1"/><line x1="6" y1="3" x2="4" y2="8"/><line x1="10" y1="3" x2="8" y2="8"/><line x1="14" y1="3" x2="12" y2="8"/><line x1="18" y1="3" x2="16" y2="8"/></svg></span></p>
     <h2 class="sec-title rv d1">Animation &amp;<br>Visual Development</h2>
     <p class="sec-intro rv d2">I make animated work that starts with a question I cannot let go of. Each project runs a full pipeline from concept to final film, and every discipline feeds the next.</p>
    </div>
@@ -12663,7 +12711,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">02</p>
+    <p class="sec-num rv">02<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></span></p>
     <h2 class="sec-title rv d1">Illustration<br>&amp; Comics</h2>
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
    </div>
@@ -12824,7 +12872,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">03</p>
+    <p class="sec-num rv">03<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg></span></p>
     <h2 class="sec-title rv d1">Videography<br>&amp; Motion</h2>
     <p class="sec-intro rv d2">Video brings all my disciplines into one frame. I direct, film, edit, and sometimes appear on screen, across explainer videos, documentary shorts, and social content.</p>
    </div>
@@ -12985,7 +13033,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">04</p>
+    <p class="sec-num rv">04<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></span></p>
     <h2 class="sec-title rv d1">Graphic Design<br>&amp; Brand</h2>
     <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
    </div>
@@ -13190,7 +13238,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">05</p>
+    <p class="sec-num rv">05<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></span></p>
     <h2 class="sec-title rv d1">Music<br>Production</h2>
     <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
    </div>
@@ -13686,7 +13734,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   // 4. Scrapbook Physics Reveal Observer
   (function initScrollObserver() {
     if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('.rv, .card, .sec-hd').forEach(el => el.classList.add('in'));
+      document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd').forEach(el => el.classList.add('in'));
       return;
     }
     const observer = new IntersectionObserver((entries) => {
@@ -13701,7 +13749,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
       threshold: 0.06
     });
 
-    document.querySelectorAll('.rv, .card, .sec-hd').forEach(el => observer.observe(el));
+    document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd').forEach(el => observer.observe(el));
   })();
   
   // 5. Sticky Nav
