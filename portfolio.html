@@ -12057,28 +12057,40 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   --c-cream-dim: #F4DFB4;
   --c-ink: #201C16;
   --c-gold: #FEB21A;
+  /* Fixed sky-blue for this section only -- var(--blue) is theme-reactive
+     and its light-mode value (#1850A8) sits at almost the exact same
+     luminance as --c-red, so the email link nearly vanished. This section
+     doesn't toggle with the theme (same as About), so it needs its own
+     fixed blue, tuned for contrast against --c-red specifically. */
+  --c-blue: #B8D4FF;
   background: var(--c-red) !important;
   color: var(--c-cream) !important;
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
+/* --c-red is notably darker than About's --red (#D93020). The site's own
+   [data-theme="dark"] convention (see body::before above) already swaps
+   to paper-dark-tile.webp + mix-blend-mode:screen for dark backgrounds,
+   because multiply against a dark base compresses the grain toward black
+   and reads as a flat gradient. Same fix applies here, independent of the
+   site theme toggle, since this section is a fixed cover moment. */
 #contact.contact::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.55;
-  background-image: url("assets/svg-opt/paper-light-tile.webp");
+  mix-blend-mode: screen;
+  opacity: 0.22;
+  background-image: url("assets/svg-opt/paper-dark-tile.webp");
   background-size: 340px 340px;
 }
 #contact .con, #contact .contact-g { position: relative; z-index: 1; }
 
 #contact .contact-h { color: var(--c-cream) !important; }
-#contact .contact-email { color: var(--blue) !important; }
-#contact .contact-email::after { background: var(--blue) !important; }
+#contact .contact-email { color: var(--c-blue) !important; }
+#contact .contact-email::after { background: var(--c-blue) !important; }
 
 /* Social/resume links: muted until noticed, come alive on hover/focus --
    same idea as the About desk objects going from dim to full color. */
