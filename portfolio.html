@@ -3,7 +3,7 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@600;700&family=Lilita+One&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Annmary Saji</title>
@@ -310,17 +310,6 @@ body::before {
 
 .hero-star-sticker {
   animation: lineBoil 0.38s steps(4) infinite;
-}
-
-/* ================================================================
-   ZERO-LAG CUSTOM STAR CURSOR (BULLETPROOF)
-================================================================ */
-
-
-
-}
-
-
 }
 
 /* ================================================================
@@ -2214,17 +2203,6 @@ body::before {
 
 .foot-back:hover {
   color: var(--yel);
-}
-
-/* ================================================================
-   ZERO-LAG CUSTOM STAR CURSOR
-================================================================ */
-
-
-
-}
-
-
 }
 
 /* ================================================================
@@ -5386,19 +5364,6 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
 .tt-close:hover {
   opacity: 1 !important;
   color: #2BC9B5 !important;
-}
-
-/* ================================================================
-   RESTORE CUSTOM CRAYON STAR CURSOR
-================================================================ */
-
-
-
-
-
-
-
-  
 }
 
 /* ================================================================
@@ -11478,6 +11443,672 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   padding-right: clamp(1rem, 3.5vw, 3rem) !important;
   box-sizing: border-box !important;
 }
+
+/* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
+   Content fix (see earlier commit) trimmed these to just "01"-"05"; this
+   restyles the badge itself from a flat rounded rectangle into a small
+   stamped circle in each section's own accent color, reusing the ink-stamp
+   language already established by the Annecy seal in the hero rather than
+   inventing a new motif. Same accent colors as before, shape only. */
+.sec-num {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  font-family: var(--fd) !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  border: 3px solid #FFFDF8 !important;
+  box-shadow: 0 4px 12px rgba(20, 19, 26, 0.28), 0 1.5px 4px rgba(20, 19, 26, 0.18) !important;
+  margin: 0 0 0.3rem 0 !important;
+}
+[data-theme="dark"] .sec-num {
+  border-color: #14131C !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 1.5px 4px rgba(0, 0, 0, 0.4) !important;
+}
+#animation .sec-num      { background: #1E3FC4 !important; color: #FFFDF8 !important; transform: rotate(-4deg) !important; }
+#illustration .sec-num   { background: #E8432E !important; color: #FFFDF8 !important; transform: rotate(3deg) !important; }
+#videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
+#graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
+#music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
+/* ================================================================
+   ABOUT — BACKSTAGE PASS
+   Laminated event lanyard badge on a bright red stage. Namespaced
+   entirely under bp- classes so none of the legacy about, lanyard,
+   badge, or desk rules above touch this markup.
+================================================================ */
+#about.about {
+  --red: #D93020;
+  --red-deep: #A32717;
+  --cream: #FDF4E3;
+  --cream-dim: #F4DFB4;
+  --ink: #201C16;
+  --gold: #FEB21A;
+  --cobalt: #134686;
+  --magenta: #E2559C;
+  --moss: #3E9E63;
+  --tangerine: #EF7A34;
+  --teal: #1F9B93;
+  --shadow: rgba(32, 28, 22, .35);
+  --muted: #8a8272;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  background: var(--red) !important;
+  color: var(--cream) !important;
+  isolation: isolate;
+}
+
+.bp-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: clamp(3rem, 7vh, 5rem) 0;
+}
+
+.bp-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: .55;
+  background-image: url("assets/svg-opt/paper-light-tile.webp");
+  background-size: 340px 340px;
+}
+
+/* -------- Studio Desk & Field Notes cluster (sits under the tagline) -------- */
+.bp-desk-cluster {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: .5rem 1.1rem;
+  margin-top: .2rem;
+}
+.bp-float {
+  position: relative;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: var(--fw, 64px);
+  opacity: .38;
+  filter: saturate(.7) brightness(.94);
+  transform: rotate(var(--frot, 0deg)) translateY(var(--fy, 0));
+  transition: opacity .25s ease, transform .35s cubic-bezier(.34,1.56,.64,1), filter .25s ease;
+}
+.bp-float img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(2px 4px 0 rgba(0,0,0,.28));
+}
+.bp-intro-block.in .bp-float:hover,
+.bp-intro-block.in .bp-float:focus-visible,
+.bp-intro-block.in .bp-float[aria-expanded="true"] {
+  opacity: 1;
+  filter: none;
+  transform: rotate(var(--frot, 0deg)) translateY(calc(var(--fy, 0px) - 5px)) scale(1.1);
+  z-index: 5;
+}
+.bp-float:focus-visible {
+  outline: 3px solid var(--cream);
+  outline-offset: 5px;
+  border-radius: 10px;
+}
+.bp-note {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 0;
+  width: 188px;
+  background: var(--cream);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  padding: .65rem .75rem;
+  font-family: 'Archivo', sans-serif;
+  font-size: .78rem;
+  line-height: 1.42;
+  box-shadow: 4px 5px 0 var(--ink);
+  z-index: 6;
+  transform: rotate(-1.4deg);
+}
+.bp-note::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 7px solid transparent;
+  border-top-color: var(--ink);
+}
+.bp-note[hidden] { display: none; }
+
+.bp-float--plant      { --fw: 68px; --frot: -8deg;  --fy: 0px;   transition-delay: .34s; }
+.bp-float--boba       { --fw: 54px; --frot: 6deg;   --fy: 10px;  transition-delay: .4s; }
+.bp-float--headphones { --fw: 70px; --frot: -5deg;  --fy: -6px;  transition-delay: .46s; }
+.bp-float--journal    { --fw: 62px; --frot: 7deg;   --fy: 6px;   transition-delay: .52s; }
+.bp-float--pouch      { --fw: 54px; --frot: -7deg;  --fy: -2px;  transition-delay: .58s; }
+.bp-float--pencil     { --fw: 58px; --frot: 10deg;  --fy: 4px;   transition-delay: .64s; }
+
+/* Entrance: dim little scatter of objects fades in after the intro text,
+   each on its own beat. Opacity-only so it never fights the desktop
+   vs. mobile-grid transform rules for this element. */
+.js-on .bp-float { opacity: 0; }
+.bp-intro-block.in .bp-float { opacity: .38; }
+
+/* -------- layout container -------- */
+.bp-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.6rem, 4vw, 3.6rem) clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.bp-intro-block { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 1.15rem; }
+.bp-col--badge { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+
+.bp-kicker {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: 'Archivo', sans-serif;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--gold);
+  padding: .4rem .9rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-2deg);
+}
+
+.bp-headline {
+  font-family: 'Lilita One', cursive;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 4.4vw, 4.1rem);
+  line-height: 1.04;
+  color: var(--cream);
+  text-shadow: 3px 3px 0 var(--red-deep);
+}
+.bp-headline .bp-accent { color: var(--gold); }
+
+.bp-tagline {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(1rem, 1.05vw, 1.14rem);
+  line-height: 1.62;
+  color: var(--cream-dim);
+  max-width: 48ch;
+}
+
+.bp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--cream);
+  padding: .9rem 1.6rem;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 5px 5px 0 var(--ink);
+  text-decoration: none;
+  margin-top: .3rem;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.bp-cta:hover, .bp-cta:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+.bp-cta:active { transform: translate(1px, 1px); box-shadow: 3px 3px 0 var(--ink); }
+.bp-cta:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+
+/* -------- badge rig -------- */
+.bp-rig {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.3rem;
+}
+
+.bp-hanging {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0%;
+}
+.js-on .bp-hanging {
+  opacity: 0;
+  transform: translateY(-160px) rotate(-10deg);
+}
+/* Dropped in like it's just been hung round someone's neck -- a quick
+   fall with a couple of settling bounces, then eases into the same
+   idle sway the badge already had. Triggered by the shared scroll-reveal
+   observer adding .in to the .rv ancestor, so it fires once, on arrival. */
+.bp-col--badge.in .bp-hanging {
+  animation: bpDropIn .9s cubic-bezier(.34, 1.2, .34, 1) .15s both,
+             bpSway 6.5s ease-in-out infinite 1.05s;
+}
+@keyframes bpDropIn {
+  0%   { opacity: 0; transform: translateY(-160px) rotate(-10deg); }
+  55%  { opacity: 1; transform: translateY(14px) rotate(2.5deg); }
+  75%  { opacity: 1; transform: translateY(-6px) rotate(-1.2deg); }
+  90%  { opacity: 1; transform: translateY(2px) rotate(.6deg); }
+  100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+@keyframes bpSway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+
+/* Desktop: the real illustrated ribbon asset, spanning the full width of
+   the two-column container -- entering near the left edge (cut off there,
+   as if it keeps going out of frame) and sweeping across to the clip
+   above the badge on the right. Positioned relative to .bp-container
+   (not the badge rig) so it can span both columns; sits behind both
+   because .bp-intro-block/.bp-col--badge get their own stacking z-index
+   below. */
+.bp-lanyard-img {
+  display: none;
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  width: 1100px;
+  max-width: none;
+  top: -329px;
+  left: calc(76.45% - 1064px); /* responsive: keeps the tab pinned to the clip at every width, since .bp-container width scales below its 1220px max */
+}
+
+/* Mobile/tablet: a plain straight fabric strap -- a real lanyard shape,
+   not a ribbon */
+.bp-strap-mobile { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+.bp-strap {
+  width: 36px;
+  height: 120px;
+  background: var(--cobalt);
+  border-radius: 4px 4px 0 0;
+  box-shadow:
+    inset -8px 0 11px -4px rgba(0,0,0,.4),
+    inset 5px 0 8px -3px rgba(255,255,255,.32);
+}
+
+@media (min-width: 861px) {
+  .bp-lanyard-img { display: block; }
+  .bp-strap-mobile { display: none; }
+  .bp-badge-wrap { margin-top: -16px; }
+}
+
+.bp-badge-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; margin-top: -8px; }
+
+.bp-clip { position: relative; z-index: 3; width: 44px; height: 42px; margin-top: -4px; margin-bottom: -14px; }
+.bp-clip-ring {
+  position: absolute; left: 50%; top: 0; translate: -50% 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 4px solid #c9cdd3;
+  background: linear-gradient(145deg, #fbfdff, #838b96);
+  box-shadow: inset 0 -3px 4px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.35);
+}
+.bp-clip-bar {
+  position: absolute; left: 50%; top: 16px; translate: -50% 0;
+  width: 40px; height: 26px; border-radius: 8px;
+  background: linear-gradient(145deg, #f4f6f8, #7c8590);
+  border: 2px solid #565d66;
+  box-shadow: 0 4px 6px rgba(0,0,0,.4), inset 2px 2px 3px rgba(255,255,255,.55);
+}
+
+.bp-badge {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 300px;
+  background-color: var(--cream);
+  background-image: url("assets/svg-opt/paper-light-tile.webp");
+  background-size: 260px 260px;
+  background-blend-mode: multiply;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  padding: 1.4rem 1.3rem 1.2rem;
+  box-shadow: 8px 10px 0 var(--shadow), 0 22px 45px rgba(0,0,0,.28);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+}
+
+.bp-burst {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  z-index: 4;
+  width: 66px;
+  height: 66px;
+  background: none;
+  color: var(--ink);
+  display: block;
+  padding: 0;
+  border: none;
+  appearance: none;
+  cursor: pointer;
+  transform: rotate(8deg);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.bp-burst-shape { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bp-burst-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .52rem;
+  line-height: 1.12;
+  padding: 0 .2rem;
+}
+.bp-burst:hover, .bp-burst:focus-visible { transform: rotate(8deg) scale(1.08); }
+.bp-burst:active { transform: rotate(8deg) scale(.96); }
+.bp-burst:focus-visible { outline: 3px solid var(--ink); outline-offset: 5px; }
+
+.bp-photo {
+  width: 128px;
+  height: 128px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  background: var(--cream-dim);
+  box-shadow: inset 0 0 0 3px var(--cream);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.bp-photo img { width: 100%; height: auto; object-fit: contain; display: block; }
+
+.bp-badge-event { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: .62rem; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.bp-name { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--ink); text-align: center; line-height: 1.1; }
+.bp-role { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: .84rem; color: var(--red-deep); text-align: center; }
+.bp-meta { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: .74rem; color: var(--muted); text-align: center; }
+
+.bp-barcode { margin-top: .3rem; padding-top: .55rem; border-top: 1.5px dashed var(--muted); width: 100%; display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.bp-barcode-lines {
+  position: relative;
+  width: 100%; height: 24px; opacity: .92;
+  overflow: hidden;
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 9px, var(--ink) 9px 12px, transparent 12px 16px, var(--ink) 16px 17px, transparent 17px 21px);
+}
+.bp-barcode-lines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+}
+.bp-badge:hover .bp-barcode-lines::after,
+.bp-badge:focus-within .bp-barcode-lines::after {
+  animation: bpScan 1s ease;
+}
+@keyframes bpScan { to { transform: translateX(120%); } }
+.bp-barcode-code { font-family: 'JetBrains Mono', monospace; font-size: .66rem; letter-spacing: .07em; color: var(--ink); }
+
+/* -------- 5 scrapbook object buttons -------- */
+.bp-widget { position: relative; z-index: 2; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+
+.bp-objects { display: flex; gap: clamp(.4rem, 1.3vw, .85rem); justify-content: center; width: 100%; flex-wrap: nowrap; }
+
+.bp-obj {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .32rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex: 1 1 0;
+  min-width: 0;
+  transition: opacity .4s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
+  font-family: 'Archivo', sans-serif;
+}
+.bp-obj[data-key="toolkit"] { --obj-accent: var(--cobalt); }
+.bp-obj[data-key="words"]   { --obj-accent: var(--magenta); }
+.bp-obj[data-key="school"]  { --obj-accent: var(--moss); }
+.bp-obj[data-key="awards"]  { --obj-accent: var(--tangerine); }
+.bp-obj[data-key="now"]     { --obj-accent: var(--teal); }
+
+/* Entrance: the 5 objects pop in one after another once the badge has
+   settled, like they're being set down on the desk */
+.js-on .bp-obj { opacity: 0; transform: translateY(16px) scale(.8); }
+.bp-col--badge.in .bp-obj { opacity: 1; transform: translateY(0) scale(1); }
+.bp-obj[data-key="toolkit"] { transition-delay: 1.05s; }
+.bp-obj[data-key="words"]   { transition-delay: 1.13s; }
+.bp-obj[data-key="school"]  { transition-delay: 1.21s; }
+.bp-obj[data-key="awards"]  { transition-delay: 1.29s; }
+.bp-obj[data-key="now"]     { transition-delay: 1.37s; }
+
+.bp-obj-icon-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 56px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  background: var(--cream);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 4px 0 var(--ink);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, filter .2s ease, opacity .2s ease;
+}
+.bp-obj-icon-wrap svg { width: 58%; height: 58%; }
+.bp-obj-caption {
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .015em;
+  color: var(--ink);
+  background: var(--cream);
+  padding: .14rem .48rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  border: 1.5px solid var(--ink);
+}
+
+.bp-obj:hover .bp-obj-icon-wrap { transform: translateY(-3px); box-shadow: 4px 6px 0 var(--ink); }
+.bp-obj:focus-visible .bp-obj-icon-wrap { outline: 3px solid var(--cream); outline-offset: 2px; }
+
+.bp-obj[aria-pressed="true"] .bp-obj-icon-wrap {
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 5px 7px 0 var(--obj-accent);
+  border-color: var(--obj-accent);
+}
+.bp-obj[aria-pressed="true"] .bp-obj-caption { background: var(--obj-accent); color: var(--cream); border-color: var(--ink); }
+
+.bp-obj.bp-dim .bp-obj-icon-wrap { opacity: .48; filter: saturate(.45); transform: none; box-shadow: 2px 3px 0 var(--ink); }
+.bp-obj.bp-dim .bp-obj-caption { opacity: .6; }
+
+/* -------- shared reveal panel -------- */
+.bp-panel {
+  position: relative;
+  width: 100%;
+  background-color: var(--cream);
+  background-image: url("assets/svg-opt/paper-light-tile.webp");
+  background-size: 260px 260px;
+  background-blend-mode: multiply;
+  border: 3px solid var(--ink);
+  border-top: 8px solid var(--panel-accent, var(--ink));
+  border-radius: 14px;
+  padding: 1.05rem 1.25rem 1.15rem;
+  box-shadow: 6px 8px 0 var(--shadow);
+  min-height: 158px;
+  transition: border-top-color .2s ease;
+}
+.bp-panel-idle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 128px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+.bp-panel[data-open="true"] .bp-panel-idle { display: none; }
+.bp-panel-content { display: none; font-family: 'Archivo', sans-serif; color: var(--ink); }
+.bp-panel[data-open="true"] .bp-panel-content { display: block; }
+
+.bp-panel-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 1.05rem; margin-bottom: .55rem; color: var(--ink); }
+.bp-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bp-chip {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .78rem;
+  padding: .35rem .8rem;
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: 2px 3px 0 var(--ink);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.bp-chip:hover { transform: translateY(-2px) rotate(0deg) scale(1.05); }
+.bp-chip:nth-child(5n+1) { background: var(--cobalt); transform: rotate(-3deg); }
+.bp-chip:nth-child(5n+2) { background: var(--magenta); transform: rotate(2deg); }
+.bp-chip:nth-child(5n+3) { background: var(--moss); transform: rotate(-2deg); }
+.bp-chip:nth-child(5n+4) { background: var(--tangerine); transform: rotate(3deg); }
+.bp-chip:nth-child(5n+5) { background: var(--teal); transform: rotate(-1deg); }
+.bp-chip:nth-child(5n+1):hover { transform: translateY(-2px) rotate(-3deg) scale(1.05); }
+.bp-chip:nth-child(5n+2):hover { transform: translateY(-2px) rotate(2deg) scale(1.05); }
+.bp-chip:nth-child(5n+3):hover { transform: translateY(-2px) rotate(-2deg) scale(1.05); }
+.bp-chip:nth-child(5n+4):hover { transform: translateY(-2px) rotate(3deg) scale(1.05); }
+.bp-chip:nth-child(5n+5):hover { transform: translateY(-2px) rotate(-1deg) scale(1.05); }
+
+.bp-list { display: flex; flex-direction: column; gap: .7rem; }
+.bp-list-item { display: flex; gap: .6rem; align-items: flex-start; font-size: .84rem; }
+.bp-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  margin-top: .05rem;
+  flex: none;
+  background: var(--panel-accent, var(--ink));
+  border: 2px solid var(--ink);
+  box-shadow: 1.5px 2px 0 var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .7rem;
+  color: var(--cream);
+}
+.bp-dot::before { content: '★'; }
+.bp-list-title { font-weight: 800; display: block; }
+.bp-list-sub { font-size: .78rem; color: var(--muted); }
+.bp-fact-row { display: flex; align-items: flex-start; gap: .8rem; padding: .5rem 0; border-bottom: 1px dashed var(--cream-dim); font-size: .84rem; }
+.bp-fact-row:last-child { border-bottom: none; }
+.bp-fact-label {
+  flex: 0 0 auto;
+  display: inline-block;
+  font-weight: 800;
+  color: var(--cream);
+  background: var(--panel-accent, var(--ink));
+  font-size: .66rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .18rem .55rem;
+  border-radius: 6px;
+  border: 1.5px solid var(--ink);
+  transform: rotate(-1.5deg);
+  margin-top: .1rem;
+  white-space: nowrap;
+}
+.bp-fact-val { flex: 1 1 auto; text-align: left; color: var(--ink); }
+
+/* -------- responsive -------- */
+@media (max-width: 860px) {
+  .bp-stage { min-height: 0; padding: 3rem 0; }
+  .bp-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 2.4rem;
+  }
+  .bp-intro-block { align-items: center; }
+  .bp-kicker { align-self: center; }
+  .bp-tagline { max-width: 52ch; }
+  .bp-desk-cluster {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 1.1rem .25rem;
+    max-width: 280px;
+    margin: .4rem auto 0;
+  }
+  .bp-float { width: 54px; transform: rotate(var(--frot, 0deg)); }
+  .bp-float:hover, .bp-float:focus-visible, .bp-float[aria-expanded="true"] {
+    transform: rotate(var(--frot, 0deg)) translateY(-5px) scale(1.1);
+  }
+  .bp-cta { margin-top: .6rem; }
+  .bp-rig { max-width: 320px; }
+  .bp-objects { flex-wrap: nowrap; }
+  .bp-obj-caption { font-size: .6rem; padding: .12rem .36rem; }
+}
+
+/* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
+   Content fix (see earlier commit) trimmed these to just "01"-"05"; this
+   restyles the badge itself from a flat rounded rectangle into a small
+   stamped circle in each section's own accent color, reusing the ink-stamp
+   language already established by the Annecy seal in the hero rather than
+   inventing a new motif. Same accent colors as before, shape only. */
+.sec-num {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  font-family: var(--fd) !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  border: 3px solid #FFFDF8 !important;
+  box-shadow: 0 4px 12px rgba(20, 19, 26, 0.28), 0 1.5px 4px rgba(20, 19, 26, 0.18) !important;
+  margin: 0 0 0.3rem 0 !important;
+}
+[data-theme="dark"] .sec-num {
+  border-color: #14131C !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 1.5px 4px rgba(0, 0, 0, 0.4) !important;
+}
+#animation .sec-num      { background: #1E3FC4 !important; color: #FFFDF8 !important; transform: rotate(-4deg) !important; }
+#illustration .sec-num   { background: #E8432E !important; color: #FFFDF8 !important; transform: rotate(3deg) !important; }
+#videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
+#graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
+#music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
 </style>
 </head>
 <body>
@@ -12661,201 +13292,181 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 <!-- ABOUT (STUDIO NOTEBOOK SPREAD) -->
 <!-- ABOUT -->
 <section class="about" id="about">
- <div class="con">
-  <div class="about-notebook-sheet">
-   <div class="notebook-tape-tl"></div>
-   <div class="notebook-tape-tr"></div>
-   
-   <div class="about-grid-2col">
-    <!-- Left Column: Story & Craft Spec -->
-    <div class="about-left-col rv">
-     <div class="about-eyebrow">Studio Notebook // 2026</div>
-     <h2 class="about-headline">One person.<br><span class="headline-accent">Many mediums.</span></h2>
-     <div class="about-bio">
-       <p>I am Annmary Saji, a BFA Animation graduate from NTU's School of Art, Design and Media, class of June 2026. Over five years I built a <strong>creative practice that refuses to stay in one lane</strong>. I animate, illustrate, shoot video, design brand systems, and produce music — often all within a single project.</p>
-       <p>My work has <strong>screened at Annecy</strong> as part of the Paris Lyon Singapore programme, reached audiences of 33,000 on campus, and shipped for clients from international fintech firms to indie startups. I am multilingual, internationally minded, and drawn to what happens when disciplines stop being separate categories and start talking to each other.</p>
-     </div>
+ <div class="bp-stage">
 
-     <!-- Clean Artisan Spec Sheet -->
-     <div class="facts-spec-sheet">
-      <div class="fact-row">
-       <div class="fact-label"><i data-lucide="briefcase"></i><span>Toolkit</span></div>
-       <div class="fact-tags">
-        <span class="tool-chip">Photoshop</span>
-        <span class="tool-chip">Illustrator</span>
-        <span class="tool-chip">Premiere Pro</span>
-        <span class="tool-chip">Cavalry</span>
-        <span class="tool-chip">Affinity</span>
-        <span class="tool-chip">Canva</span>
-        <span class="tool-chip">Rough Animator</span>
-        <span class="tool-chip">CapCut</span>
-        <span class="tool-chip">AI Tools</span>
-       </div>
-      </div>
-      <div class="fact-row">
-       <div class="fact-label"><i data-lucide="message-square"></i><span>Languages</span></div>
-       <div class="fact-val">English, Malayalam, Hindi</div>
-      </div>
-      <div class="fact-row">
-       <div class="fact-label"><i data-lucide="map-pin"></i><span>Location</span></div>
-       <div class="fact-val">Singapore (Open to global &amp; remote roles)</div>
-      </div>
-      <div class="fact-row">
-       <div class="fact-label"><i data-lucide="graduation-cap"></i><span>Education</span></div>
-       <div class="fact-val">BFA Animation · NTU School of Art, Design and Media</div>
-      </div>
-     </div>
+  <div class="bp-container">
 
-     <!-- Awards Box -->
-     <div class="awards-box">
-      <div class="awards-h"><i data-lucide="award" style="width:16px;height:16px;"></i> Awards &amp; Recognition</div>
-      <div class="aw-list">
-       <div class="aw-item">
-        <div class="aw-icon"><i data-lucide="award"></i></div>
-        <div class="aw-content">
-         <strong class="aw-title">Annecy International Animation Film Festival 2025</strong>
-         <span class="aw-sub">Keep Yourself Safe selected for the Paris Lyon Singapore programme</span>
-        </div>
-       </div>
-       <div class="aw-item">
-        <div class="aw-icon"><i data-lucide="medal"></i></div>
-        <div class="aw-content">
-         <strong class="aw-title">NTU — Imperial College London Design-a-thon</strong>
-         <span class="aw-sub">2nd Place for ReKindle, an intergenerational connection app</span>
-        </div>
-       </div>
-       <div class="aw-item">
-        <div class="aw-icon"><i data-lucide="file-check"></i></div>
-        <div class="aw-content">
-         <strong class="aw-title">Marketing Certifications via Coursera, 2026</strong>
-         <span class="aw-sub">IE Business School (IMC, Brand Strategy) · Univ. of Virginia (AI in Marketing)</span>
-        </div>
-       </div>
-       <div class="aw-item">
-        <div class="aw-icon"><i data-lucide="star"></i></div>
-        <div class="aw-content">
-         <strong class="aw-title">Leadership &amp; Direction</strong>
-         <span class="aw-sub">VP &amp; Publicity Director, Music District NTU ADM · Publicity Director, NTU FEST</span>
-        </div>
-       </div>
-      </div>
-     </div>
+   <img class="bp-lanyard-img" src="assets/lanyard_ribbon_cutout.png" alt="" aria-hidden="true">
+
+   <!-- Intro -->
+   <div class="bp-intro-block rv">
+    <span class="bp-kicker">Studio Notebook // 2026</span>
+    <h2 class="bp-headline">One person.<br><span class="bp-accent">Many mediums.</span></h2>
+    <p class="bp-tagline">I'm Annmary Saji — a BFA Animation graduate from NTU's School of Art, Design and Media, Class of 2026. I animate, illustrate, shoot video, design brand systems, and produce music, often all within a single project. Curious what's behind the pass? Click an object below.</p>
+
+    <!-- Studio Desk & Field Notes cluster -->
+    <div class="bp-desk-cluster" aria-label="Studio desk items">
+     <button type="button" class="bp-float bp-float--plant" aria-expanded="false" aria-controls="bp-note-plant">
+      <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Fake IKEA plant on Annmary's desk">
+      <span class="bp-note" id="bp-note-plant" hidden>I have a fake IKEA plant on my desk because real ones die out here. 🌱</span>
+     </button>
+     <button type="button" class="bp-float bp-float--boba" aria-expanded="false" aria-controls="bp-note-boba">
+      <img src="assets/portfolio-data/My profile/bubbletea_tight.png" alt="Chocolate milk tea, Annmary's studio fuel">
+      <span class="bp-note" id="bp-note-boba" hidden>Studio fuel! My absolute favourite drink during late-night animation sprints. 🧋</span>
+     </button>
+     <button type="button" class="bp-float bp-float--headphones" aria-expanded="false" aria-controls="bp-note-headphones">
+      <img src="assets/portfolio-data/My profile/headphones_tight.png" alt="Annmary's decorated headphones">
+      <span class="bp-note" id="bp-note-headphones" hidden>Decorated with stickers and charms, always on while I work. 🎧</span>
+     </button>
+     <button type="button" class="bp-float bp-float--journal" aria-expanded="false" aria-controls="bp-note-journal">
+      <img src="assets/portfolio-data/My profile/sketchbook_tight.png" alt="Annmary's idea sketchbook">
+      <span class="bp-note" id="bp-note-journal" hidden>Full of character sketches, colour keys, and storyboards — I have way too many. 📓</span>
+     </button>
+     <button type="button" class="bp-float bp-float--pouch" aria-expanded="false" aria-controls="bp-note-pouch">
+      <img src="assets/portfolio-data/My profile/pouch_tight.png" alt="Annmary's stationery pouch">
+      <span class="bp-note" id="bp-note-pouch" hidden>Nibs, fineliners, washi tape — I collect way more stationery than I use. ✏️</span>
+     </button>
+     <button type="button" class="bp-float bp-float--pencil" aria-expanded="false" aria-controls="bp-note-pencil">
+      <img src="assets/portfolio-data/My profile/pencil_tight.png" alt="Annmary's wooden pencil">
+      <span class="bp-note" id="bp-note-pencil" hidden>Classic HB graphite. I'll always pick these over mechanical pencils. ✏️</span>
+     </button>
     </div>
 
-    <!-- Right Column: Artist Lanyard Pass & Cozy Studio Desk Note -->
-    <div class="about-right-col rv d2">
-     <!-- ARTIST STUDIO LANYARD PASS -->
-     <div class="lanyard-pass-wrapper">
-      <div class="lanyard-strap"></div>
-      <div class="lanyard-clip">
-       <div class="clip-ring"></div>
-       <div class="clip-hook"></div>
+    <a href="#contact" class="bp-cta">Get in touch <span aria-hidden="true">→</span></a>
+   </div>
+
+   <!-- Badge rig -->
+   <div class="bp-col--badge rv d2">
+    <div class="bp-rig">
+
+     <div class="bp-hanging">
+     <div class="bp-strap-mobile" aria-hidden="true">
+      <div class="bp-strap"></div>
+     </div>
+
+     <div class="bp-badge-wrap">
+      <div class="bp-clip" aria-hidden="true">
+       <span class="bp-clip-ring"></span>
+       <span class="bp-clip-bar"></span>
       </div>
 
-      <div class="lanyard-badge-card" tabindex="0" role="region" aria-label="Annmary Saji Artist Studio Pass">
-       <div class="badge-slot-hole"></div>
-       
-       <div class="badge-inner-sheet">
-        <div class="badge-header-strip">
-         <span class="badge-event-title">ALL ACCESS // ARTIST PASS</span>
-         <span class="badge-year-tag">2026</span>
-        </div>
-
-        <div class="badge-avatar-stage">
-         <img src="assets/portfolio-data/My profile/my_new_avatar_tight.png" alt="Annmary Saji" class="lanyard-avatar-img">
-         <div class="badge-holo-seal">OFFICIAL</div>
-        </div>
-
-        <div class="badge-info-block">
-         <h3 class="badge-name">Annmary Saji</h3>
-         <p class="badge-role">Animator · Art Director · Storyteller</p>
-         <div class="badge-meta-row">
-          <span class="meta-pill">BFA Animation · NTU ADM</span>
-          <span class="meta-pill-accent">Annecy '25</span>
-         </div>
-        </div>
-
-        <div class="badge-barcode-row">
-         <div class="barcode-lines"></div>
-         <span class="barcode-num">AMS-2026-SG-0410</span>
-        </div>
+      <div class="bp-badge" role="region" aria-label="Annmary Saji, backstage pass">
+       <button type="button" class="bp-burst" id="bp-burst">
+        <svg class="bp-burst-shape" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
+         <polygon points="50,0 61,13 78,5 79,23 98,22 89,40 100,54 83,61 88,79 70,75 63,93 50,81 37,93 30,75 12,79 17,61 0,54 11,40 2,22 21,23 22,5 39,13" fill="var(--gold)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+        </svg>
+        <span class="bp-burst-text">OPEN TO<br>WORK · '26</span>
+       </button>
+       <span class="bp-badge-event">Artist Pass</span>
+       <div class="bp-photo">
+        <img src="assets/portfolio-data/My profile/bp_avatar_bust.png" alt="Illustrated bust portrait of Annmary Saji">
+       </div>
+       <h3 class="bp-name">Annmary Saji</h3>
+       <p class="bp-role">Animator · Art Director · Storyteller</p>
+       <p class="bp-meta">Singapore · Open to full-time roles</p>
+       <div class="bp-barcode" aria-hidden="true">
+        <div class="bp-barcode-lines"></div>
+        <span class="bp-barcode-code">AMS-2026-SG-0410</span>
        </div>
       </div>
      </div>
+     </div>
 
-     <!-- COZY STUDIO DESK & JOURNAL MEMO -->
-     <div class="studio-desk-card">
-      <div class="notes-pin-tape"></div>
-      
-      <div class="desk-card-header">
-       <div class="desk-card-title">
-        <i data-lucide="sparkles" style="width:15px;height:15px;"></i>
-        <span>Studio Desk &amp; Field Notes</span>
-       </div>
-       <span class="desk-tag">Studio 2026</span>
+     <div class="bp-widget">
+      <div class="bp-objects" role="group" aria-label="More about Annmary">
+       <button type="button" class="bp-obj" data-key="toolkit" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
+        <span class="bp-obj-icon-wrap">
+         <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="20" width="36" height="18" rx="3" fill="var(--cobalt)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 20v-3a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v3" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="20" y="25" width="8" height="6" rx="1" fill="var(--cream)" stroke="var(--ink)" stroke-width="1.6"/><line x1="6" y1="29" x2="20" y2="29" stroke="var(--ink)" stroke-width="1.6"/><line x1="28" y1="29" x2="42" y2="29" stroke="var(--ink)" stroke-width="1.6"/></svg>
+        </span>
+        <span class="bp-obj-caption">Toolkit</span>
+       </button>
+       <button type="button" class="bp-obj" data-key="words" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
+        <span class="bp-obj-icon-wrap">
+         <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H21l-8.5 7.5a1 1 0 0 1-1.5-.75V34H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="var(--magenta)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><line x1="13" y1="19" x2="35" y2="19" stroke="var(--cream)" stroke-width="2.6" stroke-linecap="round"/><line x1="13" y1="26" x2="27" y2="26" stroke="var(--cream)" stroke-width="2.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="bp-obj-caption">Words</span>
+       </button>
+       <button type="button" class="bp-obj" data-key="school" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
+        <span class="bp-obj-icon-wrap">
+         <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 46 16 24 26 2 16Z" fill="var(--moss)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 20.5v9c0 2.8 5.4 5 12 5s12-2.2 12-5v-9" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/><path d="M44 17.5v10.5" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/><circle cx="44" cy="30" r="2.2" fill="var(--ink)"/></svg>
+        </span>
+        <span class="bp-obj-caption">School</span>
+       </button>
+       <button type="button" class="bp-obj" data-key="awards" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
+        <span class="bp-obj-icon-wrap">
+         <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 4l6 15M32 4l-6 15" stroke="var(--ink)" stroke-width="5.6" stroke-linecap="round" fill="none"/><circle cx="24" cy="30" r="13" fill="var(--tangerine)" stroke="var(--ink)" stroke-width="2.4"/><path d="M24 22l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="var(--cream)" stroke="var(--ink)" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="bp-obj-caption">Awards</span>
+       </button>
+       <button type="button" class="bp-obj" data-key="now" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
+        <span class="bp-obj-icon-wrap">
+         <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="var(--teal)" stroke="var(--ink)" stroke-width="2.6"/><path d="M24 14v10l7 5" fill="none" stroke="var(--cream)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="2.2" fill="var(--cream)"/></svg>
+        </span>
+        <span class="bp-obj-caption">Now</span>
+       </button>
       </div>
 
-      <!-- Desk Essentials Shelf -->
-      <div class="desk-items-shelf" id="deskShelf">
-       <div class="shelf-item active" data-title="Fake IKEA Plant" data-desc="I have a fake IKEA plant on my desk because real ones die out here. 🌱" tabindex="0" role="button" aria-label="Desk Plant">
-        <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Desk Plant">
-       </div>
-       <div class="shelf-item" data-title="Chocolate Milk Tea" data-desc="Studio Fuel! My absolute favourite drink during late night animation sprints. 🧋" tabindex="0" role="button" aria-label="Bubble Tea">
-        <img src="assets/portfolio-data/My profile/bubbletea_tight.png" alt="Bubble Tea">
-       </div>
-       <div class="shelf-item" data-title="Decorated Headphones" data-desc="I love decorating my headphones with stickers and charms while listening to music. 🎧" tabindex="0" role="button" aria-label="Decorated Headphones">
-        <img src="assets/portfolio-data/My profile/headphones_tight.png" alt="Headphones">
-       </div>
-       <div class="shelf-item" data-title="Idea Sketchbook" data-desc="Full of character sketches, color keys, and storyboards. I have way too many! 📓" tabindex="0" role="button" aria-label="Sketchbook">
-        <img src="assets/portfolio-data/My profile/sketchbook_tight.png" alt="Sketchbook">
-       </div>
-       <div class="shelf-item" data-title="Stationery Pouch" data-desc="Packed with nibs, fineliners, and washi tapes. I love collecting stationery. ✏️" tabindex="0" role="button" aria-label="Stationery Pouch">
-        <img src="assets/portfolio-data/My profile/pouch_tight.png" alt="Stationery Pouch">
-       </div>
-       <div class="shelf-item" data-title="Wooden Pencil" data-desc="Classic HB graphite pencil. I always prefer these over mechanical ones. ✏️" tabindex="0" role="button" aria-label="Wooden Pencil">
-        <img src="assets/portfolio-data/My profile/pencil_tight.png" alt="Wooden Pencil">
-       </div>
-      </div>
-
-      <!-- Live Dynamic Story Note -->
-      <div class="desk-live-note" id="deskLiveNote">
-       <div class="note-speech-arrow" id="deskNoteArrow"></div>
-       <div class="note-title" id="deskNoteTitle">🌿 Fake IKEA Plant</div>
-       <div class="note-text" id="deskNoteText">I have a fake IKEA plant on my desk because real ones die out here. 🌱</div>
-      </div>
-
-      <!-- Human, Cozy Personal Notes Spread (No Rigid Form Fields) -->
-      <div class="studio-journal-memo">
-       <div class="journal-memo-item">
-        <span class="memo-emoji">🎧</span>
-        <div class="memo-content">
-         <span class="memo-lbl">On Studio Repeat:</span>
-         <span class="memo-val">"Film Out" (BTS) &amp; "Precipice" (Jessie Mazin)</span>
-        </div>
-       </div>
-
-       <div class="journal-memo-item">
-        <span class="memo-emoji">☕</span>
-        <div class="memo-content">
-         <span class="memo-lbl">Creative Fuel:</span>
-         <span class="memo-val">Iced Milo &amp; spicy Buldak ramen</span>
-        </div>
-       </div>
-
-       <div class="journal-memo-item highlight-memo">
-        <span class="memo-emoji">✨</span>
-        <div class="memo-content">
-         <span class="memo-lbl">Current Status:</span>
-         <span class="memo-val">Open for full-time animation &amp; art direction roles in Singapore!</span>
-        </div>
-       </div>
+      <div class="bp-panel" id="bp-panel" data-open="false" role="region" aria-live="polite">
+       <div class="bp-panel-idle">☝ pick an object to open it</div>
+       <div class="bp-panel-content"></div>
       </div>
      </div>
+
     </div>
    </div>
+
   </div>
  </div>
 </section>
+
+<!-- Backstage pass panel content templates (cloned into #bp-panel on click) -->
+<template id="bp-tpl-toolkit">
+ <div class="bp-panel-title">Toolkit</div>
+ <div class="bp-chips">
+  <span class="bp-chip">Photoshop</span>
+  <span class="bp-chip">Illustrator</span>
+  <span class="bp-chip">Premiere Pro</span>
+  <span class="bp-chip">Cavalry</span>
+  <span class="bp-chip">Affinity</span>
+  <span class="bp-chip">Canva</span>
+  <span class="bp-chip">Clip Studio Paint</span>
+  <span class="bp-chip">Rough Animator</span>
+  <span class="bp-chip">CapCut</span>
+  <span class="bp-chip">AI Tools</span>
+ </div>
+</template>
+<template id="bp-tpl-words">
+ <div class="bp-panel-title">Words &amp; Languages</div>
+ <div class="bp-chips">
+  <span class="bp-chip">English</span>
+  <span class="bp-chip">Malayalam</span>
+  <span class="bp-chip">Hindi</span>
+ </div>
+ <p class="bp-list-sub" style="margin-top:.7rem;">Multilingual and internationally minded — I like it when disciplines (and languages) stop staying in their lane.</p>
+</template>
+<template id="bp-tpl-school">
+ <div class="bp-panel-title">School</div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Degree</span><span class="bp-fact-val">BFA Animation</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">School</span><span class="bp-fact-val">NTU School of Art, Design and Media</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Class of</span><span class="bp-fact-val">2026</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Reach</span><span class="bp-fact-val">33,000+ audience on campus</span></div>
+</template>
+<template id="bp-tpl-awards">
+ <div class="bp-panel-title">Awards &amp; Recognition</div>
+ <div class="bp-list">
+  <div class="bp-list-item"><span class="bp-dot"></span><div><span class="bp-list-title">Annecy International Animation Film Festival 2025</span><span class="bp-list-sub">"Keep Yourself Safe" selected for the Paris Lyon Singapore programme</span></div></div>
+  <div class="bp-list-item"><span class="bp-dot"></span><div><span class="bp-list-title">NTU — Imperial College London Design-a-thon</span><span class="bp-list-sub">2nd Place for ReKindle, an intergenerational connection app</span></div></div>
+  <div class="bp-list-item"><span class="bp-dot"></span><div><span class="bp-list-title">Marketing Certifications, Coursera 2026</span><span class="bp-list-sub">IE Business School (IMC, Brand Strategy) · Univ. of Virginia (AI in Marketing)</span></div></div>
+  <div class="bp-list-item"><span class="bp-dot"></span><div><span class="bp-list-title">Leadership &amp; Direction</span><span class="bp-list-sub">VP &amp; Publicity Director, Music District NTU ADM · Publicity Director, NTU FEST</span></div></div>
+ </div>
+</template>
+<template id="bp-tpl-now">
+ <div class="bp-panel-title">Now &amp; Availability</div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Status</span><span class="bp-fact-val">Open for full-time animation &amp; art direction roles</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Location</span><span class="bp-fact-val">Singapore only</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">On repeat</span><span class="bp-fact-val">"Film Out" (BTS) &amp; "Precipice" (Jessie Mazin)</span></div>
+ <div class="bp-fact-row"><span class="bp-fact-label">Creative fuel</span><span class="bp-fact-val">Iced Milo &amp; spicy Buldak ramen</span></div>
+</template>
 
 
 <section class="contact" id="contact">
@@ -15215,125 +15826,123 @@ window.addEventListener('load', () => {
     });
   })();
 
-  // ================================================================
-  // INTERACTIVE STUDIO DESK INSPECTOR (HOVER & TAP LIVE NOTES)
-  // ================================================================
-  (function initDeskInspector() {
-    const items = document.querySelectorAll('.shelf-item');
-    const noteBox = document.getElementById('deskLiveNote');
-    const noteTitle = document.getElementById('deskNoteTitle');
-    const noteText = document.getElementById('deskNoteText');
-    const arrow = document.querySelector('.note-speech-arrow');
-    
-    if (!items.length || !noteTitle || !noteText) return;
+  (function initBackstagePass() {
+    const panel = document.getElementById('bp-panel');
+    if (!panel) return;
+    const contentHost = panel.querySelector('.bp-panel-content');
+    const buttons = Array.from(document.querySelectorAll('.bp-obj'));
+    let activeBtn = null;
 
-    const defaultTitle = "✨ Desk Essentials";
-    const defaultText = "Hover or tap any item above to peek at Annmary's studio desk!";
-
-    function updateNote(item) {
-      items.forEach(i => i.classList.remove('active'));
-      if (item) {
-        item.classList.add('active');
-        const title = item.getAttribute('data-title') || '';
-        const desc = item.getAttribute('data-desc') || '';
-        noteTitle.textContent = title;
-        noteText.textContent = desc;
-
-        // Position arrow above hovered item
-        if (arrow && noteBox) {
-          const itemRect = item.getBoundingClientRect();
-          const boxRect = noteBox.getBoundingClientRect();
-          const relLeft = itemRect.left - boxRect.left + (itemRect.width / 2) - 5;
-          arrow.style.left = Math.max(12, Math.min(boxRect.width - 18, relLeft)) + 'px';
-        }
-      } else {
-        noteTitle.textContent = defaultTitle;
-        noteText.textContent = defaultText;
-        if (arrow) arrow.style.left = '28px';
-      }
+    function closePanel() {
+      if (!activeBtn) return;
+      buttons.forEach(b => {
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-expanded', 'false');
+        b.classList.remove('bp-dim');
+      });
+      activeBtn = null;
+      panel.setAttribute('data-open', 'false');
+      panel.style.removeProperty('--panel-accent');
+      contentHost.innerHTML = '';
     }
 
-    items.forEach(item => {
-      item.addEventListener('mouseenter', () => updateNote(item));
-      item.addEventListener('focus', () => updateNote(item));
-      item.addEventListener('click', (e) => {
+    function openPanel(btn) {
+      buttons.forEach(b => {
+        const isActive = b === btn;
+        b.setAttribute('aria-pressed', String(isActive));
+        b.setAttribute('aria-expanded', String(isActive));
+        b.classList.toggle('bp-dim', !isActive);
+      });
+      activeBtn = btn;
+      const tpl = document.getElementById('bp-tpl-' + btn.dataset.key);
+      contentHost.innerHTML = '';
+      if (tpl) contentHost.appendChild(tpl.content.cloneNode(true));
+      panel.setAttribute('data-open', 'true');
+      const accent = getComputedStyle(btn).getPropertyValue('--obj-accent');
+      if (accent) panel.style.setProperty('--panel-accent', accent);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        updateNote(item);
+        if (activeBtn === btn) closePanel();
+        else openPanel(btn);
       });
     });
 
-    const shelf = document.querySelector('.desk-items-shelf');
-    if (shelf) {
-      shelf.addEventListener('mouseleave', () => updateNote(null));
-    }
+    document.addEventListener('click', (e) => {
+      if (activeBtn && !e.target.closest('.bp-widget')) closePanel();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePanel();
+    });
   })();
 
   // ================================================================
-  // BULLETPROOF EVENT-DELEGATED DESK INSPECTOR (HOVER, POINTER, TAP)
+  // BACKSTAGE PASS — floating studio-desk icon notes
   // ================================================================
-  (function initBulletproofDeskInspector() {
-    function getElements() {
-      return {
-        shelf: document.getElementById('deskShelf'),
-        items: document.querySelectorAll('.shelf-item'),
-        noteBox: document.getElementById('deskLiveNote'),
-        noteTitle: document.getElementById('deskNoteTitle'),
-        noteText: document.getElementById('deskNoteText'),
-        arrow: document.getElementById('deskNoteArrow')
-      };
+  (function initFloatingDeskNotes() {
+    const floats = Array.from(document.querySelectorAll('.bp-float'));
+    if (!floats.length) return;
+    let openFloat = null;
+
+    function closeAllNotes() {
+      floats.forEach(f => {
+        f.setAttribute('aria-expanded', 'false');
+        const note = f.querySelector('.bp-note');
+        if (note) note.hidden = true;
+      });
+      openFloat = null;
     }
 
-    function setItemNote(item) {
-      const els = getElements();
-      if (!els.noteTitle || !els.noteText) return;
-
-      els.items.forEach(i => i.classList.remove('active'));
-
-      if (item) {
-        item.classList.add('active');
-        const title = item.getAttribute('data-title') || '';
-        const desc = item.getAttribute('data-desc') || '';
-        els.noteTitle.textContent = title;
-        els.noteText.textContent = desc;
-
-        if (els.arrow && els.noteBox) {
-          const itemRect = item.getBoundingClientRect();
-          const boxRect = els.noteBox.getBoundingClientRect();
-          const relLeft = (itemRect.left - boxRect.left) + (itemRect.width / 2) - 4.5;
-          els.arrow.style.left = Math.max(10, Math.min(boxRect.width - 16, relLeft)) + 'px';
+    floats.forEach(f => {
+      const note = f.querySelector('.bp-note');
+      f.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = f.getAttribute('aria-expanded') === 'true';
+        closeAllNotes();
+        if (!isOpen && note) {
+          f.setAttribute('aria-expanded', 'true');
+          note.hidden = false;
+          openFloat = f;
         }
-      }
-    }
-
-    // Event delegation on document so it NEVER misses mousemove / pointerover
-    document.addEventListener('mouseover', function(e) {
-      const item = e.target.closest('.shelf-item');
-      if (item) {
-        setItemNote(item);
-      }
+      });
     });
 
-    document.addEventListener('pointermove', function(e) {
-      const item = e.target.closest('.shelf-item');
-      if (item) {
-        setItemNote(item);
+    document.addEventListener('click', (e) => {
+      if (openFloat && !e.target.closest('.bp-float')) closeAllNotes();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAllNotes();
+    });
+  })();
+
+  // ================================================================
+  // BACKSTAGE PASS — starburst easter egg (click a few times)
+  // ================================================================
+  (function initBurstEasterEgg() {
+    const burst = document.getElementById('bp-burst');
+    const label = burst ? burst.querySelector('.bp-burst-text') : null;
+    if (!burst || !label) return;
+    const originalHTML = label.innerHTML;
+    const jokes = [
+      "OKAY MAYBE<br>4 TIMES · '26",
+      "STOP<br>POKING · '26",
+      "FINE, I'M<br>FLATTERED · '26"
+    ];
+    let clicks = 0;
+    let resetTimer = null;
+    burst.addEventListener('click', () => {
+      clicks++;
+      if (clicks >= 3) {
+        label.innerHTML = jokes[(clicks - 3) % jokes.length];
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          label.innerHTML = originalHTML;
+          clicks = 0;
+        }, 2200);
       }
     });
-
-    document.addEventListener('click', function(e) {
-      const item = e.target.closest('.shelf-item');
-      if (item) {
-        setItemNote(item);
-      }
-    });
-
-    // Touch support
-    document.addEventListener('touchstart', function(e) {
-      const item = e.target.closest('.shelf-item');
-      if (item) {
-        setItemNote(item);
-      }
-    }, { passive: true });
   })();
 
   // ================================================================

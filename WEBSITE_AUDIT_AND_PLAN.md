@@ -215,3 +215,44 @@ This mirrors your own stated goal: pay for the expensive model once, where it ac
 - Ask for a diff back, not a full-file rewrite in the response — cheaper for you to review, cheaper in tokens.
 - Commit (or at least stage) after every prompt that lands correctly, so a bad one is a revert, not a repair conversation.
 - Handle pure copy/text swaps and image-path changes yourself in a text editor — spending an agent call on "change this one word" is the kind of small thing that adds up for no reason.
+
+---
+
+## 10. Status update, and the road to "ready to share"
+
+Written after a working session where several of the items below actually landed. Kept as a living log — update the checkmarks as things ship rather than starting a new document.
+
+### Done and committed
+- Compressed the oversized portfolio download PDFs (79.5MB → 4.6MB combined, similar wins across the others) — same filenames, no HTML changes needed.
+- Stopped tracking the three unused legacy media files (`hero-collage.gif`, `reel.mp4`, `master_reel.mp4`) and gitignored them.
+- Fixed the Cyrillic-character bug in `--surface-2`.
+- Removed the duplicated title text from all five `.sec-num` category badges (they were repeating the full section heading; now they just say "01"–"05").
+
+### Decided, not yet run
+- **Category badges (Direction A + C):** each of the five work sections gets its own small discipline-specific mark instead of an identical recolored circle — a clapperboard/slate for Animation, a torn-sketch corner for Illustration, a play-button/timecode mark for Videography, a color-swatch chip for Graphic Design, a cassette/vinyl mark for Music — plus a stamp-press reveal animation on scroll, reusing the page's existing `.rv` scroll-reveal system. Prompt for this is drafted in the chat history of this project; not yet handed to Claude Code.
+- **About ↔ Contact merge:** carry #about's red world into #contact (shared color-family via CSS variables, one shared texture asset via blend mode, no new images), extend the "starts muted, comes alive on hover/click" interaction language from the desk objects into #contact's elements, and redesign the "Get in touch" CTA to match the tactile object language used elsewhere. Prompt drafted; this is the one actively in progress as of this writing.
+
+### The finalized color system
+Red, blue, and yellow are the actual primary brand colors — used everywhere outside the five work-category badges: hero, about, contact, footer, buttons, stickers, stamps. Within the five category badges specifically, videography (teal) and music (purple) keep their own distinct accent colors as intentional secondaries, since five categories genuinely need five identifiers and only three primaries can't do that alone. Nothing else should introduce a new hue outside this system — if a future prompt seems to need a "new" color for something, that's a signal to reuse one of these five rather than invent a sixth.
+
+### The structural idea tying it all together: "bold covers, calm pages"
+Bold, fully-saturated color (the primary red/blue/yellow) belongs at the site's opening and closing "covers" — the hero, and the about/contact/footer passage. The interior "pages" — the actual work-category sections — should sit on a calmer, mostly-neutral paper canvas with color pulled back to an accent role (badge, border, icon) rather than a full-bleed background wash. This single idea resolves both the "feels incoherent" complaint and the "I still want it vibrant" goal at once: the vibrancy gets concentrated at the framing moments where it reads as a deliberate statement, and the work itself gets to be the visual focus in between.
+
+### The remaining sequence, in order
+
+1. **Run the category badge prompt** (Direction A + C) — now that the palette question is settled, this can go as originally drafted.
+2. **Run the About ↔ Contact merge prompt** — in progress.
+3. **Category section backgrounds:** once the badges are in, revisit the original Prompt 5 (de-saturating the five full-bleed pastel category washes down to a shared neutral canvas + accent color) — this is where "bold covers, calm pages" actually gets built into the work sections themselves.
+4. **Footer redesign:** make the footer visually playful rather than a plain link list, and give the hidden offline game a real visual invitation (a small doodle/sticker that hints something's there) instead of relying on someone reading footer text closely. Extend the red family here too, per the "covers" idea.
+5. **Hero polish:** the one item still outstanding from the original audit — frame the showreel video card with the same tactile/torn-paper treatment used elsewhere, instead of it sitting as a flat white rectangle. (The dark-mode hero wordmark swap is confirmed fine as-is — no action needed there.)
+6. **Dark mode, as one real pass — not before this point.** Once the light-mode identity (colors, badges, About/Contact, footer, hero) is actually settled, do one deliberate dark-mode design pass across all of it. Doing this earlier would mean redesigning dark mode twice, once now and once after everything above changes it anyway.
+7. **Cross-page consistency:** `index.html`, `project.html`, `jasmine.html`, and `jasmine_reader.html` currently maintain separate, drifting stylesheets from `portfolio.html` (see Section 1). Once the finalized colors/components exist on the main page, they need to actually reach these other pages too — a recruiter clicking into an individual project or the Jasmine reader shouldn't land somewhere that feels like a different site. This is a good moment to also reconsider the original Phase 1 structural consolidation (one shared stylesheet) — better done now, once the design has stopped moving, than earlier while everything was still being decided.
+8. **Final "ready to share" QA pass**, once everything above is in:
+   - Click every link on every page (nav, project cards, socials, resume, downloads) — dead or wrong links are the fastest way to lose a recruiter's trust.
+   - Run the actual site through Lighthouse/PageSpeed Insights to confirm the PDF/asset cleanup translated into a real load-time win.
+   - Run the finalized dark-mode text/background pairs through a contrast checker (WebAIM).
+   - Test on an actual phone, not just a resized browser window — check the mobile passport modal fix (from the in-progress work) alongside everything else.
+   - Proofread all copy end to end; remove any leftover placeholder content.
+   - Re-check the total repo size and `.git` history size (Section 4) — decide then whether a history rewrite is worth doing before this goes out into the world more widely.
+
+That's the full path from here to "professional, cohesive, ready to hand to a recruiter." Everything above is written so each step can still be one scoped Claude Code prompt — resist the temptation to combine steps 3–5 into one "polish everything" prompt just because they're all visual; keeping them separate is exactly what keeps each one cheap and reversible.
