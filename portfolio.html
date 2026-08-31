@@ -5871,6 +5871,20 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   display: none !important;
 }
 
+/* Touch devices have no real pointer to replace -- without this, the
+   crayon star cursor was left sitting wherever a tap last fired a
+   mobile browser's synthetic "mousemove" compat event (Chrome fires
+   one after every touchend), reading as a stray cursor stuck on
+   screen. Matches the same fix already applied on index.html. */
+@media (pointer: coarse) {
+  #star-cursor { display: none !important; }
+  *, html, body, a, button, input, textarea, select, [role="button"],
+  .orbit-item, .card, .passport-dock-btn, .disc, .reel-tab-btn,
+  .rubber-stamp-btn, .scene-filter-btn, .dl-btn, .form-submit {
+    cursor: auto !important;
+  }
+}
+
 /* ================================================================
    COMPREHENSIVE VISUAL POLISH: HEADERS, TOYS & SECTIONS
 ================================================================ */
@@ -11721,6 +11735,26 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     width: 150px;
     font-size: .72rem;
     padding: .55rem .65rem;
+  }
+  /* Top grid row (plant/boba/headphones) sits right under the ID card
+     in .bp-container, which paints above .bp-interact (z-index 3 vs 2)
+     -- a note opening upward from these three lands directly behind the
+     card and gets clipped, same issue the desktop layout already works
+     around for its own top-sitting items. Flip these three to open
+     downward into the clear space above row two instead. */
+  .bp-float--plant .bp-note,
+  .bp-float--boba .bp-note,
+  .bp-float--headphones .bp-note {
+    bottom: auto;
+    top: calc(100% + 12px);
+  }
+  .bp-float--plant .bp-note::after,
+  .bp-float--boba .bp-note::after,
+  .bp-float--headphones .bp-note::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--ink);
   }
 }
 
