@@ -31,3 +31,12 @@ _tmp_*.html
 assets/hero-collage.gif
 assets/reel.mp4
 assets/master_reel.mp4
+
+# Raw/intermediate "HELLO MY NAME IS" export assets - unreferenced by any
+# page. The two files actually used live inside assets/HELLO MY NAME IS/
+# (stickers.svg, the whole id.svg) and are tracked normally.
+assets/HELLO MY NAME IS.svg
+assets/HELLO MY NAME IS.zip
+assets/my_icon.png
+assets/name.png
+assets/name.svg
