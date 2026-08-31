@@ -12141,26 +12141,59 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #contact .contact-email { color: var(--c-blue) !important; }
 #contact .contact-email::after { background: var(--c-blue) !important; }
 
-/* Social/resume links: muted until noticed, come alive on hover/focus --
-   same idea as the About desk objects going from dim to full color. */
+/* Social/resume links: previously a soft translucent chip with a
+   barely-there border -- the one piece of Contact still speaking a
+   different visual dialect than the rest of the red-world section.
+   About uses one consistent "sticker" chrome everywhere (solid cream
+   card, thick ink border, hard offset shadow, lifts on hover -- see
+   .bp-obj-icon-wrap, .bp-kicker, .bp-cta), and even Contact's own form
+   already follows it (.form / .fsub). These now match that exact
+   language: solid cream card at all times, "muted" expressed the same
+   way About dims its own badges (.bp-obj.bp-dim) -- opacity + reduced
+   saturation, never by losing the border/shadow structure itself. */
 #contact .soc {
-  background: rgba(253, 244, 227, 0.1) !important;
-  border-color: rgba(253, 244, 227, 0.32) !important;
-  color: var(--c-cream-dim) !important;
-  opacity: 0.8;
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, border-color 0.2s ease !important;
+  background: var(--c-cream) !important;
+  border: 2.5px solid var(--c-ink) !important;
+  border-radius: 8px !important;
+  color: var(--c-ink) !important;
+  box-shadow: 3px 4px 0 var(--c-ink) !important;
+  opacity: 0.62;
+  filter: saturate(0.55);
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease !important;
 }
-#contact .soc-i { background: rgba(253, 244, 227, 0.14) !important; color: var(--c-cream) !important; }
+#contact .soc-i { background: var(--c-cream-dim) !important; color: var(--c-ink) !important; }
 #contact .soc:hover, #contact .soc:focus-visible {
   opacity: 1;
+  filter: saturate(1);
   background: var(--c-cream) !important;
   border-color: var(--c-ink) !important;
   color: var(--c-ink) !important;
-  transform: translateX(4px) translateY(-2px) !important;
+  transform: translateX(2px) translateY(-3px) !important;
+  box-shadow: 5px 6px 0 var(--c-ink) !important;
+}
+#contact .soc:active {
+  transform: translate(1px, 2px) !important;
+  box-shadow: 1px 2px 0 var(--c-ink) !important;
 }
 #contact .soc:hover .soc-i, #contact .soc:focus-visible .soc-i {
   background: var(--c-gold) !important;
   color: var(--c-ink) !important;
+}
+
+/* Kicker tag matching About's "Studio Notebook // 2026" -- same .bp-kicker
+   structure (font, padding, border weight, hard shadow, tilt), just
+   recolored with Contact's own fixed --c-gold/--c-ink since --gold/--ink
+   are scoped to #about.about and wouldn't resolve here. */
+#contact .bp-kicker {
+  background: var(--c-gold);
+  color: var(--c-ink);
+  border-color: var(--c-ink);
+  box-shadow: 3px 3px 0 var(--c-ink);
+  /* !important: the shared .rv.in reveal rule sets transform:translateY(0)
+     !important once revealed, which would otherwise flatten this back to
+     no rotation; #contact .bp-kicker's ID+class specificity still needs
+     !important here specifically to win against that important rule. */
+  transform: rotate(2deg) !important;
 }
 
 /* Send button used to hover to red, which now blends into the section
@@ -13538,6 +13571,8 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   <div class="contact-g">
 
    <div class="rv">
+
+    <span class="bp-kicker rv">Contact Sheet // 2026</span>
 
     <h2 class="contact-h rv d1">Let's make something together.</h2>
 
