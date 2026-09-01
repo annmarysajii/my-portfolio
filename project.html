@@ -4273,8 +4273,25 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                 }
                 setTimeout(updatePlayIcons, 50);
               }
+
+              // Keeps bgVideo mirroring the <audio> element's play/pause state for
+              // video tracks. Was being called below (native 'play'/'pause' listeners)
+              // but was never actually defined -- every play/pause threw a
+              // ReferenceError that aborted the listener before it reached
+              // updatePlayIcons(), which is why the button icon would get stuck
+              // showing the wrong state after the first click.
+              function syncVideoState(isPlaying) {
+                const currentTrack = tracks[currentIdx];
+                if (!bgVideo || !currentTrack || !currentTrack.video) return;
+                if (isPlaying) {
+                  if (bgVideo.paused) bgVideo.play().catch(() => {});
+                } else if (!bgVideo.paused) {
+                  bgVideo.pause();
+                }
+              }
+
               loadTrackVideo(currentIdx);
-              
+
               // Hook video sync and icon update to audio/video events
               audio.addEventListener('play', () => { syncVideoState(true); updatePlayIcons(); });
               audio.addEventListener('pause', () => { syncVideoState(false); updatePlayIcons(); });
@@ -4293,7 +4310,17 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     bgVideo.currentTime = audio.currentTime;
                   }
                 }
+                updatePlayIcons();
               });
+              // updatePlayIcons() checks `currentTime > 0` to decide "is this actually
+              // playing", but every call site that ran it right after .play() (the
+              // 'play' event, its .then(), and the setTimeout(...,50) below) could fire
+              // before a freshly-loading track had buffered enough to actually advance
+              // past 0 -- leaving the button stuck showing "paused" while audio kept
+              // playing underneath it. timeupdate fires every ~250ms while genuinely
+              // playing, so this is a cheap, reliable self-correction regardless of how
+              // long that initial buffering takes.
+              if (bgVideo) bgVideo.addEventListener('timeupdate', () => updatePlayIcons());
 
               let vRot = 0;
               let speedMultiplier = 1.0;
@@ -4722,18 +4749,15 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     let hatEnergy = 0;    // Hi-Hats (8kHz)
                     let airEnergy = 0;    // Air / Sizzle (16kHz)
                     
-                    if (freqData && isPlaying && freqData[10] > 0) {
-                      // Live Web Audio AnalyserNode (when active on http)
-                      let sSum = 0, bSum = 0, mSum = 0, hSum = 0;
-                      for (let b = 1; b <= 6; b++) sSum += freqData[b];
-                      for (let b = 7; b <= 20; b++) bSum += freqData[b];
-                      for (let b = 21; b <= 70; b++) mSum += freqData[b];
-                      for (let b = 71; b <= 200; b++) hSum += freqData[b];
-                      subEnergy = (sSum / 6) / 255.0;
-                      bassEnergy = (bSum / 14) / 255.0;
-                      midEnergy = (mSum / 50) / 255.0;
-                      hatEnergy = (hSum / 130) / 255.0;
-                    } else if (isPlaying && window.TRACK_SPECTRUM && window.TRACK_SPECTRUM['club']) {
+                    // Prefer the pre-analyzed, per-frame spectrum baked for this exact
+                    // track (scripts/track_spectrum.js) over the generic live AnalyserNode
+                    // extraction below -- it drives all 6 energy bands (the live path only
+                    // fills 4, leaving lead/air always at 0) and was hand-tuned to this
+                    // track's actual beat instead of a generic bin-range split. This used
+                    // to be the fallback, but the live-analyser check above it (freqData[10]
+                    // > 0) is true almost as soon as any bass-heavy audio plays, so the
+                    // tuned data was effectively never reached in practice.
+                    if (isPlaying && window.TRACK_SPECTRUM && window.TRACK_SPECTRUM['club']) {
                       const cData = window.TRACK_SPECTRUM['club'];
                       const fIdx = Math.floor(audio.currentTime * cData.fps);
                       if (cData.frames && fIdx < cData.frames.length) {
@@ -4745,6 +4769,17 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                         bassEnergy = (f[4] || 0) * 1.2;
                         subEnergy = (f[5] || 0) * 1.3;
                       }
+                    } else if (freqData && isPlaying && freqData[10] > 0) {
+                      // Live Web Audio AnalyserNode (fallback if no baked data is available)
+                      let sSum = 0, bSum = 0, mSum = 0, hSum = 0;
+                      for (let b = 1; b <= 6; b++) sSum += freqData[b];
+                      for (let b = 7; b <= 20; b++) bSum += freqData[b];
+                      for (let b = 21; b <= 70; b++) mSum += freqData[b];
+                      for (let b = 71; b <= 200; b++) hSum += freqData[b];
+                      subEnergy = (sSum / 6) / 255.0;
+                      bassEnergy = (bSum / 14) / 255.0;
+                      midEnergy = (mSum / 50) / 255.0;
+                      hatEnergy = (hSum / 130) / 255.0;
                     }
                     
                     subEnergy = Math.max(0, Math.min(1.0, subEnergy * activeGain));
