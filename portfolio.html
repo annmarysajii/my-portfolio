@@ -2036,46 +2036,20 @@ body::before {
   color: var(--ink);
 }
 
-/* Post-It Yellow Sticky Note Form */
+/* .form now has exactly one usage sitewide: #contact .letter .form
+   (see ~line 12750), which strips all card chrome via !important since
+   the form sits directly on the shared .letter paper surface. This class
+   used to be its own standalone "post-it note" card (own background,
+   shadow, tilt, folded-corner ::after) before that redesign -- all of
+   that chrome is dead weight now, so only the layout properties that
+   actually still apply survive here. */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background-color: #FEF49A;
-  /* Same paper-grain technique as the badge and the object panel
-     (.bp-badge, .bp-panel) -- the post-it was the one cream/paper
-     surface in this world still rendering as flat, un-textured color. */
-  background-image: url("assets/svg-opt/paper-light-tile.webp");
-  background-size: 260px 260px;
-  background-blend-mode: multiply;
-  padding: 2.5rem 2.2rem;
-  box-shadow: 4px 8px 24px rgba(0,0,0,0.12), inset 0 0 40px rgba(0,0,0,0.03);
-  transform: rotate(1.2deg);
-  border-radius: 2px 4px 14px 2px;
-  position: relative;
-  color: #111009;
-  border: 1px solid rgba(217, 180, 0, 0.3);
   width: 100%;
   max-width: 520px;
   box-sizing: border-box;
-}
-
-[data-theme="dark"] .form {
-  background-color: #252210;
-  color: #F8F5EE;
-  border-color: rgba(232, 176, 0, 0.25);
-  box-shadow: 4px 8px 30px rgba(0,0,0,0.45);
-}
-
-.form::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  border-width: 0 0 24px 24px;
-  border-style: solid;
-  border-color: transparent transparent rgba(0,0,0,0.12) transparent;
-  border-bottom-right-radius: 14px;
 }
 
 .fg {
@@ -2494,11 +2468,6 @@ body::before {
   .soc {
     padding: 0.75rem 0.9rem;
     font-size: 0.85rem;
-  }
-  .form {
-    transform: none;
-    padding: 1.5rem 1.2rem;
-    border-radius: 4px;
   }
   .finp, .ftxt {
     font-size: 0.98rem;
@@ -12751,19 +12720,9 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 /* The form used to be its own separate post-it note (own paper, own
    shadow, own tilt) floating next to the rest of Contact. Now that
    everything shares the .letter surface, it's just a fieldset area on
-   that same page -- so it sheds all of its own card chrome here.
-   !important: needed to beat the base .form rule (~line 2020), which
-   still carries its own background/shadow/rotate for its own specificity. */
-#contact .letter .form {
-  background: none !important;
-  box-shadow: none !important;
-  transform: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  max-width: none !important;
-}
-#contact .letter .form::after { display: none !important; }
+   that same page. The base .form rule (~line 2038) was cleaned up to
+   layout-only properties directly, so no override/!important fight is
+   needed here anymore. */
 
 /* #contact never changes with the light/dark toggle -- it's a fixed
    "cover" moment, same as About. But .flbl/.finp/.ftxt have their own
