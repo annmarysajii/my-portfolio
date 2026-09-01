@@ -72,13 +72,18 @@ body::before {
   --sh2: 3px 5px 0 rgba(17,16,9,.1), 0 10px 30px rgba(17,16,9,.1);
   --sh3: 4px 7px 0 rgba(17,16,9,.12), 0 20px 50px rgba(17,16,9,.13);
 
-  /* === MULTI-COLORED SECTION CRAFT PAPER PALETTE === */
+  /* === MULTI-COLORED SECTION CRAFT PAPER PALETTE ===
+     Bold covers, calm pages (see WEBSITE_AUDIT_AND_PLAN.md #10): these five
+     interior sections sit on a mostly neutral paper canvas now, ~60/30/10
+     neutral/tint/accent. The full-saturation pastel below still carries
+     through as each section's identity color for its badge/icon/border
+     accents -- see --sec-*-accent below -- it's just not the backdrop. */
   --sec-hero-bg: #F9F6F0;
-  --sec-anim-bg: #D8E8F5;   /* Blueprint Blue */
-  --sec-illus-bg: #F5DDD8;  /* Sugar-Paper Red / Terracotta */
-  --sec-video-bg: #D5EAD2;  /* Studio Sage Green */
-  --sec-design-bg: #F5EBCC; /* Manila / Kraft Yellow */
-  --sec-music-bg: #E2D8F5;  /* Muted Indigo / Periwinkle */
+  --sec-anim-bg: #E8EEF2;   /* Blueprint Blue, desaturated to paper */
+  --sec-illus-bg: #F2EAE8;  /* Sugar-Paper Red / Terracotta, desaturated to paper */
+  --sec-video-bg: #EBF0EA;  /* Studio Sage Green, desaturated to paper */
+  --sec-design-bg: #F3F0E7; /* Manila / Kraft Yellow, desaturated to paper */
+  --sec-music-bg: #ECE8F2;  /* Muted Indigo / Periwinkle, desaturated to paper */
   --sec-about-bg: #111009;  /* Dark Studio Board */
   --sec-contact-bg: #F9F6F0;
   /* ── Brand accent palette (used by stars, discs, scrap cards) ── */
@@ -591,6 +596,40 @@ body::before {
   height: 28px;
   background: var(--ink12);
   flex-shrink: 0;
+}
+
+/* Each stat tile is now a click-to-reveal fact, same pattern as the
+   category disc-stamps: a real <button> wrapping the existing
+   num/label pair (native Enter/Space, no keydown handler needed),
+   plus a reveal row beneath it reusing .margin-note/.note-collapsible
+   wholesale (see .disc-stamp.note-toggle) so it gets the same
+   handwritten look and the same 0fr->1fr collapse mechanism for free.
+   .metric itself already is a column flexbox, so the button + reveal
+   just stack -- the grid row .metrics sits in grows to match whichever
+   tile (if any) is currently open. */
+.metric-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  text-align: inherit;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: outline-color 0.2s var(--ease);
+}
+.metric-toggle:hover,
+.metric-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.margin-note.metric-reveal {
+  max-width: 100%;
+  font-size: 0.7rem;
 }
 
 /* Right Page — Dual Reel Switcher & Polaroid Frame */
@@ -1343,6 +1382,30 @@ body::before {
 #about .margin-aside,
 #about .margin-aside strong {
   color: var(--cream);
+}
+
+/* Icon-toggled margin notes -- Illustration/Graphic Design/Music only
+   (see .disc-stamp.note-toggle). Collapsed by default and taking no
+   space, not just invisible: grid-template-rows 0fr->1fr animates to
+   the note's real height with no max-height guess (each note is a
+   different length), opacity/pointer-events ride along, margin-top
+   collapses too so there's no leftover gap above the heading/intro. */
+.margin-note.note-collapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  margin-top: 0;
+  transition: grid-template-rows 0.32s var(--ease), opacity 0.28s var(--ease), margin-top 0.32s var(--ease);
+}
+.margin-note.note-collapsible .margin-note-inner {
+  overflow: hidden;
+}
+.margin-note.note-collapsible.note-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+  margin-top: 0.6rem;
 }
 
 .die-cut-sticker {
@@ -10032,10 +10095,6 @@ a[href*="gobunny"] img {
 
 /* 01 ANIMATION: Circular Double-Ring Inked Stamp */
 
-.rubber-stamp-circle 
-.rubber-stamp-circle 
-
-
 
 
 
@@ -10113,10 +10172,6 @@ a[href*="gobunny"] img {
 }
 
 /* 01 ANIMATION: Circular Double-Ring Inked Stamp */
-
-.rubber-stamp-circle 
-.rubber-stamp-circle 
-
 
 
 
@@ -10203,6 +10258,44 @@ a[href*="gobunny"] img {
   border-radius: 999px !important;
   font-size: 0.75rem !important;
   font-weight: 900 !important;
+}
+
+/* Icon-only on narrow screens: the label collapses away and the counter
+   shrinks into a small numeric badge overlapping the icon's corner,
+   instead of the full pill eating width on a phone. Sized up a notch
+   from a bare 44px tap target so it reads as a real button while
+   scrolling past busy/dark sections, and pulled in from the raw
+   corner (with safe-area padding) so it doesn't sit flush against the
+   edge / iOS home-indicator strip. */
+@media (max-width: 768px) {
+  .passport-dock-btn {
+    padding: 0 !important;
+    width: 54px !important;
+    height: 54px !important;
+    gap: 0 !important;
+    justify-content: center !important;
+    right: 20px !important;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.5), 0 0 0 4px rgba(20,19,28,0.5) !important;
+  }
+  .passport-dock-icon svg {
+    width: 23px !important;
+    height: 23px !important;
+  }
+  .passport-dock-label {
+    display: none !important;
+  }
+  .passport-dock-counter {
+    position: absolute !important;
+    top: -7px !important;
+    right: -7px !important;
+    min-width: 20px !important;
+    padding: 2px 5px !important;
+    font-size: 0.68rem !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    border: 1.5px solid #14131C !important;
+  }
 }
 
 .passport-modal-backdrop {
@@ -12216,6 +12309,75 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 @keyframes bpScan { to { transform: translateX(120%); } }
 .bp-barcode-code { font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: .06em; color: var(--ink); }
 
+/* -------- ID card becomes the trivia trigger --------
+   .bp-badge already has complex children (.bp-name-card is role="img",
+   plus the sticker overlay) and its own :focus-within barcode-scan
+   hover, so it's role="button"+tabindex="0"+keydown here rather than a
+   real <button> -- swapping the tag would mean re-homing that existing
+   :focus-within behaviour and fighting the SVG-background children for
+   no real benefit. Click/Enter/Space reveal .bp-facts-panel below it. */
+.bp-badge--toggle {
+  cursor: pointer;
+  transition: transform .25s var(--ease), outline-color .2s var(--ease);
+}
+.bp-badge--toggle:hover,
+.bp-badge--toggle:focus-visible {
+  transform: scale(1.015);
+  outline: 3px solid var(--ink);
+  outline-offset: 5px;
+}
+
+/* Small reveal panel under the card. Tried the same 0fr->1fr grid-rows
+   collapse the margin-notes use (see Part 1), but .bp-facts-panel sits
+   inside .bp-badge-wrap (display:flex, column) as well as being a grid
+   container itself, and that combination kept leaving a stray ~15px of
+   height at "collapsed" no matter which element carried overflow:hidden
+   -- not worth chasing further for a one-off component with short, fixed
+   content. max-height is simpler and just as correct here: the content
+   (a heading + one paragraph) is known and short, unlike the category/
+   metric notes above whose length varies per instance and which is why
+   those needed the exact-auto-height grid trick instead of a guess. */
+.bp-facts-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  max-width: 390px;
+  margin-top: 0;
+  transition: max-height .32s var(--ease), opacity .28s var(--ease), margin-top .32s var(--ease);
+}
+.bp-facts-panel.note-open {
+  max-height: 14rem;
+  opacity: 1;
+  pointer-events: auto;
+  margin-top: .85rem;
+}
+.bp-facts-inner {
+  box-sizing: border-box;
+  background-color: var(--cream);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 4px 6px 0 var(--shadow);
+  padding: .85rem 1.1rem 1rem;
+}
+.bp-facts-heading {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: .4rem;
+}
+.bp-facts-text {
+  font-family: var(--fb);
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.bp-facts-text strong { color: var(--red); font-weight: 700; }
+
 /* -------- interactive moment: the desk, full width, its own beat --------
    This used to be squeezed into the bottom of the 320px badge column,
    which is exactly why the "click an object" idea read as a caption
@@ -12510,6 +12672,39 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   background: linear-gradient(to bottom, var(--sec-music-bg), var(--red) 88%);
 }
 
+/* Same tear a third time, for the 4 boundaries between the interior
+   category sections (Animation->Illustration->Videography->Graphic
+   Design->Music) -- paper-on-paper now, not About's red, so the label
+   drops --red/--cream-dim for --ink text on whichever section's own
+   --sec-*-bg the seam is physically sitting in by the time the dash
+   appears, and the dash itself switches to --ink12 (the same dashed
+   token .sec-hd's own divider already uses on these backgrounds).
+   --tear-from/--tear-to are set per instance via inline style, same
+   idiom .pg-toy already uses for --pg-accent/--pg-bg, so this one rule
+   covers all 4 pairs instead of 4 near-duplicate blocks. */
+.bp-tear--paper {
+  /* Unlike #about (padding-top: 0, so .bp-tear--seam's own padding-top
+     was the whole visible gap), every .sec has its own `padding: 5rem 0
+     ...!important` -- with margin-top:0 this div started 5rem AFTER the
+     section's real top edge, sitting entirely on solid --tear-to with no
+     fade at all; the gradient only began after that, buried mid-gap
+     instead of spanning it. Pull it up by that same 5rem (matching
+     .sec's padding-top exactly, not a guess) so it starts flush with the
+     true section boundary, and add that 5rem back to padding-top so the
+     total space -- and the gradient's own canvas -- covers the full gap
+     instead of a slice of it. */
+  margin-top: -5rem;
+  padding-top: calc(5rem + clamp(2.4rem, 6vh, 4rem));
+  background: linear-gradient(to bottom, var(--tear-from), var(--tear-to) 88%);
+}
+.bp-tear--paper::before {
+  border-top-color: var(--ink12);
+}
+.bp-tear--paper .bp-tear-label {
+  background: var(--tear-to);
+  color: var(--ink);
+}
+
 
 /* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
    Content fix (see earlier commit) trimmed these to just "01"-"05"; this
@@ -12546,29 +12741,63 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
 
 /* ================================================================
-   DISCIPLINE STAMP -- a small second ink-stamp beside the section
-   number (clapperboard / torn-corner / play+timecode / colour-chip /
-   cassette), echoing the passport-stamp language from About. Purely
-   decorative, aria-hidden. Uses its own .stamp-rv class rather than
-   .rv so its press-in (scale+rotate snap) never fights the shared
-   .rv slide-fade rules -- same observer, separate motion.
-================================================================ */
+   DISCIPLINE STAMP -- a small ink-stamp icon (clapperboard / torn-corner /
+   play+timecode / colour-chip / cassette), echoing the passport-stamp
+   language from About. Used to ride on the corner of the "01"-"05" number
+   circle; now that the numbers are gone, it sits inline at the start of
+   each section's h2.sec-title instead -- still a quiet glance-level cue
+   for which discipline you're in, not a focal point. Uses its own
+   .stamp-rv class rather than .rv so its press-in (scale+rotate snap)
+   never fights the shared .rv slide-fade rules -- same observer,
+   separate motion.
+
+   In Illustration/Graphic Design/Music -- the 3 sections that also carry
+   a .margin-note -- this is a real <button> (.note-toggle) that opens
+   that note; see .note-collapsible near .margin-note above, and the
+   toggle script near the other section interactions below. Animation
+   and Videography have no note, so their disc-stamp stays the plain
+   aria-hidden decorative span it always was. */
 .disc-stamp {
-  position: absolute;
-  bottom: -0.55rem;
-  right: -0.95rem;
-  width: 1.85rem;
-  height: 1.85rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  top: -0.15rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  margin: 0 0.55rem 0.3rem 0;
+  vertical-align: middle;
   border-radius: 7px;
   border: 2px solid #FFFDF8;
   box-shadow: 0 3px 9px rgba(20, 19, 26, 0.25);
-  pointer-events: none;
 }
 [data-theme="dark"] .disc-stamp { border-color: #14131C; }
 .disc-stamp svg { width: 1.05rem; height: 1.05rem; display: block; }
+
+/* The 3 clickable ones are real <button> elements -- strip the UA button
+   look, keep the pointer affordance, and give hover/focus a small ring
+   so it reads as interactive (same outline idiom as .bp-burst/.bp-obj
+   elsewhere on the page, chosen over a hover-scale because the per-section
+   #id .stamp-rv.in rules above already own `transform` with !important). */
+.disc-stamp.note-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.2s var(--ease), outline-color 0.2s var(--ease);
+}
+.disc-stamp.note-toggle:hover,
+.disc-stamp.note-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 3px 9px rgba(20, 19, 26, 0.25), 0 0 0 4px rgba(24, 23, 21, 0.12);
+}
+[data-theme="dark"] .disc-stamp.note-toggle:hover,
+[data-theme="dark"] .disc-stamp.note-toggle:focus-visible {
+  outline-color: var(--ink);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(242, 239, 235, 0.18);
+}
 
 .stamp-rv {
   transition: opacity 0.35s var(--ease), transform 0.5s cubic-bezier(.34,1.56,.64,1);
@@ -12578,7 +12807,11 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   transform: scale(0.4) rotate(-25deg);
 }
 .js-on .stamp-rv.d2 { transition-delay: 0.22s; }
-.stamp-rv.in { opacity: 1; }
+/* !important: needed to beat .js-on .sec .stamp-rv's opacity:0 above, which
+   outranks this on class-count specificity alone regardless of source order
+   -- without it the icon's fade-in never actually applies and it stays
+   invisible. Pre-existing gap, not new to the inline-heading move. */
+.stamp-rv.in { opacity: 1 !important; }
 
 #animation .disc-stamp      { background: #1E3FC4 !important; color: #FFFDF8 !important; }
 #illustration .disc-stamp   { background: #E8432E !important; color: #FFFDF8 !important; }
@@ -13094,26 +13327,33 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         <a href="#music" class="disc disc-music"><span class="disc-dot dot-purple"></span> Music Production</a>
       </div>
 
-      <!-- Unified 3-Metric Stats Block -->
+      <!-- Unified 3-Metric Stats Block -- each tile is a click-to-reveal
+           fact now (see .metric-toggle / .metric-reveal). -->
       <div class="metrics d3">
         <div class="metric">
-          <span class="metric-num">2025</span>
-          <span class="metric-lbl">Annecy IAFF, Paris Lyon Singapore programme</span>
+          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-2025-reveal" aria-label="Show fact">
+            <span class="metric-num">2025</span>
+            <span class="metric-lbl">Annecy IAFF, Paris Lyon Singapore programme</span>
+          </button>
+          <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2025-reveal"><span class="margin-note-inner">↳ Finished the Annecy film while also doing my internship at the same time.</span></div>
         </div>
         <div class="metric-sep"></div>
         <div class="metric">
-          <span class="metric-num">50+</span>
-          <span class="metric-lbl">International commissions, 5-star satisfaction</span>
+          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-50-reveal" aria-label="Show fact">
+            <span class="metric-num">50+</span>
+            <span class="metric-lbl">International commissions, 5-star satisfaction</span>
+          </button>
+          <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-50-reveal"><span class="margin-note-inner">↳ Bought my first paid drawing software using my first ever commission. My freelance career actually started in the BTS and Sk8 the Infinity fandoms.</span></div>
         </div>
         <div class="metric-sep"></div>
         <div class="metric">
-          <span class="metric-num">2nd</span>
-          <span class="metric-lbl">NTU — Imperial Design-a-thon, ReKindle</span>
+          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-2nd-reveal" aria-label="Show fact">
+            <span class="metric-num">2nd</span>
+            <span class="metric-lbl">NTU — Imperial Design-a-thon, ReKindle</span>
+          </button>
+          <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2nd-reveal"><span class="margin-note-inner">↳ Finished the slide decks alone the night before the presentation because my teammates were unavailable.</span></div>
         </div>
       </div>
-
-      <!-- Handwritten margin note -->
-      <div class="margin-note line-boil" style="transform: rotate(2deg);">↳ My freelance career actually started in the BTS and Sk8 the Infinity fandoms.</div>
     </div>
 
     <!-- Right Page (Dual Showcase Reel & Directing Log) -->
@@ -13267,8 +13507,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">01<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><rect x="3" y="3" width="18" height="5" rx="1"/><line x1="6" y1="3" x2="4" y2="8"/><line x1="10" y1="3" x2="8" y2="8"/><line x1="14" y1="3" x2="12" y2="8"/><line x1="18" y1="3" x2="16" y2="8"/></svg></span></p>
-    <h2 class="sec-title rv d1">Animation &amp;<br>Visual Development</h2>
+    <h2 class="sec-title rv d1"><span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><rect x="3" y="3" width="18" height="5" rx="1"/><line x1="6" y1="3" x2="4" y2="8"/><line x1="10" y1="3" x2="8" y2="8"/><line x1="14" y1="3" x2="12" y2="8"/><line x1="18" y1="3" x2="16" y2="8"/></svg></span> Animation &amp;<br>Visual Development</h2>
     <p class="sec-intro rv d2">I make animated work that starts with a question I cannot let go of. Each project runs a full pipeline from concept to final film, and every discipline feeds the next.</p>
    </div>
    <div class="sec-badge-wrapper rv d1">
@@ -13426,14 +13665,16 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 <!-- 02 ILLUSTRATION -->
 
 <section class="sec" id="illustration">
+ <!-- Bridge from #animation -- same torn-paper seam as #music->#about,
+      recolored for paper-on-paper (see .bp-tear--paper). -->
+ <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-anim-bg); --tear-to: var(--sec-illus-bg);"><span class="bp-tear-label">✂ next sketch</span></div>
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">02<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></span></p>
-    <h2 class="sec-title rv d1">Illustration<br>&amp; Comics</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="illustration-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></button> Illustration<br>&amp; Comics</h2>
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
-    <!-- Handwritten margin note -->
-    <div class="margin-note line-boil" style="transform: rotate(-2deg);">↳ Decided to go to art school after watching Blue Period.</div>
+    <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
+    <div class="margin-note line-boil note-collapsible" id="illustration-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Decided to go to art school after watching Blue Period.</span></div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-illustration-toy" style="--pg-accent: var(--sec-illus-accent); --pg-bg: var(--sec-illus-bg);">
@@ -13589,11 +13830,13 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 <!-- 03 VIDEOGRAPHY -->
 
 <section class="sec" id="videography">
+ <!-- Bridge from #illustration -- same torn-paper seam as #music->#about,
+      recolored for paper-on-paper (see .bp-tear--paper). -->
+ <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-illus-bg); --tear-to: var(--sec-video-bg);"><span class="bp-tear-label">✂ roll camera</span></div>
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">03<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg></span></p>
-    <h2 class="sec-title rv d1">Videography<br>&amp; Motion</h2>
+    <h2 class="sec-title rv d1"><span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg></span> Videography<br>&amp; Motion</h2>
     <p class="sec-intro rv d2">Video brings all my disciplines into one frame. I direct, film, edit, and sometimes appear on screen, across explainer videos, documentary shorts, and social content.</p>
    </div>
    <div class="sec-badge-wrapper rv d1">
@@ -13750,14 +13993,16 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 <!-- 04 GRAPHIC DESIGN -->
 
 <section class="sec" id="graphic-design">
+ <!-- Bridge from #videography -- same torn-paper seam as #music->#about,
+      recolored for paper-on-paper (see .bp-tear--paper). -->
+ <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-video-bg); --tear-to: var(--sec-design-bg);"><span class="bp-tear-label">✂ new layout</span></div>
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">04<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></span></p>
-    <h2 class="sec-title rv d1">Graphic Design<br>&amp; Brand</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="graphic-design-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></button> Graphic Design<br>&amp; Brand</h2>
     <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
-    <!-- Handwritten margin note -->
-    <div class="margin-note line-boil" style="transform: rotate(-2deg);">↳ Wanted to be a fashion designer in Paris as a kid. Studied French for 7 years. Still can't really speak it.</div>
+    <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
+    <div class="margin-note line-boil note-collapsible" id="graphic-design-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Wanted to be a fashion designer in Paris as a kid. Studied French for 7 years. Still can't really speak it.</span></div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-graphic-design-toy" style="--pg-accent: var(--sec-design-accent); --pg-bg: var(--sec-design-bg);">
@@ -13957,14 +14202,16 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 <!-- 05 MUSIC -->
 
 <section class="sec" id="music">
+ <!-- Bridge from #graphic-design -- same torn-paper seam as #music->#about,
+      recolored for paper-on-paper (see .bp-tear--paper). -->
+ <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-design-bg); --tear-to: var(--sec-music-bg);"><span class="bp-tear-label">✂ press play</span></div>
  <div class="con">
   <div class="sec-hd">
    <div>
-    <p class="sec-num rv">05<span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></span></p>
-    <h2 class="sec-title rv d1">Music<br>Production</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="music-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></button> Music<br>Production</h2>
     <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
-    <!-- Handwritten margin note -->
-    <div class="margin-note line-boil" style="transform: rotate(3deg);">↳ Couldn't afford to hire musicians for my own projects, so I became the music producer instead.</div>
+    <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
+    <div class="margin-note line-boil note-collapsible" id="music-margin-note" style="transform: rotate(3deg);"><span class="margin-note-inner">↳ Couldn't afford to hire musicians for my own projects, so I became the music producer instead.</span></div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-music-toy" style="--pg-accent: var(--sec-music-accent); --pg-bg: var(--sec-music-bg);">
@@ -14093,9 +14340,6 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     <h2 class="bp-headline">One person.<br><span class="bp-accent">Many mediums.</span></h2>
     <p class="bp-tagline">I'm Annmary Saji — a BFA Animation graduate from NTU's School of Art, Design and Media, Class of 2026. I animate, illustrate, shoot video, design brand systems, and produce music, often all within a single project.</p>
 
-    <!-- Single margin aside (merged from two -- kept About to one note
-         instead of two stacked right under the headline) -->
-    <div class="margin-note margin-aside line-boil" style="transform: rotate(1.5deg)"><strong>I just hate sticking to one medium.</strong> Off the clock: stationery-obsessed (yes, that's why this whole site looks like this), Saizeriya, mala, a daily Milo, anime &amp; Japanese shows, rhythm games, making playlists, dressing up.</div>
    </div>
 
    <!-- Badge rig -->
@@ -14113,9 +14357,17 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
        <span class="bp-clip-bar"></span>
       </div>
 
-      <div class="bp-badge" role="region" aria-label="Annmary Saji, backstage pass">
+      <div class="bp-badge bp-badge--toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="bp-facts-panel" aria-label="Annmary Saji, backstage pass — show a few facts">
        <div class="bp-name-card" role="img" aria-label="Hello, my name is Annmary"></div>
        <img class="bp-name-stickers" src="assets/HELLO MY NAME IS/stickers.svg" alt="" aria-hidden="true">
+      </div>
+
+      <!-- Revealed by clicking the ID card above -->
+      <div class="bp-facts-panel" id="bp-facts-panel">
+       <div class="bp-facts-inner">
+        <p class="bp-facts-heading">A few facts</p>
+        <p class="bp-facts-text"><strong>I just hate sticking to one medium.</strong> Off the clock: stationery-obsessed (yes, that's why this whole site looks like this), Saizeriya, mala, a daily Milo, anime &amp; Japanese shows, rhythm games, making playlists, dressing up.</p>
+       </div>
       </div>
      </div>
      </div>
@@ -15401,6 +15653,35 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         onLeave();
       });
     }
+
+    // Illustration / Graphic Design / Music: disc-stamp icon toggles its
+    // section's margin-note open/closed. Plain <button> + click, so Enter/
+    // Space already work natively -- no extra keydown handler needed.
+    document.querySelectorAll('.disc-stamp.note-toggle').forEach(btn => {
+      const note = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!note) return;
+      btn.addEventListener('click', () => {
+        const nowOpen = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(nowOpen));
+        btn.setAttribute('aria-label', nowOpen ? 'Hide note' : 'Show note');
+        note.classList.toggle('note-open', nowOpen);
+      });
+    });
+  })();
+
+  // Hero stats: each .metric tile is a click-to-reveal fact, same
+  // <button> + click pattern as the disc-stamp toggles above.
+  (function initMetricReveals() {
+    document.querySelectorAll('.metric-toggle').forEach(btn => {
+      const reveal = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!reveal) return;
+      btn.addEventListener('click', () => {
+        const nowOpen = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(nowOpen));
+        btn.setAttribute('aria-label', nowOpen ? 'Hide fact' : 'Show fact');
+        reveal.classList.toggle('note-open', nowOpen);
+      });
+    });
   })();
 
 
@@ -16651,6 +16932,33 @@ window.addEventListener('load', () => {
   })();
 
   // ================================================================
+  // BACKSTAGE PASS — ID card toggles the "a few facts" panel below it.
+  // role="button"+tabindex, not a real <button> -- .bp-badge already has
+  // complex children (role="img" card, sticker overlay) and its own
+  // :focus-within barcode-scan hover, so Enter/Space need a manual
+  // keydown handler here (native buttons get that for free; see the
+  // disc-stamp/metric toggles above, which are real <button>s).
+  // ================================================================
+  (function initBadgeFacts() {
+    const badge = document.querySelector('.bp-badge--toggle');
+    if (!badge) return;
+    const panel = document.getElementById(badge.getAttribute('aria-controls'));
+    if (!panel) return;
+    function toggle() {
+      const nowOpen = badge.getAttribute('aria-expanded') !== 'true';
+      badge.setAttribute('aria-expanded', String(nowOpen));
+      panel.classList.toggle('note-open', nowOpen);
+    }
+    badge.addEventListener('click', toggle);
+    badge.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  })();
+
+  // ================================================================
   // BACKSTAGE PASS — 5 scrapbook objects + shared reveal panel
   // ================================================================
   (function initBackstagePass() {
@@ -16859,6 +17167,13 @@ window.addEventListener('load', () => {
   <span class="passport-dock-label">Studio Passport</span>
   <span class="passport-dock-counter" id="passport-counter">0 / 6</span>
 </div>
+<script>
+  // This markup sits after the page's main <script> blocks, so the
+  // lucide.createIcons() call up there already ran before this <i>
+  // existed -- it silently rendered as nothing. Convert it here, now
+  // that the element is actually in the DOM.
+  if (window.lucide) window.lucide.createIcons();
+</script>
 
 <div class="passport-modal-backdrop" id="passport-modal" onclick="if(event.target===this) togglePassportModal()">
   <div class="passport-booklet-wrap">
