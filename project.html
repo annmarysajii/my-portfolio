@@ -37,6 +37,14 @@
 
 <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
 
+<!-- Field-note titles ask for 'Caveat' (see .note-title) but it was never actually
+     loaded, so every browser silently fell back to its generic system "cursive"
+     font (Comic-Sans-ish on Windows) instead of the intended handwriting look. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap"/></noscript>
+
 <style>
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -187,9 +195,13 @@ html.has-custom-cursor #star-cursor {
 
 .nav-logo{font-family:var(--fd);font-size:.95rem;font-weight:700;}
 
-.nav-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:600;color:var(--ink5);transition:color .2s;}
+/* Base pill-button chrome — the nav-bar and DJ-studio instances override these
+   with their own inline styles, but the plain "Back to Portfolio" links at the
+   bottom of every project page had none, so they rendered as bare text instead
+   of a button like their siblings. This gives every .nav-back a real default. */
+.nav-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:600;color:var(--ink5);text-decoration:none;padding:0.45rem 1.0rem;border-radius:20px;background:var(--surf);border:1px solid var(--line);transition:all .2s;}
 
-.nav-back:hover{color:var(--ink);}
+.nav-back:hover{color:var(--ink);border-color:var(--ink12);}
 
 .nav-back svg{transition:transform .2s;}
 
@@ -793,7 +805,12 @@ html.has-custom-cursor #star-cursor {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* Small + translucent by default so it doesn't sit on top of the image's
+     center and block the view — only grows to full size on hover/drag,
+     when the user is actually reaching for it. The slider is still
+     draggable/clickable anywhere, so this doesn't cost discoverability. */
+  transform: translate(-50%, -50%) scale(0.78);
+  opacity: 0.55;
   min-width: 58px;
   height: 38px;
   border-radius: 20px;
@@ -807,10 +824,16 @@ html.has-custom-cursor #star-cursor {
   gap: 1px;
   padding: 0 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, color 0.2s;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, color 0.2s, opacity 0.2s ease;
+}
+.comparison-slider:hover .handle-pill,
+.comparison-slider:focus-visible .handle-pill {
+  opacity: 0.92;
+  transform: translate(-50%, -50%) scale(0.95);
 }
 .comparison-slider.is-dragging .handle-pill {
   transform: translate(-50%, -50%) scale(1.18);
+  opacity: 1;
   background: #FFC72C;
   color: #181715;
   border-color: #181715;
@@ -901,44 +924,6 @@ html.has-custom-cursor #star-cursor {
   margin: 0;
 }
 
-/* === STUDIO PASSPORT DOCK IN PROJECT PAGE === */
-.passport-dock-btn {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 9990;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--ink);
-  color: var(--bg);
-  border: 1.5px solid var(--ink);
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-family: var(--fb);
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, color 0.2s;
-}
-.passport-dock-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-}
-.passport-dock-icon { font-size: 1rem; }
-.passport-badge-count {
-  background: var(--red);
-  color: #FFF;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 12px;
-}
-[data-theme="dark"] .passport-dock-btn {
-  background: #1C1A27;
-  color: #F2EFEB;
-  border-color: rgba(255,255,255,0.2);
-}
 
 /* Toast */
 .stamp-toast {
@@ -2558,6 +2543,31 @@ const p = PROJECTS[id];
 if (p) { document.title = `${p.title} — Annmary Saji`; window.scrollTo(0, 0); }
 const main = document.getElementById('main');
 
+// Per-project theme overrides — applied synchronously (before the page paints) so the
+// page never flashes the default gray theme while waiting on PORTFOLIO_DATA to load.
+if (id === 'original-tracks') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.style.setProperty('--bg', '#020204');
+    document.documentElement.style.setProperty('--surf', '#0E0D14');
+    document.documentElement.style.setProperty('--ink', '#FFFFFF');
+    document.documentElement.style.setProperty('--white', '#14131C');
+    document.documentElement.style.setProperty('--line', 'rgba(255, 255, 255, 0.12)');
+    document.body.style.backgroundColor = '#020204';
+    document.body.style.color = '#FFFFFF';
+} else if (id === 'gobunny') {
+    // High Readability: Warm airy background, rich charcoal body text, signature strawberry accent
+    document.documentElement.style.setProperty('--bg', '#FFF7F5');
+    document.documentElement.style.setProperty('--surf', '#FFEFEA');
+    document.documentElement.style.setProperty('--accent', '#FF3522');
+    document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.15)');
+} else if (id === 'green-arrow') {
+    // High Readability: Sage tinted background, rich charcoal body text, deep botanical accent
+    document.documentElement.style.setProperty('--bg', '#F3F8F5');
+    document.documentElement.style.setProperty('--surf', '#E5EFE8');
+    document.documentElement.style.setProperty('--accent', '#243E36');
+    document.documentElement.style.setProperty('--line', 'rgba(36, 62, 54, 0.15)');
+}
+
 const rawMedia = (typeof PORTFOLIO_DATA !== 'undefined' && PORTFOLIO_DATA[id]) ? PORTFOLIO_DATA[id] : [];
 const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().includes('image coming soon') && !f.toLowerCase().includes('placeholder'));
   
@@ -2728,36 +2738,18 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
 
 
 
+  // Layout-only follow-up for the same two themed projects — needs the rendered .con/#main
+  // element to exist, so it runs right after main.innerHTML above rather than waiting on data.
+  if (id === 'gobunny' || id === 'green-arrow') {
+      const wrap = document.querySelector('.con') || document.querySelector('#main');
+      if (wrap) wrap.style.maxWidth = '1200px';
+  }
+
   let checkData = setInterval(() => {
       if (window.PORTFOLIO_DATA) {
           clearInterval(checkData);
           if (!p) return; // no project to populate a gallery for
           const data = window.PORTFOLIO_DATA;
-          
-          if (id === 'original-tracks') {
-              document.documentElement.setAttribute('data-theme', 'dark');
-              document.documentElement.style.setProperty('--bg', '#020204');
-              document.documentElement.style.setProperty('--surf', '#0E0D14');
-              document.documentElement.style.setProperty('--ink', '#FFFFFF');
-              document.documentElement.style.setProperty('--white', '#14131C');
-              document.documentElement.style.setProperty('--line', 'rgba(255, 255, 255, 0.12)');
-              document.body.style.backgroundColor = '#020204';
-              document.body.style.color = '#FFFFFF';
-          } else if (id === 'gobunny') {
-              // High Readability: Warm airy background, rich charcoal body text, signature strawberry accent
-              document.documentElement.style.setProperty('--bg', '#FFF7F5');
-              document.documentElement.style.setProperty('--surf', '#FFEFEA');
-              document.documentElement.style.setProperty('--accent', '#FF3522');
-              document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.15)');
-              (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
-          } else if (id === 'green-arrow') {
-              // High Readability: Sage tinted background, rich charcoal body text, deep botanical accent
-              document.documentElement.style.setProperty('--bg', '#F3F8F5');
-              document.documentElement.style.setProperty('--surf', '#E5EFE8');
-              document.documentElement.style.setProperty('--accent', '#243E36');
-              document.documentElement.style.setProperty('--line', 'rgba(36, 62, 54, 0.15)');
-              (document.querySelector('.con') || document.querySelector('#main')).style.maxWidth = '1200px';
-          }
 
           let rawMedia = data[id] || [];
           const media = rawMedia.filter(f => !f.toLowerCase().includes('image coming soon') && !f.toLowerCase().includes('placeholder'));
@@ -5102,13 +5094,6 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
 <!-- Option B: Page Transition Overlay -->
 <div id="page-trans" class="page-trans-overlay" aria-hidden="true"></div>
 
-<!-- Option C: Studio Passport Floating Dock Button -->
-<button class="passport-dock-btn" id="btn-open-passport" aria-label="Open Studio Passport">
-  <span class="passport-dock-icon">📔</span>
-  <span class="passport-dock-txt">Studio Passport</span>
-  <span class="passport-badge-count" id="passport-dock-count">0/6</span>
-</button>
-
 <script>
 // === OPTION C: TACTILE INTERACTIVE SLIDER LOGIC ===
 function initComparisonSliders() {
@@ -5283,23 +5268,6 @@ function initComparisonSliders() {
       window.location.href = href;
     }, 220);
   });
-})();
-
-// === PASSPORT DOCK LINKING ===
-(function initPassportDock() {
-  try {
-    const saved = JSON.parse(localStorage.getItem('annmary_studio_stamps') || '{}');
-    const count = Object.keys(saved).length;
-    const badge = document.getElementById('passport-dock-count');
-    if (badge) badge.textContent = `${count}/6`;
-
-    const passBtn = document.getElementById('btn-open-passport');
-    if (passBtn) {
-      passBtn.addEventListener('click', () => {
-        window.location.href = 'portfolio.html#open-passport';
-      });
-    }
-  } catch(e) {}
 })();
 
 // Initialize sliders after DOM ready
