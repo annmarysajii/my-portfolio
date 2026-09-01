@@ -107,6 +107,19 @@ body::before {
   --sec-video-accent:  #1E7A4E;
   --sec-design-accent: #B8840A;
   --sec-music-accent:  #6540CC;
+
+  /* ── Shared brand accent set (PART 3) -- promoted from #about.about's
+     local scope (still declared there too, values identical) so these
+     are actually usable outside About, per the "shared brand set" idea.
+     Flat/theme-invariant on purpose, matching how About itself stays
+     the same red regardless of the theme toggle -- no dark-mode
+     counterparts needed here, unlike --sec-*-accent above. ── */
+  --gold: #FEB21A;
+  --cobalt: #134686;
+  --magenta: #E2559C;
+  --moss: #3E9E63;
+  --tangerine: #EF7A34;
+  --teal: #1F9B93;
 }
 
 [data-theme="dark"] {
@@ -477,11 +490,76 @@ body::before {
   max-width: 420px;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+  /* User feedback (2026-09-02): "add some shadow behind my name" -- the
+     original 0.08-alpha/12px shadow was tuned so soft it read as flat
+     against the light paper, like the wordmark was printed on the page
+     rather than a cut-paper piece pinned to it. Two stacked drop-shadows
+     (filter, not box-shadow, so it follows the cutout letterforms'
+     alpha channel instead of the image's rectangular bounding box): a
+     tight contact shadow right under the letters for grounding, plus a
+     softer wider one for actual lift/depth -- same two-layer logic as
+     real cast-shadow work, not just one bigger blur. */
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.22)) drop-shadow(0 12px 22px rgba(0, 0, 0, 0.18));
 }
 [data-theme="dark"] #heroTitleImg,
 [data-theme="dark"] .hero-title img {
-  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 26px rgba(255, 255, 255, 0.2));
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6)) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 26px rgba(255, 255, 255, 0.2));
+}
+
+/* PART 2.a -- Hero logo entrance. hero_name.webp is one flattened
+   export (the layered source under "assets/svg assets for portfolio/"
+   is a 28MB Illustrator dump of ~3600 raster-masked paths with no
+   per-letter grouping, not usable letterforms), so "each letter lands
+   separately" is faked with a wipe instead of split into columns: a
+   jagged vertical edge -- same zigzag language as .pg-tag-closed's
+   torn-paper silhouette, just rotated -- sweeps left to right via an
+   animated clip-path, then the whole logo gives a small settle bounce
+   with the site's existing overshoot ease (same curve as the
+   disc-stamp press-in). clip-path animates smoothly between two
+   keyframes with matching point counts -- no JS needed. */
+/* User feedback (2026-09-02): the drop-shadow above looked "like a box
+   shadow, doesn't follow the outer shape" in both themes. Root cause
+   wasn't the shadow itself -- it was this animation. `animation: ...
+   both` holds the 100% keyframe's clip-path FOREVER after the 0.75s
+   wipe finishes, and that keyframe's y-values were a hard 0%/100% (no
+   vertical overshoot, unlike x's -40%/124%). filter:drop-shadow renders
+   outside the element's box, but this leftover clip-path was still
+   silently slicing it flat at the image's own top/bottom edge --
+   exactly like a rectangular box-shadow clip. Both keyframes' y-range
+   widened from 0%-100% to -40%-140% (same margin logic already used on
+   x) so the fully-open end state has real room for the shadow to
+   render, while the zigzag sweep itself looks identical. */
+@keyframes heroLogoWipe {
+  0% {
+    clip-path: polygon(-40% -40%, -16% -40%, -24% -18%, -16% 5%, -24% 27%, -16% 50%, -24% 72%, -16% 95%, -24% 117%, -16% 140%, -40% 140%);
+  }
+  100% {
+    clip-path: polygon(-40% -40%, 124% -40%, 116% -18%, 124% 5%, 116% 27%, 124% 50%, 116% 72%, 124% 95%, 116% 117%, 124% 140%, -40% 140%);
+  }
+}
+@keyframes heroLogoSettle {
+  0%, 70% { transform: scale(1); }
+  85%     { transform: scale(1.04); }
+  100%    { transform: scale(1); }
+}
+@keyframes heroLogoReducedFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #heroTitleImg {
+    animation: heroLogoWipe .75s var(--ease) both,
+               heroLogoSettle .75s cubic-bezier(.34,1.56,.64,1) both;
+  }
+}
+/* The global `* { animation-duration: 0.01ms !important }` reduced-motion
+   rule further down would otherwise flatten this to an instant snap
+   instead of an actual visible fade -- an ID selector + !important is
+   needed to outrank that universal one. */
+@media (prefers-reduced-motion: reduce) {
+  #heroTitleImg {
+    animation: heroLogoReducedFade .4s ease-out both !important;
+  }
 }
 
 .hero-role {
@@ -499,7 +577,17 @@ body::before {
 .hero-bio {
   font-size: 0.92rem;
   line-height: 1.65;
-  color: var(--ink5);
+  /* User feedback (2026-09-02, annotated screenshot): "text is hard
+     to read" on this exact paragraph. --ink5 measures 6.65:1 against
+     the page's paper background -- passes WCAG AA/AAA on paper, so
+     this wasn't a hard contrast failure, but a light-weight gray body
+     paragraph reads as visually thin regardless of ratio, especially
+     next to the hero's much bolder surrounding elements (badge, tags,
+     bold subhead). Darkened specifically for this paragraph (not the
+     shared --ink5 token, which other lighter-weight UI text still
+     wants) to 11.3:1, real "ink weight" without going all the way to
+     --ink and losing the secondary/body distinction from headings. */
+  color: #3A3632;
   max-width: 480px;
   margin-bottom: 1.25rem;
 }
@@ -943,11 +1031,22 @@ body::before {
   justify-content: space-between;
   align-items: center;
   padding: 0.6rem 1.2rem;
-  border: 1.5px dashed var(--ink12);
   border-radius: 8px;
   font-size: 0.78rem;
-  color: var(--ink5);
   box-sizing: border-box;
+  /* --ink5/--ink12 assume a light background -- true for most of the
+     site, but this row sits directly on the hero's dark cutting-mat
+     texture with no card of its own (design-critique finding,
+     2026-09-02: measured 1.51:1 in light mode, essentially unreadable).
+     Hardcoded to a light color here instead of the token; dark mode
+     restores the token below since that pairing (light text, already
+     light-on-dark by default) was never broken. */
+  color: rgba(245,242,230,0.85);
+  border: 1.5px dashed rgba(245,242,230,0.2);
+}
+[data-theme="dark"] .hero-foot {
+  color: var(--ink5);
+  border-color: var(--ink12);
 }
 
 /* ================================================================
@@ -995,7 +1094,9 @@ body::before {
     font-size: 1.1rem;
   }
   .metric-lbl {
-    font-size: 0.64rem;
+    /* Critique finding (2026-09-02, /impeccable typeset): computed to
+       10.24px at this breakpoint, under the 11px floor. */
+    font-size: 0.7rem;
   }
   .book-page-right {
     padding: 1.5rem 1.25rem;
@@ -1094,7 +1195,9 @@ body::before {
     font-size: 0.95rem;
   }
   .metric-lbl {
-    font-size: 0.54rem;
+    /* Critique finding (2026-09-02, /impeccable typeset): 0.54rem
+       (8.64px) was well under the 11px floor. */
+    font-size: 0.7rem;
     line-height: 1.2;
     margin-top: 1px;
   }
@@ -1244,7 +1347,66 @@ body::before {
   overflow: hidden;
 }
 
-#hero { background-color: var(--sec-hero-bg); }
+/* Cutting-mat desk texture behind the notebook -- replaces an earlier
+   wood-grain version (2026-09-02): warm brown was a sixth hue outside
+   this site's actual color system (red/blue/yellow primaries + gold/
+   cobalt/magenta/moss/tangerine/teal shared secondaries -- nothing
+   else is supposed to introduce a new one). Went through moss-green
+   before landing on navy blue -- blue is one of the site's actual
+   primaries (unlike moss, a secondary), and the literal --blue token
+   already cleared 6.8:1 against an off-white grid with no darkening
+   needed at all. Darkened further anyway per direct request, so the
+   mat recedes and doesn't compete with the notebook for attention --
+   still 8-12:1 against the grid, more contrast than before, not less.
+   Same "no image asset" technique as the gingham fabric swatch
+   elsewhere: layered gradients, no photo. Grain fleck + a couple of
+   off-angle scratch streaks (very low alpha, irregular angles/spacing
+   so they don't read as a second deliberate pattern) added for a
+   worn-mat feel; single grid density, not the fine+major two-tier a
+   real mat has -- kept restrained throughout, it's a background. */
+#hero {
+  background-color: var(--sec-hero-bg);
+  background-image:
+    /* grain, two frequencies layered (fine + coarse) instead of one
+       dialed-up layer -- reads as an actually worn/textured material,
+       not a flat noise filter, and gives the mat a rougher surface
+       than the book's own clean paper so the two visibly contrast in
+       *texture* even though the mat's color already recedes. Heavier
+       than the first pass per direct request. */
+    radial-gradient(circle, rgba(0,0,0,0.17) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(0,0,0,0.1) 0.8px, transparent 0.8px),
+    /* scratch streaks, three off-angles/spacings so they don't look
+       like a repeating pattern next to each other */
+    repeating-linear-gradient(12deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 140px),
+    repeating-linear-gradient(-17deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 190px),
+    repeating-linear-gradient(35deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 165px),
+    /* grid */
+    repeating-linear-gradient(90deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
+    repeating-linear-gradient(0deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
+    /* base -- deep navy, darker than the literal --blue token */
+    linear-gradient(90deg, #123C7E 0%, #0E3068 25%, #16468C 50%, #0E3068 75%, #123C7E 100%),
+    radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(5,15,35,0.22) 100%);
+  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto;
+}
+[data-theme="dark"] #hero {
+  /* Same luminance-gap check the earlier wood/moss passes needed:
+     this navy band sits 0.026-0.036 above the page's #0E0D13
+     background, enough to read as a distinct dark blue rather than
+     vanishing into the surrounding UI chrome. Grain here mixes dark
+     AND light flecks (not just darker-on-dark, which barely shows up
+     against an already-dark base) so it actually reads as texture. */
+  background-image:
+    radial-gradient(circle, rgba(0,0,0,0.35) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,0.06) 0.8px, transparent 0.8px),
+    repeating-linear-gradient(12deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 140px),
+    repeating-linear-gradient(-17deg, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px, transparent 1px, transparent 190px),
+    repeating-linear-gradient(35deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 165px),
+    repeating-linear-gradient(90deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
+    repeating-linear-gradient(0deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
+    linear-gradient(90deg, #1A3868 0%, #16305A 25%, #1E4074 50%, #16305A 75%, #1A3868 100%),
+    radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.45) 100%);
+  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto;
+}
 #animation { background-color: var(--sec-anim-bg); }
 #illustration { background-color: var(--sec-illus-bg); }
 #videography { background-color: var(--sec-video-bg); }
@@ -1648,6 +1810,23 @@ body::before {
   background: var(--surf);
   color: var(--ink5);
   white-space: nowrap;
+}
+
+/* .card-role (the actual class on every work-grid card's description --
+   .card-desc above is leftover from an earlier markup pass and unused)
+   never had its own type treatment, just falling back to whatever the
+   surrounding page's default text color/size/tracking happened to be.
+   The card's date/context line (.card-yr) was removed outright per
+   feedback rather than just demoted -- it was a kicker sitting above
+   the title competing for the first glance, and the year/client info
+   wasn't earning that clutter on a portfolio grid people are scanning
+   quickly. Title -> description -> tools is the whole card now. */
+.card-role {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  letter-spacing: 0.008em;
+  color: var(--ink5);
+  margin: 0;
 }
 
 /* ================================================================
@@ -2450,7 +2629,10 @@ body::before {
     font-size: 1.15rem;
   }
   .metric-lbl {
-    font-size: 0.6rem;
+    /* Critique finding (2026-09-02, /impeccable typeset): 0.6rem
+       (9.6px) was under the 11px floor -- this is the rule that
+       actually wins on phones (later in source than the ~1153 one). */
+    font-size: 0.7rem;
     line-height: 1.2;
     max-width: 100%;
     text-align: center;
@@ -2476,11 +2658,31 @@ body::before {
     padding: 0 1rem;
     gap: 0.75rem;
   }
+  /* Critique finding (2026-09-02, /impeccable harden): none of the 3
+     nav-in flex children had an explicit shrink/grow role, so flexbox's
+     default (all three shrink together) let .nav-logo wrap to 2 lines
+     ("Annmary" / "Saji") while .nav-cta ("Resume ↗") still got pushed
+     37px past the viewport edge -- shrinking the logo didn't actually
+     free enough room, it just broke the logo too. .nav-links already
+     had overflow-x:auto with nowrap children, so it's the one item
+     designed to give; explicit flex-shrink:0 + nowrap on the two end
+     items and min-width:0 on the middle one makes that the real
+     (only) place the squeeze goes, matching what was already built
+     for it. Verified: 0 overflow past the viewport at 375px after. */
   .nav-logo {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .nav-links {
-    gap: 0.85rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    /* Tightened from 0.85rem: at 375px the 5 items (Work/About/Contact/
+       theme toggle/Resume) plus this gap still totaled 310px against
+       249px of actual available room even after the logo/cta fixes
+       above -- Resume was reachable via scroll but not visible without
+       it. Closing the remaining gap here instead of cutting a nav item. */
+    gap: 0.4rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -2489,12 +2691,21 @@ body::before {
     display: none;
   }
   .nav-links a {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     white-space: nowrap;
   }
-  .nav-cta {
-    padding: 0.25rem 0.7rem;
-    font-size: 0.72rem;
+  .nav-cta,
+  .nav-links a.nav-cta {
+    /* .nav-links a.nav-cta elsewhere on the page carries !important on
+       padding/font-size at higher specificity than a plain .nav-cta --
+       matched its selector here too, or this rule loses silently. */
+    padding: 0.22rem 0.5rem !important;
+    font-size: 0.68rem !important;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .theme-toggle {
+    padding: 0.2rem 0.4rem !important;
   }
   .sec {
     padding: 3.5rem 0;
@@ -2806,6 +3017,165 @@ body::before {
 }
 [data-theme="dark"] .dl-txt span:first-child {
   color: #FFFDF8 !important;
+}
+
+/* ================================================================
+   DOWNLOADS AS AN OPEN DRAWER (pairs with the hero's wood-desk bg)
+   The hero above reads as a wood desk; this section reads as a
+   drawer pulled open from it, not just "a section on a different
+   background." Restrained on purpose -- no literal wood-grain
+   drawer-front rendering (that would clash with the paper-collage
+   material language used everywhere else on the page). Just a small
+   flat-sticker pull handle at the seam (same solid-fill + ink-border
+   + drop-shadow language as every other pinned object here) plus a
+   soft inset shadow so the content reads as recessed below the desk
+   surface. The existing washi-tape corners and border are untouched.
+================================================================ */
+/* A handle floating on the seam line wasn't reading as a drawer --
+   user feedback: "doesn't look like an organized drawer." A handle
+   alone is just a pull-tab; a drawer needs a visible FRONT FACE for
+   the handle to be mounted on, distinct from the recessed interior
+   behind it. Added .dl-drawer-front: a solid navy band (same family
+   as the hero mat, so it reads as continuous material, not a new
+   color) sitting right at the top of the section, with its own
+   top-highlight/bottom-shadow bevel so it reads as a raised panel
+   catching light, not a flat stripe. The handle now mounts ON that
+   panel instead of straddling the seam. The cream card area below
+   keeps its inset shadow, now offset to start after the panel so the
+   two-tier "front face, then recessed interior" structure is
+   unambiguous at a glance. */
+.dl-drawer-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  background: linear-gradient(90deg, #123C7E 0%, #0E3068 25%, #16468C 50%, #0E3068 75%, #123C7E 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1;
+  pointer-events: none;
+}
+[data-theme="dark"] .dl-drawer-front {
+  background: linear-gradient(90deg, #1A3868 0%, #16305A 25%, #1E4074 50%, #16305A 75%, #1A3868 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 4px 10px rgba(0,0,0,0.5);
+}
+
+.dl-drawer-handle {
+  /* Brass/gold -- ties to --yel (the mat's grid-line color and the
+     hero's existing gold badges/tape) rather than a surface it
+     doesn't sit on. Real drawer hardware is metal, not mat material. */
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 16px;
+  background: #E8B000;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.28);
+  z-index: 3;
+  pointer-events: none;
+}
+.dl-drawer-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.22);
+}
+[data-theme="dark"] .dl-drawer-handle {
+  background: #B8901A;
+  border-color: rgba(255,255,255,0.3);
+}
+[data-theme="dark"] .dl-drawer-handle::after {
+  background: rgba(0,0,0,0.35);
+}
+
+#downloads,
+.dl-sec {
+  box-shadow: inset 0 16px 22px -16px rgba(23,20,16,0.28);
+  padding-top: calc(3.5rem + 20px) !important;
+  padding-bottom: calc(4rem + 34px) !important;
+}
+[data-theme="dark"] #downloads,
+[data-theme="dark"] .dl-sec {
+  box-shadow: inset 0 16px 22px -16px rgba(0,0,0,0.6);
+}
+
+/* Drawer SIDE WALLS -- user feedback (2026-09-02, annotated screenshot +
+   real drawer reference photos): the front panel alone reads as a single
+   flat plane, not a box with depth. A real open drawer shows its two side
+   walls as shadowed planes turned away from the light that's hitting the
+   front face. Two full-height strips pinned to the section's outer edges,
+   same navy family as .dl-drawer-front but darker/flatter (a side plane
+   catches less light than the front), with a small diagonal chamfer at
+   the top-inner corner where each wall meets the front panel -- reads as
+   a receding corner instead of a hard rectangular seam. Purely visual,
+   z-index/pointer-events matches the front panel + handle (decorative,
+   never intercepts clicks on the PDF buttons in .dl-in beneath). */
+.dl-drawer-side {
+  position: absolute;
+  top: 34px;
+  bottom: 26px;
+  width: clamp(20px, 5vw, 52px);
+  background: linear-gradient(180deg, #0E3068 0%, #0A2454 100%);
+  box-shadow: inset 0 0 16px rgba(0,0,0,0.4);
+  z-index: 1;
+  pointer-events: none;
+}
+.dl-drawer-side-left {
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 70% 28px, 70% 100%, 0 100%);
+  box-shadow: inset -4px 0 10px rgba(0,0,0,0.35);
+}
+.dl-drawer-side-right {
+  right: 0;
+  clip-path: polygon(100% 0, 0 0, 30% 28px, 30% 100%, 100% 100%);
+  box-shadow: inset 4px 0 10px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .dl-drawer-side {
+  background: linear-gradient(180deg, #16305A 0%, #0C1E3E 100%);
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.55);
+}
+
+/* Drawer BOTTOM (back wall) -- user feedback (2026-09-02): "kinda looks a
+   bit incomplete... adding a bottom part can also separate the next
+   section." A box with a front and two sides but no back/floor edge just
+   trails off into the next section instead of closing. This is the
+   farthest plane from the light hitting the front panel, so it's the
+   darkest of the three -- darker than even the sides. Spans full width
+   like the front panel, sits flush under where the side strips stop
+   (26px, matches this band's height) so the seam is continuous with no
+   gap or overlap. Also acts as the section-break the user asked for: its
+   own drop-shadow pushes the next section down visually instead of the
+   drawer interior butting straight into it. */
+.dl-drawer-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  background: linear-gradient(90deg, #081C42 0%, #0A2454 25%, #0C2A5E 50%, #0A2454 75%, #081C42 100%);
+  box-shadow:
+    inset 0 3px 6px rgba(0,0,0,0.5),
+    0 6px 12px rgba(0,0,0,0.32);
+  z-index: 1;
+  pointer-events: none;
+}
+[data-theme="dark"] .dl-drawer-bottom {
+  background: linear-gradient(90deg, #060F26 0%, #081C42 25%, #0A2454 50%, #081C42 75%, #060F26 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(0,0,0,0.6),
+    0 6px 14px rgba(0,0,0,0.5);
 }
 
 /* ================================================================
@@ -10251,6 +10621,25 @@ a[href*="gobunny"] img {
   box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 12px rgba(232,175,48,0.4) !important;
 }
 
+/* Critique finding (2026-09-02, /impeccable harden): this dock is
+   position:fixed with a constant px footprint, while .hero-foot and
+   the hero .metrics row are ordinary flowed content whose on-screen
+   position depends on viewport size -- there's no single static
+   right-side clearance that avoids every collision without either
+   under-covering some sizes or wasting space on others. Made it yield
+   instead: .dock-yield fades/disables it while JS (see
+   initPassportHeroYield) reports the dock's own fixed rect actually
+   overlaps .hero-foot or .metrics, at whatever size that happens to
+   be true, rather than guessing a breakpoint. Fully hidden rather than
+   just relocated so it can never land on some *other* piece of
+   content instead -- it reappears the instant the visitor scrolls
+   past, which is well before they've had a reason to click it anyway. */
+.passport-dock-btn.dock-yield {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease !important;
+}
+
 .passport-dock-counter {
   background: #E8AF30 !important;
   color: #14131C !important;
@@ -10258,6 +10647,23 @@ a[href*="gobunny"] img {
   border-radius: 999px !important;
   font-size: 0.75rem !important;
   font-weight: 900 !important;
+}
+
+/* Stamp-thump: one small positive-feedback moment when a new stamp
+   actually unlocks (see the isNew guard in window.unlockStamp below),
+   not on every re-trigger of a section's already-unlocked playground
+   toy. No !important lock on transform anywhere else on this element,
+   so a plain animation is enough -- unlike the hero badges (PART 2),
+   nothing here needs the opacity-only workaround. Same overshoot ease
+   used everywhere else on the page, not a new curve. */
+@keyframes passportCounterThump {
+  0%   { transform: scale(1) rotate(0deg); }
+  35%  { transform: scale(1.3) rotate(-9deg); }
+  65%  { transform: scale(0.94) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.passport-dock-counter.thump {
+  animation: passportCounterThump 0.36s cubic-bezier(.34,1.56,.64,1);
 }
 
 /* Icon-only on narrow screens: the label collapses away and the counter
@@ -10891,9 +11297,23 @@ body, html {
 }
 
 /* Headings Crisp & Restrained */
-h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
+h1, h2, h3, h4, .sec-title, .hero-role {
   font-family: var(--fd) !important;
   letter-spacing: -0.025em !important;
+  font-weight: 800 !important;
+}
+
+/* Project-card titles carved out of the shared heading rule above:
+   readability feedback was specifically about card text feeling
+   cramped, not the rest of the site's display type, so this loosens
+   tracking for .card-name only rather than opening up every h1-h4
+   sitewide. A first pass to -0.008em wasn't a big enough move to
+   register as "looser" against Clash Display's naturally tight-set
+   default -- pushed past neutral into slightly positive tracking so
+   the change actually reads at a glance, not just on close inspection. */
+.card-name {
+  font-family: var(--fd) !important;
+  letter-spacing: 0.008em !important;
   font-weight: 800 !important;
 }
 
@@ -11211,7 +11631,9 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
 .d-pill-tag {
   font-family: var(--fd) !important;
-  font-size: 0.65rem !important;
+  /* Critique finding (2026-09-02, /impeccable typeset): computed to
+     10.4px, under the 11px floor. */
+  font-size: 0.7rem !important;
   font-weight: 900 !important;
   color: #1E1C1A !important;
   letter-spacing: 0.05em !important;
@@ -11289,6 +11711,39 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   box-shadow: 0 2px 5px rgba(0,0,0,0.18) !important;
   border-left: 2px dashed rgba(43,40,37,0.3) !important;
   border-right: 2px dashed rgba(43,40,37,0.3) !important;
+}
+
+/* PART 3 -- gingham fabric-swatch sticker, pinned to the sketchbook's
+   4th corner (top-left is the red tape, top-right the Annecy seal,
+   bottom-right the gold tape -- bottom-left was still empty). Same
+   "no image asset" idea the site already uses for its dashed-line and
+   hazard-stripe textures elsewhere: two overlapping repeating-linear-
+   gradients at 0deg/90deg, in two of the shared brand accent tokens,
+   multiply-blended over a cream base so their crossings darken into a
+   third tone -- real two-thread gingham reads as three shades the same
+   way. One corner is clipped on the diagonal instead of dashed, so it
+   sits in the same tape/sticker family without being a copy of it. */
+.hero-fabric-swatch {
+  position: absolute !important;
+  bottom: -14px !important;
+  left: 45px !important;
+  width: 50px !important;
+  height: 42px !important;
+  z-index: 15 !important;
+  background-color: #FFFDF8 !important;
+  background-image:
+    repeating-linear-gradient(0deg, var(--teal) 0 3px, transparent 3px 10px),
+    repeating-linear-gradient(90deg, var(--gold) 0 3px, transparent 3px 10px) !important;
+  background-blend-mode: multiply, multiply !important;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 22% 100%, 0 78%) !important;
+  border: 1px solid rgba(32,28,22,0.18) !important;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.2) !important;
+  transform: rotate(-9deg) !important;
+  opacity: 0.96 !important;
+}
+[data-theme="dark"] .hero-fabric-swatch {
+  border-color: rgba(255,255,255,0.22) !important;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.5) !important;
 }
 
 .hero-seal-sticker {
@@ -11420,6 +11875,53 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   padding: clamp(0.45rem, 1vh, 0.6rem) 1.2rem !important;
 }
 
+/* Critique finding (2026-09-02, /impeccable layout): even with the dead
+   duplicate .hero rule (formerly ~line 11658) removed, the two-column
+   spread's own *content* height (measured 691px on the left page at
+   1366x768) still overflowed .hero-foot below the fold at the two most
+   common laptop resolutions -- the vw/vh-relative clamp()s above scale
+   down some, but not enough at 768-820px tall. Left-page content was
+   the bottleneck (the right page's video card only needs ~518px and
+   was just being grid-stretched to match); tightened its own biggest
+   levers here -- wordmark image, paragraph/row margins, page padding.
+   Gated to min-width:901px, matching .hero-sketchbook's own two-column
+   breakpoint, so the single-column mobile flow (which never tried to
+   fit in one viewport) is untouched.
+   MUST come after #heroTitleImg/.hero-title img, .hero-bio, .disc-row,
+   .metrics and .hero-foot above (same selector specificity, all
+   !important -- a media-query condition does not add specificity, so
+   an earlier conditional block loses to a later unconditional one on
+   every shared property; this bit us on the first placement attempt,
+   verified via computed style before moving it here). */
+@media (max-height: 820px) and (min-width: 901px) {
+  #heroTitleImg,
+  .hero-title img {
+    max-width: min(250px, 100%) !important;
+  }
+  .book-page-left,
+  .book-page-right {
+    padding-top: 26px !important;
+    padding-bottom: 26px !important;
+  }
+  .hero-badge-pill.stamp-rv {
+    margin-bottom: 8px !important;
+  }
+  .hero-role {
+    margin-bottom: 6px !important;
+  }
+  .hero-bio {
+    line-height: 1.42 !important;
+    margin-bottom: 8px !important;
+  }
+  .disc-row {
+    margin: 6px 0 !important;
+  }
+  .metrics {
+    margin-top: 6px !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+}
+
 /* Kill the hand-drawn "boil" filter on the hire badge — it's built for
    illustration linework, not body text, and just reads as jitter here */
 .hero-badge-pill {
@@ -11460,12 +11962,18 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   color: #F5BA42 !important;
 }
 .seal-title {
-  font-size: 0.68rem !important;
+  /* Critique finding (2026-09-02, /impeccable typeset): computed to
+     10.88px, just under the 11px floor. */
+  font-size: 0.72rem !important;
   letter-spacing: 0.02em !important;
 }
 .seal-sub {
-  font-size: 0.4rem !important;
-  letter-spacing: 0.03em !important;
+  /* Critique finding: 0.4rem (6.4px) was far under the 11px floor --
+     the badge is only 50px tall so this can't match seal-title's size,
+     but it needs to clear the floor; checked the oval still has room
+     (verified via getBoundingClientRect after this change). */
+  font-size: 0.7rem !important;
+  letter-spacing: 0.02em !important;
 }
 
 /* Field Log — a finished, tab-labelled card: real divider, no stray
@@ -11482,7 +11990,17 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   border-bottom-color: rgba(245, 240, 230, 0.18) !important;
 }
 .d-pill-tag {
-  background: #C85A48 !important;
+  /* Critique finding (2026-09-02, /impeccable typeset): #FFFDF8 text on
+     #C85A48 measured 4.1:1, under the 4.5:1 AA floor for this size.
+     Darkened the background only (same hue, keeps the site's warm-red
+     identity). #B45140 alone cleared light mode (4.93:1 vs #FFFDF8)
+     but not dark mode -- a higher-specificity [data-theme="dark"]
+     .d-pill-tag rule elsewhere wins the text color there (#F4F0E8,
+     slightly dimmer than #FFFDF8), landing at only 4.41:1. #AA4C3D
+     clears both: 5.42:1 in light mode, 4.85:1 in dark -- verified via
+     the WCAG relative-luminance formula against each theme's actual
+     resolved text color, not assumed. */
+  background: #AA4C3D !important;
   color: #FFFDF8 !important;
   padding: 3px 8px !important;
   border-radius: 4px !important;
@@ -11516,15 +12034,16 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 }
 
 
-/* Hero Spacing below Fixed Navigation */
-.hero {
-  position: relative !important;
-  padding-top: calc(72px + clamp(2rem, 4vw, 3.8rem)) !important;
-  padding-bottom: clamp(2rem, 4vw, 3.5rem) !important;
-  padding-left: clamp(1rem, 3.5vw, 3rem) !important;
-  padding-right: clamp(1rem, 3.5vw, 3rem) !important;
-  box-sizing: border-box !important;
-}
+/* Hero Spacing below Fixed Navigation -- byte-identical duplicate of the
+   .hero rule at ~line 11470 removed here (found during /impeccable
+   critique + layout, 2026-09-02): it was declared AFTER the later
+   "HERO REFINEMENT PASS" block (~line 11488, same specificity, later
+   wins) and was silently re-widening padding-top/padding-bottom back
+   to the pre-refinement values, directly undoing that pass's whole
+   stated goal of fitting the hero+footer in one viewport. Confirmed
+   via computed style before this edit: padding-top was 126.64px
+   (the dead duplicate's calc(72px + clamp(2rem,4vw,3.8rem))) instead
+   of the refinement pass's calc(72px + clamp(0.6rem,2.2vh,1.6rem)). */
 
 /* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
    Content fix (see earlier commit) trimmed these to just "01"-"05"; this
@@ -11824,6 +12343,39 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   .bp-doodle--note  { left: 74%; top: 56%; width: 30px; }
   .bp-doodle--spark { left: 15%; top: 60%; width: 28px; }
   .bp-doodle--heart { left: 39%; top: 66%; width: 30px; }
+
+  /* PART 2.d -- Very slow, small-amplitude drift as the page scrolls
+     past, restrained per "calm pages" (a few px, not an attention
+     grab). Each doodle gets its own small hand-set amplitude/direction
+     rather than one shared motion, same "specific values, not a
+     randomizer" spirit as .bp-float's desk-object placement above.
+     Chrome/Edge/Safari 26+ only -- animation-range:entry is required
+     in the @supports check itself to filter out partial-support
+     browsers, per the scroll-driven-animations guide. Purely
+     decorative and progressively enhanced, so unsupported browsers
+     (Firefox included) just keep today's static doodles -- no JS
+     scroll-listener fallback is worth writing for this. */
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    @media (prefers-reduced-motion: no-preference) {
+      .bp-doodle {
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+      .bp-doodle--swirl { animation-name: bpDoodleDriftSwirl; }
+      .bp-doodle--note  { animation-name: bpDoodleDriftNote; }
+      .bp-doodle--spark { animation-name: bpDoodleDriftSpark; }
+      .bp-doodle--heart { animation-name: bpDoodleDriftHeart; }
+    }
+  }
+}
+
+@supports ((animation-timeline: view()) and (animation-range: entry)) {
+  @keyframes bpDoodleDriftSwirl { from { transform: translateY(-7px) rotate(-3deg); } to { transform: translateY(6px) rotate(2deg); } }
+  @keyframes bpDoodleDriftNote  { from { transform: translateY(5px); }                to { transform: translateY(-6px); } }
+  @keyframes bpDoodleDriftSpark { from { transform: translateY(-4px) rotate(4deg); }  to { transform: translateY(7px) rotate(-4deg); } }
+  @keyframes bpDoodleDriftHeart { from { transform: translateY(6px); }                to { transform: translateY(-5px); } }
 }
 
 /* 3-column grid: plant/journal sit in the left column, headphones/pencil
@@ -12825,6 +13377,83 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 #graphic-design .stamp-rv.in { transform: rotate(-8deg) !important; }
 #music .stamp-rv.in          { transform: rotate(7deg) !important; }
 
+/* PART 2.c -- Hero badges reuse .stamp-rv (same class, same shared
+   reveal observer, same overshoot ease as the discipline stamps above)
+   instead of the default .rv fade. Two things make the hero case
+   different from the section stamps: .hero .rv is force-visible
+   (no scroll reveal at all inside the hero), so .stamp-rv needs its
+   own hidden/settle rules scoped to .hero rather than .sec; and both
+   .hero-badge-pill and .hero-seal-sticker already carry their own
+   resting `transform: rotate(...) !important` (the tilted-sticker
+   look) -- a running animation/transition can never win against an
+   !important rule on the same property, so animating *their* transform
+   would be silently inert. Instead each sticker itself only fades in
+   (opacity, which isn't locked), while the actual scale+rotate stamp
+   snap plays on an inner element that has no such lock: .seal-inner
+   (already existed) and .hero-badge-pill-inner (added for this). Net
+   effect reads the same as intended -- the sticker settles into place
+   and its contents stamp down -- without fighting the tilt. */
+.js-on .hero .stamp-rv { opacity: 0; }
+.hero .stamp-rv { transition: opacity 0.4s var(--ease); }
+.hero .stamp-rv.in { opacity: 1; }
+
+.js-on .hero .stamp-rv .hero-badge-pill-inner,
+.js-on .hero .stamp-rv .seal-inner {
+  opacity: 0;
+  transform: scale(0.4) rotate(-25deg);
+}
+.hero .stamp-rv .hero-badge-pill-inner,
+.hero .stamp-rv .seal-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  transition: opacity 0.35s var(--ease), transform 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+/* Small stagger so the two badges don't snap in on the exact same frame. */
+.hero .hero-seal-sticker.stamp-rv .seal-inner { transition-delay: 0.12s; }
+.hero .stamp-rv.in .hero-badge-pill-inner,
+.hero .stamp-rv.in .seal-inner {
+  opacity: 1;
+  transform: none;
+}
+
+/* PART 2.b -- Discoverability nudge for the 7 click-to-reveal triggers
+   (3 hero .metric-toggle stat tiles, 3 discipline .disc-stamp.note-toggle
+   icons, About's .bp-badge--toggle ID card) -- none of them show any
+   at-rest signal that they're clickable. Reuses the shared reveal
+   IntersectionObserver (added to its query below) so it fires once,
+   the first time each trigger enters the viewport, and never again
+   (the observer unobserves after adding .in, same as .rv/.stamp-rv) --
+   never a loop, never a repeat on a later scroll past.
+
+   Delayed ~0.5s after .in lands so the nudge reads as a distinct
+   follow-up cue, not a fight with an element's own entrance motion:
+   the 3 disc-stamp icons already do their own press-in via .stamp-rv,
+   and the ID card's ancestor (.bp-col--badge) already does its own
+   .rv slide-fade -- both finish within that window. The hero metric
+   tiles have no entrance of their own, so the delay just reads as a
+   short beat before the nudge, which is fine too.
+
+   Like the hero badges above, the 3 disc-stamp buttons already carry
+   an !important resting `transform: rotate(...)` once .stamp-rv.in
+   lands (see #illustration .stamp-rv.in etc.) -- animating *their*
+   transform would be inert for the same reason, so the pulse plays on
+   the icon svg inside them instead, not the button itself. */
+@keyframes discoverNudge {
+  0%   { transform: scale(1) rotate(0deg); }
+  50%  { transform: scale(1.14) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.nudge-once.in {
+  animation: discoverNudge 0.5s cubic-bezier(.34,1.56,.64,1) 0.55s both;
+}
+.disc-stamp.nudge-once.in {
+  animation: none; /* would be inert anyway -- see comment above */
+}
+.disc-stamp.nudge-once.in svg {
+  animation: discoverNudge 0.5s cubic-bezier(.34,1.56,.64,1) 0.55s both;
+}
+
 /* --- Contact continues About's red world (site-wide "bold covers, calm
    pages" plan). Originally a deeper shade of red than About, but that
    created a hard visible seam -- two flat color blocks meeting at a
@@ -13287,8 +13916,9 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     <!-- Frame-Breaking Collage Elements Pinned Directly to Notebook -->
     <div class="hero-tape-top" aria-hidden="true"></div>
     <div class="hero-tape-bottom" aria-hidden="true"></div>
+    <div class="hero-fabric-swatch" aria-hidden="true"></div>
     <div class="hero-bookmark-ribbon" aria-hidden="true"></div>
-    <div class="hero-seal-sticker" title="Screened at Annecy IAFF 2025 — Paris-Lyon-Singapour Programme">
+    <div class="hero-seal-sticker stamp-rv" title="Screened at Annecy IAFF 2025 — Paris-Lyon-Singapour Programme">
       <div class="seal-inner">
         <span class="seal-star">★</span>
         <span class="seal-title">ANNECY '25</span>
@@ -13300,9 +13930,11 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     <!-- Left Page (Artist Profile & Identity) -->
     <div class="book-page-left">
-      <div class="hero-badge-pill">
-        <span class="pulse-dot"></span>
-        <span>AVAILABLE FOR HIRE • SG BASED</span>
+      <div class="hero-badge-pill stamp-rv">
+        <span class="hero-badge-pill-inner">
+          <span class="pulse-dot"></span>
+          <span>AVAILABLE FOR HIRE • SG BASED</span>
+        </span>
       </div>
 
       <div style="position:relative; display:inline-block; max-width:100%;">
@@ -13331,7 +13963,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
            fact now (see .metric-toggle / .metric-reveal). -->
       <div class="metrics d3">
         <div class="metric">
-          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-2025-reveal" aria-label="Show fact">
+          <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-2025-reveal" aria-label="Show fact">
             <span class="metric-num">2025</span>
             <span class="metric-lbl">Annecy IAFF, Paris Lyon Singapore programme</span>
           </button>
@@ -13339,7 +13971,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         </div>
         <div class="metric-sep"></div>
         <div class="metric">
-          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-50-reveal" aria-label="Show fact">
+          <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-50-reveal" aria-label="Show fact">
             <span class="metric-num">50+</span>
             <span class="metric-lbl">International commissions, 5-star satisfaction</span>
           </button>
@@ -13347,7 +13979,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         </div>
         <div class="metric-sep"></div>
         <div class="metric">
-          <button type="button" class="metric-toggle" aria-expanded="false" aria-controls="metric-2nd-reveal" aria-label="Show fact">
+          <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-2nd-reveal" aria-label="Show fact">
             <span class="metric-num">2nd</span>
             <span class="metric-lbl">NTU — Imperial Design-a-thon, ReKindle</span>
           </button>
@@ -13467,6 +14099,12 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
 <div class="dl-sec" id="downloads">
 
+  <div class="dl-drawer-front" aria-hidden="true"></div>
+  <div class="dl-drawer-handle" aria-hidden="true"></div>
+  <div class="dl-drawer-side dl-drawer-side-left" aria-hidden="true"></div>
+  <div class="dl-drawer-side dl-drawer-side-right" aria-hidden="true"></div>
+  <div class="dl-drawer-bottom" aria-hidden="true"></div>
+
   <div class="dl-in">
 
     <h2 class="dl-h">Need a quick look? <em>Download the portfolio.</em></h2>
@@ -13571,7 +14209,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2025 · Self-directed</div><h3 class="card-name">Keep Yourself Safe</h3><p class="card-role">Solo produced from script to final sound. Writing, animation, and sound design handled in one pipeline.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Rough Animator</span></div></div>
+    <div class="card-body"><h3 class="card-name">Keep Yourself Safe</h3><p class="card-role">Solo produced from script to final sound. Writing, animation, and sound design handled in one pipeline.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Rough Animator</span></div></div>
 
    </article>
 
@@ -13587,7 +14225,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023 · Group Project</div><h3 class="card-name">A Stray Dog</h3><p class="card-role">Stop-motion short with puppets and sets built entirely from waste materials. Post-production and prop design.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">CapCut</span></div></div>
+    <div class="card-body"><h3 class="card-name">A Stray Dog</h3><p class="card-role">Stop-motion short with puppets and sets built entirely from waste materials. Post-production and prop design.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">CapCut</span></div></div>
 
    </article>
 
@@ -13603,7 +14241,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · Self-directed</div><h3 class="card-name">Dear Friend</h3><p class="card-role">Period gothic 2D animated short. Full pipeline from rough character sketches through finished designs to environment shots.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Dear Friend</h3><p class="card-role">Period gothic 2D animated short. Full pipeline from rough character sketches through finished designs to environment shots.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -13616,7 +14254,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
      <span class="badge bs">Capstone</span>
      <div class="ov"><span class="ov-btn">View Project →</span></div>
     </a>
-    <div class="card-body"><div class="card-yr">2025—2026 · Final Year Capstone</div><h3 class="card-name">Jasmine — Visual Development</h3><p class="card-role">Character design, environment concept art, and world-building for an Indo-jazz fusion multimedia project.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Jasmine — Visual Development</h3><p class="card-role">Character design, environment concept art, and world-building for an Indo-jazz fusion multimedia project.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -13632,7 +14270,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023 · Academic</div><h3 class="card-name">Chase — Storyboard</h3><p class="card-role">Kinetic chase sequence across bridge, motorbike, and boat. Focused on spatial continuity and tempo.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+    <div class="card-body"><h3 class="card-name">Chase — Storyboard</h3><p class="card-role">Kinetic chase sequence across bridge, motorbike, and boat. Focused on spatial continuity and tempo.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
 
    </article>
 
@@ -13648,7 +14286,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">Ongoing · Personal Practice</div><h3 class="card-name">Digital Painting Studies</h3><p class="card-role">Environment and figure studies including interior doorway lighting and Egyptian temple statues.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Digital Painting Studies</h3><p class="card-role">Environment and figure studies including interior doorway lighting and Egyptian temple statues.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -13671,7 +14309,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="illustration-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></button> Illustration<br>&amp; Comics</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="illustration-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></button> Illustration<br>&amp; Comics</h2>
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="illustration-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Decided to go to art school after watching Blue Period.</span></div>
@@ -13750,7 +14388,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · NTU</div><h3 class="card-name">Campus Wellbeing Comic Planner</h3><p class="card-role">Multi-episode comic planner and campaign depicting everyday moments of inclusion, distributed to 33,000 students.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Adobe Illustrator</span></div></div>
+    <div class="card-body"><h3 class="card-name">Campus Wellbeing Comic Planner</h3><p class="card-role">Multi-episode comic planner and campaign depicting everyday moments of inclusion, distributed to 33,000 students.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Adobe Illustrator</span></div></div>
 
    </article>
 
@@ -13766,7 +14404,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023 · NTU Career and Attachment Office</div><h3 class="card-name">Internship Experience Comic Series</h3><p class="card-role">6-part comic series depicting student internship experiences, deployed campus-wide as an engagement campaign.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+    <div class="card-body"><h3 class="card-name">Internship Experience Comic Series</h3><p class="card-role">6-part comic series depicting student internship experiences, deployed campus-wide as an engagement campaign.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
 
    </article>
 
@@ -13779,7 +14417,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
      <span class="badge bs">Capstone</span>
      <div class="ov"><span class="ov-btn">Launch Multimedia Reader <i data-lucide="arrow-up-right"></i></span></div>
     </a>
-    <div class="card-body"><div class="card-yr"><span style="display:inline-flex; align-items:center; gap:4px; background:rgba(99,102,241,0.15); color:var(--ink); padding:2px 8px; border-radius:12px; font-weight:600; font-size:0.75rem; margin-right:6px;"><i data-lucide="sparkles" style="width:12px; height:12px;"></i> Multimedia Reader</span> 2025—2026 · Final Year Capstone</div><h3 class="card-name"><a href="jasmine_reader.html" style="color:inherit; text-decoration:none;">Jasmine — Illustration and Comics <i data-lucide="arrow-up-right" style="width:14px; height:14px; vertical-align:middle; opacity:0.6;"></i></a></h3><p class="card-role">Comic and illustration work within the Jasmine world — character portraits, sequential comic panels, and world-building spreads.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name"><a href="jasmine_reader.html" style="color:inherit; text-decoration:none;">Jasmine — Illustration and Comics <i data-lucide="arrow-up-right" style="width:14px; height:14px; vertical-align:middle; opacity:0.6;"></i></a></h3><p class="card-role">Comic and illustration work within the Jasmine world — character portraits, sequential comic panels, and world-building spreads.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -13797,7 +14435,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2020 to Present · International Clients</div><h3 class="card-name">Character and Concept Art, Global Clients</h3><p class="card-role">Over 50 personalised character commissions delivered across five years with consistent five-star satisfaction.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span><span class="tool">Procreate</span></div></div>
+    <div class="card-body"><h3 class="card-name">Character and Concept Art, Global Clients</h3><p class="card-role">Over 50 personalised character commissions delivered across five years with consistent five-star satisfaction.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span><span class="tool">Photoshop</span><span class="tool">Procreate</span></div></div>
 
    </article>
 
@@ -13813,7 +14451,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · Personal</div><h3 class="card-name">Nangeli</h3><p class="card-role">Black-and-white narrative comic about a 19th-century Kerala woman who cut off her breast as a protest against the breast tax. A story of bodily autonomy and resistance.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
+    <div class="card-body"><h3 class="card-name">Nangeli</h3><p class="card-role">Black-and-white narrative comic about a 19th-century Kerala woman who cut off her breast as a protest against the breast tax. A story of bodily autonomy and resistance.</p><div class="card-tools"><span class="tool">Clip Studio Paint</span></div></div>
 
    </article>
 
@@ -13926,7 +14564,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">May 2024 — Oct 2025 · NTU OIE</div><h3 class="card-name">Global Connect Fellowship — Documentary</h3><p class="card-role">Conceptualised and produced a 4-minute documentary for the Global Connect Fellowship Programme 2024. Also covered event photography across 3 OIE events.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">Lightroom</span></div></div>
+    <div class="card-body"><h3 class="card-name">Global Connect Fellowship — Documentary</h3><p class="card-role">Conceptualised and produced a 4-minute documentary for the Global Connect Fellowship Programme 2024. Also covered event photography across 3 OIE events.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">Lightroom</span></div></div>
 
    </article>
 
@@ -13942,7 +14580,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · SOCRAT AI, Freelance</div><h3 class="card-name">SOCRAT AI — Animated Explainer</h3><p class="card-role">Designed, produced, edited, and appeared in a 3-minute animated explainer for a startup launch, using motion graphics and data visualisation.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span><span class="tool">Illustrator</span></div></div>
+    <div class="card-body"><h3 class="card-name">SOCRAT AI — Animated Explainer</h3><p class="card-role">Designed, produced, edited, and appeared in a 3-minute animated explainer for a startup launch, using motion graphics and data visualisation.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span><span class="tool">Illustrator</span></div></div>
 
    </article>
 
@@ -13960,7 +14598,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">May—Jul 2025 · VIPColor, Venture Corporation</div><h3 class="card-name">VIPCOLOR — How-To Video Series</h3><p class="card-role">Produced and filmed 17 tutorial and product videos for the company website and social channels.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">CapCut</span></div></div>
+    <div class="card-body"><h3 class="card-name">VIPCOLOR — How-To Video Series</h3><p class="card-role">Produced and filmed 17 tutorial and product videos for the company website and social channels.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">CapCut</span></div></div>
 
    </article>
 
@@ -13976,7 +14614,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024—2026 · Music District NTU ADM</div><h3 class="card-name">Music District — Event Videos</h3><p class="card-role">Valentine's performance opening teaser and full event highlights reel as Publicity Director.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span></div></div>
+    <div class="card-body"><h3 class="card-name">Music District — Event Videos</h3><p class="card-role">Valentine's performance opening teaser and full event highlights reel as Publicity Director.</p><div class="card-tools"><span class="tool">Premiere Pro</span><span class="tool">After Effects</span></div></div>
 
    </article>
 
@@ -13999,7 +14637,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="graphic-design-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></button> Graphic Design<br>&amp; Brand</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="graphic-design-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></button> Graphic Design<br>&amp; Brand</h2>
     <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="graphic-design-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Wanted to be a fashion designer in Paris as a kid. Studied French for 7 years. Still can't really speak it.</span></div>
@@ -14069,7 +14707,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">App Design Concept</div><h3 class="card-name">ReKindle</h3><p class="card-role">Award-winning app design concept for NTU — Imperial College London Sustainability Designathon. Connects seniors with youngsters with a swipe-to-match feature and gamified interaction.</p><div class="card-tools"><span class="tool">UI/UX</span><span class="tool">Figma</span></div></div>
+    <div class="card-body"><h3 class="card-name">ReKindle</h3><p class="card-role">Award-winning app design concept for NTU — Imperial College London Sustainability Designathon. Connects seniors with youngsters with a swipe-to-match feature and gamified interaction.</p><div class="card-tools"><span class="tool">UI/UX</span><span class="tool">Figma</span></div></div>
 
    </article>
 
@@ -14085,7 +14723,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023—2024 · NTU</div><h3 class="card-name">NTU — Web and Social Banners</h3><p class="card-role">WSS portal banners, Global Conference for Women Leaders in Materials Science, and "World's Best Young University" recruitment banner.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">NTU — Web and Social Banners</h3><p class="card-role">WSS portal banners, Global Conference for Women Leaders in Materials Science, and "World's Best Young University" recruitment banner.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -14101,7 +14739,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023—2024 · NTUSU</div><h3 class="card-name">NTU FEST — Full Design Output</h3><p class="card-role">Publicity and Publications Director. All posters, social visuals, and merchandise. Managed design sub-committee.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span><span class="tool">InDesign</span></div></div>
+    <div class="card-body"><h3 class="card-name">NTU FEST — Full Design Output</h3><p class="card-role">Publicity and Publications Director. All posters, social visuals, and merchandise. Managed design sub-committee.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span><span class="tool">InDesign</span></div></div>
 
    </article>
 
@@ -14117,7 +14755,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · Academic</div><h3 class="card-name">Obesity — Information Visualisation</h3><p class="card-role">WHO and World Obesity Federation statistics translated into a structured visual explainer bridging design and data visualisation.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Figma</span></div></div>
+    <div class="card-body"><h3 class="card-name">Obesity — Information Visualisation</h3><p class="card-role">WHO and World Obesity Federation statistics translated into a structured visual explainer bridging design and data visualisation.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Figma</span></div></div>
 
    </article>
 
@@ -14133,7 +14771,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2025—2026 · Music District NTU ADM</div><h3 class="card-name">Music District — Social Media Assets</h3><p class="card-role">Sunset Jams poster, Makeout Drive Recap, Melody of the Drowned Halloween recap, and drum-kit sign-up poster as Publicity Director.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Music District — Social Media Assets</h3><p class="card-role">Sunset Jams poster, Makeout Drive Recap, Melody of the Drowned Halloween recap, and drum-kit sign-up poster as Publicity Director.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -14149,7 +14787,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2025 · Brand Identity</div><h3 class="card-name">GoBunny</h3><p class="card-role">High-protein yogurt drinks and snacks for people who refuse to choose between "good for you" and "actually good." Quick, sweet, and a little cheeky.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">GoBunny</h3><p class="card-role">High-protein yogurt drinks and snacks for people who refuse to choose between "good for you" and "actually good." Quick, sweet, and a little cheeky.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -14167,7 +14805,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · Personal, Speculative</div><h3 class="card-name">Green Arrow — Mock Brand Identity</h3><p class="card-role">Full mock brand system — logo lockups in three colourways, event poster, tote bag mockup, and teaser ad.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Green Arrow — Mock Brand Identity</h3><p class="card-role">Full mock brand system — logo lockups in three colourways, event poster, tote bag mockup, and teaser ad.</p><div class="card-tools"><span class="tool">Adobe Illustrator</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -14185,7 +14823,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">Personal, Speculative</div><h3 class="card-name">Mock Event Poster Series</h3><p class="card-role">"TimeSync," "Little Hope," "Do You Have Broken Crayons?," "You Are Lost?," "Unknown," "Feeling Bored?" — corporate to moody.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
+    <div class="card-body"><h3 class="card-name">Mock Event Poster Series</h3><p class="card-role">"TimeSync," "Little Hope," "Do You Have Broken Crayons?," "You Are Lost?," "Unknown," "Feeling Bored?" — corporate to moody.</p><div class="card-tools"><span class="tool">Illustrator</span><span class="tool">Photoshop</span></div></div>
 
    </article>
 
@@ -14208,7 +14846,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle" aria-expanded="false" aria-controls="music-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></button> Music<br>Production</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="music-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></button> Music<br>Production</h2>
     <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="music-margin-note" style="transform: rotate(3deg);"><span class="margin-note-inner">↳ Couldn't afford to hire musicians for my own projects, so I became the music producer instead.</span></div>
@@ -14275,7 +14913,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2025—2026 · Final Year Capstone</div><h3 class="card-name"><a href="project.html?id=jasmine-album" style="color:inherit; text-decoration:none;">Jasmine — Concept Album</a></h3><p class="card-role">Original Indo-jazz fusion EP composed, produced, and directed for physical and streaming release. Tracks: "Welcome to the Jasmine," "Home Pt. 1 and 2," "Night Time," "Kopi."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
+    <div class="card-body"><h3 class="card-name"><a href="project.html?id=jasmine-album" style="color:inherit; text-decoration:none;">Jasmine — Concept Album</a></h3><p class="card-role">Original Indo-jazz fusion EP composed, produced, and directed for physical and streaming release. Tracks: "Welcome to the Jasmine," "Home Pt. 1 and 2," "Night Time," "Kopi."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
 
    </article>
 
@@ -14291,7 +14929,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2024 · Collaborative</div><h3 class="card-name">Short Film Score</h3><p class="card-role">Original score for a friend's short film, written to serve the narrative without overpowering the image.</p><div class="card-tools"><span class="tool">GarageBand</span></div></div>
+    <div class="card-body"><h3 class="card-name">Short Film Score</h3><p class="card-role">Original score for a friend's short film, written to serve the narrative without overpowering the image.</p><div class="card-tools"><span class="tool">GarageBand</span></div></div>
 
    </article>
 
@@ -14307,7 +14945,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
 
     </a>
 
-    <div class="card-body"><div class="card-yr">2023—2025 · Personal</div><h3 class="card-name">Original Tracks</h3><p class="card-role">Standalone compositions: "Cloudy Days," "Club Got Boots," and the instrumental demo "Paradise."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
+    <div class="card-body"><h3 class="card-name">Original Tracks</h3><p class="card-role">Standalone compositions: "Cloudy Days," "Club Got Boots," and the instrumental demo "Paradise."</p><div class="card-tools"><span class="tool">GarageBand</span><span class="tool">Splice</span></div></div>
 
    </article>
 
@@ -14357,7 +14995,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
        <span class="bp-clip-bar"></span>
       </div>
 
-      <div class="bp-badge bp-badge--toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="bp-facts-panel" aria-label="Annmary Saji, backstage pass — show a few facts">
+      <div class="bp-badge bp-badge--toggle nudge-once" role="button" tabindex="0" aria-expanded="false" aria-controls="bp-facts-panel" aria-label="Annmary Saji, backstage pass — show a few facts">
        <div class="bp-name-card" role="img" aria-label="Hello, my name is Annmary"></div>
        <img class="bp-name-stickers" src="assets/HELLO MY NAME IS/stickers.svg" alt="" aria-hidden="true">
       </div>
@@ -14728,7 +15366,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
   // 4. Scrapbook Physics Reveal Observer
   (function initScrollObserver() {
     if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd').forEach(el => el.classList.add('in'));
+      document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd, .nudge-once').forEach(el => el.classList.add('in'));
       return;
     }
     const observer = new IntersectionObserver((entries) => {
@@ -14743,7 +15381,7 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
       threshold: 0.06
     });
 
-    document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd').forEach(el => observer.observe(el));
+    document.querySelectorAll('.rv, .stamp-rv, .card, .sec-hd, .nudge-once').forEach(el => observer.observe(el));
   })();
   
   // 5. Sticky Nav
@@ -14961,6 +15599,14 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReduced) return;
 
+    // PART 3 -- canvas fillStyle/strokeStyle can't take a literal
+    // var(--token) string, so the two new hand-drawn hero doodle colors
+    // below are read from the real CSS custom properties (the shared
+    // brand accent set, promoted to :root) instead of a second
+    // hardcoded hex copy that could drift out of sync with them.
+    const rootStyle = getComputedStyle(document.documentElement);
+    const accentTok = (name, fallback) => rootStyle.getPropertyValue(name).trim() || fallback;
+
     // Each section's doodle types are its own thematic icon set (plus a neutral
     // "dot" for texture) so the falling elements read as belonging to that
     // section's topic, not a generic assortment. Colors are assigned per TYPE
@@ -14971,9 +15617,13 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         id: 'hero',
         canvasId: 'canvas-hero',
         // one representative color per discipline below, so the hero doodles
-        // visually summarize the whole site rather than a random rainbow
-        types: ['sparkle', 'star5', 'heart', 'spiral', 'dot'],
-        palette: ['#3B82F6', '#E05A47', '#10B981', '#EC008C', '#8B5CF6']
+        // visually summarize the whole site rather than a random rainbow --
+        // handStar/handSunburst (PART 3) are the two deliberately-imperfect
+        // additions, in gold/tangerine so they read as a second, warmer
+        // layer against the five discipline colors rather than a sixth
+        // discipline of their own.
+        types: ['sparkle', 'star5', 'heart', 'spiral', 'dot', 'handStar', 'handSunburst'],
+        palette: ['#3B82F6', '#E05A47', '#10B981', '#EC008C', '#8B5CF6', accentTok('--gold', '#FEB21A'), accentTok('--tangerine', '#EF7A34')]
       },
       {
         id: 'animation',
@@ -15092,6 +15742,63 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
         ctx.moveTo(0, 0); ctx.lineTo(px, py);
       }
       ctx.stroke();
+    }
+
+    // PART 3 -- deliberately imperfect hand-drawn star/sunburst, in
+    // contrast to the regular pentagram star5 and mechanically
+    // alternating burst above. handJitter is a small deterministic hash
+    // (not Math.random) seeded off each particle's own persistent `r` --
+    // renderAllCanvases calls these functions fresh every animation
+    // frame, so real randomness here would flicker/vibrate the shape 60
+    // times a second instead of reading as one hand-drawn mark. Same
+    // idea as the site's other "specific hand-set values, not a
+    // randomizer" scatter placements, just derived instead of
+    // hand-typed, since there isn't a fixed number of these to hand-tune.
+    function handJitter(seed) {
+      const x = Math.sin(seed * 12.9898) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function drawHandStar(ctx, r) {
+      const n = 5;
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const angleJ = handJitter(r * 3.7 + i * 9.1);
+        const radiusJ = handJitter(r * 5.3 + i * 2.4);
+        const angle = -Math.PI / 2 + (i * Math.PI * 2) / n + (angleJ - 0.5) * 0.55;
+        const rad = r * (0.78 + radiusJ * 0.5);
+        pts.push([Math.cos(angle) * rad, Math.sin(angle) * rad]);
+      }
+      ctx.beginPath();
+      pts.forEach((p, i) => (i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1])));
+      ctx.closePath();
+      ctx.stroke();
+      // Faint retrace, offset a hair -- reads as a pen going back over
+      // its own line, the way an actual hand-drawn sketch mark does.
+      ctx.save();
+      ctx.globalAlpha *= 0.4;
+      ctx.translate(r * 0.05, -r * 0.03);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawHandSunburst(ctx, r) {
+      const n = 9;
+      ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const angleJ = handJitter(r * 6.1 + i * 4.3);
+        const lenJ = handJitter(r * 2.9 + i * 7.7);
+        const angle = (i * Math.PI * 2) / n + (angleJ - 0.5) * 0.4;
+        const len = r * (0.55 + lenJ * 0.65);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(angle) * len, Math.sin(angle) * len);
+      }
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha *= 0.35;
+      ctx.translate(r * 0.04, r * 0.02);
+      ctx.stroke();
+      ctx.restore();
     }
 
     function drawHeart(ctx, r) {
@@ -15294,6 +16001,8 @@ h1, h2, h3, h4, .sec-title, .hero-role, .card-name {
     const drawMap = {
       sparkle: drawSparkle,
       star5: drawStar5,
+      handStar: drawHandStar,
+      handSunburst: drawHandSunburst,
       cross: drawCross,
       spiral: drawSpiral,
       asterisk: drawAsterisk,
@@ -17110,6 +17819,13 @@ window.addEventListener('load', () => {
 
   window.unlockStamp = function(disciplineId) {
     if (!disciplineId) return;
+    // Several playground toys re-call unlockStamp for the same
+    // discipline every time their own toy re-opens (see the 4 call
+    // sites for 'illustration' alone), not just on the first genuine
+    // unlock -- only the actual new-unlock case should thump the
+    // counter, or it'd fire every time someone re-opens a toy they'd
+    // already unlocked, which isn't new progress.
+    const isNewUnlock = !window.unlockedVisas.has(disciplineId);
     window.unlockedVisas.add(disciplineId);
 
     const slotMap = {
@@ -17144,6 +17860,14 @@ window.addEventListener('load', () => {
 
     if (counter) counter.textContent = `${count} / 6`;
     if (statusTxt) statusTxt.textContent = `${count} OF 6 ENDORSED`;
+
+    if (isNewUnlock && counter) {
+      // Remove-then-reflow-then-add so the animation restarts cleanly
+      // even if a previous thump's class never got cleaned up.
+      counter.classList.remove('thump');
+      void counter.offsetWidth;
+      counter.classList.add('thump');
+    }
   };
 
   window.triggerSlotJump = function(sectionId) {
@@ -17173,6 +17897,53 @@ window.addEventListener('load', () => {
   // existed -- it silently rendered as nothing. Convert it here, now
   // that the element is actually in the DOM.
   if (window.lucide) window.lucide.createIcons();
+
+  // Critique finding (2026-09-02, /impeccable harden): #passport-dock is
+  // position:fixed with a constant px footprint, while .hero-foot and the
+  // hero .metrics row are ordinary flowed content -- their on-screen
+  // position (and therefore whether they collide with the dock's fixed
+  // corner) depends on viewport size, so no single static breakpoint-based
+  // clearance covers every size without either under- or over-correcting.
+  // Checks the dock's own rect against both on every scroll/resize and
+  // toggles .dock-yield (fade + disable, see the CSS) only while a real
+  // overlap exists -- correct at any viewport size by construction,
+  // instead of guessing one.
+  //
+  // This block was originally placed in the *previous* <script> (right
+  // after the passport pre-unlock timeout), which sits BEFORE this
+  // markup -- getElementById('passport-dock') returned null there, the
+  // guard silently bailed, and no listener ever attached. Same class of
+  // bug as the lucide.createIcons() call directly above; moved here for
+  // the same reason.
+  (function initPassportDockYield() {
+    const dock = document.getElementById('passport-dock');
+    const foot = document.querySelector('.hero-foot');
+    const metrics = document.querySelector('.hero .metrics');
+    if (!dock || (!foot && !metrics)) return;
+
+    function overlaps(a, b) {
+      return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+    }
+
+    let ticking = false;
+    function check() {
+      ticking = false;
+      const dockRect = dock.getBoundingClientRect();
+      const hits =
+        (foot && overlaps(dockRect, foot.getBoundingClientRect())) ||
+        (metrics && overlaps(dockRect, metrics.getBoundingClientRect()));
+      dock.classList.toggle('dock-yield', !!hits);
+    }
+    function requestCheck() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(check);
+      }
+    }
+    window.addEventListener('scroll', requestCheck, { passive: true });
+    window.addEventListener('resize', requestCheck, { passive: true });
+    requestCheck();
+  })();
 </script>
 
 <div class="passport-modal-backdrop" id="passport-modal" onclick="if(event.target===this) togglePassportModal()">
