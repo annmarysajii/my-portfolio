@@ -40,3 +40,10 @@ assets/HELLO MY NAME IS.zip
 assets/my_icon.png
 assets/name.png
 assets/name.svg
+
+# vidtogif/ raw export byproducts - every project here uses its .mp4 as the
+# actual site asset (see coverOverrides in portfolio.html); the .gif/.webp
+# siblings were earlier compression attempts before settling on .mp4 and are
+# not referenced by any page. Kept on disk locally, just not git-tracked.
+assets/vidtogif/*.gif
+assets/vidtogif/*.webp
