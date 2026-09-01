@@ -1523,6 +1523,26 @@ body::before {
   font-weight: 500;
 }
 
+/* Software/tool chips on the actual work-grid cards (.card-tools > .tool) —
+   previously had no rules at all, so the tool names ran together with no
+   separation (e.g. "Clip Studio PaintRough Animator"). */
+.card-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.6rem;
+}
+.tool {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  background: var(--surf);
+  color: var(--ink5);
+  white-space: nowrap;
+}
+
 /* ================================================================
    ABOUT & INTERACTIVE AVATAR DESK STAGE (STUDIO NOTEBOOK SPREAD)
 ================================================================ */
@@ -10748,13 +10768,13 @@ a[href*="gobunny"] img {
 }
 
 /* ================================================================
-   TYPOGRAPHY POLISH: CRISP PLUS JAKARTA SANS & CLEAN MINIMAL TEXT
+   TYPOGRAPHY POLISH: CLEAN MINIMAL TEXT
+   (--fd/--fb intentionally NOT redefined here anymore — this block used to
+   silently swap the whole site's type to Plus Jakarta Sans via !important,
+   which made portfolio.html render in a different font than every other
+   page (index/project/jasmine/game all stay on Clash Display/General Sans).
+   Keeping the smoothing/letter-spacing polish, restoring the shared fonts.)
 ================================================================ */
-
-:root {
-  --fd: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  --fb: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-}
 
 body, html {
   font-family: var(--fb) !important;
