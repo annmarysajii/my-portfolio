@@ -62,14 +62,15 @@ body::before {
 }
 
 :root {
-  --ink: #181715;
-  --ink-deep: #181715;
+  --ink: #14131A;
+  --ink-deep: #14131A;
   --ink5: #5C5854;
   --ink12: rgba(24,23,21,.12);
   --ink07: rgba(24,23,21,.07);
   --blue: #1850A8;
-  --red: #D93020;
-  --yel: #E8B000;
+  --red: #E8432E;
+  --red-ink: #C42D1C;
+  --yel: #F2C030;
   --bg: #F9F6F0;
   --paper: #F9F6F0;
   --surf: #EFE9DC;
@@ -93,17 +94,17 @@ body::before {
   --sec-video-bg: #EBF0EA;  /* Studio Sage Green, desaturated to paper */
   --sec-design-bg: #F3F0E7; /* Manila / Kraft Yellow, desaturated to paper */
   --sec-music-bg: #ECE8F2;  /* Muted Indigo / Periwinkle, desaturated to paper */
-  --sec-about-bg: #111009;  /* Dark Studio Board */
+  --sec-about-bg: #14131A;  /* Dark Studio Board */
   --sec-contact-bg: #F9F6F0;
   /* ── Brand accent palette (used by stars, discs, scrap cards) ── */
   --brand-blue:        #1E4CC8;
-  --brand-yellow:      #E8B000;
-  --brand-red:         #D93020;
+  --brand-yellow:      #F2C030;
+  --brand-red:         #E8432E;
   --accent-pink:       #E84370;
   --accent-teal:       #0E9E72;
 
   /* ── Pop shadow tokens ── */
-  --pop-sh:            3px 4px 0 #181715;
+  --pop-sh:            3px 4px 0 #14131A;
   --pop-sh-sm:         2px 2px 0 rgba(24,23,21,0.7);
 
   /* ── Layout tokens ── */
@@ -112,7 +113,7 @@ body::before {
 
   /* ── Section per-discipline accent colors ── */
   --sec-anim-accent:   #1E4CC8;
-  --sec-illus-accent:  #C44230;
+  --sec-illus-accent:  #E8432E;
   --sec-video-accent:  #1E7A4E;
   --sec-design-accent: #B8840A;
   --sec-music-accent:  #6540CC;
@@ -123,12 +124,12 @@ body::before {
      Flat/theme-invariant on purpose, matching how About itself stays
      the same red regardless of the theme toggle -- no dark-mode
      counterparts needed here, unlike --sec-*-accent above. ── */
-  --gold: #FEB21A;
-  --cobalt: #134686;
+  --gold: #E8AF30;
+  --cobalt: #2B4C7E;
   --magenta: #E2559C;
-  --moss: #3E9E63;
+  --moss: #1E7A4E;
   --tangerine: #EF7A34;
-  --teal: #1F9B93;
+  --teal: #2BC9B5;
 
   /* SRF-01 -- the cutting mat, on body. Sits behind every section;
      see DESK_KIT.md. Pale grey-sage in light mode. */
@@ -144,28 +145,28 @@ body::before {
   --ink5: rgba(242,239,235,.72);
   --ink12: rgba(242,239,235,.15);
   --ink07: rgba(242,239,235,.08);
-  --bg: #0E0D13;
-  --paper: #0E0D13;
+  --bg: #14131A;
+  --paper: #14131A;
   --surf: #1A1826;
   --white: #14131D;
-  --blue: #7098F8;
-  --red: #F05040;
+  --blue: #7AA2F7;
+  --red: #E8432E;
   --yel: #F2C030;
   --sh1: 0 4px 20px rgba(0,0,0,0.4);
   --sh2: 0 8px 30px rgba(0,0,0,0.55);
   --sh3: 0 16px 45px rgba(0,0,0,0.7);
 
-  --sec-hero-bg: #0E0D13;
+  --sec-hero-bg: #14131A;
   --sec-anim-bg: #0C1828;
   --sec-illus-bg: #261018;
   --sec-video-bg: #0E2018;
   --sec-design-bg: #201A08;
   --sec-music-bg: #18102A;
-  --sec-about-bg: #08070D;
-  --sec-contact-bg: #0E0D13;
+  --sec-about-bg: #14131A;
+  --sec-contact-bg: #14131A;
   --brand-blue:        #7AA2F7;
   --brand-yellow:      #F2C030;
-  --brand-red:         #F05040;
+  --brand-red:         #E8432E;
   --accent-pink:       #F07898;
   --accent-teal:       #34C990;
 
@@ -285,7 +286,7 @@ body::before {
   gap: 20px;
 }
 [data-theme="dark"] .pegbar {
-  background: linear-gradient(#3A362E, #26231D);
+  background: linear-gradient(#2B2825, #26231D);
   box-shadow: 0 1px 1px rgba(0,0,0,.4), 0 4px 10px rgba(0,0,0,.35);
 }
 .pegbar i {
@@ -651,8 +652,8 @@ body::before {
   justify-content: center !important;
   gap: 0.35rem !important;
   padding: 0.44rem 1.15rem !important;
-  background: #FFC72C !important;
-  color: #111009 !important;
+  background: #F2C030 !important;
+  color: #14131A !important;
   font-family: var(--fb) !important;
   font-size: 0.84rem !important;
   font-weight: 700 !important;
@@ -668,23 +669,23 @@ body::before {
 
 .nav-cta:hover,
 .nav-links a.nav-cta:hover {
-  background: #FFE066 !important;
-  color: #111009 !important;
+  background: #F2C030 !important;
+  color: #14131A !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 0 rgba(17, 16, 9, 0.25), 0 8px 18px rgba(255, 199, 44, 0.38) !important;
 }
 
 [data-theme="dark"] .nav-cta,
 [data-theme="dark"] .nav-links a.nav-cta {
-  background: #FFC72C !important;
-  color: #0E0D13 !important;
+  background: #F2C030 !important;
+  color: #14131A !important;
   border-color: rgba(255, 199, 44, 0.45) !important;
   box-shadow: 0 0 16px rgba(255, 199, 44, 0.35), 0 2px 0 rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="dark"] .nav-cta:hover,
 [data-theme="dark"] .nav-links a.nav-cta:hover {
-  background: #FFE066 !important;
+  background: #F2C030 !important;
   box-shadow: 0 0 22px rgba(255, 224, 102, 0.55), 0 4px 0 rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -855,7 +856,7 @@ body::before {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #10B981;
+  background: #34C990;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
 }
 
@@ -1006,7 +1007,7 @@ body::before {
   white-space: nowrap;
 }
 [data-theme="dark"] .disc {
-  background: #1C1A29;
+  background: #1E1C22;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
 }
@@ -1018,7 +1019,7 @@ body::before {
 }
 .disc:hover {
   background: var(--brand-yellow);
-  color: #181715;
+  color: #14131A;
   border-color: var(--ink);
   transform: translateY(-2px);
   box-shadow: var(--pop-sh);
@@ -1155,7 +1156,7 @@ body::before {
 }
 .reel-tab-btn.active {
   background: var(--brand-yellow);
-  color: #181715;
+  color: #14131A;
   border-color: var(--ink);
   box-shadow: var(--pop-sh);
   transform: translateY(-1.5px);
@@ -1189,7 +1190,7 @@ body::before {
   border-radius: 6px;
   overflow: hidden;
   line-height: 0;
-  background: #000;
+  background: #14131A;
   aspect-ratio: 16 / 9;
 }
 .reel-video {
@@ -1238,7 +1239,7 @@ body::before {
 .reel-sound-toggle:hover,
 .reel-expand-toggle:hover {
   background: var(--brand-yellow);
-  color: #181715;
+  color: #14131A;
   border-color: var(--ink);
 }
 
@@ -1263,7 +1264,7 @@ body::before {
   width: 100%;
   max-width: 1120px;
   aspect-ratio: 16 / 9;
-  background: #000;
+  background: #14131A;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
@@ -1273,7 +1274,7 @@ body::before {
   height: 100%;
   object-fit: contain;
   display: block;
-  background: #000;
+  background: #14131A;
   cursor: pointer;
 }
 .reel-lightbox-controls {
@@ -1301,7 +1302,7 @@ body::before {
 }
 .reel-lb-btn:hover {
   background: var(--brand-yellow);
-  color: #181715;
+  color: #14131A;
   border-color: var(--ink);
 }
 .reel-lb-close {
@@ -1323,7 +1324,7 @@ body::before {
 .reel-intro-view {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, #1E3FC4, #E8432E);
+  background: linear-gradient(135deg, #1E4CC8, #E8432E);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -1362,14 +1363,14 @@ body::before {
   justify-content: center;
   gap: 6px;
   background: #FFFDF8;
-  color: #181715;
+  color: #14131A;
   font-family: var(--fd);
   font-weight: 700;
   font-size: 0.78rem;
   padding: 6px 14px;
   border-radius: 20px;
   text-decoration: none;
-  border: 1.5px solid #181715;
+  border: 1.5px solid #14131A;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, background 0.2s;
 }
@@ -1631,7 +1632,7 @@ body::before {
 ================================================================ */
 .dl-sec {
   padding: 4.5rem 0 4rem;
-  background: #181715;
+  background: #14131A;
   color: #FFFDF8;
   position: relative;
   border-top: 1.5px solid var(--ink12);
@@ -1712,10 +1713,10 @@ body::before {
   flex-shrink: 0;
 }
 
-.ib { background: rgba(24,80,168,0.55); color: #fff; }
-.ir { background: rgba(217,48,32,0.55); color: #fff; }
-.iy { background: rgba(232,176,0,0.45); color: #fff; }
-.ig { background: rgba(67,138,94,0.55); color: #fff; }
+.ib { background: rgba(24,80,168,0.55); color: #FFFDF8; }
+.ir { background: rgba(217,48,32,0.55); color: #FFFDF8; }
+.iy { background: rgba(232,176,0,0.45); color: #FFFDF8; }
+.ig { background: rgba(67,138,94,0.55); color: #FFFDF8; }
 
 .dl-txt { display: flex; flex-direction: column; gap: 0.05rem; }
 .dl-lbl { font-size: 0.7rem; color: rgba(255,253,248,0.55); }
@@ -1766,13 +1767,13 @@ body::before {
     repeating-linear-gradient(90deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
     repeating-linear-gradient(0deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
     /* base -- deep navy, darker than the literal --blue token */
-    linear-gradient(90deg, #123C7E 0%, #0E3068 25%, #16468C 50%, #0E3068 75%, #123C7E 100%),
+    linear-gradient(90deg, #2B4C7E 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #2B4C7E 100%),
     radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(5,15,35,0.22) 100%);
   background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto;
 }
 [data-theme="dark"] #hero {
   /* Same luminance-gap check the earlier wood/moss passes needed:
-     this navy band sits 0.026-0.036 above the page's #0E0D13
+     this navy band sits 0.026-0.036 above the page's #14131A
      background, enough to read as a distinct dark blue rather than
      vanishing into the surrounding UI chrome. Grain here mixes dark
      AND light flecks (not just darker-on-dark, which barely shows up
@@ -1785,7 +1786,7 @@ body::before {
     repeating-linear-gradient(35deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 165px),
     repeating-linear-gradient(90deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
     repeating-linear-gradient(0deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
-    linear-gradient(90deg, #1A3868 0%, #16305A 25%, #1E4074 50%, #16305A 75%, #1A3868 100%),
+    linear-gradient(90deg, #16305A 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #16305A 100%),
     radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.45) 100%);
   background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto;
 }
@@ -1880,7 +1881,7 @@ body::before {
   margin-top: 0.6rem;
 }
 [data-theme="dark"] .margin-note {
-  color: #6FA0E8;
+  color: #7AA2F7;
 }
 .margin-aside {
   max-width: 440px;
@@ -1893,7 +1894,7 @@ body::before {
   color: var(--blue);
 }
 [data-theme="dark"] .margin-aside strong {
-  color: #6FA0E8;
+  color: #7AA2F7;
 }
 
 /* #about is a fixed "cover" section (always --red, never reactive to
@@ -2052,12 +2053,12 @@ body::before {
   border-radius: 4px;
   z-index: 5;
   background: rgba(24,23,21,0.85);
-  color: #fff;
+  color: #FFFDF8;
   backdrop-filter: blur(4px);
 }
 .bs { background: var(--blue); }
 .br { background: var(--red); }
-.by { background: #946C00; color: #fff; }
+.by { background: #946C00; color: #FFFDF8; }
 
 .ov {
   position: absolute;
@@ -2072,7 +2073,7 @@ body::before {
 }
 .ov-btn {
   background: #FFFDF8;
-  color: #181715;
+  color: #14131A;
   font-size: 0.8125rem;
   font-weight: 700;
   padding: 0.5rem 1rem;
@@ -2203,7 +2204,7 @@ body::before {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #0E0D13;
+  background: #14131A;
   border: 1.5px solid rgba(250, 248, 244, 0.22);
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
   flex-shrink: 0;
@@ -2248,7 +2249,7 @@ body::before {
   color: var(--blue);
 }
 [data-theme="dark"] .about-h em {
-  color: #70AAFF;
+  color: #7AA2F7;
 }
 
 .about-p {
@@ -2470,7 +2471,7 @@ body::before {
 .track-chip {
   display: inline-block;
   background: rgba(112, 170, 255, 0.15);
-  color: #70AAFF;
+  color: #7AA2F7;
   border-radius: 3px;
   padding: 0.1rem 0.35rem;
   font-size: 0.78rem;
@@ -2669,7 +2670,7 @@ body::before {
   border-radius: 0;
   font-family: var(--fb);
   font-size: 1.05rem;
-  color: #111009;
+  color: #14131A;
   outline: none;
   resize: none;
   transition: border-color 0.2s;
@@ -2691,7 +2692,7 @@ body::before {
 }
 
 .finp:focus, .ftxt:focus {
-  border-bottom-color: #111009;
+  border-bottom-color: #14131A;
   border-bottom-style: solid;
 }
 [data-theme="dark"] .finp:focus,
@@ -2709,9 +2710,9 @@ body::before {
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 1.8rem;
-  background: #111009;
+  background: #14131A;
   color: #FEF49A;
-  border: 2px solid #111009;
+  border: 2px solid #14131A;
   border-radius: 4px;
   font-size: 0.95rem;
   font-weight: 700;
@@ -2722,13 +2723,13 @@ body::before {
 
 [data-theme="dark"] .fsub {
   background: var(--yel);
-  color: #111009;
+  color: #14131A;
   border-color: var(--yel);
 }
 
 .fsub:hover {
   background: var(--red);
-  color: #fff;
+  color: #FFFDF8;
   border-color: var(--red);
   transform: translateY(-2px);
 }
@@ -2738,7 +2739,7 @@ body::before {
 ================================================================ */
 .foot {
   padding: 2.5rem 0;
-  background: #111009;
+  background: #14131A;
   color: rgba(250,248,244,0.6);
   border-top: 1px solid rgba(250,248,244,0.1);
   position: relative;
@@ -2746,7 +2747,7 @@ body::before {
 }
 
 [data-theme="dark"] .foot {
-  background: #08070D;
+  background: #14131A;
   border-top-color: rgba(240,238,245,0.08);
 }
 
@@ -3363,7 +3364,7 @@ body::before {
   left: 0;
   right: 0;
   height: 34px;
-  background: linear-gradient(90deg, #123C7E 0%, #0E3068 25%, #16468C 50%, #0E3068 75%, #123C7E 100%);
+  background: linear-gradient(90deg, #2B4C7E 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #2B4C7E 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.18),
     0 4px 8px rgba(0,0,0,0.3);
@@ -3371,7 +3372,7 @@ body::before {
   pointer-events: none;
 }
 [data-theme="dark"] .dl-drawer-front {
-  background: linear-gradient(90deg, #1A3868 0%, #16305A 25%, #1E4074 50%, #16305A 75%, #1A3868 100%);
+  background: linear-gradient(90deg, #16305A 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #16305A 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.1),
     0 4px 10px rgba(0,0,0,0.5);
@@ -3387,7 +3388,7 @@ body::before {
   transform: translateX(-50%);
   width: 64px;
   height: 16px;
-  background: #E8B000;
+  background: #F2C030;
   border: 1.5px solid var(--ink);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.28);
@@ -3440,7 +3441,7 @@ body::before {
   top: 34px;
   bottom: 26px;
   width: clamp(20px, 5vw, 52px);
-  background: linear-gradient(180deg, #0E3068 0%, #0A2454 100%);
+  background: linear-gradient(180deg, #16305A 0%, #16305A 100%);
   box-shadow: inset 0 0 16px rgba(0,0,0,0.4);
   z-index: 1;
   pointer-events: none;
@@ -3477,7 +3478,7 @@ body::before {
   right: 0;
   bottom: 0;
   height: 26px;
-  background: linear-gradient(90deg, #081C42 0%, #0A2454 25%, #0C2A5E 50%, #0A2454 75%, #081C42 100%);
+  background: linear-gradient(90deg, #16305A 0%, #16305A 25%, #0C2A5E 50%, #16305A 75%, #16305A 100%);
   box-shadow:
     inset 0 3px 6px rgba(0,0,0,0.5),
     0 6px 12px rgba(0,0,0,0.32);
@@ -3485,7 +3486,7 @@ body::before {
   pointer-events: none;
 }
 [data-theme="dark"] .dl-drawer-bottom {
-  background: linear-gradient(90deg, #060F26 0%, #081C42 25%, #0A2454 50%, #081C42 75%, #060F26 100%);
+  background: linear-gradient(90deg, #14131A 0%, #16305A 25%, #16305A 50%, #16305A 75%, #14131A 100%);
   box-shadow:
     inset 0 3px 8px rgba(0,0,0,0.6),
     0 6px 14px rgba(0,0,0,0.5);
@@ -3505,13 +3506,13 @@ body::before {
    ABOUT SECTION — Dark Studio Board Guaranteed Contrast
 ================================================================ */
 .about-notebook-sheet {
-  background-color: #111009 !important;
+  background-color: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: -6px 6px 0 rgba(0, 0, 0, 0.85), 0 20px 40px rgba(0, 0, 0, 0.5) !important;
 }
 [data-theme="dark"] .about-notebook-sheet {
-  background-color: #08070D !important;
+  background-color: #14131A !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 .about-notebook-sheet .about-label {
@@ -3677,7 +3678,7 @@ body::before {
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 1.1rem 0.6rem 0.9rem;
-  background: #141724;
+  background: #14131A;
   color: #FFFDF8;
   border: 1.5px solid #F2C030;
   border-radius: 999px;
@@ -3703,7 +3704,7 @@ body::before {
 }
 .passport-dock-counter {
   background: #F2C030;
-  color: #141724;
+  color: #14131A;
   font-size: 0.72rem;
   font-weight: 800;
   padding: 2px 7px;
@@ -3737,19 +3738,19 @@ body::before {
   position: relative;
   width: 100%;
   max-width: 780px;
-  background: #FAF8F5;
-  border: 3px solid #2C2A29;
+  background: #F9F6F0;
+  border: 3px solid #2B2825;
   border-radius: 18px;
-  box-shadow: -8px 8px 0 #2C2A29, 0 30px 60px rgba(0,0,0,0.4);
+  box-shadow: -8px 8px 0 #2B2825, 0 30px 60px rgba(0,0,0,0.4);
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
-  color: #2C2A29;
+  color: #2B2825;
 }
 [data-theme="dark"] .passport-booklet {
   background: #191726;
   border-color: #F2C030;
-  box-shadow: -8px 8px 0 #000, 0 30px 60px rgba(0,0,0,0.7);
+  box-shadow: -8px 8px 0 #14131A, 0 30px 60px rgba(0,0,0,0.7);
   color: #FFFDF8;
 }
 .passport-close-btn {
@@ -3870,7 +3871,7 @@ body::before {
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  color: #C44230;
+  color: #E8432E;
 }
 [data-theme="dark"] .passport-right-title {
   color: #F07898;
@@ -3905,7 +3906,7 @@ body::before {
 }
 .passport-slot.stamped {
   border-style: solid;
-  border-color: #2C2A29;
+  border-color: #2B2825;
   background: #FFFDF8;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
 }
@@ -3963,7 +3964,7 @@ body::before {
   width: 100% !important;
   max-width: 360px !important;
   margin: 0.5rem auto 0 !important;
-  background: #1C1A29 !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border: 1.5px solid rgba(255,255,255,0.12) !important;
   border-radius: 12px !important;
@@ -4072,7 +4073,7 @@ body::before {
 
 /* ── DARK MODE PLAYGROUND CARDS ── */
 [data-theme="dark"] .playground-scrap-card {
-  background: #14121F;
+  background: #14131A;
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
   color: #FFFDF8;
@@ -4089,7 +4090,7 @@ body::before {
 [data-theme="dark"] .pg-btn:hover,
 [data-theme="dark"] .pg-btn.active {
   background: var(--yel);
-  color: #14121F;
+  color: #14131A;
   border-color: var(--yel);
 }
 
@@ -4097,8 +4098,8 @@ body::before {
 #pg-animation .pg-badge-icon { background: #1E4CC8; }
 #pg-animation { border-color: #1E4CC8; }
 
-#pg-illustration .pg-badge-icon { background: #C44230; }
-#pg-illustration { border-color: #C44230; }
+#pg-illustration .pg-badge-icon { background: #E8432E; }
+#pg-illustration { border-color: #E8432E; }
 
 #pg-videography .pg-badge-icon { background: #1E7A4E; }
 #pg-videography { border-color: #1E7A4E; }
@@ -4230,13 +4231,13 @@ body::before {
 [data-theme="dark"] .pg-btn:hover,
 [data-theme="dark"] .pg-btn.active {
   background: var(--yel) !important;
-  color: #14121F !important;
+  color: #14131A !important;
   border-color: var(--yel) !important;
 }
 
 /* Discipline Badge Colors */
 #pg-animation .pg-badge-icon { background: #1E4CC8 !important; }
-#pg-illustration .pg-badge-icon { background: #C44230 !important; }
+#pg-illustration .pg-badge-icon { background: #E8432E !important; }
 #pg-videography .pg-badge-icon { background: #1E7A4E !important; }
 #pg-graphic-design .pg-badge-icon { background: #B8840A !important; }
 #pg-music .pg-badge-icon { background: #6540CC !important; }
@@ -4245,23 +4246,23 @@ body::before {
    90s POP-ART & SCRAPBOOK DESIGN TOKENS & COMIC CHROME
 ================================================================ */
 :root {
-  --brand-blue: #1E3FC4;
+  --brand-blue: #1E4CC8;
   --brand-red: #E8432E;
   --brand-yellow: #FFCC00;
   --accent-teal: #2BC9B5;
-  --accent-pink: #FF5FA2;
-  --accent-purple: #8B5CF6;
+  --accent-pink: #E2559C;
+  --accent-purple: #6540CC;
   --accent-orange: #FF8A3D;
   --ink-hard: #14131A;
-  --paper-cream: #FAF8F4;
-  --paper-card: #FFFFFF;
+  --paper-cream: #F9F6F0;
+  --paper-card: #FFFDF8;
   --shadow-comic: 3px 3px 0 var(--ink-hard);
   --shadow-comic-lg: 5px 5px 0 var(--ink-hard);
 }
 
 [data-theme="dark"] {
-  --paper-card: #181528;
-  --ink-hard: #000000;
+  --paper-card: #14131A;
+  --ink-hard: #14131A;
   --shadow-comic: 3px 3px 0 rgba(0,0,0,0.85);
   --shadow-comic-lg: 5px 5px 0 rgba(0,0,0,0.95);
 }
@@ -4287,7 +4288,7 @@ body::before {
 /* ── HERO SKETCHBOOK SPREAD & CONTRAST ── */
 .hero-book {
   position: relative;
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 3px solid #14131A;
   border-radius: 16px;
   box-shadow: -6px 6px 0 #14131A, 0 24px 48px rgba(20,19,26,0.15);
@@ -4297,9 +4298,9 @@ body::before {
   overflow: hidden;
 }
 [data-theme="dark"] .hero-book {
-  background: #14121F;
+  background: #14131A;
   border-color: #FFCC00;
-  box-shadow: -6px 6px 0 #000, 0 24px 48px rgba(0,0,0,0.6);
+  box-shadow: -6px 6px 0 #14131A, 0 24px 48px rgba(0,0,0,0.6);
   color: #FFFDF8 !important;
 }
 [data-theme="dark"] .hero-book h1,
@@ -4310,11 +4311,11 @@ body::before {
   color: #FFFDF8 !important;
 }
 [data-theme="dark"] .hero-book .stat-box {
-  background: #1D1A2F !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
 [data-theme="dark"] .hero-tag-pill {
-  background: #25213B !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: #FFCC00 !important;
 }
@@ -4436,11 +4437,11 @@ body::before {
   max-width: 100% !important;
   border-radius: 8px !important;
   border: 2px solid #14131A !important;
-  background: #F2F5FA !important;
+  background: #F2EFEB !important;
   display: block !important;
 }
 [data-theme="dark"] .pg-body canvas {
-  background: #0D111A !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
 .anim-controls, .bezier-controls {
@@ -4453,7 +4454,7 @@ body::before {
   font-size: 0.72rem !important;
   padding: 0.35rem 0.5rem !important;
   text-align: center !important;
-  background: #FAF8F4 !important;
+  background: #F9F6F0 !important;
   color: #14131A !important;
 }
 .anim-controls .pg-btn.active, .bezier-controls .pg-btn.active {
@@ -4462,7 +4463,7 @@ body::before {
   border-color: #14131A !important;
 }
 [data-theme="dark"] .anim-controls .pg-btn, [data-theme="dark"] .bezier-controls .pg-btn {
-  background: #25213B !important;
+  background: #16305A !important;
   color: #FFFDF8 !important;
   border-color: rgba(255,255,255,0.3) !important;
 }
@@ -4529,7 +4530,7 @@ body::before {
   font-size: 1.05rem;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  color: #1E1C1A;
+  color: #1E1C22;
   transform: rotate(0.8deg);
 }
 
@@ -4590,13 +4591,13 @@ body::before {
   /* Muted, dim aged-paper tone — "screen" blend would wash the light paper
      texture right back toward white regardless of base color, so this uses
      "multiply" instead, which can only ever darken, never lighten. */
-  background-color: #3A362E;
+  background-color: #2B2825;
   background-blend-mode: multiply;
   filter: drop-shadow(2px 5px 7px rgba(0,0,0,.5));
 }
 [data-theme="dark"] .pg-tag-text { color: #F2EFEB; }
 [data-theme="dark"] .pg-tag-icon { border-color: rgba(255,255,255,.55); }
-[data-theme="dark"] .pg-close-btn { background: #181528; color: #FFFDF8; border-color: rgba(255,255,255,.4); }
+[data-theme="dark"] .pg-close-btn { background: #14131A; color: #FFFDF8; border-color: rgba(255,255,255,.4); }
 
 /* The close button floats absolutely over the header's top-right corner —
    reserve real space for it so tag/title text never runs underneath and
@@ -4636,7 +4637,7 @@ body::before {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #E8442E;
+  background: #E8432E;
   border: 2px solid #14131A;
   transform-origin: 50% 100%;
   animation: idleBallBounce 1.3s infinite;
@@ -4662,10 +4663,10 @@ body::before {
   height: 132px;
   border-radius: 8px !important;
   border: 2px solid #14131A !important;
-  background: #F2F5FA !important;
+  background: #F2EFEB !important;
   overflow: hidden;
 }
-[data-theme="dark"] .motion-lab-stage { background: #0D111A !important; border-color: rgba(255,255,255,0.2) !important; }
+[data-theme="dark"] .motion-lab-stage { background: #14131A !important; border-color: rgba(255,255,255,0.2) !important; }
 
 .motion-lab-floor {
   position: absolute;
@@ -4682,7 +4683,7 @@ body::before {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #E8442E;
+  background: #E8432E;
   border: 2.5px solid #14131A;
   box-shadow: inset -4px -4px 0 rgba(0,0,0,.14), inset 3px 3px 0 rgba(255,255,255,.28);
   transform-origin: 50% 100%;
@@ -4755,7 +4756,7 @@ body::before {
   border-color: rgba(255,255,255,0.15);
 }
 .rubber-stamp-btn {
-  background: #FAF8F4;
+  background: #F9F6F0;
   border: 1.5px solid #14131A;
   border-radius: 4px;
   font-size: 0.95rem;
@@ -4890,7 +4891,7 @@ body::before {
   color: #14131A;
 }
 [data-theme="dark"] .polaroid-tray {
-  background: #FAF8F4;
+  background: #F9F6F0;
   color: #14131A;
 }
 .polaroid-tray img {
@@ -4923,7 +4924,7 @@ body::before {
   padding: 0.3rem 0.2rem;
   border-radius: 4px;
   border: 1.5px solid #14131A;
-  background: #FAF8F4;
+  background: #F9F6F0;
   color: #14131A;
   box-shadow: 1.5px 1.5px 0 #14131A;
   cursor: pointer;
@@ -4934,10 +4935,10 @@ body::before {
   background: #FFCC00;
 }
 [data-theme="dark"] .chord-pad-btn {
-  background: #25213B;
+  background: #16305A;
   color: #FFFDF8;
   border-color: rgba(255,255,255,0.25);
-  box-shadow: 1.5px 1.5px 0 #000;
+  box-shadow: 1.5px 1.5px 0 #14131A;
 }
 [data-theme="dark"] .chord-pad-btn:hover {
   background: #FFCC00;
@@ -5008,7 +5009,7 @@ body::before {
   position: relative;
   width: 100%;
   max-width: 820px;
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 3.5px solid #14131A;
   border-radius: 20px;
   box-shadow: -10px 10px 0 #14131A, 0 35px 70px rgba(0,0,0,0.4);
@@ -5018,9 +5019,9 @@ body::before {
   color: #14131A;
 }
 [data-theme="dark"] .passport-booklet {
-  background: #181528;
+  background: #14131A;
   border-color: #FFCC00;
-  box-shadow: -10px 10px 0 #000, 0 35px 70px rgba(0,0,0,0.7);
+  box-shadow: -10px 10px 0 #14131A, 0 35px 70px rgba(0,0,0,0.7);
   color: #FFFDF8;
 }
 .passport-left {
@@ -5038,7 +5039,7 @@ body::before {
   font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.14em;
-  color: #1E3FC4;
+  color: #1E4CC8;
 }
 [data-theme="dark"] .passport-header-title {
   color: #FFCC00;
@@ -5054,9 +5055,9 @@ body::before {
   box-shadow: 2.5px 2.5px 0 #14131A;
 }
 [data-theme="dark"] .passport-id-box {
-  background: #231F38;
+  background: #1E1C22;
   border-color: rgba(255,255,255,0.25);
-  box-shadow: 2.5px 2.5px 0 #000;
+  box-shadow: 2.5px 2.5px 0 #14131A;
 }
 .passport-avatar {
   width: 64px !important;
@@ -5096,7 +5097,7 @@ body::before {
 }
 .passport-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #1E3FC4, #E8432E, #FFCC00);
+  background: linear-gradient(90deg, #1E4CC8, #E8432E, #FFCC00);
   border-radius: 999px;
   transition: width 0.4s cubic-bezier(0.2,1,0.3,1);
 }
@@ -5114,7 +5115,7 @@ body::before {
   color: #E8432E;
 }
 [data-theme="dark"] .passport-right-title {
-  color: #FF5FA2;
+  color: #E2559C;
 }
 .passport-stamps-grid {
   display: grid;
@@ -5158,8 +5159,8 @@ body::before {
 }
 [data-theme="dark"] .passport-slot.stamped {
   border-color: #FFCC00;
-  background: #25213B;
-  box-shadow: 2.5px 2.5px 0 #000;
+  background: #16305A;
+  box-shadow: 2.5px 2.5px 0 #14131A;
 }
 .slot-graphic-stamp {
   display: none;
@@ -5183,7 +5184,7 @@ body::before {
 }
 .passport-slot.stamped .slot-discipline {
   opacity: 1;
-  color: #1E3FC4;
+  color: #1E4CC8;
 }
 [data-theme="dark"] .passport-slot.stamped .slot-discipline {
   color: #FFCC00;
@@ -5193,26 +5194,26 @@ body::before {
    ABOUT SECTION — TACTILE DESK MAT & ORBIT ACCESSORIES
 ================================================================ */
 .about-notebook-sheet {
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 3px solid #14131A;
   border-radius: 16px;
   box-shadow: -6px 6px 0 #14131A;
   padding: clamp(1.8rem, 4vw, 3rem);
 }
 [data-theme="dark"] .about-notebook-sheet {
-  background: #14121F;
+  background: #14131A;
   border-color: #FFCC00;
-  box-shadow: -6px 6px 0 #000;
+  box-shadow: -6px 6px 0 #14131A;
   color: #FFFDF8;
 }
 .desk-notes-card {
   width: 100% !important;
   max-width: 360px !important;
-  background: #1C1A29 !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border: 2px solid #FFCC00 !important;
   border-radius: 12px !important;
-  box-shadow: 3px 3px 0 #000 !important;
+  box-shadow: 3px 3px 0 #14131A !important;
   margin: 0.5rem auto 0 !important;
 }
 
@@ -5220,9 +5221,9 @@ body::before {
    HERO SKETCHBOOK DARK MODE CONTRAST FIX
 ================================================================ */
 [data-theme="dark"] .hero-sketchbook {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: #FFCC00 !important;
-  box-shadow: -8px 8px 0 #000, 0 30px 60px rgba(0,0,0,0.6) !important;
+  box-shadow: -8px 8px 0 #14131A, 0 30px 60px rgba(0,0,0,0.6) !important;
   color: #FFFDF8 !important;
 }
 [data-theme="dark"] .hero-sketchbook .book-page-left,
@@ -5239,11 +5240,11 @@ body::before {
   color: #FFFDF8 !important;
 }
 [data-theme="dark"] .hero-sketchbook .hero-stats {
-  background: #231F38 !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
 [data-theme="dark"] .hero-sketchbook .hero-stat-box {
-  background: #1D1A2F !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
   color: #FFFDF8 !important;
 }
@@ -5254,7 +5255,7 @@ body::before {
   color: #C5C0D8 !important;
 }
 [data-theme="dark"] .hero-badge-pill {
-  background: #25213B !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: #FFCC00 !important;
 }
@@ -5290,11 +5291,11 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 .desk-notes-card {
   width: 100% !important;
   max-width: 380px !important;
-  background: #181528 !important;
+  background: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid #FFCC00 !important;
   border-radius: 12px !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
   margin: 0.5rem auto 0 !important;
   padding: 1.1rem 1.25rem !important;
 }
@@ -5341,7 +5342,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
    PERFECT ABOUT SECTION: PROMINENT AVATAR & ARTIST DESK TRAY
 ================================================================ */
 .about-notebook-sheet {
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 3px solid #14131A;
   border-radius: 16px;
   box-shadow: -6px 6px 0 #14131A;
@@ -5349,9 +5350,9 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   overflow: visible !important;
 }
 [data-theme="dark"] .about-notebook-sheet {
-  background: #14121F;
+  background: #14131A;
   border-color: #FFCC00;
-  box-shadow: -6px 6px 0 #000;
+  box-shadow: -6px 6px 0 #14131A;
   color: #FFFDF8;
 }
 .about-g {
@@ -5368,11 +5369,11 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 .desk-notes-card {
   width: 100% !important;
   max-width: 380px !important;
-  background: #181528 !important;
+  background: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid #FFCC00 !important;
   border-radius: 12px !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
   margin: 0.5rem auto 0 !important;
   padding: 1.1rem 1.25rem !important;
 }
@@ -5403,7 +5404,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
    MASTER REDESIGN: ABOUT SECTION (CLEAN CRAFT & PROPORTIONS)
 ================================================================ */
 .about-notebook-sheet {
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 3px solid #14131A;
   border-radius: 20px;
   box-shadow: -8px 8px 0 #14131A;
@@ -5412,9 +5413,9 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   z-index: 5;
 }
 [data-theme="dark"] .about-notebook-sheet {
-  background: #14121F;
+  background: #14131A;
   border-color: #FFCC00;
-  box-shadow: -8px 8px 0 #000;
+  box-shadow: -8px 8px 0 #14131A;
   color: #FFFDF8;
 }
 
@@ -5432,7 +5433,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #1E3FC4;
+  background: #1E4CC8;
   color: #FFFDF8;
   font-family: var(--fd);
   font-size: 0.72rem;
@@ -5447,8 +5448,8 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 [data-theme="dark"] .about-tag-eyebrow {
   background: #FFCC00;
   color: #14131A;
-  border-color: #000;
-  box-shadow: 2px 2px 0 #000;
+  border-color: #14131A;
+  box-shadow: 2px 2px 0 #14131A;
 }
 
 .about-h {
@@ -5465,7 +5466,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 }
 .about-h em {
   font-style: normal;
-  color: #1E3FC4;
+  color: #1E4CC8;
 }
 [data-theme="dark"] .about-h em {
   color: #FFCC00;
@@ -5491,7 +5492,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 
 /* FACTS SPEC SHEET */
 .facts-spec-sheet {
-  background: #FFFFFF;
+  background: #FFFDF8;
   border: 2px solid #14131A;
   border-radius: 12px;
   box-shadow: 4px 4px 0 #14131A;
@@ -5501,7 +5502,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 [data-theme="dark"] .facts-spec-sheet {
   background: #1A172A;
   border-color: rgba(255,255,255,0.18);
-  box-shadow: 4px 4px 0 #000;
+  box-shadow: 4px 4px 0 #14131A;
 }
 
 .fact-row {
@@ -5525,7 +5526,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   font-family: var(--fd);
   font-weight: 800;
   font-size: 0.8rem;
-  color: #1E3FC4;
+  color: #1E4CC8;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -5551,7 +5552,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 }
 .tool-chip {
   background: rgba(30, 63, 196, 0.08);
-  color: #1E3FC4;
+  color: #1E4CC8;
   border: 1px solid rgba(30, 63, 196, 0.2);
   padding: 2px 7px;
   border-radius: 4px;
@@ -5566,13 +5567,13 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 
 /* AWARDS BOX */
 .awards-box {
-  background: #FAF7F2;
+  background: #F9F6F0;
   border: 2px dashed rgba(20,19,26,0.25);
   border-radius: 12px;
   padding: 1.25rem 1.4rem;
 }
 [data-theme="dark"] .awards-box {
-  background: #181528;
+  background: #14131A;
   border-color: rgba(255,204,0,0.3);
 }
 .awards-h {
@@ -5628,7 +5629,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   font-size: 0.8rem;
 }
 [data-theme="dark"] .aw-sub {
-  color: #A5A0B8;
+  color: #95908A;
 }
 
 .stage-hint {
@@ -5638,18 +5639,18 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   text-align: center;
 }
 [data-theme="dark"] .stage-hint {
-  color: #A5A0B8;
+  color: #95908A;
 }
 
 /* DESK NOTES CARD — COHESIVE & HARMONIOUS PALETTE */
 .desk-notes-card {
   width: 100% !important;
   max-width: 400px !important;
-  background: #181528 !important;
+  background: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid #FFCC00 !important;
   border-radius: 14px !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
   padding: 1.2rem 1.4rem !important;
   margin: 0.5rem auto 0 !important;
 }
@@ -5724,7 +5725,7 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 .desk-notes-card {
   width: 100% !important;
   max-width: 390px !important;
-  background: #171526 !important;
+  background: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid #2BC9B5 !important;
   border-radius: 14px !important;
@@ -5733,9 +5734,9 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
   margin: 0.5rem auto 0 !important;
 }
 [data-theme="dark"] .desk-notes-card {
-  background: #151322 !important;
+  background: #14131A !important;
   border-color: #2BC9B5 !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
 }
 .desk-notes-h {
   display: flex;
@@ -5787,12 +5788,12 @@ mark, .highlight, .creative-practice, [class*="highlight"] {
 [data-theme="dark"] .about-tag-eyebrow {
   background: #2BC9B5 !important;
   color: #14131A !important;
-  border-color: #000 !important;
-  box-shadow: 2px 2px 0 #000 !important;
+  border-color: #14131A !important;
+  box-shadow: 2px 2px 0 #14131A !important;
 }
 
 .about-h em {
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
 }
 [data-theme="dark"] .about-h em {
   color: #2BC9B5 !important;
@@ -6159,10 +6160,10 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
 
 /* Unified Facts Tool Chips */
 .facts-spec-sheet {
-  background: #171526 !important;
+  background: #14131A !important;
   border: 1.5px solid rgba(43, 201, 181, 0.3) !important;
   border-radius: 12px !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
 }
 .fact-row {
   border-bottom: 1px solid rgba(255,255,255,0.08) !important;
@@ -6309,7 +6310,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
   bottom: 4px;
   right: 4px;
   background: rgba(197, 34, 31, 0.85);
-  color: #FFF;
+  color: #FFFDF8;
   font-size: 0.52rem;
   font-weight: 900;
   padding: 1px 4px;
@@ -6331,7 +6332,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
 .meta-lbl {
   font-size: 0.58rem;
   font-weight: 700;
-  color: #777;
+  color: #95908A;
   text-transform: uppercase;
 }
 .meta-val {
@@ -6357,7 +6358,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
 }
 .passport-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #1E3FC4, #2BC9B5, #FFCC00);
+  background: linear-gradient(90deg, #1E4CC8, #2BC9B5, #FFCC00);
   transition: width 0.4s ease;
 }
 
@@ -6389,7 +6390,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
   letter-spacing: 0.1em;
 }
 .passport-page-num {
-  color: #888;
+  color: #95908A;
 }
 
 .passport-stamps-grid {
@@ -6431,7 +6432,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
 .slot-lock-txt {
   font-size: 0.62rem;
   font-weight: 800;
-  color: #888;
+  color: #95908A;
   letter-spacing: 0.05em;
 }
 
@@ -6504,7 +6505,7 @@ a, button, [role="button"], input, select, textarea, .orbit-item, .card, .passpo
   margin-top: 10px;
   font-size: 0.68rem;
   text-align: center;
-  color: #777;
+  color: #95908A;
   font-style: italic;
 }
 
@@ -6721,9 +6722,9 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .playground-scrap-card {
-  background: #181528 !important;
+  background: #14131A !important;
   border-color: #FFCC00 !important;
-  box-shadow: -4px 4px 0 #000, 0 12px 28px rgba(0,0,0,0.5) !important;
+  box-shadow: -4px 4px 0 #14131A, 0 12px 28px rgba(0,0,0,0.5) !important;
   color: #FFFDF8 !important;
 }
 
@@ -6741,7 +6742,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  color: #E8432E !important;
+  color: #C42D1C !important;
 }
 
 [data-theme="dark"] .pg-tag {
@@ -6761,7 +6762,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   border: 2px solid var(--ink) !important;
   display: block !important;
   width: 100% !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
 }
 
 [data-theme="dark"] .pg-canvas-wrap canvas {
@@ -6777,7 +6778,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   padding: 0.32rem 0.65rem !important;
   border: 1.5px solid var(--ink) !important;
   border-radius: 6px !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   color: var(--ink) !important;
   transition: all 0.15s ease !important;
 }
@@ -6799,7 +6800,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 [data-theme="dark"] .scene-filter-btn, 
 [data-theme="dark"] .chord-pad-btn, 
 [data-theme="dark"] .rubber-stamp-btn {
-  background: #231F38 !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border-color: rgba(255,255,255,0.25) !important;
 }
@@ -6814,7 +6815,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 
 /* About Section Two-Column Balanced Layout */
 .about-notebook-sheet {
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   border: 3px solid #14131A !important;
   border-radius: 16px !important;
   box-shadow: -8px 8px 0 #14131A, 0 24px 48px rgba(0,0,0,0.12) !important;
@@ -6824,9 +6825,9 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .about-notebook-sheet {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: #FFCC00 !important;
-  box-shadow: -8px 8px 0 #000, 0 24px 48px rgba(0,0,0,0.6) !important;
+  box-shadow: -8px 8px 0 #14131A, 0 24px 48px rgba(0,0,0,0.6) !important;
   color: #FFFDF8 !important;
 }
 
@@ -6934,7 +6935,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   padding: 0.28rem 0.45rem !important;
   border: 1.5px solid var(--ink) !important;
   border-radius: 6px !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
   line-height: 1 !important;
@@ -6953,7 +6954,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .rubber-stamp-btn {
-  background: #231F38 !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.25) !important;
 }
 
@@ -7058,7 +7059,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 .about-notebook-sheet {
-  background-color: #FAF7F2 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     radial-gradient(rgba(20, 19, 26, 0.06) 1px, transparent 1px),
     url("assets/svg-opt/paper-light-tile.webp") !important;
@@ -7074,11 +7075,11 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .about-notebook-sheet {
-  background-color: #151322 !important;
+  background-color: #14131A !important;
   background-image: 
     radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px) !important;
   border-color: #FFCC00 !important;
-  box-shadow: -7px 7px 0 #000, 0 20px 45px rgba(0,0,0,0.6) !important;
+  box-shadow: -7px 7px 0 #14131A, 0 20px 45px rgba(0,0,0,0.6) !important;
 }
 
 /* Two-column layout */
@@ -7100,7 +7101,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 .about-bio p {
   font-size: 1.05rem !important;
   line-height: 1.68 !important;
-  color: #2C2A29 !important;
+  color: #2B2825 !important;
   margin-bottom: 1.15rem !important;
 }
 
@@ -7110,7 +7111,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 
 /* Clean White Paper Spec Sheet Card */
 .facts-spec-sheet {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2px solid #14131A !important;
   border-radius: 12px !important;
   box-shadow: 3.5px 3.5px 0 #14131A !important;
@@ -7119,9 +7120,9 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .facts-spec-sheet {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 3.5px 3.5px 0 #000 !important;
+  box-shadow: 3.5px 3.5px 0 #14131A !important;
 }
 
 .fact-row {
@@ -7149,11 +7150,11 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
 }
 
 [data-theme="dark"] .fact-label {
-  color: #7098F8 !important;
+  color: #7AA2F7 !important;
 }
 
 .fact-val {
@@ -7178,7 +7179,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   font-size: 0.78rem !important;
   font-weight: 600 !important;
   padding: 0.2rem 0.55rem !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   color: #14131A !important;
   border: 1.5px solid #14131A !important;
   border-radius: 6px !important;
@@ -7186,10 +7187,10 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .tool-chip {
-  background: #27233E !important;
+  background: #16305A !important;
   color: #FFFDF8 !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 1.5px 1.5px 0 #000 !important;
+  box-shadow: 1.5px 1.5px 0 #14131A !important;
 }
 
 /* Clean White Paper Field Notes Card (On My Desk) */
@@ -7197,7 +7198,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   width: 100% !important;
   max-width: 420px !important;
   margin: 0.85rem auto 0 !important;
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   color: #14131A !important;
   border: 2px solid #14131A !important;
   border-radius: 14px !important;
@@ -7208,10 +7209,10 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .desk-notes-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border-color: #FFCC00 !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
 }
 
 .desk-notes-h {
@@ -7259,7 +7260,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   gap: 0.6rem !important;
   font-size: 0.86rem !important;
   line-height: 1.4 !important;
-  color: #2C2A29 !important;
+  color: #2B2825 !important;
 }
 
 [data-theme="dark"] .desk-notes-list li {
@@ -7271,14 +7272,14 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   font-size: 0.78rem !important;
   font-weight: 700 !important;
   padding: 0.12rem 0.45rem !important;
-  background: #FFF3CC !important;
+  background: #F5F0E6 !important;
   color: #14131A !important;
   border: 1px solid #14131A !important;
   border-radius: 4px !important;
 }
 
 [data-theme="dark"] .track-chip {
-  background: #2D2748 !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: rgba(255, 204, 0, 0.4) !important;
 }
@@ -7300,7 +7301,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 
 /* Awards Box Clean Paper Style */
 .awards-box {
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   border: 2px dashed rgba(20, 19, 26, 0.25) !important;
   border-radius: 12px !important;
   padding: 1.25rem 1.4rem !important;
@@ -7308,7 +7309,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .awards-box {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255, 204, 0, 0.3) !important;
 }
 
@@ -7355,7 +7356,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 .aw-sub {
   display: block !important;
   font-size: 0.8rem !important;
-  color: #6E6B7B !important;
+  color: #5C5854 !important;
 }
 
 [data-theme="dark"] .aw-sub {
@@ -7364,7 +7365,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 
 /* ── DESK NOTES CARD TEXT CONTRAST & HARMONY ── */
 .desk-notes-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   color: #14131A !important;
   border: 2px solid #14131A !important;
   border-radius: 14px !important;
@@ -7373,10 +7374,10 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 [data-theme="dark"] .desk-notes-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border-color: #FFCC00 !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
 }
 
 .desk-notes-list li {
@@ -7395,7 +7396,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 .desk-note-bullet {
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
 }
 
 [data-theme="dark"] .desk-notes-list li,
@@ -7473,7 +7474,7 @@ a[href*="gobunny"] img {
 }
 
 .about-notebook-sheet {
-  background-color: #FAF7F2 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     radial-gradient(rgba(20, 19, 26, 0.08) 1px, transparent 1px),
     url("assets/svg-opt/paper-light-tile.webp") !important;
@@ -7488,11 +7489,11 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .about-notebook-sheet {
-  background-color: #151322 !important;
+  background-color: #14131A !important;
   background-image: 
     radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) !important;
   border-color: #FFCC00 !important;
-  box-shadow: -7px 7px 0 #000, 0 20px 45px rgba(0,0,0,0.6) !important;
+  box-shadow: -7px 7px 0 #14131A, 0 20px 45px rgba(0,0,0,0.6) !important;
 }
 
 .about-eyebrow {
@@ -7514,7 +7515,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .about-eyebrow {
-  box-shadow: 2.5px 2.5px 0 #000 !important;
+  box-shadow: 2.5px 2.5px 0 #14131A !important;
 }
 
 .about-headline {
@@ -7532,16 +7533,16 @@ a[href*="gobunny"] img {
 }
 
 .headline-accent {
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
 }
 
 [data-theme="dark"] .headline-accent {
-  color: #7098F8 !important;
+  color: #7AA2F7 !important;
 }
 
 /* Polaroid Avatar Frame */
 .avatar-polaroid-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2.5px solid #14131A !important;
   border-radius: 14px !important;
   padding: 1.1rem 1.1rem 1.3rem !important;
@@ -7558,9 +7559,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .avatar-polaroid-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
-  box-shadow: 4.5px 4.5px 0 #000 !important;
+  box-shadow: 4.5px 4.5px 0 #14131A !important;
 }
 
 .polaroid-img-frame {
@@ -7575,7 +7576,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .polaroid-img-frame {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.1) !important;
 }
 
@@ -7610,7 +7611,7 @@ a[href*="gobunny"] img {
 .polaroid-role {
   font-size: 0.78rem !important;
   font-weight: 600 !important;
-  color: #6E6B7B !important;
+  color: #5C5854 !important;
   letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
 }
@@ -7631,9 +7632,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-tray-wrap {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.18) !important;
-  box-shadow: 3.5px 3.5px 0 #000 !important;
+  box-shadow: 3.5px 3.5px 0 #14131A !important;
 }
 
 .desk-tray-header {
@@ -7658,7 +7659,7 @@ a[href*="gobunny"] img {
 
 .tray-sub {
   font-size: 0.7rem !important;
-  color: #6E6B7B !important;
+  color: #5C5854 !important;
   font-weight: 600 !important;
   text-transform: none !important;
 }
@@ -7744,14 +7745,14 @@ a[href*="gobunny"] img {
   display: inline-block !important;
   font-weight: 700 !important;
   color: #14131A !important;
-  background: #FFF3CC !important;
+  background: #F5F0E6 !important;
   border: 1.5px solid #14131A !important;
   border-radius: 4px !important;
   padding: 0.2rem 0.55rem !important;
 }
 
 [data-theme="dark"] .status-focus {
-  background: #2D2748 !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: rgba(255, 204, 0, 0.4) !important;
 }
@@ -7760,7 +7761,7 @@ a[href*="gobunny"] img {
    UNIFIED STUDIO DESK CARD & LIVE INSPECTOR (CLEAN & MINIMAL)
 ================================================================ */
 .studio-desk-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2.5px solid #14131A !important;
   border-radius: 16px !important;
   box-shadow: 4px 4px 0 #14131A !important;
@@ -7772,9 +7773,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .studio-desk-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
-  box-shadow: 4px 4px 0 #000 !important;
+  box-shadow: 4px 4px 0 #14131A !important;
 }
 
 .desk-card-header {
@@ -7812,7 +7813,7 @@ a[href*="gobunny"] img {
   justify-content: space-between !important;
   align-items: center !important;
   gap: 0.4rem !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #14131A !important;
   border-radius: 10px !important;
   padding: 0.5rem 0.65rem !important;
@@ -7820,7 +7821,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-items-shelf {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
 
@@ -7870,9 +7871,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-live-note {
-  background: #25213B !important;
+  background: #16305A !important;
   border-color: #FFCC00 !important;
-  box-shadow: 2px 2px 0 #000 !important;
+  box-shadow: 2px 2px 0 #14131A !important;
 }
 
 .note-speech-arrow {
@@ -7888,7 +7889,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .note-speech-arrow {
-  background: #25213B !important;
+  background: #16305A !important;
   border-color: #FFCC00 !important;
 }
 
@@ -7896,7 +7897,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.78rem !important;
   font-weight: 800 !important;
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   margin-bottom: 2px !important;
@@ -7909,7 +7910,7 @@ a[href*="gobunny"] img {
 .note-text {
   font-size: 0.8rem !important;
   line-height: 1.35 !important;
-  color: #2C2A29 !important;
+  color: #2B2825 !important;
   margin: 0 !important;
 }
 
@@ -7939,7 +7940,7 @@ a[href*="gobunny"] img {
 }
 
 .fact-icon {
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
   margin-top: 1px !important;
 }
 
@@ -7971,7 +7972,7 @@ a[href*="gobunny"] img {
 .lanyard-strap {
   width: 48px !important;
   height: 46px !important;
-  background: #1E3FC4 !important;
+  background: #1E4CC8 !important;
   background-image: repeating-linear-gradient(45deg, rgba(255,204,0,0.25) 0, rgba(255,204,0,0.25) 6px, transparent 6px, transparent 12px) !important;
   border-left: 2px solid #14131A !important;
   border-right: 2px solid #14131A !important;
@@ -8020,7 +8021,7 @@ a[href*="gobunny"] img {
 
 /* Acrylic ID Pass Card */
 .lanyard-badge-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2.5px solid #14131A !important;
   border-radius: 16px !important;
   padding: 0.85rem 0.95rem 1.15rem !important;
@@ -8040,16 +8041,16 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .lanyard-badge-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
-  box-shadow: -5px 5px 0 #000, 0 16px 32px rgba(0,0,0,0.6) !important;
+  box-shadow: -5px 5px 0 #14131A, 0 16px 32px rgba(0,0,0,0.6) !important;
 }
 
 /* Top Slot Punch Hole */
 .badge-slot-hole {
   width: 38px !important;
   height: 7px !important;
-  background: #E8E5DF !important;
+  background: #F2EFEB !important;
   border: 1.5px solid #14131A !important;
   border-radius: 999px !important;
   margin: 0 auto 0.65rem !important;
@@ -8057,7 +8058,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .badge-slot-hole {
-  background: #0E0D14 !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
 
@@ -8072,7 +8073,7 @@ a[href*="gobunny"] img {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  background: #1E3FC4 !important;
+  background: #1E4CC8 !important;
   color: #FFFDF8 !important;
   padding: 0.25rem 0.65rem !important;
   border-radius: 6px !important;
@@ -8095,7 +8096,7 @@ a[href*="gobunny"] img {
 
 /* Avatar Photo Frame */
 .badge-avatar-stage {
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   background-image: radial-gradient(rgba(20, 19, 26, 0.08) 1px, transparent 1px) !important;
   background-size: 10px 10px !important;
   border: 2px solid #14131A !important;
@@ -8109,7 +8110,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .badge-avatar-stage {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
 
@@ -8126,7 +8127,7 @@ a[href*="gobunny"] img {
   position: absolute !important;
   bottom: 6px !important;
   right: 6px !important;
-  background: linear-gradient(135deg, #FFCC00, #FF5A5F, #3B82F6, #10B981) !important;
+  background: linear-gradient(135deg, #FFCC00, #FF5A5F, #1E4CC8, #34C990) !important;
   color: #14131A !important;
   font-family: var(--fd) !important;
   font-size: 0.6rem !important;
@@ -8161,7 +8162,7 @@ a[href*="gobunny"] img {
 .badge-role {
   font-size: 0.76rem !important;
   font-weight: 600 !important;
-  color: #6E6B7B !important;
+  color: #5C5854 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   margin: 0 !important;
@@ -8181,7 +8182,7 @@ a[href*="gobunny"] img {
 .meta-pill {
   font-size: 0.72rem !important;
   font-weight: 700 !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #14131A !important;
   color: #14131A !important;
   padding: 0.15rem 0.45rem !important;
@@ -8189,7 +8190,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .meta-pill {
-  background: #27233E !important;
+  background: #16305A !important;
   color: #FFFDF8 !important;
   border-color: rgba(255,255,255,0.2) !important;
 }
@@ -8235,7 +8236,7 @@ a[href*="gobunny"] img {
   font-family: monospace !important;
   font-size: 0.65rem !important;
   letter-spacing: 0.12em !important;
-  color: #6E6B7B !important;
+  color: #5C5854 !important;
 }
 
 [data-theme="dark"] .barcode-num {
@@ -8252,7 +8253,7 @@ a[href*="gobunny"] img {
 
 /* Studio Desk Card Clean Paper Finish */
 .studio-desk-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2px solid #14131A !important;
   border-radius: 14px !important;
   box-shadow: -4px 4px 0 #14131A, 0 12px 24px rgba(0,0,0,0.06) !important;
@@ -8264,9 +8265,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .studio-desk-card {
-  background: #1C192E !important;
+  background: #1E1C22 !important;
   border-color: rgba(255,255,255,0.2) !important;
-  box-shadow: -4px 4px 0 #000, 0 12px 24px rgba(0,0,0,0.6) !important;
+  box-shadow: -4px 4px 0 #14131A, 0 12px 24px rgba(0,0,0,0.6) !important;
 }
 
 .desk-card-header {
@@ -8315,7 +8316,7 @@ a[href*="gobunny"] img {
   justify-content: space-between !important;
   align-items: center !important;
   gap: 0.35rem !important;
-  background: #FAF7F2 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #14131A !important;
   border-radius: 8px !important;
   padding: 0.4rem 0.55rem !important;
@@ -8323,7 +8324,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-items-shelf {
-  background: #14121F !important;
+  background: #14131A !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
 
@@ -8371,9 +8372,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-live-note {
-  background: #25213B !important;
+  background: #16305A !important;
   border-color: #FFCC00 !important;
-  box-shadow: 2px 2px 0 #000 !important;
+  box-shadow: 2px 2px 0 #14131A !important;
 }
 
 .note-speech-arrow {
@@ -8390,7 +8391,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .note-speech-arrow {
-  background: #25213B !important;
+  background: #16305A !important;
   border-color: #FFCC00 !important;
 }
 
@@ -8398,7 +8399,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.76rem !important;
   font-weight: 800 !important;
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   margin-bottom: 2px !important;
@@ -8411,7 +8412,7 @@ a[href*="gobunny"] img {
 .note-text {
   font-size: 0.78rem !important;
   line-height: 1.35 !important;
-  color: #2C2A29 !important;
+  color: #2B2825 !important;
   margin: 0 !important;
 }
 
@@ -8441,7 +8442,7 @@ a[href*="gobunny"] img {
 }
 
 .fact-bullet {
-  color: #1E3FC4 !important;
+  color: #1E4CC8 !important;
   font-size: 0.72rem !important;
   margin-top: 2px !important;
   flex-shrink: 0 !important;
@@ -8463,7 +8464,7 @@ a[href*="gobunny"] img {
   display: inline-block !important;
   font-weight: 700 !important;
   color: #14131A !important;
-  background: #FFF3CC !important;
+  background: #F5F0E6 !important;
   border: 1px solid #14131A !important;
   border-radius: 3px !important;
   padding: 0.08rem 0.35rem !important;
@@ -8471,7 +8472,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .clean-text-chip {
-  background: #2D2748 !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: rgba(255, 204, 0, 0.4) !important;
 }
@@ -8480,7 +8481,7 @@ a[href*="gobunny"] img {
   display: inline-block !important;
   font-weight: 700 !important;
   color: #14131A !important;
-  background: #FFF3CC !important;
+  background: #F5F0E6 !important;
   border: 1px solid #14131A !important;
   border-radius: 4px !important;
   padding: 0.12rem 0.45rem !important;
@@ -8488,7 +8489,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .clean-status-tag {
-  background: #2D2748 !important;
+  background: #16305A !important;
   color: #FFCC00 !important;
   border-color: rgba(255, 204, 0, 0.4) !important;
 }
@@ -8503,7 +8504,7 @@ a[href*="gobunny"] img {
 
 /* Light Theme: Warm Tactile Oatmeal / Japanese Cotton Paper */
 .about-notebook-sheet {
-  background-color: #FAF8F5 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     radial-gradient(rgba(43, 40, 37, 0.07) 1px, transparent 1px),
     url("assets/svg-opt/paper-light-tile.webp") !important;
@@ -8519,7 +8520,7 @@ a[href*="gobunny"] img {
 
 /* Dark Theme: Cozy Midnight Atelier / Velvet Slate */
 [data-theme="dark"] .about-notebook-sheet {
-  background-color: #161520 !important;
+  background-color: #14131A !important;
   background-image: 
     radial-gradient(rgba(245, 240, 230, 0.06) 1px, transparent 1px) !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
@@ -8532,7 +8533,7 @@ a[href*="gobunny"] img {
   align-items: center !important;
   padding: 0.3rem 0.8rem !important;
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   font-family: var(--fd) !important;
   font-size: 0.75rem !important;
   font-weight: 800 !important;
@@ -8546,9 +8547,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .about-eyebrow {
-  background: #F5BA42 !important;
-  color: #14131C !important;
-  border-color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
+  border-color: #14131A !important;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.8) !important;
 }
 
@@ -8558,12 +8559,12 @@ a[href*="gobunny"] img {
   font-weight: 800 !important;
   line-height: 1.08 !important;
   letter-spacing: -0.025em !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin-bottom: 1.2rem !important;
 }
 
 [data-theme="dark"] .about-headline {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .headline-accent {
@@ -8571,23 +8572,23 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .headline-accent {
-  color: #7CA5D8 !important;
+  color: #7AA2F7 !important;
 }
 
 .about-bio p {
   font-size: 1.02rem !important;
   line-height: 1.68 !important;
-  color: #383531 !important;
+  color: #2B2825 !important;
   margin-bottom: 1.15rem !important;
 }
 
 [data-theme="dark"] .about-bio p {
-  color: #D8D3C8 !important;
+  color: #C9C4BC !important;
 }
 
 /* Left Spec Sheet */
 .facts-spec-sheet {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 12px !important;
   box-shadow: -3.5px 3.5px 0 #2B2825, 0 6px 16px rgba(43,40,37,0.05) !important;
@@ -8596,7 +8597,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .facts-spec-sheet {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.14) !important;
   box-shadow: -3.5px 3.5px 0 rgba(0,0,0,0.8) !important;
 }
@@ -8630,17 +8631,17 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .fact-label {
-  color: #7CA5D8 !important;
+  color: #7AA2F7 !important;
 }
 
 .fact-val {
   font-size: 0.9rem !important;
   font-weight: 600 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 [data-theme="dark"] .fact-val {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .tool-chip {
@@ -8649,23 +8650,23 @@ a[href*="gobunny"] img {
   font-size: 0.76rem !important;
   font-weight: 600 !important;
   padding: 0.18rem 0.5rem !important;
-  background: #FAF8F5 !important;
-  color: #1E1C1A !important;
+  background: #F9F6F0 !important;
+  color: #1E1C22 !important;
   border: 1px solid #2B2825 !important;
   border-radius: 4px !important;
   box-shadow: 1px 1px 0 #2B2825 !important;
 }
 
 [data-theme="dark"] .tool-chip {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
   box-shadow: 1px 1px 0 rgba(0,0,0,0.6) !important;
 }
 
 /* Awards Box */
 .awards-box {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px dashed rgba(43, 40, 37, 0.25) !important;
   border-radius: 12px !important;
   padding: 1.15rem 1.3rem !important;
@@ -8673,7 +8674,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .awards-box {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 186, 66, 0.25) !important;
 }
 
@@ -8683,7 +8684,7 @@ a[href*="gobunny"] img {
   font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin-bottom: 0.75rem !important;
   display: flex !important;
   align-items: center !important;
@@ -8691,28 +8692,28 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .awards-h {
-  color: #F5BA42 !important;
+  color: #E8AF30 !important;
 }
 
 .aw-title {
   display: block !important;
   font-size: 0.86rem !important;
   font-weight: 700 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 [data-theme="dark"] .aw-title {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .aw-sub {
   display: block !important;
   font-size: 0.78rem !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
 }
 
 [data-theme="dark"] .aw-sub {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 /* ── ARTIST LANYARD PASS ── */
@@ -8765,7 +8766,7 @@ a[href*="gobunny"] img {
 }
 
 .lanyard-badge-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2px solid #2B2825 !important;
   border-radius: 14px !important;
   padding: 0.8rem 0.9rem 1.05rem !important;
@@ -8783,7 +8784,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .lanyard-badge-card {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.16) !important;
   box-shadow: -4px 4px 0 rgba(0,0,0,0.9), 0 14px 28px rgba(0,0,0,0.5) !important;
 }
@@ -8791,14 +8792,14 @@ a[href*="gobunny"] img {
 .badge-slot-hole {
   width: 34px !important;
   height: 6px !important;
-  background: #E8E5DF !important;
+  background: #F2EFEB !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 999px !important;
   margin: 0 auto 0.55rem !important;
 }
 
 [data-theme="dark"] .badge-slot-hole {
-  background: #14131C !important;
+  background: #14131A !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
 }
 
@@ -8820,7 +8821,7 @@ a[href*="gobunny"] img {
 
 .badge-year-tag {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   padding: 0.08rem 0.3rem !important;
   border-radius: 3px !important;
   font-size: 0.65rem !important;
@@ -8828,7 +8829,7 @@ a[href*="gobunny"] img {
 }
 
 .badge-avatar-stage {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   background-image: radial-gradient(rgba(43, 40, 37, 0.07) 1px, transparent 1px) !important;
   background-size: 8px 8px !important;
   border: 1.5px solid #2B2825 !important;
@@ -8842,7 +8843,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .badge-avatar-stage {
-  background: #161520 !important;
+  background: #14131A !important;
   border-color: rgba(245, 240, 230, 0.14) !important;
 }
 
@@ -8858,7 +8859,7 @@ a[href*="gobunny"] img {
   position: absolute !important;
   bottom: 5px !important;
   right: 5px !important;
-  background: linear-gradient(135deg, #E8AF30, #C85A48, #2B4C7E) !important;
+  background: linear-gradient(135deg, #E8AF30, #C42D1C, #2B4C7E) !important;
   color: #FFFDF8 !important;
   font-family: var(--fd) !important;
   font-size: 0.55rem !important;
@@ -8872,40 +8873,40 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 1.12rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin: 0.2rem 0 0 !important;
 }
 
 [data-theme="dark"] .badge-name {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .badge-role {
   font-size: 0.72rem !important;
   font-weight: 600 !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   margin: 0 !important;
 }
 
 [data-theme="dark"] .badge-role {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 .meta-pill {
   font-size: 0.68rem !important;
   font-weight: 700 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid #2B2825 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   padding: 0.12rem 0.4rem !important;
   border-radius: 4px !important;
 }
 
 [data-theme="dark"] .meta-pill {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
 }
 
@@ -8914,19 +8915,19 @@ a[href*="gobunny"] img {
   font-weight: 800 !important;
   background: #E8AF30 !important;
   border: 1px solid #2B2825 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   padding: 0.12rem 0.4rem !important;
   border-radius: 4px !important;
 }
 
 [data-theme="dark"] .meta-pill-accent {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* ── STUDIO DESK & JOURNAL MEMO CARD ── */
 .studio-desk-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 14px !important;
   box-shadow: -4px 4px 0 #2B2825, 0 10px 24px rgba(43,40,37,0.06) !important;
@@ -8938,7 +8939,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .studio-desk-card {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.16) !important;
   box-shadow: -4px 4px 0 rgba(0,0,0,0.9), 0 12px 24px rgba(0,0,0,0.5) !important;
 }
@@ -8965,26 +8966,26 @@ a[href*="gobunny"] img {
   font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 [data-theme="dark"] .desk-card-title {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .desk-tag {
   font-size: 0.65rem !important;
   padding: 0.12rem 0.4rem !important;
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border: 1px solid #2B2825 !important;
   border-radius: 3px !important;
   font-weight: 800 !important;
 }
 
 [data-theme="dark"] .desk-tag {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* Shelf Items */
@@ -8993,7 +8994,7 @@ a[href*="gobunny"] img {
   justify-content: space-between !important;
   align-items: center !important;
   gap: 0.3rem !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid rgba(43, 40, 37, 0.15) !important;
   border-radius: 8px !important;
   padding: 0.35rem 0.5rem !important;
@@ -9001,7 +9002,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-items-shelf {
-  background: #161520 !important;
+  background: #14131A !important;
   border-color: rgba(245, 240, 230, 0.12) !important;
 }
 
@@ -9033,12 +9034,12 @@ a[href*="gobunny"] img {
 
 [data-theme="dark"] .shelf-item:hover,
 [data-theme="dark"] .shelf-item.active {
-  background: #F5BA42 !important;
+  background: #E8AF30 !important;
 }
 
 /* Live Dynamic Note Box */
 .desk-live-note {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43, 40, 37, 0.2) !important;
   border-radius: 8px !important;
   padding: 0.5rem 0.75rem !important;
@@ -9052,7 +9053,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .desk-live-note {
-  background: #2A2738 !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.14) !important;
   box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.5) !important;
 }
@@ -9063,7 +9064,7 @@ a[href*="gobunny"] img {
   left: 22px !important;
   width: 8px !important;
   height: 8px !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border-left: 1px solid rgba(43, 40, 37, 0.2) !important;
   border-top: 1px solid rgba(43, 40, 37, 0.2) !important;
   transform: rotate(45deg) !important;
@@ -9071,7 +9072,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .note-speech-arrow {
-  background: #2A2738 !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.14) !important;
 }
 
@@ -9086,13 +9087,13 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .note-title {
-  color: #F5BA42 !important;
+  color: #E8AF30 !important;
 }
 
 .note-text {
   font-size: 0.76rem !important;
   line-height: 1.35 !important;
-  color: #383531 !important;
+  color: #2B2825 !important;
   margin: 0 !important;
 }
 
@@ -9128,21 +9129,21 @@ a[href*="gobunny"] img {
 }
 
 .memo-content {
-  color: #383531 !important;
+  color: #2B2825 !important;
 }
 
 [data-theme="dark"] .memo-content {
-  color: #D8D3C8 !important;
+  color: #C9C4BC !important;
 }
 
 .memo-lbl {
   font-weight: 700 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin-right: 0.25rem !important;
 }
 
 [data-theme="dark"] .memo-lbl {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .memo-val {
@@ -9168,18 +9169,18 @@ a[href*="gobunny"] img {
 
 .highlight-memo .memo-val {
   font-weight: 600 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 [data-theme="dark"] .highlight-memo .memo-val {
-  color: #F5BA42 !important;
+  color: #E8AF30 !important;
 }
 
 /* ================================================================
    INTERACTIVE PLAYGROUNDS: THEME-ADAPTIVE & ENHANCED VISUALS
 ================================================================ */
 .playground-scrap-card {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 2px solid #2B2825 !important;
   border-radius: 14px !important;
   box-shadow: -4px 4px 0 #2B2825, 0 10px 24px rgba(43,40,37,0.06) !important;
@@ -9187,14 +9188,14 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .playground-scrap-card {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
   box-shadow: -4px 4px 0 rgba(0,0,0,0.9), 0 12px 24px rgba(0,0,0,0.5) !important;
 }
 
 /* 01 Animation Light Table Canvas */
 .anim-canvas-wrap {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid rgba(43,40,37,0.18) !important;
   border-radius: 8px !important;
   overflow: hidden !important;
@@ -9207,13 +9208,13 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .anim-canvas-wrap {
-  background: #161520 !important;
+  background: #14131A !important;
   border-color: rgba(245,240,230,0.14) !important;
 }
 
 /* 02 Illustration Doodle Canvas (High Contrast Dark Mode) */
 .doodle-canvas-stage {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid rgba(43,40,37,0.18) !important;
   border-radius: 8px !important;
   overflow: hidden !important;
@@ -9221,12 +9222,12 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .doodle-canvas-stage {
-  background: #161520 !important;
+  background: #14131A !important;
   border-color: rgba(245,240,230,0.14) !important;
 }
 
 .rubber-stamp-btn {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 6px !important;
   padding: 4px 6px !important;
@@ -9242,20 +9243,20 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .rubber-stamp-btn {
-  background: #2A2738 !important;
+  background: #1E1C22 !important;
   border-color: rgba(245,240,230,0.16) !important;
   color: #FFFDF8 !important;
 }
 
 [data-theme="dark"] .rubber-stamp-btn:hover,
 [data-theme="dark"] .rubber-stamp-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* 03 Videography Camera LCD & Polaroid Result */
 .camera-body-shell {
-  background: #201E2B !important;
+  background: #1E1C22 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 10px !important;
   padding: 8px !important;
@@ -9263,7 +9264,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .camera-body-shell {
-  background: #14131C !important;
+  background: #14131A !important;
   border-color: rgba(245,240,230,0.18) !important;
 }
 
@@ -9279,8 +9280,8 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.68rem !important;
   font-weight: 700 !important;
-  background: #2C293A !important;
-  color: #D8D3C8 !important;
+  background: #1E1C22 !important;
+  color: #C9C4BC !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
@@ -9290,19 +9291,19 @@ a[href*="gobunny"] img {
 
 .scene-filter-btn:hover, .scene-filter-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #E8AF30 !important;
 }
 
 [data-theme="dark"] .scene-filter-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 .shutter-btn {
   width: 100% !important;
   padding: 6px !important;
-  background: #C85A48 !important;
+  background: #C42D1C !important;
   color: #FFFDF8 !important;
   border: 1px solid rgba(0,0,0,0.3) !important;
   border-radius: 6px !important;
@@ -9316,7 +9317,7 @@ a[href*="gobunny"] img {
 }
 
 .shutter-btn:hover {
-  background: #D93020 !important;
+  background: #E8432E !important;
   transform: translateY(-1px) !important;
 }
 
@@ -9326,7 +9327,7 @@ a[href*="gobunny"] img {
 
 .polaroid-tray {
   margin-top: 8px !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 6px 8px !important;
@@ -9343,7 +9344,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .polaroid-tray {
-  background: #2A2738 !important;
+  background: #1E1C22 !important;
   border-color: rgba(245,240,230,0.18) !important;
   box-shadow: -2px 2px 0 rgba(0,0,0,0.8) !important;
 }
@@ -9354,7 +9355,7 @@ a[href*="gobunny"] img {
   border: 1px solid rgba(0,0,0,0.2) !important;
   border-radius: 3px !important;
   overflow: hidden !important;
-  background: #000 !important;
+  background: #14131A !important;
   flex-shrink: 0 !important;
 }
 
@@ -9373,20 +9374,20 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.72rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 [data-theme="dark"] .polaroid-cap {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .polaroid-sub {
   font-size: 0.65rem !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
 }
 
 [data-theme="dark"] .polaroid-sub {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 /* A pre-existing rule sets .polaroid-tray to "display:flex !important",
@@ -9430,7 +9431,7 @@ a[href*="gobunny"] img {
   height: 100% !important;
   border: none !important;
   border-radius: 0 !important;
-  background: #000 !important;
+  background: #14131A !important;
   display: block !important;
   max-width: none !important;
 }
@@ -9444,7 +9445,7 @@ a[href*="gobunny"] img {
   height: 100% !important;
   border: none !important;
   border-radius: 0 !important;
-  background: #000 !important;
+  background: #14131A !important;
   max-width: none !important;
 }
 .polaroid-meta-block {
@@ -9515,13 +9516,13 @@ a[href*="gobunny"] img {
 .chord-pad-btn {
   flex: 1 !important;
   padding: 5px 2px !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 6px !important;
   font-family: var(--fd) !important;
   font-size: 0.72rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   cursor: pointer !important;
   box-shadow: 1.5px 1.5px 0 #2B2825 !important;
   transition: all 0.12s ease !important;
@@ -9537,16 +9538,16 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .chord-pad-btn {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245,240,230,0.18) !important;
   box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.8) !important;
 }
 
 [data-theme="dark"] .chord-pad-btn:hover,
 [data-theme="dark"] .chord-pad-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* ================================================================
@@ -9555,7 +9556,7 @@ a[href*="gobunny"] img {
 
 /* 01 Animation Lightbox Film Scrubber */
 .film-monitor-wrap {
-  background: #0E0D14 !important;
+  background: #14131A !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   overflow: hidden !important;
@@ -9599,29 +9600,29 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
 }
 
 [data-theme="dark"] .film-btn {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245,240,230,0.16) !important;
 }
 
 .film-btn:hover, .film-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #2B2825 !important;
 }
 
 [data-theme="dark"] .film-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 .scrubber-control-row {
@@ -9638,7 +9639,7 @@ a[href*="gobunny"] img {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid #2B2825 !important;
   border-radius: 4px !important;
   font-size: 0.65rem !important;
@@ -9646,7 +9647,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .scrub-step-btn {
-  background: #2C293A !important;
+  background: #1E1C22 !important;
   color: #FFFDF8 !important;
   border-color: rgba(245,240,230,0.18) !important;
 }
@@ -9671,8 +9672,8 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .scrub-play-btn {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* 02 Illustration Risograph Stamp Studio */
@@ -9704,7 +9705,7 @@ a[href*="gobunny"] img {
 
 /* 03 Videography Director's Field Monitor & Real-Time LUTs */
 .director-monitor-shell {
-  background: #14131C !important;
+  background: #14131A !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 6px !important;
@@ -9716,7 +9717,7 @@ a[href*="gobunny"] img {
   border-radius: 6px !important;
   overflow: hidden !important;
   aspect-ratio: 16 / 8.5 !important;
-  background: #000 !important;
+  background: #14131A !important;
 }
 
 .lut-video-screen {
@@ -9787,8 +9788,8 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.62rem !important;
   font-weight: 700 !important;
-  background: #242232 !important;
-  color: #D8D3C8 !important;
+  background: #1E1C22 !important;
+  color: #C9C4BC !important;
   border: 1px solid rgba(255,255,255,0.12) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
@@ -9798,18 +9799,18 @@ a[href*="gobunny"] img {
 
 .lut-btn:hover, .lut-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #E8AF30 !important;
 }
 
 [data-theme="dark"] .lut-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* 04 Graphic Design Swiss Poster Artboard */
 .poster-artboard-stage {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 12px 14px !important;
@@ -9823,7 +9824,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .poster-artboard-stage {
-  background: #161520 !important;
+  background: #14131A !important;
   border-color: rgba(245,240,230,0.18) !important;
 }
 
@@ -9854,7 +9855,7 @@ a[href*="gobunny"] img {
   font-weight: 900 !important;
   padding: 1px 4px !important;
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border: 1px solid #2B2825 !important;
   border-radius: 3px !important;
 }
@@ -9863,7 +9864,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.62rem !important;
   font-weight: 800 !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
 }
 
 .poster-headline {
@@ -9873,7 +9874,7 @@ a[href*="gobunny"] img {
   line-height: 0.95 !important;
   letter-spacing: -0.03em !important;
   margin: 2px 0 3px !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   transition: all 0.25s ease !important;
 }
 
@@ -9883,12 +9884,12 @@ a[href*="gobunny"] img {
 
 .poster-sub {
   font-size: 0.7rem !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
   margin: 0 !important;
 }
 
 [data-theme="dark"] .poster-sub {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 .poster-control-bar {
@@ -9903,7 +9904,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
@@ -9911,20 +9912,20 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .poster-theme-btn {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245,240,230,0.16) !important;
 }
 
 .poster-theme-btn:hover, .poster-theme-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #2B2825 !important;
 }
 
 [data-theme="dark"] .poster-theme-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* ================================================================
@@ -9934,7 +9935,7 @@ a[href*="gobunny"] img {
 /* Hero Sketchbook Physicality (Spine Stitch, Paper Grain, Lift) */
 .hero-sketchbook {
   position: relative !important;
-  background-color: #FAF8F5 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     radial-gradient(rgba(43, 40, 37, 0.07) 1px, transparent 1px),
     url("assets/svg-opt/paper-light-tile.webp") !important;
@@ -9946,7 +9947,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .hero-sketchbook {
-  background-color: #161520 !important;
+  background-color: #14131A !important;
   background-image: radial-gradient(rgba(245, 240, 230, 0.06) 1px, transparent 1px) !important;
   border-color: rgba(245, 240, 230, 0.18) !important;
   box-shadow: -8px 8px 0 rgba(0, 0, 0, 0.9), 0 24px 48px rgba(0, 0, 0, 0.6) !important;
@@ -9976,7 +9977,7 @@ a[href*="gobunny"] img {
   gap: 0.45rem !important;
   padding: 0.32rem 0.8rem !important;
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   font-family: var(--fd) !important;
   font-size: 0.75rem !important;
   font-weight: 800 !important;
@@ -9988,9 +9989,9 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .hero-badge-pill {
-  background: #F5BA42 !important;
-  color: #14131C !important;
-  border-color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
+  border-color: #14131A !important;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.8) !important;
 }
 
@@ -10003,8 +10004,8 @@ a[href*="gobunny"] img {
   letter-spacing: 0.04em !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 6px !important;
-  background: #FAF8F5 !important;
-  color: #1E1C1A !important;
+  background: #F9F6F0 !important;
+  color: #1E1C22 !important;
   cursor: pointer !important;
   box-shadow: 2px 2px 0 #2B2825 !important;
   transition: all 0.15s ease !important;
@@ -10015,25 +10016,25 @@ a[href*="gobunny"] img {
 
 .reel-tab-btn:hover, .reel-tab-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   transform: translateY(-2px) !important;
 }
 
 [data-theme="dark"] .reel-tab-btn {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245, 240, 230, 0.2) !important;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.8) !important;
 }
 
 [data-theme="dark"] .reel-tab-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 /* ── OFFICIAL CONSULAR PASSPORT MODAL STYLING ── */
 .passport-booklet-wrap {
-  background: #1B2A4A !important;
+  background: #16305A !important;
   border: 2.5px solid #2B2825 !important;
   border-radius: 18px !important;
   padding: 12px !important;
@@ -10053,7 +10054,7 @@ a[href*="gobunny"] img {
 .passport-booklet-body {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 10px !important;
   overflow: hidden !important;
@@ -10079,13 +10080,13 @@ a[href*="gobunny"] img {
 .passport-page {
   padding: 1.4rem 1.6rem !important;
   position: relative !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   background-image: radial-gradient(rgba(43,40,37,0.06) 1px, transparent 1px) !important;
   background-size: 12px 12px !important;
 }
 
 .passport-top-header {
-  background: #1B2A4A !important;
+  background: #16305A !important;
   color: #FFFDF8 !important;
   padding: 0.35rem 0.65rem !important;
   border-radius: 5px !important;
@@ -10106,7 +10107,7 @@ a[href*="gobunny"] img {
 
 /* Official Stamp Dots Progress (No Rainbow Bar) */
 .passport-progress-status-box {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 0.55rem 0.75rem !important;
@@ -10120,7 +10121,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.7rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin-bottom: 0.4rem !important;
   letter-spacing: 0.04em !important;
 }
@@ -10138,23 +10139,23 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.65rem !important;
   font-weight: 900 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
-  color: #8C8780 !important;
+  color: #95908A !important;
   transition: all 0.2s ease !important;
 }
 
 .stamp-dot.endorsed {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #2B2825 !important;
   box-shadow: 1px 1px 0 #2B2825 !important;
 }
 
 /* Sealed Slots on Right Page (No Grey Padlocks!) */
 .passport-slot {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px dashed rgba(43,40,37,0.25) !important;
   border-radius: 8px !important;
   padding: 0.55rem 0.45rem !important;
@@ -10185,7 +10186,7 @@ a[href*="gobunny"] img {
   width: 18px !important;
   height: 18px !important;
   border-radius: 50% !important;
-  background: #C85A48 !important;
+  background: #C42D1C !important;
   color: #FFFDF8 !important;
   font-size: 0.65rem !important;
   display: flex !important;
@@ -10198,12 +10199,12 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.72rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 .slot-lock-sub {
   font-size: 0.62rem !important;
-  color: #8C8780 !important;
+  color: #95908A !important;
 }
 
 /* Unlocked Inked Stamp Graphic Appearance */
@@ -10275,7 +10276,7 @@ a[href*="gobunny"] img {
   width: 32px !important;
   height: 32px !important;
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border: 2px solid #2B2825 !important;
   border-radius: 50% !important;
   position: absolute !important;
@@ -10296,7 +10297,7 @@ a[href*="gobunny"] img {
 .passport-booklet-body {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border-radius: 12px !important;
   overflow: hidden !important;
   position: relative !important;
@@ -10322,7 +10323,7 @@ a[href*="gobunny"] img {
 .passport-page {
   padding: 1.4rem 1.6rem !important;
   position: relative !important;
-  background-color: #FAF8F5 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     repeating-linear-gradient(0deg, rgba(43,40,37,0.03) 0, rgba(43,40,37,0.03) 1px, transparent 1px, transparent 16px),
     repeating-linear-gradient(90deg, rgba(43,40,37,0.03) 0, rgba(43,40,37,0.03) 1px, transparent 1px, transparent 16px) !important;
@@ -10391,7 +10392,7 @@ a[href*="gobunny"] img {
   border: 2px solid #2B2825 !important;
   border-radius: 6px !important;
   position: relative !important;
-  background: #EFECE6 !important;
+  background: #F2EFEB !important;
   overflow: hidden !important;
   flex-shrink: 0 !important;
   box-shadow: 2px 2px 0 #2B2825 !important;
@@ -10450,7 +10451,7 @@ a[href*="gobunny"] img {
 
 .meta-lbl {
   font-size: 0.55rem !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
@@ -10459,17 +10460,17 @@ a[href*="gobunny"] img {
 .meta-val {
   font-family: var(--fd) !important;
   font-size: 0.72rem !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   font-weight: 800 !important;
 }
 
 .doc-no-val {
-  color: #C85A48 !important;
+  color: #C42D1C !important;
 }
 
 /* Endorsement Tracker Ribbon */
 .passport-endorsement-ribbon {
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 6px 8px !important;
@@ -10483,7 +10484,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   margin-bottom: 5px !important;
 }
 
@@ -10499,27 +10500,27 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.55rem !important;
   font-weight: 800 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
-  color: #8C8780 !important;
+  color: #95908A !important;
   transition: all 0.2s ease !important;
   white-space: nowrap !important;
 }
 
 .star-pill.endorsed {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #2B2825 !important;
   box-shadow: 1px 1px 0 #2B2825 !important;
 }
 
 .star-pill .star-glyph {
-  color: #C85A48 !important;
+  color: #C42D1C !important;
 }
 
 .star-pill.endorsed .star-glyph {
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 /* Machine Readable MRZ Monospace Band */
@@ -10527,11 +10528,11 @@ a[href*="gobunny"] img {
   font-family: 'Consolas', 'Courier New', monospace !important;
   font-size: 0.62rem !important;
   line-height: 1.25 !important;
-  background: #EFECE6 !important;
+  background: #F2EFEB !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
   padding: 4px 6px !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   letter-spacing: 0.08em !important;
   font-weight: bold !important;
 }
@@ -10547,11 +10548,11 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.7rem !important;
   font-weight: 900 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
 }
 
 .passport-page-num {
-  color: #6B665F !important;
+  color: #5C5854 !important;
   font-size: 0.65rem !important;
 }
 
@@ -10597,7 +10598,7 @@ a[href*="gobunny"] img {
 }
 
 .slot-sealed-icon { font-size: 0.85rem !important; opacity: 0.45 !important; }
-.slot-sealed-title { font-family: var(--fd) !important; font-size: 0.65rem !important; font-weight: 800 !important; color: #8C8780 !important; }
+.slot-sealed-title { font-family: var(--fd) !important; font-size: 0.65rem !important; font-weight: 800 !important; color: #95908A !important; }
 .slot-sealed-hint { font-size: 0.55rem !important; color: #A09B92 !important; }
 
 /* Unlocked Stamp Container */
@@ -10677,7 +10678,7 @@ a[href*="gobunny"] img {
 .passport-footer-note {
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  color: #6B665F !important;
+  color: #5C5854 !important;
   text-align: center !important;
   margin-top: 8px !important;
 }
@@ -10764,7 +10765,7 @@ a[href*="gobunny"] img {
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
-  background: #14131C !important;
+  background: #14131A !important;
   color: #FFFDF8 !important;
   border: 2px solid #E8AF30 !important;
   border-radius: 999px !important;
@@ -10808,7 +10809,7 @@ a[href*="gobunny"] img {
 
 .passport-dock-counter {
   background: #E8AF30 !important;
-  color: #14131C !important;
+  color: #14131A !important;
   padding: 2px 8px !important;
   border-radius: 999px !important;
   font-size: 0.75rem !important;
@@ -10866,7 +10867,7 @@ a[href*="gobunny"] img {
     font-size: 0.68rem !important;
     line-height: 1.4 !important;
     text-align: center !important;
-    border: 1.5px solid #14131C !important;
+    border: 1.5px solid #14131A !important;
   }
 }
 
@@ -10892,8 +10893,8 @@ a[href*="gobunny"] img {
 }
 
 .passport-booklet-wrap {
-  background: #FBF8EA !important;
-  border: 3px solid #171410 !important;
+  background: #F5F0E6 !important;
+  border: 3px solid #14131A !important;
   border-radius: 28px !important;
   padding: 0 !important;
   box-shadow: 0 30px 70px rgba(0,0,0,0.45) !important;
@@ -10930,9 +10931,9 @@ a[href*="gobunny"] img {
   justify-content: center !important;
   width: 32px !important;
   height: 32px !important;
-  background: #171410 !important;
-  color: #FBF8EA !important;
-  border: 2px solid #FBF8EA !important;
+  background: #14131A !important;
+  color: #F5F0E6 !important;
+  border: 2px solid #F5F0E6 !important;
   border-radius: 50% !important;
   position: absolute !important;
   top: -12px !important;
@@ -10954,7 +10955,7 @@ a[href*="gobunny"] img {
 .passport-booklet-body {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  background-color: #FBF8EA !important;
+  background-color: #F5F0E6 !important;
   /* Faint ledger/security-print grid instead of a photographed paper
      tile -- procedural lines never show a visible repeat seam, and read
      as printed rule lines rather than a texture photo. Actual grain
@@ -11018,7 +11019,7 @@ a[href*="gobunny"] img {
   position: relative !important;
   z-index: 2 !important;
   background: none !important;
-  color: #171410 !important;
+  color: #14131A !important;
   min-width: 0 !important;
 }
 
@@ -11038,8 +11039,8 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-weight: 800 !important;
   font-size: 0.92rem !important;
-  color: #171410 !important;
-  border: 1.75px dotted #171410 !important;
+  color: #14131A !important;
+  border: 1.75px dotted #14131A !important;
   border-radius: 10px !important;
   padding: 7px 12px !important;
   display: inline-block !important;
@@ -11056,8 +11057,8 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-weight: 800 !important;
   font-size: 0.68rem !important;
-  color: #171410 !important;
-  border: 1.75px dotted #171410 !important;
+  color: #14131A !important;
+  border: 1.75px dotted #14131A !important;
   border-radius: 8px !important;
   padding: 4px 9px !important;
   background: none !important;
@@ -11125,13 +11126,13 @@ a[href*="gobunny"] img {
 .meta-val {
   font-family: var(--fd) !important;
   font-size: 0.8rem !important;
-  color: #171410 !important;
+  color: #14131A !important;
   font-weight: 800 !important;
 }
 
 .passport-endorsement-ribbon {
   background: rgba(255,255,255,0.35) !important;
-  border: 2px solid #171410 !important;
+  border: 2px solid #14131A !important;
   border-radius: 16px !important;
   padding: 12px 14px !important;
   box-shadow: none !important;
@@ -11149,7 +11150,7 @@ a[href*="gobunny"] img {
   border: 1.5px dotted rgba(23,20,16,0.4) !important;
   border-radius: 8px !important;
   padding: 7px 9px !important;
-  color: #171410 !important;
+  color: #14131A !important;
   letter-spacing: 0.06em !important;
   font-weight: bold !important;
   overflow-wrap: anywhere !important;
@@ -11163,7 +11164,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.78rem !important;
   font-weight: 800 !important;
-  color: #171410 !important;
+  color: #14131A !important;
   margin-bottom: 8px !important;
 }
 
@@ -11189,7 +11190,7 @@ a[href*="gobunny"] img {
   background: transparent !important;
   border: 1.75px dotted rgba(23,20,16,0.5) !important;
   border-radius: 999px !important;
-  color: #171410 !important;
+  color: #14131A !important;
   transition: all 0.2s ease !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -11214,13 +11215,13 @@ a[href*="gobunny"] img {
 /* Each endorsement pill fills with the SAME ink color as its own visa
    stamp illustration on the right page, so one hue means one discipline
    everywhere in the passport (colors read straight off the SVGs). */
-#pdot-1.endorsed { background: #0A65FF !important; }
-#pdot-2.endorsed { background: #D71440 !important; }
-#pdot-3.endorsed { background: #21B253 !important; }
+#pdot-1.endorsed { background: #1E4CC8 !important; }
+#pdot-2.endorsed { background: #E8432E !important; }
+#pdot-3.endorsed { background: #34C990 !important; }
 #pdot-4.endorsed { background: #C99700 !important; color: #FFFDF8 !important; }
 #pdot-4.endorsed .star-glyph { color: #FFFDF8 !important; }
 #pdot-5.endorsed { background: #B337D2 !important; }
-#pdot-6.endorsed { background: #F046A1 !important; }
+#pdot-6.endorsed { background: #E2559C !important; }
 
 .passport-right-header {
   display: flex !important;
@@ -11232,7 +11233,7 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.8rem !important;
   font-weight: 800 !important;
-  color: #171410 !important;
+  color: #14131A !important;
 }
 
 .passport-visa-heading {
@@ -11320,11 +11321,11 @@ a[href*="gobunny"] img {
   position: absolute !important;
   inset: -16px !important;
   background-image:
-    radial-gradient(circle, #FFDD00 3px, transparent 3.5px),
-    radial-gradient(circle, #F046A1 3px, transparent 3.5px),
-    radial-gradient(circle, #0A65FF 2.5px, transparent 3px),
-    radial-gradient(circle, #21B253 2.5px, transparent 3px),
-    radial-gradient(circle, #D71440 2.5px, transparent 3px) !important;
+    radial-gradient(circle, #FFCC00 3px, transparent 3.5px),
+    radial-gradient(circle, #E2559C 3px, transparent 3.5px),
+    radial-gradient(circle, #1E4CC8 2.5px, transparent 3px),
+    radial-gradient(circle, #34C990 2.5px, transparent 3px),
+    radial-gradient(circle, #E8432E 2.5px, transparent 3px) !important;
   background-position: 4% 12%, 92% 4%, 100% 78%, 8% 94%, 50% 0% !important;
   background-repeat: no-repeat !important;
   pointer-events: none !important;
@@ -11352,7 +11353,7 @@ a[href*="gobunny"] img {
 ================================================================ */
 
 .vector-stage-wrap {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   background-image: 
     radial-gradient(circle, rgba(43,40,37,0.12) 1px, transparent 1px) !important;
   background-size: 14px 14px !important;
@@ -11364,7 +11365,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .vector-stage-wrap {
-  background: #14131C !important;
+  background: #14131A !important;
   background-image: radial-gradient(circle, rgba(245,240,230,0.1) 1px, transparent 1px) !important;
   border-color: rgba(245,240,230,0.18) !important;
 }
@@ -11388,7 +11389,7 @@ a[href*="gobunny"] img {
   font-family: 'Consolas', 'Courier New', monospace !important;
   font-size: 0.55rem !important;
   font-weight: 700 !important;
-  color: #8C8780 !important;
+  color: #95908A !important;
   letter-spacing: 0.02em !important;
   pointer-events: none !important;
   display: flex !important;
@@ -11396,7 +11397,7 @@ a[href*="gobunny"] img {
 }
 
 [data-theme="dark"] .vector-hud-coords {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 .vector-preset-bar {
@@ -11411,36 +11412,36 @@ a[href*="gobunny"] img {
   font-family: var(--fd) !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
   border-radius: 4px !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   cursor: pointer !important;
   text-align: center !important;
   transition: all 0.15s ease !important;
 }
 
 [data-theme="dark"] .vector-preset-bar .pg-btn {
-  background: #2C293A !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245,240,230,0.16) !important;
 }
 
 .vector-preset-bar .pg-btn:hover, .vector-preset-bar .pg-btn.active {
   background: #E8AF30 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   border-color: #2B2825 !important;
 }
 
 [data-theme="dark"] .vector-preset-bar .pg-btn.active {
-  background: #F5BA42 !important;
-  color: #14131C !important;
+  background: #E8AF30 !important;
+  color: #14131A !important;
 }
 
 .vector-bottom-hint {
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  color: #8C8780 !important;
+  color: #95908A !important;
   text-align: center !important;
   margin-top: 3px !important;
 }
@@ -11498,7 +11499,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 [data-theme="dark"] .sec-intro {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 /* Strip text clutter from Section 04 Vector Widget */
@@ -11547,7 +11548,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   right: 6% !important;
   width: 76px !important;
   height: 76px !important;
-  background: #C85A48 !important;
+  background: #C42D1C !important;
   border: 2px dashed #FFFDF8 !important;
   border-radius: 50% !important;
   transform: rotate(8deg) !important;
@@ -11581,7 +11582,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 /* 2. Physical Sketchbook Depth & 3D Lift */
 .hero-sketchbook {
   position: relative !important;
-  background-color: #FAF8F5 !important;
+  background-color: #F9F6F0 !important;
   background-image: 
     radial-gradient(rgba(43, 40, 37, 0.08) 1px, transparent 1px),
     url("assets/svg-opt/paper-light-tile.webp") !important;
@@ -11681,16 +11682,16 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   font-weight: 800 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 6px !important;
-  background: #FAF8F5 !important;
-  color: #1E1C1A !important;
+  background: #F9F6F0 !important;
+  color: #1E1C22 !important;
   text-decoration: none !important;
   box-shadow: 2px 2px 0 #2B2825 !important;
   transition: transform 0.15s ease, background 0.15s ease !important;
 }
 
 [data-theme="dark"] .disc {
-  background: #242232 !important;
-  color: #F4F0E8 !important;
+  background: #1E1C22 !important;
+  color: #F5F0E6 !important;
   border-color: rgba(245, 240, 230, 0.2) !important;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.8) !important;
 }
@@ -11707,7 +11708,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 .dot-blue { background: #2B4C7E !important; }
-.dot-red { background: #C85A48 !important; }
+.dot-red { background: #C42D1C !important; }
 .dot-teal { background: #2A9D8F !important; }
 .dot-gold { background: #E8AF30 !important; }
 .dot-purple { background: #7B2CBF !important; }
@@ -11717,7 +11718,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  background: #FFFFFF !important;
+  background: #FFFDF8 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 10px !important;
   padding: 0.75rem 1rem !important;
@@ -11743,7 +11744,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
 /* 6. Tactile Director's Field Spec Card (Fills Right Column Stretch) */
 .hero-director-strip {
-  background: #FAF8F5 !important;
+  background: #F9F6F0 !important;
   border: 1.5px solid #2B2825 !important;
   border-radius: 8px !important;
   padding: 8px 12px !important;
@@ -11770,7 +11771,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
      10.4px, under the 11px floor. */
   font-size: 0.7rem !important;
   font-weight: 900 !important;
-  color: #1E1C1A !important;
+  color: #1E1C22 !important;
   letter-spacing: 0.05em !important;
   display: flex !important;
   align-items: center !important;
@@ -11778,15 +11779,15 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 [data-theme="dark"] .d-pill-tag {
-  color: #F4F0E8 !important;
+  color: #F5F0E6 !important;
 }
 
 .d-pulse-red {
   width: 7px !important;
   height: 7px !important;
   border-radius: 50% !important;
-  background: #C85A48 !important;
-  box-shadow: 0 0 6px #C85A48 !important;
+  background: #C42D1C !important;
+  box-shadow: 0 0 6px #C42D1C !important;
 }
 
 .d-track-name {
@@ -11810,7 +11811,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 [data-theme="dark"] .director-pipeline-row {
-  color: #BDB7AA !important;
+  color: #C9C4BC !important;
 }
 
 .d-pipe-sep {
@@ -11870,7 +11871,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   right: -24px !important;
   width: 78px !important;
   height: 78px !important;
-  background: #C85A48 !important;
+  background: #C42D1C !important;
   border: 2px dashed #FFFDF8 !important;
   border-radius: 50% !important;
   transform: rotate(8deg) !important;
@@ -12049,7 +12050,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 /* Off-brand teal → warm red, matching the Field Log pulse dot so both
    "live" indicators in the spread read as one consistent system */
 .hero-badge-pill .pulse-dot {
-  background: #C85A48 !important;
+  background: #C42D1C !important;
   box-shadow: 0 0 0 2px rgba(200, 90, 72, 0.22) !important;
 }
 
@@ -12070,14 +12071,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 [data-theme="dark"] .hero-seal-sticker {
   background: #3A5FA0 !important;
-  border-color: #14131C !important;
+  border-color: #14131A !important;
 }
 .seal-inner {
   gap: 0px !important;
 }
 .seal-star {
   font-size: 0.6rem !important;
-  color: #F5BA42 !important;
+  color: #E8AF30 !important;
 }
 .seal-title {
   /* Critique finding (2026-09-02, /impeccable typeset): computed to
@@ -12109,16 +12110,16 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 .d-pill-tag {
   /* Critique finding (2026-09-02, /impeccable typeset): #FFFDF8 text on
-     #C85A48 measured 4.1:1, under the 4.5:1 AA floor for this size.
+     #C42D1C measured 4.1:1, under the 4.5:1 AA floor for this size.
      Darkened the background only (same hue, keeps the site's warm-red
      identity). #B45140 alone cleared light mode (4.93:1 vs #FFFDF8)
      but not dark mode -- a higher-specificity [data-theme="dark"]
-     .d-pill-tag rule elsewhere wins the text color there (#F4F0E8,
-     slightly dimmer than #FFFDF8), landing at only 4.41:1. #AA4C3D
+     .d-pill-tag rule elsewhere wins the text color there (#F5F0E6,
+     slightly dimmer than #FFFDF8), landing at only 4.41:1. #C42D1C
      clears both: 5.42:1 in light mode, 4.85:1 in dark -- verified via
      the WCAG relative-luminance formula against each theme's actual
      resolved text color, not assumed. */
-  background: #AA4C3D !important;
+  background: #C42D1C !important;
   color: #FFFDF8 !important;
   padding: 3px 8px !important;
   border-radius: 4px !important;
@@ -12170,19 +12171,19 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    badge, or desk rules above touch this markup.
 ================================================================ */
 #about.about {
-  --red: #D93020;
+  --red: #A82818;
   --red-deep: #A32717;
-  --cream: #FDF4E3;
-  --cream-dim: #F4DFB4;
-  --ink: #201C16;
-  --gold: #FEB21A;
-  --cobalt: #134686;
+  --cream: #F5F0E6;
+  --cream-dim: #F5F0E6;
+  --ink: #2B2825;
+  --gold: #E8AF30;
+  --cobalt: #2B4C7E;
   --magenta: #E2559C;
-  --moss: #3E9E63;
+  --moss: #1E7A4E;
   --tangerine: #EF7A34;
-  --teal: #1F9B93;
+  --teal: #2BC9B5;
   --shadow: rgba(32, 28, 22, .35);
-  --muted: #8a8272;
+  --muted: #6E6A60;
   padding: 0 !important;
   margin-top: 0 !important;
   background: var(--red) !important;
@@ -13447,7 +13448,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   border: 2px solid #FFFDF8;
   box-shadow: 0 3px 9px rgba(20, 19, 26, 0.25);
 }
-[data-theme="dark"] .disc-stamp { border-color: #14131C; }
+[data-theme="dark"] .disc-stamp { border-color: #14131A; }
 .disc-stamp svg { width: 1.05rem; height: 1.05rem; display: block; }
 
 /* The 3 clickable ones are real <button> elements -- strip the UA button
@@ -13489,11 +13490,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    invisible. Pre-existing gap, not new to the inline-heading move. */
 .stamp-rv.in { opacity: 1 !important; }
 
-#animation .disc-stamp      { background: #1E3FC4 !important; color: #FFFDF8 !important; }
+#animation .disc-stamp      { background: #1E4CC8 !important; color: #FFFDF8 !important; }
 #illustration .disc-stamp   { background: #E8432E !important; color: #FFFDF8 !important; }
 #videography .disc-stamp    { background: #2BC9B5 !important; color: #14131A !important; }
 #graphic-design .disc-stamp { background: #FFCC00 !important; color: #14131A !important; }
-#music .disc-stamp          { background: #8B5CF6 !important; color: #FFFDF8 !important; }
+#music .disc-stamp          { background: #6540CC !important; color: #FFFDF8 !important; }
 
 #animation .stamp-rv.in      { transform: rotate(8deg) !important; }
 #illustration .stamp-rv.in   { transform: rotate(-7deg) !important; }
@@ -13582,24 +13583,24 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    pages" plan). Originally a deeper shade of red than About, but that
    created a hard visible seam -- two flat color blocks meeting at a
    line, reading as two sections instead of one. Now the exact same red
-   as About (--red: #D93020), same texture technique, same opacity: the
+   as About (--red: #E8432E), same texture technique, same opacity: the
    seam disappears because there's no color difference left to draw one.
    Contact still reads as its own moment through layout/content (the
    form, the CTA), not through a different color. Deliberately does not
    change with the light/dark toggle, same as #about -- these are the
    fixed bold "cover" moments. */
 #contact.contact {
-  --c-red: #D93020;
-  --c-cream: #FDF4E3;
-  --c-cream-dim: #F4DFB4;
-  --c-ink: #201C16;
-  --c-gold: #FEB21A;
+  --c-red: #E8432E;
+  --c-cream: #F5F0E6;
+  --c-cream-dim: #F5F0E6;
+  --c-ink: #2B2825;
+  --c-gold: #E8AF30;
   /* Used for the email link, which now sits on cream paper (the .letter
      card) instead of directly on red -- matches About's --cobalt so the
      two sections' link color reads as the same palette choice, not a
      coincidence. (No longer needs the old red-backdrop-tuned sky-blue
      now that the link isn't sitting straight on --c-red.) */
-  --c-cobalt: #134686;
+  --c-cobalt: #2B4C7E;
   background: var(--c-red) !important;
   color: var(--c-cream) !important;
   position: relative;
@@ -14055,7 +14056,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   <div class="hero-sketchbook rv">
     <!-- Frame-Breaking Collage Elements Pinned Directly to Notebook -->
-    <div class="tape hero-tape-top" style="--tape-color: #C85A48; --tape-angle: -3deg; --tape-w: 85px; --tape-h: 24px;" aria-hidden="true"></div>
+    <div class="tape hero-tape-top" style="--tape-color: #C42D1C; --tape-angle: -3deg; --tape-w: 85px; --tape-h: 24px;" aria-hidden="true"></div>
     <div class="tape hero-tape-bottom" style="--tape-color: #E8AF30; --tape-angle: 2.5deg; --tape-w: 85px; --tape-h: 24px;" aria-hidden="true"></div>
     <div class="hero-fabric-swatch" aria-hidden="true"></div>
     <div class="hero-bookmark-ribbon" aria-hidden="true"></div>
@@ -14511,10 +14512,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
            <div class="illus-bottom-bar">
              <div class="color-palette-dots">
                <button class="color-dot active" style="background:#E8AF30;" title="Ochre Gold"></button>
-               <button class="color-dot" style="background:#C85A48;" title="Terracotta"></button>
+               <button class="color-dot" style="background:#C42D1C;" title="Terracotta"></button>
                <button class="color-dot" style="background:#2B4C7E;" title="Cobalt Indigo"></button>
                <button class="color-dot" style="background:#5B8266;" title="Matcha Sage"></button>
-               <button class="color-dot" style="background:#1E1C1A;" title="Charcoal Ink"></button>
+               <button class="color-dot" style="background:#1E1C22;" title="Charcoal Ink"></button>
              </div>
              <div class="pg-hint" id="stamp-hint-txt" style="margin:0; font-size:0.68rem;">Tap canvas to stamp riso foil!</div>
            </div>
@@ -15848,7 +15849,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         // layer against the five discipline colors rather than a sixth
         // discipline of their own.
         types: ['sparkle', 'star5', 'heart', 'spiral', 'dot', 'handStar', 'handSunburst'],
-        palette: ['#3B82F6', '#E05A47', '#10B981', '#EC008C', '#8B5CF6', accentTok('--gold', '#FEB21A'), accentTok('--tangerine', '#EF7A34')]
+        palette: ['#1E4CC8', '#E05A47', '#34C990', '#E2559C', '#6540CC', accentTok('--gold', '#E8AF30'), accentTok('--tangerine', '#EF7A34')]
       },
       {
         id: 'animation',
@@ -15872,7 +15873,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         id: 'graphic-design',
         canvasId: 'canvas-graphic-design',
         types: ['cmykCrosshair', 'bezierHandle', 'swatchChip', 'dot'],
-        palette: ['#00AEEF', '#EC008C']
+        palette: ['#00AEEF', '#E2559C']
       },
       {
         id: 'music',
@@ -16465,8 +16466,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         if (response.ok) {
           if (btn) {
             btn.querySelector('span').textContent = 'Message Sent!';
-            btn.style.background = '#28a745';
-            btn.style.borderColor = '#28a745';
+            btn.style.background = '#34C990';
+            btn.style.borderColor = '#34C990';
           }
           if (plane) {
             plane.style.transform = 'translate(60px, -60px) scale(0.5)';
@@ -16859,7 +16860,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
       function getEffectiveColor() {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (activeColor === '#1E1C1A' && isDark) return '#FFFDF8';
+        if (activeColor === '#1E1C22' && isDark) return '#FFFDF8';
         return activeColor;
       }
 
@@ -16912,7 +16913,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           ctx.moveTo(-9, -3); ctx.lineTo(-10, -12); ctx.lineTo(-2, -6); ctx.fill();
           ctx.beginPath();
           ctx.moveTo(9, -3); ctx.lineTo(10, -12); ctx.lineTo(2, -6); ctx.fill();
-          ctx.fillStyle = '#FAF8F5';
+          ctx.fillStyle = '#F9F6F0';
           ctx.beginPath();
           ctx.arc(-3.5, 0, 1.8, 0, Math.PI * 2);
           ctx.arc(3.5, 0, 1.8, 0, Math.PI * 2);
@@ -17068,7 +17069,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       // Real illustrated background art (not procedural shapes) for three
       // lighting moods, with a small animated butterfly composited on top.
       const MOODS = {
-        day:    { src: 'assets/svg-opt/videography_bg_day.webp?v=2', butterfly: '#C44230', wingLight: '#F0A98C' },
+        day:    { src: 'assets/svg-opt/videography_bg_day.webp?v=2', butterfly: '#E8432E', wingLight: '#F0A98C' },
         sunset: { src: 'assets/svg-opt/videography_bg_sunset.webp', butterfly: '#FFD35C', wingLight: '#FFF0C2' },
         night:  { src: 'assets/svg-opt/videography_bg_night.webp',  butterfly: '#4DE8E0', wingLight: '#B4FFF8' }
       };
@@ -17098,7 +17099,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         if (m.loaded) {
           drawCover(m.img);
         } else {
-          sctx.fillStyle = '#14131C';
+          sctx.fillStyle = '#14131A';
           sctx.fillRect(0, 0, W, H);
         }
 
@@ -17127,7 +17128,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           sctx.restore();
         });
 
-        sctx.fillStyle = '#1E1C1A';
+        sctx.fillStyle = '#1E1C22';
         sctx.beginPath();
         sctx.ellipse(0, 0, 1.3, 6, 0, 0, Math.PI * 2);
         sctx.fill();
@@ -17334,13 +17335,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        ctx.strokeStyle = isDark ? '#FFFDF8' : '#1E1C1A';
+        ctx.strokeStyle = isDark ? '#FFFDF8' : '#1E1C22';
         ctx.lineWidth = 1.8;
         ctx.stroke();
 
         // 3. Render Curved Typography along Bezier Path
         ctx.font = "900 11px 'Cabinet Grotesk', 'Inter', sans-serif";
-        ctx.fillStyle = isDark ? '#FFFDF8' : '#1E1C1A';
+        ctx.fillStyle = isDark ? '#FFFDF8' : '#1E1C22';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
@@ -17367,7 +17368,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           ctx.arc(pt.x, pt.y, isAnchor ? 6.5 : 5, 0, Math.PI * 2);
           ctx.fillStyle = isAnchor ? '#E8AF30' : (isDark ? '#FFFDF8' : '#2B4C7E');
           ctx.fill();
-          ctx.strokeStyle = '#1E1C1A';
+          ctx.strokeStyle = '#1E1C22';
           ctx.lineWidth = 2;
           ctx.stroke();
         });
@@ -17549,7 +17550,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
             const offset = Math.sin(s.phase + x * 0.05) * s.amp * Math.sin((x - 15) / 250 * Math.PI);
             ctx.lineTo(x, s.y + offset);
           }
-          ctx.strokeStyle = s.amp > 0.5 ? '#F5BA42' : '#C5A880';
+          ctx.strokeStyle = s.amp > 0.5 ? '#E8AF30' : '#C5A880';
           ctx.lineWidth = s.amp > 0.5 ? 2.4 : 1.4;
           ctx.stroke();
         });
@@ -18199,7 +18200,7 @@ window.addEventListener('load', () => {
       <svg class="passport-watermark" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.05;">
         <defs>
           <pattern id="passportWatermarkPattern" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(9)">
-            <path d="M14 3 L16.6 10.2 L24 10.4 L18.1 15 L20.3 22.1 L14 17.9 L7.7 22.1 L9.9 15 L4 10.4 L11.4 10.2 Z" fill="#171410"/>
+            <path d="M14 3 L16.6 10.2 L24 10.4 L18.1 15 L20.3 22.1 L14 17.9 L7.7 22.1 L9.9 15 L4 10.4 L11.4 10.2 Z" fill="#14131A"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#passportWatermarkPattern)" />
@@ -18227,10 +18228,10 @@ window.addEventListener('load', () => {
                  page) so the smiley doesn't read as a clean vector shape. -->
             <svg viewBox="0 0 64 64" width="100%" height="100%">
               <g filter="url(#boil-1)" transform="rotate(-3 32 32)">
-                <circle cx="32" cy="32" r="26" fill="#FFDD00" stroke="#171410" stroke-width="2.75"/>
-                <circle cx="21.5" cy="26" r="3.6" fill="#171410"/>
-                <circle cx="41" cy="27" r="3" fill="#171410"/>
-                <path d="M19 37 Q32 51 45 36" fill="none" stroke="#171410" stroke-width="3.25" stroke-linecap="round"/>
+                <circle cx="32" cy="32" r="26" fill="#FFCC00" stroke="#14131A" stroke-width="2.75"/>
+                <circle cx="21.5" cy="26" r="3.6" fill="#14131A"/>
+                <circle cx="41" cy="27" r="3" fill="#14131A"/>
+                <path d="M19 37 Q32 51 45 36" fill="none" stroke="#14131A" stroke-width="3.25" stroke-linecap="round"/>
               </g>
             </svg>
           </div>
