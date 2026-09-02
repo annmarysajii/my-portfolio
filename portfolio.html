@@ -259,17 +259,12 @@ body::before {
    properly rather than re-guess the offset.
 ================================================================ */
 
-/* CNT-03 -- punched leaf. A row of holes along the top inner edge of
-   Animation and Illustration's sheets, in --mat so each hole reads as
-   an actual cut-through to the mat underneath rather than a printed
-   dot. Layered on top of the existing #id background-color rule, not
-   replacing it. */
-#animation, #illustration {
-  background-image: radial-gradient(circle 4.5px at 13px 11px, var(--mat) 98%, transparent 100%);
-  background-repeat: repeat-x;
-  background-position: 2rem 1.1rem;
-  background-size: 25px 100%;
-}
+/* CNT-03 punched leaf: REMOVED. It painted mat-coloured dots onto the
+   sheet to fake punch-holes, but the sheet sits ABOVE the mat with a
+   drop shadow -- a flat dot in the desk colour can't read as a hole cut
+   through paper, so it read as a row of stray dots across the top of
+   every section. A real hole would need an inner shadow and a lit lower
+   lip; not worth it for decoration nobody asked for. */
 
 /* FST-03 -- peg bar, Animation's fastener. Real sprocket-peg shape --
    oblong/round/oblong, not three identical holes. */
