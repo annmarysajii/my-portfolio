@@ -1996,13 +1996,49 @@ body::before {
 /* Inside of the drawer: light does not reach in, so the top edge is
    shaded and the side walls darken slightly. This is what separates a
    drawer sliding open from a panel simply appearing. */
-.margin-note.note-collapsible.note-open .margin-note-inner {
+.metric-drawer .margin-note.note-collapsible.note-open .margin-note-inner {
   box-shadow:
     inset 0 7px 7px -7px rgba(16,28,22,.34),
     inset 2px 0 4px -4px rgba(16,28,22,.22),
     inset -2px 0 4px -4px rgba(16,28,22,.22);
   border-radius: 0 0 5px 5px;
   padding: .45rem .6rem .5rem;
+}
+
+/* ---- Category notes are NOT drawers ---------------------------------
+   Tried extending the drawer language here and it was wrong. These notes
+   open ABOVE their heading -- they are margin annotations pinned to the
+   page, not something sliding out of a container -- so a recessed interior
+   read as a grey box floating over the section paper, and the icon's pull
+   rendered 7px wide, which is a speck rather than an affordance.
+   The disc-stamp is already a distinctly coloured object with a hover ring;
+   that is its signal. The note stays handwritten.
+   Drawer language belongs to things that come out of a container: the hero
+   stat cabinet and About's ID card. Consistency is each object behaving
+   like what it is, not every object behaving the same. */
+.disc-stamp.note-toggle .drawer-pull { display: none; }
+
+/* ---- About's ID card: the desk drawer -------------------------------
+   Same gesture at the largest scale. The card is the front; the facts
+   panel is what slides out from under it. */
+.bp-badge--toggle .drawer-pull {
+  transition: transform .18s var(--ease), filter .18s var(--ease);
+}
+.bp-badge--toggle:hover .drawer-pull,
+.bp-badge--toggle:focus-visible .drawer-pull {
+  transform: translateX(-50%) translateY(2px);
+  filter: brightness(1.12);
+}
+.bp-badge--toggle[aria-expanded="true"] .drawer-pull {
+  transform: translateX(-50%) translateY(4px);
+  filter: brightness(.86);
+}
+.bp-facts-panel.note-open .bp-facts-inner {
+  box-shadow:
+    4px 6px 0 var(--shadow),
+    inset 0 8px 8px -8px rgba(16,28,22,.42),
+    inset 2px 0 5px -5px rgba(16,28,22,.26),
+    inset -2px 0 5px -5px rgba(16,28,22,.26);
 }
 .margin-note.note-collapsible.note-open {
   grid-template-rows: 1fr;
@@ -13086,7 +13122,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   width: 100%;
   max-width: 390px;
   margin-top: 0;
-  transition: max-height .32s var(--ease), opacity .28s var(--ease), margin-top .32s var(--ease);
+  /* Same curve as every other drawer on the site: resist, release, settle. */
+  transition: max-height .38s cubic-bezier(.22,.68,.24,1), opacity .3s ease-out .06s, margin-top .38s cubic-bezier(.22,.68,.24,1);
 }
 .bp-facts-panel.note-open {
   max-height: 14rem;
