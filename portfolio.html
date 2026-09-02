@@ -6910,6 +6910,17 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   order: 4 !important;
 }
 
+/* A collapsed margin note has zero layout height, but it is still a flex
+   item, so the column's 0.65rem gap was reserved above the heading anyway.
+   That is why sections with a note started their heading 10px lower than
+   Animation, which has none. Cancel the gap while the note is closed and
+   give it back when it opens.
+   (The note measures ~11-17px in devtools only because it is rotated --
+   that is the bounding box of a tilted zero-height box, not real space.) */
+.margin-note.note-collapsible:not(.note-open) {
+  margin-bottom: -0.65rem;
+}
+
 /* Interactive Rubber Stamp Buttons in Doodle Pad */
 .stamp-selector-bar {
   display: flex !important;
