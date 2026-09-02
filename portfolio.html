@@ -6414,12 +6414,27 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
    COMPREHENSIVE VISUAL POLISH: HEADERS, TOYS & SECTIONS
 ================================================================ */
 
-/* Section Spacing & Clean Padding */
+/* Section Spacing & Clean Padding -- SRF-02 (Pass 01.3, DESK_KIT.md):
+   each .sec is a bounded loose sheet resting on the SRF-01 mat
+   (body's background), not a full-bleed color band. Horizontal
+   margin insets it so the mat shows at the page edges; a real drop
+   shadow lifts it off the mat; a negative top margin pulls it up to
+   overlap the sheet above -- see .bp-tear--paper below for how that
+   overlap gets its own torn edge instead of just a flat overlap. */
 .sec {
   padding: 5rem 0 4.5rem !important;
   position: relative;
   overflow: visible !important;
+  margin: -1.75rem clamp(0.75rem, 3vw, 2.25rem) 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(16,28,22,.16), 0 14px 34px rgba(16,28,22,.20);
 }
+[data-theme="dark"] .sec {
+  box-shadow: 0 2px 2px rgba(0,0,0,.5), 0 16px 38px rgba(0,0,0,.55);
+}
+/* First sheet in the stack (#animation) has nothing above it to
+   overlap into but the downloads drawer -- same overlap regardless,
+   it reads fine sliding under that block's own bottom edge too. */
 
 /* Section Header Grid: Perfectly Aligned */
 .sec-hd {
@@ -13174,7 +13189,19 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    token .sec-hd's own divider already uses on these backgrounds).
    --tear-from/--tear-to are set per instance via inline style, same
    idiom .pg-toy already uses for --pg-accent/--pg-bg, so this one rule
-   covers all 4 pairs instead of 4 near-duplicate blocks. */
+   covers all 4 pairs instead of 4 near-duplicate blocks.
+
+   Pass 01.3 (DESK_KIT.md EDG-01): used to be a smooth gradient fade
+   from --tear-from to --tear-to -- a divider floating in the gap
+   between two full-bleed sections. Now that .sec is a bounded sheet
+   that physically overlaps the one above it (see .sec), this reads
+   instead as that sheet's own torn bottom edge: a solid flap in the
+   sheet-above's colour (--tear-from), jagged only along a thin band
+   at its own bottom via ::after (kept off the element itself so the
+   dashed line + label, both unclipped, don't risk getting sliced by
+   the same clip-path). The section this div actually lives inside
+   (--tear-to) is what's already sitting underneath -- nothing here
+   needs to paint it, it just shows through the torn notches. */
 .bp-tear--paper {
   /* Unlike #about (padding-top: 0, so .bp-tear--seam's own padding-top
      was the whole visible gap), every .sec has its own `padding: 5rem 0
@@ -13184,14 +13211,49 @@ h1, h2, h3, h4, .sec-title, .hero-role {
      instead of spanning it. Pull it up by that same 5rem (matching
      .sec's padding-top exactly, not a guess) so it starts flush with the
      true section boundary, and add that 5rem back to padding-top so the
-     total space -- and the gradient's own canvas -- covers the full gap
-     instead of a slice of it. */
+     total space -- and the flap's own canvas -- covers the full gap
+     instead of a slice of it. .sec's own additional negative margin
+     (Pass 01.3) shifts this whole div up further on top of that, which
+     is exactly the extra overlap the torn edge needs to read as real. */
   margin-top: -5rem;
   padding-top: calc(5rem + clamp(2.4rem, 6vh, 4rem));
-  background: linear-gradient(to bottom, var(--tear-from), var(--tear-to) 88%);
+  /* Room below the label for the torn band (::after) to occupy on its
+     own -- the label already overflows a little past this box's own
+     bottom edge (centered on the 1px content line via the flex rule
+     above), so without this the jagged band would land right under
+     the label with almost no clearance. */
+  padding-bottom: 52px;
+  /* Solid --tear-from everywhere *except* the bottom 52px, which is
+     left transparent so #illustration's own real background (already
+     painted underneath, since this div is one of its own children)
+     shows straight through there. ::after then redraws just that
+     bottom band in --tear-from with a jagged clip-path -- two solid
+     fills of the very same color would make the cut invisible, which
+     is what a background covering the *whole* box (clipped or not)
+     did on the first pass here. */
+  background: linear-gradient(to bottom,
+    var(--tear-from) 0, var(--tear-from) calc(100% - 52px),
+    transparent calc(100% - 52px), transparent 100%);
 }
 .bp-tear--paper::before {
   border-top-color: var(--ink12);
+}
+.bp-tear--paper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 52px;
+  background: var(--tear-from);
+  /* Same idea as desk-kit.html's .torn demo (clean top, jagged
+     bottom) but with deeper teeth -- that demo's ~15pt swing reads
+     fine on an 80px tile; at full section width a shallower tear
+     read as barely-perceptible waviness rather than a torn edge, so
+     this widens the swing to ~45pt. Percentages, so it scales to any
+     width. */
+  clip-path: polygon(0 0, 100% 0, 100% 62%, 90% 84%, 80% 58%, 70% 88%, 60% 60%,
+                     50% 90%, 40% 62%, 30% 92%, 20% 60%, 10% 86%, 0 64%);
 }
 .bp-tear--paper .bp-tear-label {
   background: var(--tear-to);
