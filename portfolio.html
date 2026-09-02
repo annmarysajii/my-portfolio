@@ -14056,7 +14056,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div style="position:relative; display:inline-block; max-width:100%;">
         <h1 class="hero-title" aria-label="Annmary Saji">
           <img id="heroTitleImg" src="assets/svg-opt/hero_name.webp" alt="Annmary Saji"
-               width="800" height="200" loading="eager" decoding="async" />
+               width="800" height="200" loading="eager" decoding="async" fetchpriority="high" />
         </h1>
       </div>
 
@@ -15147,7 +15147,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
       <div class="bp-badge bp-badge--toggle nudge-once" role="button" tabindex="0" aria-expanded="false" aria-controls="bp-facts-panel" aria-label="Annmary Saji, backstage pass — show a few facts">
        <div class="bp-name-card" role="img" aria-label="Hello, my name is Annmary"></div>
-       <img class="bp-name-stickers" src="assets/HELLO MY NAME IS/stickers.svg" alt="" aria-hidden="true">
+       <img class="bp-name-stickers" src="assets/HELLO MY NAME IS/stickers.svg" alt="" aria-hidden="true" loading="lazy">
       </div>
 
       <!-- Revealed by clicking the ID card above -->
@@ -15177,27 +15177,27 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <svg class="bp-doodle bp-doodle--note" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="18" r="3.1" fill="none" stroke="var(--cream)" stroke-width="2"/><path d="M10 18V4l7 3" fill="none" stroke="var(--cream)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <svg class="bp-doodle bp-doodle--heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-9.4-8.9C1 8.4 2.6 4.4 6.4 4.4c2 0 3.9 1.4 5.6 3.7 1.7-2.3 3.6-3.7 5.6-3.7 3.8 0 5.4 4 3.8 7.7C19 16.6 12 21 12 21z" fill="none" stroke="var(--cream)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <button type="button" class="bp-float bp-float--plant" aria-expanded="false" aria-controls="bp-note-plant">
-     <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Fake IKEA plant on Annmary's desk">
+     <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Fake IKEA plant on Annmary's desk" loading="lazy">
      <span class="bp-note" id="bp-note-plant" hidden>I have a fake IKEA plant on my desk because real ones die out here. 🌱</span>
     </button>
     <button type="button" class="bp-float bp-float--boba" aria-expanded="false" aria-controls="bp-note-boba">
-     <img src="assets/portfolio-data/My profile/bubbletea_tight.png" alt="Chocolate milk tea, Annmary's studio fuel">
+     <img src="assets/portfolio-data/My profile/bubbletea_tight.png" alt="Chocolate milk tea, Annmary's studio fuel" loading="lazy">
      <span class="bp-note" id="bp-note-boba" hidden>Studio fuel! My absolute favourite drink during late-night animation sprints. 🧋</span>
     </button>
     <button type="button" class="bp-float bp-float--headphones" aria-expanded="false" aria-controls="bp-note-headphones">
-     <img src="assets/portfolio-data/My profile/headphones_tight.png" alt="Annmary's decorated headphones">
+     <img src="assets/portfolio-data/My profile/headphones_tight.png" alt="Annmary's decorated headphones" loading="lazy">
      <span class="bp-note" id="bp-note-headphones" hidden>Decorated with stickers and charms, always on while I work. 🎧</span>
     </button>
     <button type="button" class="bp-float bp-float--journal" aria-expanded="false" aria-controls="bp-note-journal">
-     <img src="assets/portfolio-data/My profile/sketchbook_tight.png" alt="Annmary's idea sketchbook">
+     <img src="assets/portfolio-data/My profile/sketchbook_tight.png" alt="Annmary's idea sketchbook" loading="lazy">
      <span class="bp-note" id="bp-note-journal" hidden>Full of character sketches, colour keys, and storyboards — I have way too many. 📓</span>
     </button>
     <button type="button" class="bp-float bp-float--pouch" aria-expanded="false" aria-controls="bp-note-pouch">
-     <img src="assets/portfolio-data/My profile/pouch_tight.png" alt="Annmary's stationery pouch">
+     <img src="assets/portfolio-data/My profile/pouch_tight.png" alt="Annmary's stationery pouch" loading="lazy">
      <span class="bp-note" id="bp-note-pouch" hidden>Nibs, fineliners, washi tape — I collect way more stationery than I use. ✏️</span>
     </button>
     <button type="button" class="bp-float bp-float--pencil" aria-expanded="false" aria-controls="bp-note-pencil">
-     <img src="assets/portfolio-data/My profile/pencil_tight.png" alt="Annmary's wooden pencil">
+     <img src="assets/portfolio-data/My profile/pencil_tight.png" alt="Annmary's wooden pencil" loading="lazy">
      <span class="bp-note" id="bp-note-pencil" hidden>Classic HB graphite. I'll always pick these over mechanical pencils. ✏️</span>
     </button>
    </div>
@@ -15703,9 +15703,31 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       }
     }
 
-    document.querySelectorAll('a.card-img').forEach(loadCard);
+    // PART 3.3 -- below-the-fold thumbnails shouldn't fetch on page
+    // load. These aren't declarative <img src> tags loading="lazy"
+    // could gate -- they're new Image()/<video> elements built off-DOM
+    // with an eager .src assignment (loadCard above), so the fetch is
+    // already in flight before the element is even inserted; a
+    // loading attribute set on it would be evaluated too late to do
+    // anything. Reusing this file's existing retry-polling idiom for
+    // the deferral instead of adding an IntersectionObserver: the
+    // interval already re-checks every unloaded card every 200ms
+    // (originally so cards whose window.PORTFOLIO_DATA lookup wasn't
+    // ready yet keep retrying), so gating both the first pass and
+    // every retry on viewport proximity gets lazy loading for free
+    // from a mechanism that already exists, without touching the
+    // retry behavior itself.
+    function isNearViewport(el) {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight + 800 && r.bottom > -800;
+    }
+    document.querySelectorAll('a.card-img').forEach(a => {
+      if (isNearViewport(a)) loadCard(a);
+    });
     setInterval(() => {
-      document.querySelectorAll('a.card-img:not([data-media-loaded])').forEach(loadCard);
+      document.querySelectorAll('a.card-img:not([data-media-loaded])').forEach(a => {
+        if (isNearViewport(a)) loadCard(a);
+      });
     }, 200);
   })();
 
