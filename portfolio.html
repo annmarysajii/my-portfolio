@@ -308,29 +308,10 @@ body::before {
    Uses the site's existing 5 --sec-*-accent tokens rather than a new
    palette (the sticker "colours" are literally the section identity
    set, shown together as a sheet). */
-.sticker-sheet {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.sticker-sheet i {
-  display: block;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(24,23,21,.3);
-  position: relative;
-}
-.sticker-sheet i::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: var(--c);
-}
-[data-theme="dark"] .sticker-sheet i {
-  border-color: rgba(242,239,235,.3);
-}
+/* CNT-04 sticker sheet: REMOVED. Five dots in the five category accents,
+   sitting loose above the Illustration heading. It read as stray dots
+   rather than a sticker sheet, and it now duplicates the seam tape,
+   which already carries category colour and does it with a purpose. */
 
 /* CNT-02 + MRK-04 -- Videography's contact sheet. Frame numbers via a
    CSS counter (no per-card markup needed), a thin dark frame on the
@@ -6916,6 +6897,19 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   margin: 0.4rem 0 0 0 !important;
 }
 
+/* .sec-hd's heading column is a flex column that positions by `order`:
+   .sec-title is 2 and .sec-intro is 3, which leaves order 0 -- ABOVE the
+   heading -- as the default for anything else. That placement is deliberate
+   for the handwritten margin note, but every Pass 02 decoration inherited it
+   by accident and ended up floating above the section title, which read as
+   stray debris and pushed headings 60-70px further down in those sections
+   (Graphic Design sat at 152px vs Illustration's 90px). Pin them after the
+   intro so the heading always leads and every section starts alike. */
+.swatch-chips,
+.jcard-mark {
+  order: 4 !important;
+}
+
 /* Interactive Rubber Stamp Buttons in Doodle Pad */
 .stamp-selector-bar {
   display: flex !important;
@@ -13361,9 +13355,19 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    Those accent tokens already carry dark-mode variants, so this follows
    the theme for free. The sheets themselves just overlap underneath. */
 .bp-tear--paper {
-  margin-top: -5rem;        /* cancel .sec's padding-top: sit at the true sheet edge */
-  padding-top: 0;
+  /* Out of flow entirely. It used to be height:0 with margin-top:-5rem to sit
+     at the sheet's top edge -- but a negative margin on a zero-height element
+     drags every following sibling up with it, so this was silently eating 80px
+     of each section's top padding. Illustration and Videography ended up with
+     their headings 10px from the sheet edge while other sections had 80px.
+     Absolute positioning puts the tape at the seam without touching layout. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 0;
+  margin: 0;
+  padding: 0;
   background: none;
   overflow: visible;
 }
@@ -14438,14 +14442,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="illustration-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Decided to go to art school after watching Blue Period.</span></div>
-    <!-- CNT-04 die-cut sticker sheet -- Illustration's margin flourish -->
-    <div class="sticker-sheet" aria-hidden="true" style="margin-top: 1.1rem;">
-     <i style="--c: var(--sec-anim-accent)"></i>
-     <i style="--c: var(--sec-illus-accent)"></i>
-     <i style="--c: var(--sec-video-accent)"></i>
-     <i style="--c: var(--sec-design-accent)"></i>
-     <i style="--c: var(--sec-music-accent)"></i>
-    </div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-illustration-toy" style="--pg-accent: var(--sec-illus-accent); --pg-bg: var(--sec-illus-bg);">
