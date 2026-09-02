@@ -241,6 +241,266 @@ body::before {
 }
 
 /* ================================================================
+   PASS 02 -- SECTION IDENTITY (DESK_KIT.md)
+   Each of the five middle sections becomes an assembly of the FST/
+   CNT/MRK/EDG parts above plus a handful of new small parts (peg
+   bar, sticker sheet, push pin, swatch chip, registration mark,
+   J-card mark), reused once per section rather than invented as
+   one-offs. EDG-03 index tabs are shared by all five.
+================================================================ */
+
+/* EDG-03 -- index tab, restoring the 01-05 numerals as a physical
+   object (the old .sec-num badge this replaces had zero HTML call
+   sites left -- dead CSS, removed) instead of a text label. One
+   shared class; colour comes from that section's own --sec-*-accent
+   via the #id rules below. */
+.sec-tab {
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  padding: 4px 14px 5px;
+  border-radius: 0 0 4px 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FFFDF8;
+  /* .sec doesn't establish its own stacking context (position:relative
+     alone, no z-index), so this and .con (z-index:3, and later in the
+     DOM) are compared directly -- a tie loses to source order, which
+     put .con's own content on top and hid the tab completely. Beating
+     .con needed 4; #animation's tab also overlaps .dl-sec above it
+     (z-index:5, its own stacking context, wins over #animation's
+     un-elevated one regardless of DOM order once .sec's Pass 01.3
+     negative margin makes them overlap at all) -- 6 clears both. */
+  z-index: 6;
+  box-shadow: 0 2px 4px rgba(16,28,22,.15);
+  pointer-events: none;
+}
+#animation .sec-tab      { background: var(--sec-anim-accent); }
+#illustration .sec-tab   { background: var(--sec-illus-accent); }
+#videography .sec-tab    { background: var(--sec-video-accent); }
+#graphic-design .sec-tab { background: var(--sec-design-accent); color: #14131A; }
+#music .sec-tab          { background: var(--sec-music-accent); }
+/* Dark theme's --sec-*-accent tokens are all bright/pastel versions of
+   the light-theme ones (readable against the dark page), which flips
+   every one of these from needing white text to needing dark text --
+   checked numerically, not by eye: light-mode white-on-accent ranges
+   3.3-7.1:1 (design fails, hence its override above), dark-mode
+   white-on-accent is 2.1-3.0:1 across all five (all fail) versus
+   6.0-10.9:1 for dark-on-accent (all pass). #graphic-design's own ID
+   rule above already wins this by specificity, so this only needs to
+   additionally cover the other four. */
+[data-theme="dark"] .sec-tab {
+  color: #14131A;
+}
+
+/* CNT-03 -- punched leaf. A row of holes along the top inner edge of
+   Animation and Illustration's sheets, in --mat so each hole reads as
+   an actual cut-through to the mat underneath rather than a printed
+   dot. Layered on top of the existing #id background-color rule, not
+   replacing it. */
+#animation, #illustration {
+  background-image: radial-gradient(circle 4.5px at 13px 11px, var(--mat) 98%, transparent 100%);
+  background-repeat: repeat-x;
+  background-position: 2rem 1.1rem;
+  background-size: 25px 100%;
+}
+
+/* FST-03 -- peg bar, Animation's fastener. Real sprocket-peg shape --
+   oblong/round/oblong, not three identical holes. */
+.pegbar {
+  width: 148px;
+  height: 22px;
+  margin: 0 auto 1.8rem;
+  border-radius: 4px;
+  background: linear-gradient(#EDE7DA, #D9D1C0);
+  box-shadow: 0 1px 1px rgba(16,28,22,.14), 0 4px 10px rgba(16,28,22,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+[data-theme="dark"] .pegbar {
+  background: linear-gradient(#3A362E, #26231D);
+  box-shadow: 0 1px 1px rgba(0,0,0,.4), 0 4px 10px rgba(0,0,0,.35);
+}
+.pegbar i {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--mat);
+}
+.pegbar i.rd { width: 10px; }
+.pegbar i.sl { width: 22px; }
+
+/* Onion-skin stacked-sheets offset for Animation's cards -- extra
+   receding shadow layers, like the sheet underneath just showing at
+   the corner. Higher specificity + !important to beat .card's own
+   box-shadow (also !important) regardless of source order. */
+#animation .card {
+  box-shadow: 3px 3px 0 var(--ink-hard), 7px 7px 0 -2px rgba(24,23,21,.18), 11px 11px 0 -4px rgba(24,23,21,.10) !important;
+}
+[data-theme="dark"] #animation .card {
+  box-shadow: 3px 3px 0 rgba(0,0,0,.85), 7px 7px 0 -2px rgba(0,0,0,.4), 11px 11px 0 -4px rgba(0,0,0,.25) !important;
+}
+
+/* CNT-04 -- die-cut sticker sheet, Illustration's margin flourish.
+   Uses the site's existing 5 --sec-*-accent tokens rather than a new
+   palette (the sticker "colours" are literally the section identity
+   set, shown together as a sheet). */
+.sticker-sheet {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sticker-sheet i {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(24,23,21,.3);
+  position: relative;
+}
+.sticker-sheet i::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--c);
+}
+[data-theme="dark"] .sticker-sheet i {
+  border-color: rgba(242,239,235,.3);
+}
+
+/* CNT-02 + MRK-04 -- Videography's contact sheet. Frame numbers via a
+   CSS counter (no per-card markup needed), a thin dark frame on the
+   image standing in for a film frame edge, and a chinagraph ring
+   marking the pick (the first card) -- a film editor's grease-pencil
+   circle on their chosen frame, not a taped/pinned fastener like
+   everywhere else. */
+#videography .grid { counter-reset: vidframe; }
+#videography .card { counter-increment: vidframe; }
+#videography .card::after {
+  content: counter(vidframe, decimal-leading-zero);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 6px;
+  background: rgba(20,19,26,.72);
+  color: #FFFDF8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  border-radius: 2px;
+  z-index: 3;
+  pointer-events: none;
+}
+#videography .card-img {
+  box-shadow: inset 0 0 0 3px rgba(20,19,26,.55);
+}
+#videography .grid .card:first-of-type .card-img::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #E8DE30;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: difference;
+}
+
+/* SRF-01 + FST-04 -- Graphic Design's proofs pinned to the mat, not
+   taped: turn off the shared .card::before tape for this section only
+   and use a push pin instead. Swatch chips (the five --sec-*-accent
+   values again) and corner registration marks are the section's other
+   two identity parts, both print-proof furniture. */
+#graphic-design .card::before { display: none; }
+#graphic-design .card::after {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #FF7A63 0 18%, var(--red) 46%, #A6270F 100%);
+  box-shadow: 0 3px 6px rgba(16,28,22,.4), inset 0 -2px 4px rgba(0,0,0,.28);
+  z-index: 6;
+  pointer-events: none;
+}
+.swatch-chips {
+  display: flex;
+  gap: 6px;
+}
+.swatch-chips i {
+  display: block;
+  width: 16px;
+  height: 34px;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(16,28,22,.18);
+}
+.reg-mark {
+  display: block;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  opacity: 0.45;
+  /* Same tie-vs-.con risk .sec-tab has (see its comment) -- 4 to be
+     safely above it regardless of order. */
+  z-index: 4;
+  pointer-events: none;
+}
+.reg-mark::before, .reg-mark::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+.reg-mark::before { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+.reg-mark::after { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+.reg-mark i {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+}
+
+/* CNT-01 + MRK-04 -- Music's cassette J-card. Hub-window circles in
+   the section's own accent either side of a dashed liner fold; the
+   hand-lettered tracklist feel is MRK-04 itself, i.e. the existing
+   .margin-note already in this section -- nothing new needed there. */
+.jcard-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink12);
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(16,28,22,.12);
+}
+.jcard-mark i {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid var(--sec-music-accent);
+  background: radial-gradient(circle, var(--paper) 32%, transparent 34%);
+}
+.jcard-mark .fold {
+  width: 1px;
+  height: 22px;
+  background-image: linear-gradient(var(--ink12) 50%, transparent 0);
+  background-size: 1px 6px;
+}
+
+/* ================================================================
    NAVIGATION
 ================================================================ */
 .nav {
@@ -1528,18 +1788,6 @@ body::before {
 #about { background-color: var(--sec-about-bg); color: #FFFDF8; }
 #contact { background-color: var(--sec-contact-bg); }
 
-#animation .sec-num { color: #3B72B9; }
-#illustration .sec-num { color: #D94638; }
-#videography .sec-num { color: #438A5E; }
-#graphic-design .sec-num { color: #C08800; }
-#music .sec-num { color: #7B5EB6; }
-
-[data-theme="dark"] #animation .sec-num { color: #7098F8; }
-[data-theme="dark"] #illustration .sec-num { color: #F06A58; }
-[data-theme="dark"] #videography .sec-num { color: #5CB87A; }
-[data-theme="dark"] #graphic-design .sec-num { color: #F2C030; }
-[data-theme="dark"] #music .sec-num { color: #A78BFA; }
-
 .sec-bg-canvas {
   position: absolute;
   top: 0;
@@ -1567,14 +1815,6 @@ body::before {
   margin-bottom: 3rem;
   padding-bottom: 1.5rem;
   border-bottom: 1.5px dashed var(--ink12);
-}
-
-.sec-num {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
 }
 
 .sec-title {
@@ -4062,31 +4302,6 @@ body::before {
   border-color: #FFCC00 !important;
 }
 
-/* ── SECTION WASHI-TAPE EYEBROWS ── */
-.sec-num {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.4rem !important;
-  padding: 0.35rem 0.85rem !important;
-  background: #FFCC00 !important;
-  color: #14131A !important;
-  font-family: var(--fd) !important;
-  font-size: 0.78rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  border: 2px solid #14131A !important;
-  border-radius: 4px !important;
-  box-shadow: 2.5px 2.5px 0 #14131A !important;
-  transform: rotate(-1.5deg) !important;
-  margin-bottom: 0.8rem !important;
-}
-#animation .sec-num { background: #1E3FC4 !important; color: #FFFDF8 !important; }
-#illustration .sec-num { background: #E8432E !important; color: #FFFDF8 !important; }
-#videography .sec-num { background: #2BC9B5 !important; color: #14131A !important; }
-#graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; }
-#music .sec-num { background: #8B5CF6 !important; color: #FFFDF8 !important; }
-
 /* ── SCRAPBOOK POLAROID CARDS & ROTATING WASHI TAPE ── */
 .card {
   position: relative;
@@ -6454,32 +6669,6 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   }
 }
 
-/* Washi Tape Eyebrow Badges */
-.sec-num {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.4rem !important;
-  padding: 0.3rem 0.8rem !important;
-  background: #FFCC00 !important;
-  color: #14131A !important;
-  font-family: var(--fd) !important;
-  font-size: 0.76rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  border: 2px solid #14131A !important;
-  border-radius: 4px !important;
-  box-shadow: 2.5px 2.5px 0 #14131A !important;
-  margin-bottom: 0.85rem !important;
-}
-
-[data-theme="dark"] .sec-num {
-  background: #FFCC00 !important;
-  color: #14131A !important;
-  border-color: #14131A !important;
-  box-shadow: 2.5px 2.5px 0 rgba(0,0,0,0.9) !important;
-}
-
 /* Section Title Typography */
 .sec-title {
   font-family: var(--fd) !important;
@@ -6688,33 +6877,6 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   justify-content: flex-start !important;
   gap: 0.65rem !important;
   width: 100% !important;
-}
-
-.sec-num {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.4rem !important;
-  padding: 0.32rem 0.85rem !important;
-  background: #FFCC00 !important;
-  color: #14131A !important;
-  font-family: var(--fd) !important;
-  font-size: 0.76rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  border: 2px solid #14131A !important;
-  border-radius: 4px !important;
-  box-shadow: 2.5px 2.5px 0 #14131A !important;
-  margin: 0 0 0.2rem 0 !important;
-  width: fit-content !important;
-  order: 1 !important;
-}
-
-[data-theme="dark"] .sec-num {
-  background: #FFCC00 !important;
-  color: #14131A !important;
-  border-color: #14131A !important;
-  box-shadow: 2.5px 2.5px 0 rgba(0,0,0,0.9) !important;
 }
 
 .sec-title {
@@ -11984,38 +12146,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    (the dead duplicate's calc(72px + clamp(2rem,4vw,3.8rem))) instead
    of the refinement pass's calc(72px + clamp(0.6rem,2.2vh,1.6rem)). */
 
-/* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
-   Content fix (see earlier commit) trimmed these to just "01"-"05"; this
-   restyles the badge itself from a flat rounded rectangle into a small
-   stamped circle in each section's own accent color, reusing the ink-stamp
-   language already established by the Annecy seal in the hero rather than
-   inventing a new motif. Same accent colors as before, shape only. */
-.sec-num {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 3rem !important;
-  height: 3rem !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  font-family: var(--fd) !important;
-  font-size: 1.05rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  border: 3px solid #FFFDF8 !important;
-  box-shadow: 0 4px 12px rgba(20, 19, 26, 0.28), 0 1.5px 4px rgba(20, 19, 26, 0.18) !important;
-  margin: 0 0 0.3rem 0 !important;
-}
-[data-theme="dark"] .sec-num {
-  border-color: #14131C !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 1.5px 4px rgba(0, 0, 0, 0.4) !important;
-}
-#animation .sec-num      { background: #1E3FC4 !important; color: #FFFDF8 !important; transform: rotate(-4deg) !important; }
-#illustration .sec-num   { background: #E8432E !important; color: #FFFDF8 !important; transform: rotate(3deg) !important; }
-#videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
-#graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
-#music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
 /* ================================================================
    ABOUT — BACKSTAGE PASS
    Laminated event lanyard badge on a bright red stage. Namespaced
@@ -13261,40 +13391,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 
-/* --- Section numeral badges: ink-stamp circles, not repeated-title pills.
-   Content fix (see earlier commit) trimmed these to just "01"-"05"; this
-   restyles the badge itself from a flat rounded rectangle into a small
-   stamped circle in each section's own accent color, reusing the ink-stamp
-   language already established by the Annecy seal in the hero rather than
-   inventing a new motif. Same accent colors as before, shape only. */
-.sec-num {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 3rem !important;
-  height: 3rem !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  font-family: var(--fd) !important;
-  font-size: 1.05rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  border: 3px solid #FFFDF8 !important;
-  box-shadow: 0 4px 12px rgba(20, 19, 26, 0.28), 0 1.5px 4px rgba(20, 19, 26, 0.18) !important;
-  margin: 0 0 0.3rem 0 !important;
-  position: relative !important;
-}
-[data-theme="dark"] .sec-num {
-  border-color: #14131C !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 1.5px 4px rgba(0, 0, 0, 0.4) !important;
-}
-#animation .sec-num      { background: #1E3FC4 !important; color: #FFFDF8 !important; transform: rotate(-4deg) !important; }
-#illustration .sec-num   { background: #E8432E !important; color: #FFFDF8 !important; transform: rotate(3deg) !important; }
-#videography .sec-num    { background: #2BC9B5 !important; color: #14131A !important; transform: rotate(-3deg) !important; }
-#graphic-design .sec-num { background: #FFCC00 !important; color: #14131A !important; transform: rotate(4deg) !important; }
-#music .sec-num          { background: #8B5CF6 !important; color: #FFFDF8 !important; transform: rotate(-2deg) !important; }
-
 /* ================================================================
    DISCIPLINE STAMP -- a small ink-stamp icon (clapperboard / torn-corner /
    play+timecode / colour-chip / cassette), echoing the passport-stamp
@@ -14162,6 +14258,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 01 ANIMATION -->
 
 <section class="sec" id="animation">
+ <span class="sec-tab" aria-hidden="true">01</span>
  <div class="con">
   <div class="sec-hd">
    <div>
@@ -14213,6 +14310,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     </div>
    </div>
   </div>
+  <div class="pegbar" aria-hidden="true"><i class="sl"></i><i class="rd"></i><i class="sl"></i></div>
   <div class="grid">
 
 
@@ -14323,6 +14421,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 02 ILLUSTRATION -->
 
 <section class="sec" id="illustration">
+ <span class="sec-tab" aria-hidden="true">02</span>
  <!-- Bridge from #animation -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-anim-bg); --tear-to: var(--sec-illus-bg);"><span class="bp-tear-label">✂ next sketch</span></div>
@@ -14333,6 +14432,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="illustration-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Decided to go to art school after watching Blue Period.</span></div>
+    <!-- CNT-04 die-cut sticker sheet -- Illustration's margin flourish -->
+    <div class="sticker-sheet" aria-hidden="true" style="margin-top: 1.1rem;">
+     <i style="--c: var(--sec-anim-accent)"></i>
+     <i style="--c: var(--sec-illus-accent)"></i>
+     <i style="--c: var(--sec-video-accent)"></i>
+     <i style="--c: var(--sec-design-accent)"></i>
+     <i style="--c: var(--sec-music-accent)"></i>
+    </div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-illustration-toy" style="--pg-accent: var(--sec-illus-accent); --pg-bg: var(--sec-illus-bg);">
@@ -14488,6 +14595,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 03 VIDEOGRAPHY -->
 
 <section class="sec" id="videography">
+ <span class="sec-tab" aria-hidden="true">03</span>
  <!-- Bridge from #illustration -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-illus-bg); --tear-to: var(--sec-video-bg);"><span class="bp-tear-label">✂ roll camera</span></div>
@@ -14496,6 +14604,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    <div>
     <h2 class="sec-title rv d1"><span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg></span> Videography<br>&amp; Motion</h2>
     <p class="sec-intro rv d2">Video brings all my disciplines into one frame. I direct, film, edit, and sometimes appear on screen, across explainer videos, documentary shorts, and social content.</p>
+    <!-- MRK-04, static (no other section's non-collapsible note exists
+         yet -- Illustration/Graphic Design/Music toggle theirs off a
+         disc-stamp button, not needed for one short line here) -->
+    <div class="margin-note" style="transform: rotate(-1.5deg);">↳ Chinagraph ring marks the pick — an editor's grease pencil, not tape.</div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-videography-toy" style="--pg-accent: var(--sec-video-accent); --pg-bg: var(--sec-video-bg);">
@@ -14651,6 +14763,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 04 GRAPHIC DESIGN -->
 
 <section class="sec" id="graphic-design">
+ <span class="sec-tab" aria-hidden="true">04</span>
+ <!-- FST-04 registration marks, one per corner of the sheet -- proofs
+      pinned to the mat carry a printer's crop/reg marks, not tape. -->
+ <span class="reg-mark" style="top: 14px; left: 14px;" aria-hidden="true"><i></i></span>
+ <span class="reg-mark" style="top: 14px; right: 14px;" aria-hidden="true"><i></i></span>
+ <span class="reg-mark" style="bottom: 14px; left: 14px;" aria-hidden="true"><i></i></span>
+ <span class="reg-mark" style="bottom: 14px; right: 14px;" aria-hidden="true"><i></i></span>
  <!-- Bridge from #videography -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-video-bg); --tear-to: var(--sec-design-bg);"><span class="bp-tear-label">✂ new layout</span></div>
@@ -14661,6 +14780,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="graphic-design-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Wanted to be a fashion designer in Paris as a kid. Studied French for 7 years. Still can't really speak it.</span></div>
+    <!-- Swatch chips -- the five --sec-*-accent values, print-proof style -->
+    <div class="swatch-chips" aria-hidden="true" style="margin-top: 1.1rem;">
+     <i style="background: var(--sec-anim-accent)"></i>
+     <i style="background: var(--sec-illus-accent)"></i>
+     <i style="background: var(--sec-video-accent)"></i>
+     <i style="background: var(--sec-design-accent)"></i>
+     <i style="background: var(--sec-music-accent)"></i>
+    </div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-graphic-design-toy" style="--pg-accent: var(--sec-design-accent); --pg-bg: var(--sec-design-bg);">
@@ -14860,6 +14987,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 05 MUSIC -->
 
 <section class="sec" id="music">
+ <span class="sec-tab" aria-hidden="true">05</span>
  <!-- Bridge from #graphic-design -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-design-bg); --tear-to: var(--sec-music-bg);"><span class="bp-tear-label">✂ press play</span></div>
@@ -14870,6 +14998,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="music-margin-note" style="transform: rotate(3deg);"><span class="margin-note-inner">↳ Couldn't afford to hire musicians for my own projects, so I became the music producer instead.</span></div>
+    <!-- CNT-01 + MRK-04 -- cassette J-card: hub windows either side of a liner fold -->
+    <div class="jcard-mark" aria-hidden="true" style="margin-top: 1.1rem;"><i></i><span class="fold"></span><i></i></div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-music-toy" style="--pg-accent: var(--sec-music-accent); --pg-bg: var(--sec-music-bg);">
