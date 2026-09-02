@@ -16554,6 +16554,16 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         btn.setAttribute('aria-expanded', String(nowOpen));
         btn.setAttribute('aria-label', nowOpen ? 'Hide note' : 'Show note');
         note.classList.toggle('note-open', nowOpen);
+        // PART 3.4 -- wires this drawer into the existing Studio Passport
+        // progress (same window.unlockStamp the playground toys already
+        // call, not a second tracker). Only on open, matching how the
+        // toys only stamp on their own "open" click. Each of these 3
+        // buttons lives inside its own discipline's <section>, so that
+        // section's id doubles as the discipline id unlockStamp expects.
+        if (nowOpen && window.unlockStamp) {
+          const sec = btn.closest('section');
+          if (sec) window.unlockStamp(sec.id);
+        }
       });
     });
   })();
