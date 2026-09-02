@@ -13367,14 +13367,21 @@ h1, h2, h3, h4, .sec-title, .hero-role {
      (Pass 01.3) shifts this whole div up further on top of that, which
      is exactly the extra overlap the torn edge needs to read as real. */
   margin-top: -5rem;
-  padding-top: calc(5rem + clamp(2.4rem, 6vh, 4rem));
-  /* Room below the label for the torn band (::after) to occupy on its
-     own -- the label already overflows a little past this box's own
-     bottom edge (centered on the 1px content line via the flex rule
-     above), so without this the jagged band would land right under
-     the label with almost no clearance. */
-  padding-bottom: 52px;
-  /* Solid --tear-from everywhere *except* the bottom 52px, which is
+  /* User feedback: the original clamp(2.4rem,6vh,4rem) here was sized
+     for the old smooth gradient fade, which needed real room to
+     breathe. A flat colour + a thin torn band at the bottom don't --
+     carried over unchanged it just read as a tall, empty, oddly
+     paused gap before the next sheet, not a seam. Cut way down so the
+     whole transition reads as a seam's height, not a room's. */
+  padding-top: calc(5rem + clamp(0.5rem, 1.5vh, 1rem));
+  /* Matches the torn band's own height 1:1 -- the label sitting right
+     at/near the torn texture underneath it is fine (it paints above
+     the band regardless of overlap, its own z-index:1 beats the
+     band's z-index:auto within this shared local stack), so this
+     doesn't need extra clearance above the band the way a taller gap
+     once implied it should. */
+  padding-bottom: 22px;
+  /* Solid --tear-from everywhere *except* the bottom 22px, which is
      left transparent so #illustration's own real background (already
      painted underneath, since this div is one of its own children)
      shows straight through there. ::after then redraws just that
@@ -13383,8 +13390,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
      is what a background covering the *whole* box (clipped or not)
      did on the first pass here. */
   background: linear-gradient(to bottom,
-    var(--tear-from) 0, var(--tear-from) calc(100% - 52px),
-    transparent calc(100% - 52px), transparent 100%);
+    var(--tear-from) 0, var(--tear-from) calc(100% - 22px),
+    transparent calc(100% - 22px), transparent 100%);
 }
 .bp-tear--paper::before {
   border-top-color: var(--ink12);
@@ -13395,16 +13402,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 52px;
+  height: 22px;
   background: var(--tear-from);
   /* Same idea as desk-kit.html's .torn demo (clean top, jagged
-     bottom) but with deeper teeth -- that demo's ~15pt swing reads
-     fine on an 80px tile; at full section width a shallower tear
-     read as barely-perceptible waviness rather than a torn edge, so
-     this widens the swing to ~45pt. Percentages, so it scales to any
-     width. */
-  clip-path: polygon(0 0, 100% 0, 100% 62%, 90% 84%, 80% 58%, 70% 88%, 60% 60%,
-                     50% 90%, 40% 62%, 30% 92%, 20% 60%, 10% 86%, 0 64%);
+     bottom), scaled to this shorter band. Percentages, so it scales
+     to any width. */
+  clip-path: polygon(0 0, 100% 0, 100% 55%, 90% 80%, 80% 50%, 70% 85%, 60% 52%,
+                     50% 88%, 40% 55%, 30% 90%, 20% 52%, 10% 82%, 0 58%);
 }
 .bp-tear--paper .bp-tear-label {
   background: var(--tear-to);
@@ -14623,12 +14627,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><span class="disc-stamp stamp-rv d2" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg></span> Videography<br>&amp; Motion</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="videography-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><polygon points="10 9 10 15 15 12" fill="currentColor" stroke="none"/><line x1="2" y1="16.5" x2="5" y2="16.5"/><line x1="19" y1="16.5" x2="22" y2="16.5"/></svg><span class="drawer-pull" aria-hidden="true"></span></button> Videography<br>&amp; Motion</h2>
     <p class="sec-intro rv d2">Video brings all my disciplines into one frame. I direct, film, edit, and sometimes appear on screen, across explainer videos, documentary shorts, and social content.</p>
-    <!-- MRK-04, static (no other section's non-collapsible note exists
-         yet -- Illustration/Graphic Design/Music toggle theirs off a
-         disc-stamp button, not needed for one short line here) -->
-    <div class="margin-note" style="transform: rotate(-1.5deg);">↳ Chinagraph ring marks the pick — an editor's grease pencil, not tape.</div>
+    <!-- MRK-04, now matching Illustration/Graphic Design/Music: toggled
+         open by the disc-stamp button above, not shown by default. -->
+    <div class="margin-note line-boil note-collapsible" id="videography-margin-note" style="transform: rotate(-1.5deg);"><span class="margin-note-inner">↳ Chinagraph ring marks the pick — an editor's grease pencil, not tape.</span></div>
    </div>
    <div class="sec-badge-wrapper rv d1">
     <div class="pg-toy" id="pg-videography-toy" style="--pg-accent: var(--sec-video-accent); --pg-bg: var(--sec-video-bg);">
