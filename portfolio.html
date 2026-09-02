@@ -26,11 +26,20 @@ body {
   color: var(--ink);
   font-size: 16px;
   line-height: 1.6;
-  background-color: var(--bg);
+  /* SRF-01 -- the cutting mat (DESK_KIT.md). Sitewide, behind every
+     section; the --sec-*-bg colors on each section are unchanged and
+     still paint over this everywhere a section covers the page --
+     the mat only shows through at the page edges and wherever a
+     section doesn't reach full-bleed (Pass 01.3 gives the five middle
+     sections a bounded-sheet treatment that reveals more of it).
+     Two repeat frequencies (48px major / 12px fine) layered per axis,
+     matching a real self-healing cutting mat's grid. */
+  background-color: var(--mat);
   background-image:
-    linear-gradient(to right, rgba(44, 42, 41, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(44, 42, 41, 0.045) 1px, transparent 1px);
-  background-size: 24px 24px;
+    repeating-linear-gradient(0deg,  var(--mat-rule) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, var(--mat-rule) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(0deg,  var(--mat-rule-fine) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(90deg, var(--mat-rule-fine) 0 1px, transparent 1px 12px);
   transition: background-color .35s ease, color .35s ease;
 }
 
@@ -120,6 +129,13 @@ body::before {
   --moss: #3E9E63;
   --tangerine: #EF7A34;
   --teal: #1F9B93;
+
+  /* SRF-01 -- the cutting mat, on body. Sits behind every section;
+     see DESK_KIT.md. Pale grey-sage in light mode. */
+  --mat: #B7C5BE;
+  --mat-rule: rgba(20, 34, 28, .17);
+  --mat-rule-fine: rgba(20, 34, 28, .07);
+  --mat-guide: rgba(20, 34, 28, .10);
 }
 
 [data-theme="dark"] {
@@ -158,6 +174,12 @@ body::before {
   --sec-video-accent:  #34C990;
   --sec-design-accent: #F2C030;
   --sec-music-accent:  #A080F0;
+
+  /* SRF-01 -- deep green-black with a cyan-ish grid in dark mode. */
+  --mat: #101B16;
+  --mat-rule: rgba(126, 214, 180, .17);
+  --mat-rule-fine: rgba(126, 214, 180, .07);
+  --mat-guide: rgba(126, 214, 180, .12);
 }
 
 /* ================================================================
