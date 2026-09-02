@@ -177,10 +177,10 @@ body::before {
   --sec-music-accent:  #A080F0;
 
   /* SRF-01 -- deep green-black with a cyan-ish grid in dark mode. */
-  --mat: #101B16;
-  --mat-rule: rgba(126, 214, 180, .17);
-  --mat-rule-fine: rgba(126, 214, 180, .07);
-  --mat-guide: rgba(126, 214, 180, .12);
+  --mat: #1A1410;
+  --mat-rule: rgba(255, 244, 226, .13);
+  --mat-rule-fine: rgba(255, 244, 226, .06);
+  --mat-guide: rgba(255, 244, 226, .09);
 }
 
 /* ================================================================
@@ -13349,47 +13349,51 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    the same clip-path). The section this div actually lives inside
    (--tear-to) is what's already sitting underneath -- nothing here
    needs to paint it, it just shows through the torn notches. */
-/* ---- SECTION SEAM (rebuilt) -------------------------------------
-   Was: a dashed rule + floating label sitting in a tall empty gap,
-   with a gradient that never read because the two sheet colours are
-   nearly the same value. That reads as two flat colour bands with a
-   line between them, not as paper.
-   Now: the PREVIOUS sheet gets a real torn bottom edge that hangs
-   over this one. --tear-from (already set inline per instance) is the
-   sheet above; the ragged clip-path is the tear itself. The label
-   rides just under the tear like a sticker, instead of floating in
-   the middle of nowhere. ---------------------------------------- */
+/* ---- SECTION SEAM: tape ------------------------------------------
+   A torn edge cannot read here: adjacent sheet colours (#E8EEF2 vs
+   #F2EAE8) are both essentially white, so there is no value difference
+   to define the edge and it just looks like a rendering artefact.
+   Tape brings its own contrast, so it reads as a deliberate object
+   regardless of what the two sheets are doing.
+
+   The colour is the accent of the section the tape INTRODUCES, so the
+   tape doubles as wayfinding -- it tells you which discipline is next.
+   Those accent tokens already carry dark-mode variants, so this follows
+   the theme for free. The sheets themselves just overlap underneath. */
 .bp-tear--paper {
-  margin-top: -5rem;          /* cancel .sec's 5rem padding-top: sit at the true sheet edge */
+  margin-top: -5rem;        /* cancel .sec's padding-top: sit at the true sheet edge */
   padding-top: 0;
   height: 0;
   background: none;
   overflow: visible;
 }
 .bp-tear--paper::before {
-  /* Solid backing in THIS sheet's own colour. Without it the gaps between
-     the tear's teeth exposed the mat, which read as a dashed rule again --
-     the sheets overlap by 1.75rem but the tear cuts deeper than that.
-     Verified by sampling rendered pixels: the gaps were #6B5D50 (mat). */
   content: '';
   position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 40px;
+  left: 50%;
+  top: -15px;
+  width: clamp(140px, 13vw, 196px);
+  height: 32px;
   border: 0;
-  background: var(--tear-to);
+  transform: translateX(-50%) rotate(var(--tape-tilt, -1.6deg));
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.24) 0 5px, transparent 5px 11px),
+    var(--tape-color, #C9A26B);
+  opacity: .93;
+  /* torn short ends, never square */
+  clip-path: polygon(2% 5%, 26% 0, 61% 4%, 98% 0, 100% 36%, 97% 72%, 99% 100%, 66% 95%, 31% 100%, 3% 96%, 0 63%, 2% 31%);
+  box-shadow: 0 2px 4px rgba(16,28,22,.26);
+  z-index: 5;
 }
-.bp-tear--paper::after {
-  /* The sheet ABOVE, torn off. Paints over the backing, so its ragged edge
-     reveals this sheet's paper rather than the desk. */
-  content: '';
-  position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 40px;
-  background: var(--tear-from);
-  clip-path: polygon(0% 0%, 100% 0%, 100.0% 86%, 95.8% 83%, 91.7% 93%, 87.5% 85%, 83.3% 89%, 79.2% 76%, 75.0% 71%, 70.8% 91%, 66.7% 93%, 62.5% 63%, 58.3% 61%, 54.2% 57%, 50.0% 58%, 45.8% 39%, 41.7% 30%, 37.5% 50%, 33.3% 37%, 29.2% 49%, 25.0% 65%, 20.8% 77%, 16.7% 96%, 12.5% 83%, 8.3% 91%, 4.2% 92%, 0.0% 98%);
-  filter: drop-shadow(0 2px 1px rgba(16,28,22,.13));
-}
+.bp-tear--paper::after { content: none; }
 .bp-tear--paper .bp-tear-label { display: none; }
+
+/* Each seam takes the accent of the section below it, with a little
+   variation in tilt so four strips down the page don't look printed. */
+#illustration   .bp-tear--paper { --tape-color: var(--sec-illus-accent);  --tape-tilt: -1.6deg; }
+#videography    .bp-tear--paper { --tape-color: var(--sec-video-accent);  --tape-tilt:  1.9deg; }
+#graphic-design .bp-tear--paper { --tape-color: var(--sec-design-accent); --tape-tilt: -2.4deg; }
+#music          .bp-tear--paper { --tape-color: var(--sec-music-accent);  --tape-tilt:  1.2deg; }
 
 
 /* ================================================================
