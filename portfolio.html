@@ -246,54 +246,17 @@ body::before {
    CNT/MRK/EDG parts above plus a handful of new small parts (peg
    bar, sticker sheet, push pin, swatch chip, registration mark,
    J-card mark), reused once per section rather than invented as
-   one-offs. EDG-03 index tabs are shared by all five.
-================================================================ */
+   one-offs.
 
-/* EDG-03 -- index tab, restoring the 01-05 numerals as a physical
-   object (the old .sec-num badge this replaces had zero HTML call
-   sites left -- dead CSS, removed) instead of a text label. One
-   shared class; colour comes from that section's own --sec-*-accent
-   via the #id rules below. */
-.sec-tab {
-  position: absolute;
-  top: 0;
-  left: 2rem;
-  padding: 4px 14px 5px;
-  border-radius: 0 0 4px 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #FFFDF8;
-  /* .sec doesn't establish its own stacking context (position:relative
-     alone, no z-index), so this and .con (z-index:3, and later in the
-     DOM) are compared directly -- a tie loses to source order, which
-     put .con's own content on top and hid the tab completely. Beating
-     .con needed 4; #animation's tab also overlaps .dl-sec above it
-     (z-index:5, its own stacking context, wins over #animation's
-     un-elevated one regardless of DOM order once .sec's Pass 01.3
-     negative margin makes them overlap at all) -- 6 clears both. */
-  z-index: 6;
-  box-shadow: 0 2px 4px rgba(16,28,22,.15);
-  pointer-events: none;
-}
-#animation .sec-tab      { background: var(--sec-anim-accent); }
-#illustration .sec-tab   { background: var(--sec-illus-accent); }
-#videography .sec-tab    { background: var(--sec-video-accent); }
-#graphic-design .sec-tab { background: var(--sec-design-accent); color: #14131A; }
-#music .sec-tab          { background: var(--sec-music-accent); }
-/* Dark theme's --sec-*-accent tokens are all bright/pastel versions of
-   the light-theme ones (readable against the dark page), which flips
-   every one of these from needing white text to needing dark text --
-   checked numerically, not by eye: light-mode white-on-accent ranges
-   3.3-7.1:1 (design fails, hence its override above), dark-mode
-   white-on-accent is 2.1-3.0:1 across all five (all fail) versus
-   6.0-10.9:1 for dark-on-accent (all pass). #graphic-design's own ID
-   rule above already wins this by specificity, so this only needs to
-   additionally cover the other four. */
-[data-theme="dark"] .sec-tab {
-  color: #14131A;
-}
+   EDG-03 index tabs were tried here and pulled back out: positioned
+   at .sec's own top:0, which sits inside the torn-edge transition
+   zone from the section above (Pass 01.3's .bp-tear--paper flap) --
+   the tab rendered floating in the PREVIOUS section's colour,
+   disconnected from the sheet it was meant to label, on every
+   section. Fixing that needs the tab anchored to where the sheet's
+   own content visually starts, not the section's box top; revisit
+   properly rather than re-guess the offset.
+================================================================ */
 
 /* CNT-03 -- punched leaf. A row of holes along the top inner edge of
    Animation and Illustration's sheets, in --mat so each hole reads as
@@ -452,8 +415,11 @@ body::before {
   height: 16px;
   position: absolute;
   opacity: 0.45;
-  /* Same tie-vs-.con risk .sec-tab has (see its comment) -- 4 to be
-     safely above it regardless of order. */
+  /* .sec doesn't establish its own stacking context (position:relative
+     alone, no z-index), so this and .con (z-index:3, later in the DOM)
+     are compared directly -- a tie loses to source order and .con's
+     own content would paint over this. 4 beats that regardless of
+     order. */
   z-index: 4;
   pointer-events: none;
 }
@@ -14316,7 +14282,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 01 ANIMATION -->
 
 <section class="sec" id="animation">
- <span class="sec-tab" aria-hidden="true">01</span>
  <div class="con">
   <div class="sec-hd">
    <div>
@@ -14479,7 +14444,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 02 ILLUSTRATION -->
 
 <section class="sec" id="illustration">
- <span class="sec-tab" aria-hidden="true">02</span>
  <!-- Bridge from #animation -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-anim-bg); --tear-to: var(--sec-illus-bg);"><span class="bp-tear-label">✂ next sketch</span></div>
@@ -14653,7 +14617,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 03 VIDEOGRAPHY -->
 
 <section class="sec" id="videography">
- <span class="sec-tab" aria-hidden="true">03</span>
  <!-- Bridge from #illustration -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-illus-bg); --tear-to: var(--sec-video-bg);"><span class="bp-tear-label">✂ roll camera</span></div>
@@ -14821,7 +14784,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 04 GRAPHIC DESIGN -->
 
 <section class="sec" id="graphic-design">
- <span class="sec-tab" aria-hidden="true">04</span>
  <!-- FST-04 registration marks, one per corner of the sheet -- proofs
       pinned to the mat carry a printer's crop/reg marks, not tape. -->
  <span class="reg-mark" style="top: 14px; left: 14px;" aria-hidden="true"><i></i></span>
@@ -15045,7 +15007,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 <!-- 05 MUSIC -->
 
 <section class="sec" id="music">
- <span class="sec-tab" aria-hidden="true">05</span>
  <!-- Bridge from #graphic-design -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-design-bg); --tear-to: var(--sec-music-bg);"><span class="bp-tear-label">✂ press play</span></div>
