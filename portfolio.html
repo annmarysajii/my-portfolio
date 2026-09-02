@@ -501,6 +501,49 @@ body::before {
 }
 
 /* ================================================================
+   PASS 01.4 -- EDG-02 DRAWER PULL (DESK_KIT.md)
+   The 7 personal-reveal triggers (3 hero stat tiles, 3 discipline
+   note-toggles, the About ID card) each already expand a panel on
+   click, but none of them visibly read as "openable" at rest -- just
+   a bare icon or number with no pull-me signal. Rather than replace
+   each trigger's own icon (real information: which stat, which
+   discipline) with one generic box, this adds the one part DESK_KIT
+   actually specifies -- a small gold pull handle -- to all seven,
+   so the shared cue is the handle, not the whole object. Positioned
+   per context below (inline under the spacious hero tiles, an
+   absolute peeking tab under the compact disc-stamp/ID-card ones);
+   same class, same colour, same look everywhere. */
+.drawer-pull {
+  --drawer-color: var(--gold);
+  display: block;
+  width: 22px;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(var(--drawer-color), #C98A0C);
+  box-shadow: 0 1px 2px rgba(0,0,0,.3);
+  pointer-events: none;
+}
+.metric-toggle .drawer-pull {
+  align-self: center;
+  margin-top: 0.5rem;
+}
+.disc-stamp .drawer-pull,
+.bp-badge--toggle .drawer-pull {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 4px;
+  z-index: 2;
+}
+.bp-badge--toggle .drawer-pull {
+  bottom: -9px;
+  width: 26px;
+  height: 6px;
+}
+
+/* ================================================================
    NAVIGATION
 ================================================================ */
 .nav {
@@ -1921,6 +1964,14 @@ body::before {
   opacity: 1;
   pointer-events: auto;
   margin-top: 0.6rem;
+  /* PASS 01.4 -- EDG-02's "slow start into a quick settle" on the
+     open direction only (closing keeps the calmer var(--ease) above,
+     declared on the base .note-collapsible rule -- a transition's
+     timing function is read off the ruleset for the state being
+     transitioned TO, so each direction can carry its own curve for
+     free without a class toggle). Same overshoot curve used
+     everywhere else on the page, not a new one. */
+  transition: grid-template-rows 0.36s cubic-bezier(.34,1.56,.64,1), opacity 0.28s var(--ease), margin-top 0.32s var(--ease);
 }
 
 .die-cut-sticker {
@@ -12973,6 +13024,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   opacity: 1;
   pointer-events: auto;
   margin-top: .85rem;
+  /* PASS 01.4 -- same EDG-02 open-direction overshoot as the other 6
+     reveals (see .margin-note.note-collapsible.note-open); closing
+     keeps the base rule's calmer var(--ease) above. */
+  transition: max-height 0.36s cubic-bezier(.34,1.56,.64,1), opacity 0.28s var(--ease), margin-top 0.32s var(--ease);
 }
 .bp-facts-inner {
   box-sizing: border-box;
@@ -14082,6 +14137,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-2025-reveal" aria-label="Show fact">
             <span class="metric-num">2025</span>
             <span class="metric-lbl">Annecy IAFF, Paris Lyon Singapore programme</span>
+            <span class="drawer-pull" aria-hidden="true"></span>
           </button>
           <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2025-reveal"><span class="margin-note-inner">↳ Finished the Annecy film while also doing my internship at the same time.</span></div>
         </div>
@@ -14090,6 +14146,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-50-reveal" aria-label="Show fact">
             <span class="metric-num">50+</span>
             <span class="metric-lbl">International commissions, 5-star satisfaction</span>
+            <span class="drawer-pull" aria-hidden="true"></span>
           </button>
           <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-50-reveal"><span class="margin-note-inner">↳ Bought my first paid drawing software using my first ever commission. My freelance career actually started in the BTS and Sk8 the Infinity fandoms.</span></div>
         </div>
@@ -14098,6 +14155,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           <button type="button" class="metric-toggle nudge-once" aria-expanded="false" aria-controls="metric-2nd-reveal" aria-label="Show fact">
             <span class="metric-num">2nd</span>
             <span class="metric-lbl">NTU — Imperial Design-a-thon, ReKindle</span>
+            <span class="drawer-pull" aria-hidden="true"></span>
           </button>
           <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2nd-reveal"><span class="margin-note-inner">↳ Finished the slide decks alone the night before the presentation because my teammates were unavailable.</span></div>
         </div>
@@ -14428,7 +14486,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="illustration-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg></button> Illustration<br>&amp; Comics</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="illustration-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h9l5 5v13H5z"/><polyline points="14 3 14 8 19 8"/><path d="M8 14c1.2-1.5 2-1.5 3 0s1.8 1.5 3 0"/></svg><span class="drawer-pull" aria-hidden="true"></span></button> Illustration<br>&amp; Comics</h2>
     <p class="sec-intro rv d2">I draw comics for campuses of 33,000 and character art for clients across the globe. Every mark serves a story, whether in one panel or fifty.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="illustration-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Decided to go to art school after watching Blue Period.</span></div>
@@ -14776,7 +14834,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="graphic-design-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg></button> Graphic Design<br>&amp; Brand</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="graphic-design-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="10" height="20" rx="1.5"/><line x1="4" y1="9" x2="14" y2="9"/><circle cx="18" cy="6" r="2.4" fill="currentColor" stroke="none"/></svg><span class="drawer-pull" aria-hidden="true"></span></button> Graphic Design<br>&amp; Brand</h2>
     <p class="sec-intro rv d2">From fintech PR at the Point Zero Forum to full mock brand systems, I design at the intersection of strategy and craft. Each piece communicates clearly at a glance.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="graphic-design-margin-note" style="transform: rotate(-2deg);"><span class="margin-note-inner">↳ Wanted to be a fashion designer in Paris as a kid. Studied French for 7 years. Still can't really speak it.</span></div>
@@ -14994,7 +15052,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
  <div class="con">
   <div class="sec-hd">
    <div>
-    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="music-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg></button> Music<br>Production</h2>
+    <h2 class="sec-title rv d1"><button type="button" class="disc-stamp stamp-rv d2 note-toggle nudge-once" aria-expanded="false" aria-controls="music-margin-note" aria-label="Show note"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg><span class="drawer-pull" aria-hidden="true"></span></button> Music<br>Production</h2>
     <p class="sec-intro rv d2">I compose to understand my visual worlds better, and I build visual worlds to make my music feel lived-in. The Jasmine EP is the fullest expression of that loop.</p>
     <!-- Handwritten margin note, toggled open by the disc-stamp button above -->
     <div class="margin-note line-boil note-collapsible" id="music-margin-note" style="transform: rotate(3deg);"><span class="margin-note-inner">↳ Couldn't afford to hire musicians for my own projects, so I became the music producer instead.</span></div>
@@ -15148,6 +15206,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="bp-badge bp-badge--toggle nudge-once" role="button" tabindex="0" aria-expanded="false" aria-controls="bp-facts-panel" aria-label="Annmary Saji, backstage pass — show a few facts">
        <div class="bp-name-card" role="img" aria-label="Hello, my name is Annmary"></div>
        <img class="bp-name-stickers" src="assets/HELLO MY NAME IS/stickers.svg" alt="" aria-hidden="true" loading="lazy">
+       <span class="drawer-pull" aria-hidden="true"></span>
       </div>
 
       <!-- Revealed by clicking the ID card above -->
