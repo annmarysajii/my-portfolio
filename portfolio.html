@@ -161,6 +161,64 @@ body::before {
 }
 
 /* ================================================================
+   FST-01 / FST-02 -- SHARED TAPE COMPONENT
+   One component, two variants. Replaces the nine one-off tape
+   classes (.hero-tape-top/-bottom, .about-tape-tl/-tr,
+   .notebook-tape-tl/-tr, .polaroid-tape, .notes-pin-tape,
+   .scrap-tape-corner) that used to each hardcode their own colour,
+   angle and size. Colour/angle/size are custom properties set per
+   call site; torn short ends via clip-path so no strip ever reads
+   as a clean rectangle.
+
+   Two more tape-like decorations turned up after that pass --
+   .card::before (work-card corner) and #downloads/.dl-sec::before/
+   ::after (drawer pins) -- both were still bespoke background-image
+   url()s. They're pseudo-elements, so they can't carry a `tape`
+   class the way a real element does; the fix is to fold their
+   selectors into this same rule instead of forking a second
+   definition. `content:''` is harmless on the real .tape elements
+   (the property only does anything on ::before/::after) and is what
+   makes the pseudo-elements render at all. --tape-shift exists only
+   for .card::before, which needs `translateX(-50%)` to stay centred
+   under `left:50%` -- everything else defaults to a no-op shift.
+
+   Every --tape-* custom property is read with a var() fallback
+   rather than given a default in this rule. .card::before needs its
+   colour to come from the .card ancestor (nth-child cycles it per
+   card, see below) -- a real explicit default declared *on this
+   selector* would win over that inheritance every time, regardless
+   of source order, since an explicit value on the element always
+   beats an inherited one. Fallbacks avoid the trap entirely: nothing
+   is ever explicitly set here, so there's nothing to out-rank
+   inheritance with.
+================================================================ */
+.tape,
+.card::before,
+#downloads::before, .dl-sec::before,
+#downloads::after, .dl-sec::after {
+  content: '';
+  position: absolute !important;
+  width: var(--tape-w, 116px) !important;
+  height: var(--tape-h, 32px) !important;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.22) 0 5px, transparent 5px 11px),
+    var(--tape-color, var(--gold)) !important;
+  opacity: .93 !important;
+  transform: var(--tape-shift, translateX(0)) rotate(var(--tape-angle, -6deg)) !important;
+  /* torn short ends -- never square */
+  clip-path: polygon(2% 4%, 26% 0, 61% 3%, 98% 0, 100% 34%, 97% 70%,
+                     99% 100%, 66% 96%, 31% 100%, 3% 97%, 0 62%, 2% 30%);
+  box-shadow: 0 1px 2px rgba(16,28,22,.22) !important;
+  pointer-events: none;
+  z-index: 5;
+}
+.tape--corner {
+  --tape-angle: -45deg;
+  --tape-w: 62px;
+  --tape-h: 22px;
+}
+
+/* ================================================================
    NAVIGATION
 ================================================================ */
 .nav {
@@ -1687,44 +1745,6 @@ body::before {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: -16px;
-  left: 28px;
-  width: 52px;
-  height: 28px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0.95;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.18));
-  transform-origin: center center;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.card:nth-child(4n+1)::before {
-  background-image: url("assets/svg-opt/tape-mustard.png");
-  transform: rotate(-3.5deg);
-}
-.card:nth-child(4n+2)::before {
-  background-image: url("assets/svg-opt/tape-coral.png");
-  transform: rotate(2.5deg);
-}
-.card:nth-child(4n+3)::before {
-  background-image: url("assets/svg-opt/tape-slate.png");
-  transform: rotate(-2deg);
-}
-.card:nth-child(4n+4)::before {
-  background-image: url("assets/svg-opt/tape-striped.png");
-  transform: rotate(3deg);
-}
-.card:hover::before {
-  transform: scale(1.08) translateY(-2px) rotate(0deg);
-}
-
 .card-img {
   display: block;
   position: relative;
@@ -1888,33 +1908,6 @@ body::before {
   background: rgba(18, 17, 26, 0.75);
   border-color: rgba(240, 238, 245, 0.14);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-}
-
-/* Notebook washi tapes on corners */
-.about-tape-tl {
-  position: absolute;
-  top: -13px;
-  left: 36px;
-  width: 85px;
-  height: 26px;
-  background: rgba(232, 176, 0, 0.85);
-  transform: rotate(-3.5deg);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  border-radius: 2px;
-  z-index: 5;
-}
-
-.about-tape-tr {
-  position: absolute;
-  top: -13px;
-  right: 36px;
-  width: 85px;
-  height: 26px;
-  background: rgba(80, 140, 240, 0.8);
-  transform: rotate(2.8deg);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  border-radius: 2px;
-  z-index: 5;
 }
 
 /* Spiral binding punch holes */
@@ -2947,28 +2940,25 @@ body::before {
   transform: translateY(-3px) rotate(-0.5deg) !important;
   box-shadow: 4px 4px 0 var(--ink) !important;
 }
-#downloads::before,
-.dl-sec::before {
-  content: '';
-  position: absolute;
+/* #downloads::before/::after are folded into the shared .tape rule
+   near :root; "mustard"/"coral" map onto the existing --gold/--red
+   tokens instead of the removed tape-mustard.webp/tape-coral.webp. */
+#downloads::before, .dl-sec::before {
+  --tape-color: var(--gold);
+  --tape-angle: -2deg;
+  --tape-w: 80px;
+  --tape-h: 22px;
   top: -8px;
   left: clamp(2rem, 8vw, 8rem);
-  width: 80px;
-  height: 22px;
-  background: url("assets/svg-opt/tape-mustard.webp") center/cover no-repeat;
-  transform: rotate(-2deg);
   z-index: 2;
 }
-#downloads::after,
-.dl-sec::after {
-  content: '';
-  position: absolute;
+#downloads::after, .dl-sec::after {
+  --tape-color: var(--red);
+  --tape-angle: 2deg;
+  --tape-w: 80px;
+  --tape-h: 22px;
   top: -8px;
   right: clamp(2rem, 8vw, 8rem);
-  width: 80px;
-  height: 22px;
-  background: url("assets/svg-opt/tape-coral.webp") center/cover no-repeat;
-  transform: rotate(2deg);
   z-index: 2;
 }
 
@@ -4093,24 +4083,34 @@ body::before {
 .card:nth-child(3n+2) { transform: rotate(0.8deg); }
 .card:nth-child(3n+3) { transform: rotate(-0.5deg); }
 
-/* Rotating Colorful Washi Tape on Cards */
+/* Rotating Colorful Washi Tape on Cards -- .card::before is folded into the
+   shared .tape rule near :root; this just sets its per-instance colour,
+   size and position. --tape-color is a custom property, so it inherits
+   from .card down into the ::before automatically -- no class needed. */
+.card {
+  --tape-color: rgba(255, 204, 0, 0.85);
+}
 .card::before {
-  content: '';
-  position: absolute;
+  --tape-angle: -1deg;
+  --tape-w: 58px;
+  --tape-h: 18px;
+  --tape-shift: translateX(-50%);
   top: -10px;
   left: 50%;
-  transform: translateX(-50%) rotate(-1deg);
-  width: 58px;
-  height: 18px;
-  background: rgba(255, 204, 0, 0.85);
-  border: 1px dashed rgba(20,19,26,0.3);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   z-index: 6;
 }
-.card:nth-child(4n+1)::before { background: rgba(232, 67, 46, 0.85); }
-.card:nth-child(4n+2)::before { background: rgba(30, 63, 196, 0.85); }
-.card:nth-child(4n+3)::before { background: rgba(43, 201, 181, 0.85); }
-.card:nth-child(4n+4)::before { background: rgba(139, 92, 246, 0.85); }
+.card:nth-child(4n+1) { --tape-color: rgba(232, 67, 46, 0.85); }
+.card:nth-child(4n+2) { --tape-color: rgba(30, 63, 196, 0.85); }
+.card:nth-child(4n+3) { --tape-color: rgba(43, 201, 181, 0.85); }
+.card:nth-child(4n+4) { --tape-color: rgba(139, 92, 246, 0.85); }
+.card:hover::before {
+  /* .tape's own transform carries !important, so the hover swap needs
+     it too or it's silently dropped. Matches the pre-refactor rule
+     verbatim, including that it drops translateX(-50%) -- the tape
+     was already re-centering on scale alone before this refactor;
+     not a new regression. */
+  transform: scale(1.08) translateY(-2px) rotate(0deg) !important;
+}
 
 /* ── COMIC STICKER BUTTONS ── */
 .pg-btn, .btn-comic, .fsub, .resume-btn, .tab-btn {
@@ -4325,18 +4325,11 @@ body::before {
 }
 .pg-close-btn:hover { transform: scale(1.12) rotate(90deg); }
 
-/* Repurpose the previously-unstyled tape corner as a real washi accent */
+/* FST-01 tape, pinned to the scrap card's top-left edge */
 .scrap-tape-corner {
-  position: absolute;
-  top: -10px;
-  left: 22px;
-  width: 54px;
-  height: 22px;
-  background-image: url("assets/svg-opt/tape-mustard.webp");
-  background-size: 100% 100%;
-  transform: rotate(-4deg);
-  pointer-events: none;
-  z-index: 1;
+  top: -10px !important;
+  left: 22px !important;
+  z-index: 1 !important;
 }
 
 [data-theme="dark"] .pg-tag-closed {
@@ -7286,32 +7279,6 @@ a[href*="gobunny"] img {
   box-shadow: -7px 7px 0 #000, 0 20px 45px rgba(0,0,0,0.6) !important;
 }
 
-.notebook-tape-tl {
-  position: absolute !important;
-  top: -10px !important;
-  left: 36px !important;
-  width: 70px !important;
-  height: 22px !important;
-  background: rgba(255, 204, 0, 0.85) !important;
-  border: 1px dashed rgba(20, 19, 26, 0.35) !important;
-  transform: rotate(-3.5deg) !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
-  z-index: 5 !important;
-}
-
-.notebook-tape-tr {
-  position: absolute !important;
-  top: -10px !important;
-  right: 36px !important;
-  width: 70px !important;
-  height: 22px !important;
-  background: rgba(232, 67, 46, 0.85) !important;
-  border: 1px dashed rgba(20, 19, 26, 0.35) !important;
-  transform: rotate(3.5deg) !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
-  z-index: 5 !important;
-}
-
 .about-eyebrow {
   display: inline-flex !important;
   align-items: center !important;
@@ -7378,18 +7345,6 @@ a[href*="gobunny"] img {
   background: #1C192E !important;
   border-color: rgba(255,255,255,0.2) !important;
   box-shadow: 4.5px 4.5px 0 #000 !important;
-}
-
-.polaroid-tape {
-  position: absolute !important;
-  top: -12px !important;
-  left: 50% !important;
-  transform: translateX(-50%) rotate(-1.5deg) !important;
-  width: 75px !important;
-  height: 22px !important;
-  background: rgba(255, 204, 0, 0.9) !important;
-  border: 1px dashed rgba(20, 19, 26, 0.35) !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12) !important;
 }
 
 .polaroid-img-frame {
@@ -7569,18 +7524,6 @@ a[href*="gobunny"] img {
 }
 
 /* Tactile Field Notes Card */
-.notes-pin-tape {
-  position: absolute !important;
-  top: -10px !important;
-  right: 24px !important;
-  width: 60px !important;
-  height: 18px !important;
-  background: rgba(30, 63, 196, 0.85) !important;
-  border: 1px dashed rgba(255, 255, 255, 0.4) !important;
-  transform: rotate(2deg) !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12) !important;
-}
-
 .status-focus {
   display: inline-block !important;
   font-weight: 700 !important;
@@ -8367,32 +8310,6 @@ a[href*="gobunny"] img {
   box-shadow: -6px 6px 0 rgba(0, 0, 0, 0.9), 0 24px 48px rgba(0, 0, 0, 0.6) !important;
 }
 
-.notebook-tape-tl {
-  position: absolute !important;
-  top: -10px !important;
-  left: 36px !important;
-  width: 65px !important;
-  height: 20px !important;
-  background: rgba(232, 175, 48, 0.85) !important;
-  border: 1px dashed rgba(43, 40, 37, 0.35) !important;
-  transform: rotate(-3deg) !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
-  z-index: 5 !important;
-}
-
-.notebook-tape-tr {
-  position: absolute !important;
-  top: -10px !important;
-  right: 36px !important;
-  width: 65px !important;
-  height: 20px !important;
-  background: rgba(200, 90, 72, 0.85) !important;
-  border: 1px dashed rgba(43, 40, 37, 0.35) !important;
-  transform: rotate(3deg) !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
-  z-index: 5 !important;
-}
-
 /* Eyebrow & Headlines */
 .about-eyebrow {
   display: inline-flex !important;
@@ -8808,17 +8725,6 @@ a[href*="gobunny"] img {
   background: #201E2B !important;
   border-color: rgba(245, 240, 230, 0.16) !important;
   box-shadow: -4px 4px 0 rgba(0,0,0,0.9), 0 12px 24px rgba(0,0,0,0.5) !important;
-}
-
-.notes-pin-tape {
-  position: absolute !important;
-  top: -8px !important;
-  right: 20px !important;
-  width: 55px !important;
-  height: 16px !important;
-  background: rgba(43, 76, 126, 0.85) !important;
-  border: 1px dashed rgba(255, 255, 255, 0.4) !important;
-  transform: rotate(2deg) !important;
 }
 
 .desk-card-header {
@@ -11405,37 +11311,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   padding: clamp(2rem, 5vw, 4rem) 0 2rem !important;
 }
 
-/* 1. Frame-Breaking Collage Elements Overlapping Edges */
-.hero-tape-top {
-  position: absolute !important;
-  top: clamp(1rem, 3.5vw, 2.5rem) !important;
-  left: 12% !important;
-  width: 90px !important;
-  height: 26px !important;
-  background: #C85A48 !important;
-  opacity: 0.9 !important;
-  transform: rotate(-3deg) !important;
-  z-index: 15 !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
-  border-left: 2px dashed rgba(255,255,255,0.4) !important;
-  border-right: 2px dashed rgba(255,255,255,0.4) !important;
-}
-
-.hero-tape-bottom {
-  position: absolute !important;
-  bottom: clamp(2rem, 4vw, 3rem) !important;
-  right: 14% !important;
-  width: 85px !important;
-  height: 24px !important;
-  background: #E8AF30 !important;
-  opacity: 0.92 !important;
-  transform: rotate(2.5deg) !important;
-  z-index: 15 !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
-  border-left: 2px dashed rgba(43,40,37,0.3) !important;
-  border-right: 2px dashed rgba(43,40,37,0.3) !important;
-}
-
 .hero-bookmark-ribbon {
   position: absolute !important;
   top: clamp(0.5rem, 2.5vw, 1.8rem) !important;
@@ -11726,35 +11601,18 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   opacity: 0.4 !important;
 }
 
-/* Exact Collage Pinning on Hero Sketchbook Frame */
+/* Exact Collage Pinning on Hero Sketchbook Frame -- .tape (FST-01) carries
+   the shared visual; these two just position each instance on the frame. */
 .hero-tape-top {
-  position: absolute !important;
   top: -13px !important;
   left: 45px !important;
-  width: 85px !important;
-  height: 24px !important;
-  background: #C85A48 !important;
-  opacity: 0.92 !important;
-  transform: rotate(-3deg) !important;
   z-index: 15 !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.18) !important;
-  border-left: 2px dashed rgba(255,255,255,0.4) !important;
-  border-right: 2px dashed rgba(255,255,255,0.4) !important;
 }
 
 .hero-tape-bottom {
-  position: absolute !important;
   bottom: -13px !important;
   right: 45px !important;
-  width: 85px !important;
-  height: 24px !important;
-  background: #E8AF30 !important;
-  opacity: 0.95 !important;
-  transform: rotate(2.5deg) !important;
   z-index: 15 !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.18) !important;
-  border-left: 2px dashed rgba(43,40,37,0.3) !important;
-  border-right: 2px dashed rgba(43,40,37,0.3) !important;
 }
 
 /* PART 3 -- gingham fabric-swatch sticker, pinned to the sketchbook's
@@ -13992,8 +13850,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   <div class="hero-sketchbook rv">
     <!-- Frame-Breaking Collage Elements Pinned Directly to Notebook -->
-    <div class="hero-tape-top" aria-hidden="true"></div>
-    <div class="hero-tape-bottom" aria-hidden="true"></div>
+    <div class="tape hero-tape-top" style="--tape-color: #C85A48; --tape-angle: -3deg; --tape-w: 85px; --tape-h: 24px;" aria-hidden="true"></div>
+    <div class="tape hero-tape-bottom" style="--tape-color: #E8AF30; --tape-angle: 2.5deg; --tape-w: 85px; --tape-h: 24px;" aria-hidden="true"></div>
     <div class="hero-fabric-swatch" aria-hidden="true"></div>
     <div class="hero-bookmark-ribbon" aria-hidden="true"></div>
     <div class="hero-seal-sticker stamp-rv" title="Screened at Annecy IAFF 2025 — Paris-Lyon-Singapour Programme">
@@ -14239,7 +14097,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="pg-reveal-inner">
        <div class="playground-scrap-card anim-pg" id="pg-animation">
          <button type="button" class="pg-close-btn" id="pg-animation-close" aria-label="Close toy">✕</button>
-         <div class="scrap-tape-corner"></div>
+         <div class="tape scrap-tape-corner" style="--tape-color: var(--gold); --tape-angle: -4deg; --tape-w: 54px; --tape-h: 22px;" aria-hidden="true"></div>
          <div class="pg-header">
            <div class="pg-badge-icon anim-icon">
              <span class="pg-idle-ball pg-idle-ball-sm"></span>
@@ -14405,7 +14263,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="pg-reveal-inner">
        <div class="playground-scrap-card illus-pg" id="pg-illustration">
          <button type="button" class="pg-close-btn" id="pg-illustration-close" aria-label="Close toy">✕</button>
-         <div class="scrap-tape-corner"></div>
+         <div class="tape scrap-tape-corner" style="--tape-color: var(--gold); --tape-angle: -4deg; --tape-w: 54px; --tape-h: 22px;" aria-hidden="true"></div>
          <div class="pg-header">
            <div class="pg-badge-icon brush-icon">
              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 11 3 3L10 25l-7 2 2-7L16 9z"></path><path d="m14 7 3 3"></path></svg>
@@ -14568,7 +14426,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="pg-reveal-inner">
        <div class="playground-scrap-card video-pg" id="pg-videography">
          <button type="button" class="pg-close-btn" id="pg-videography-close" aria-label="Close toy">✕</button>
-         <div class="scrap-tape-corner"></div>
+         <div class="tape scrap-tape-corner" style="--tape-color: var(--gold); --tape-angle: -4deg; --tape-w: 54px; --tape-h: 22px;" aria-hidden="true"></div>
          <div class="pg-header">
            <div class="pg-badge-icon video-icon">
              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
@@ -14733,7 +14591,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="pg-reveal-inner">
        <div class="playground-scrap-card design-pg" id="pg-graphic-design">
          <button type="button" class="pg-close-btn" id="pg-graphic-design-close" aria-label="Close toy">✕</button>
-         <div class="scrap-tape-corner"></div>
+         <div class="tape scrap-tape-corner" style="--tape-color: var(--gold); --tape-angle: -4deg; --tape-w: 54px; --tape-h: 22px;" aria-hidden="true"></div>
          <div class="pg-header">
            <div class="pg-badge-icon ty-icon">
              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"></path><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="m2 2 7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
@@ -14942,7 +14800,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <div class="pg-reveal-inner">
        <div class="playground-scrap-card music-pg" id="pg-music">
          <button type="button" class="pg-close-btn" id="pg-music-close" aria-label="Close toy">✕</button>
-         <div class="scrap-tape-corner"></div>
+         <div class="tape scrap-tape-corner" style="--tape-color: var(--gold); --tape-angle: -4deg; --tape-w: 54px; --tape-h: 22px;" aria-hidden="true"></div>
          <div class="pg-header">
            <div class="pg-badge-icon music-icon">
              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><line x1="2" y1="9" x2="22" y2="9"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="15" x2="22" y2="15"></line></svg>
