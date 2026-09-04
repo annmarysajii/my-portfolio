@@ -16121,13 +16121,21 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
     <div class="rv d2">
 
-     <form class="form" id="contactForm">
+     <form class="form" id="contactForm" action="https://formsubmit.co/ajax/annie10302004@gmail.com" method="POST">
 
-      <div class="fg"><label class="flbl" for="fn">Your Name *</label><input id="fn" class="finp" type="text" placeholder="Jane Smith" required/></div>
+      <div class="fg"><label class="flbl" for="fn">Your Name *</label><input id="fn" name="name" class="finp" type="text" placeholder="Jane Smith" required/></div>
 
-      <div class="fg"><label class="flbl" for="fe">Email *</label><input id="fe" class="finp" type="email" placeholder="jane@studio.com" required/></div>
+      <div class="fg"><label class="flbl" for="fe">Email *</label><input id="fe" name="email" class="finp" type="email" placeholder="jane@studio.com" required/></div>
 
-      <div class="fg"><label class="flbl" for="fm">Message *</label><textarea id="fm" class="ftxt" placeholder="Tell me about your project" required></textarea></div>
+      <div class="fg"><label class="flbl" for="fm">Message *</label><textarea id="fm" name="message" class="ftxt" placeholder="Tell me about your project" required></textarea></div>
+
+      <input type="hidden" name="_subject" value="New message from your portfolio site">
+
+      <input type="hidden" name="_template" value="table">
+
+      <input type="hidden" name="_captcha" value="false">
+
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
       <button type="submit" class="fsub" id="fsb">
 
