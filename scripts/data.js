@@ -1,4 +1,29 @@
 window.PORTFOLIO_DATA = {
+  "acorn-oak": [
+    "assets/projects/acorn-oak/mindmap.webp",
+    "assets/projects/acorn-oak/name-choices.webp",
+    "assets/projects/acorn-oak/adjectives.svg",
+    "assets/projects/acorn-oak/moodboard-historical.webp",
+    "assets/projects/acorn-oak/moodboard-contemporary.webp",
+    "assets/projects/acorn-oak/typeface-01.webp",
+    "assets/projects/acorn-oak/typeface-02.webp",
+    "assets/projects/acorn-oak/typeface-03.svg",
+    "assets/projects/acorn-oak/gulf-display.svg",
+    "assets/projects/acorn-oak/garet.svg",
+    "assets/projects/acorn-oak/logo-final.webp",
+    "assets/projects/acorn-oak/lockup.svg",
+    "assets/projects/acorn-oak/colour-test.svg",
+    "assets/projects/acorn-oak/palette.svg",
+    "assets/projects/acorn-oak/acorn.svg",
+    "assets/projects/acorn-oak/oak.svg",
+    "assets/projects/acorn-oak/mockup-busstop.webp",
+    "assets/projects/acorn-oak/mockup-mug.webp",
+    "assets/projects/acorn-oak/mockup-hoodie.webp",
+    "assets/projects/acorn-oak/photo-garage.webp",
+    "assets/projects/acorn-oak/photo-pottery.webp",
+    "assets/projects/acorn-oak/photo-log.webp",
+    "assets/projects/acorn-oak/photo-football.webp"
+  ],
   "elevandi": [
     "assets/portfolio-data/extracted_covers/elevandi_pr_cover.webp",
     "assets/portfolio-data/NTU web and social banners/GLOW SQUARE poster.webp",
@@ -236,7 +261,11 @@ window.PORTFOLIO_DATA = {
   ],
   "vipcolor-video": [
     "https://www.youtube.com/watch?v=uUXc5DREAxE",
-    "https://www.youtube.com/watch?v=4C0sa3aOzqU"
+    "https://www.youtube.com/watch?v=4C0sa3aOzqU",
+    "https://www.youtube.com/watch?v=t_Q9x1BLIbg",
+    "https://www.youtube.com/watch?v=cEXvSyvO_VM",
+    "https://www.youtube.com/watch?v=_-bN_f9ZYW4",
+    "https://www.youtube.com/watch?v=UAKUZbv7oK0"
   ],
   "music-district-design": [
     "assets/portfolio-data/Music district assets/11 february (2).webp",

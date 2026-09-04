@@ -488,6 +488,111 @@ html.has-custom-cursor #star-cursor {
   animation: lineBoil 0.28s steps(1) infinite;
 }
 
+
+/* ================================================================
+   PROJ-HERO-PLATE -- the optional featured image set by p.hero.
+   Sits between the header and the first section, so the strongest
+   single artefact is the first thing seen rather than the last.
+   No border: the lift comes from the shadow, the way a print resting
+   on a surface behaves. Caption is the only text allowed on it.
+================================================================ */
+.proj-hero-plate{
+  margin:0 0 3.25rem;
+}
+.proj-hero-plate img{
+  display:block; width:100%; height:auto;
+  border-radius:10px; border:0;
+  box-shadow:0 18px 44px -20px rgba(16,12,8,.55), 0 3px 10px -4px rgba(16,12,8,.35);
+}
+.proj-hero-plate figcaption{
+  margin-top:.85rem; max-width:70ch;
+  font-size:.9rem; line-height:1.6; color:var(--ink5);
+}
+@media (max-width:640px){
+  .proj-hero-plate{ margin-bottom:2.25rem; }
+  .proj-hero-plate img{ border-radius:8px; }
+}
+
+/* ================================================================
+   PRODUCTION NOTES -- editorial replacement for the old post-it
+   dossier. Takes the project page's own colour tokens (--ink,
+   --accent, --line) so it stays coherent on every project's ground.
+   No cards, no fake paper, no handwriting: the type carries it.
+================================================================ */
+.prod-notes {
+  margin: clamp(3rem, 6vw, 4.5rem) 0 3rem;
+}
+.prod-notes-hd {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0 0 clamp(1.4rem, 2.6vw, 2rem);
+  font-family: var(--fb, system-ui, sans-serif);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent, var(--ink));
+}
+.prod-notes-hd::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line, rgba(0, 0, 0, 0.12));
+}
+.prod-notes-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.8rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.prod-note { margin: 0; min-width: 0; }
+.prod-note-n {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent, var(--ink));
+  letter-spacing: 0.08em;
+  margin: 0 0 0.55rem;
+}
+.prod-note-t {
+  display: block;
+  font-family: var(--fd, Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  margin: 0 0 0.55rem;
+}
+.prod-note-d {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.78;
+}
+/* Small note counts get narrower, left-aligned tracks so a single note
+   does not read as a broken grid. :has() has full Baseline support now. */
+.prod-notes-list:has(> :nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 420px));
+}
+.prod-notes-list:has(> :first-child:last-child) {
+  grid-template-columns: minmax(0, 520px);
+}
+@media (max-width: 900px) {
+  .prod-notes-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .prod-notes-list { grid-template-columns: 1fr; gap: 1.5rem; }
+  .prod-note + .prod-note {
+    border-top: 1px solid var(--line, rgba(0, 0, 0, 0.1));
+    padding-top: 1.5rem;
+  }
+}
 </style>
 
   <link rel="stylesheet" href="css/motion.css?v=20260822_1"/>
@@ -853,69 +958,6 @@ html.has-custom-cursor #star-cursor {
 }
 
 /* === OPTION C: PRODUCTION FIELD NOTES POST-ITS === */
-.field-notes-dossier {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 3rem 0;
-}
-.field-note-postit {
-  position: relative;
-  padding: 1.6rem 1.4rem;
-  border-radius: 2px 4px 14px 2px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  color: #181715;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.field-note-postit:hover {
-  transform: translateY(-4px) rotate(0deg) !important;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
-}
-.note-yellow {
-  background: #FEF49A;
-  border: 1px solid rgba(217, 180, 0, 0.4);
-  transform: rotate(-1.2deg);
-}
-.note-pink {
-  background: #FED1D6;
-  border: 1px solid rgba(230, 110, 130, 0.4);
-  transform: rotate(1.4deg);
-}
-.note-blue {
-  background: #D8ECF8;
-  border: 1px solid rgba(100, 170, 230, 0.4);
-  transform: rotate(-0.8deg);
-}
-[data-theme="dark"] .note-yellow { background: #2D2A12; color: #FFF; border-color: rgba(232, 176, 0, 0.3); }
-[data-theme="dark"] .note-pink { background: #331A22; color: #FFF; border-color: rgba(251, 113, 133, 0.3); }
-[data-theme="dark"] .note-blue { background: #132433; color: #FFF; border-color: rgba(112, 152, 248, 0.3); }
-
-.tape-strip {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 55px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border-radius: 1px;
-}
-[data-theme="dark"] .tape-strip { background: rgba(255, 255, 255, 0.15); }
-.note-title {
-  font-family: 'Caveat', cursive, var(--fb);
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-}
-.note-text {
-  font-size: 0.88rem;
-  line-height: 1.55;
-  opacity: 0.92;
-  margin: 0;
-}
-
-
 /* Toast */
 .stamp-toast {
   position: fixed;
@@ -1309,10 +1351,17 @@ const PROJECTS = {
       afterLabel: '✨ Final Cel Composite'
     },
     fieldNotes: [
-      { type: 'yellow', title: '⏱️ Timing & Boiling Lines (12 FPS)', text: 'Animated entirely frame-by-frame on 2s (12 FPS) in Clip Studio Paint to maintain an organic, tactile boil texture that enhances the protagonist\'s nervous tension.' },
-      { type: 'pink', title: '🎬 Annecy IAFF 2025 Selection', text: 'Selected for the prestigious Paris Lyon Singapore programme at Annecy International Animation Film Festival 2025.' },
-      { type: 'blue', title: '🎵 Rhythm-First Sound Pipeline', text: 'Composed and mixed sound cues before keyframing so comedic beats snap synchronously on beat markers.' }
+      // The two removed here doubled the lead-card badge (Annecy) and the '12fps hand-drawn'
+      // fact already implied by the discipline tag. What's kept is the one production detail
+      // that adds something the rest of the page doesn't already say.
+      { type: 'blue', title: 'Sound before picture', text: 'Cues were composed and mixed before keyframing, so the film\'s comedic beats land on beat markers rather than being timed to picture after the fact.' }
     ],
+
+    hero: {
+      src: 'assets/projects/keep-yourself-safe/kys-cover.webp',
+      alt: 'A film still: a school toilet block with KEEP YOURSELF SAFE painted across the cubicle doors',
+      caption: 'The title is graffiti inside the film, never a title card. It is also what the comments say.'
+    },
 
     title:'Keep Yourself Safe',
 
@@ -1327,6 +1376,8 @@ const PROJECTS = {
     role:'Solo Producer — Writing, Animation, Sound Design',
 
     tools:['Clip Studio Paint','Rough Animator'],
+
+    runtime:'1 min 30 s',
 
     overview:`Keep Yourself Safe is a self-directed animated short produced entirely solo from script to final sound. This story is about a frazzled young girl who gets clickbaited by a therapy center online.`,
 
@@ -1361,7 +1412,8 @@ const PROJECTS = {
     },
     fieldNotes: [
       { type: 'yellow', title: '🕯️ Gothic Color Scripting', text: 'Muted blues, desaturated ochre, and warm candleglow were balanced to evoke 19th-century atmospheric tension without relying on pitch black voids.' },
-      { type: 'pink', title: '🏰 Layered Multiplane Environments', text: 'Painted digital environment layers enabled parallax camera tracking in After Effects without breaking the hand-painted storybook feel.' }
+      { type: 'pink', title: '🏰 Layered Multiplane Environments', text: 'Painted digital environment layers enabled parallax camera tracking in After Effects without breaking the hand-painted storybook feel.' },
+      { type: 'blue', title: '✉️ The Ghost Is Not a Metaphor Elizabeth Chose', text: 'The film is staged as one continuous scene, a woman writing a letter, so that the ghost has to arrive as an interruption rather than a framing device. She confronts, rather than symbolises.' }
     ],
 
     title:'Dear Friend',
@@ -1807,6 +1859,12 @@ const PROJECTS = {
 
   'vipcolor-video':{
 
+    hero: {
+      src: 'assets/projects/vipcolor/vip-frame.webp',
+      alt: 'The VP750 and VP700 tutorial series title frame',
+      caption: 'Eighteen long-form tutorials in under six weeks, delivered before the deadline, with buffers and multiple revisions absorbed along the way.'
+    },
+
     title:'VIPCOLOR — How-To Video Series',
 
     year:'2025',
@@ -1815,29 +1873,36 @@ const PROJECTS = {
 
     context:'VIPColor Technologies, Venture Corporation — Internship',
 
-    badge:'17+ Videos Produced',
+    badge:'18 Videos, Venture Corporation Internship',
 
     role:'Producer and Videographer',
 
     tools:['Adobe Premiere Pro','CapCut'],
 
-    overview:`A series of 17 tutorial and product demonstration videos produced during an internship at Venture Corporation for the VIPColor Technologies product line. Videos cover printhead installation, setup procedures, and troubleshooting guides for the VP750 and VP700 printers, distributed across the company website and social media channels.`,
+    overview:`18 long-form tutorial videos, planned, shot and edited to final completion — in under six weeks, delivered before the deadline, with buffers built in and multiple rounds of revision absorbed along the way. The brief was to document the VP750 and VP700 printers step by step, from printhead installation to the service station, for the company's own support site and social channels. Every video on vipcolor.com/support/how-to-videos is one of these.`,
 
-    process:`Each video was planned with a step-by-step script before filming. On-set lighting was set to ensure print quality and hardware details were visible. Edit style was kept clean and practical with clear on-screen callouts for key steps.`,
+    process:`Every video started with a written step-by-step script before the camera was touched. That script determined the shot list, the props, and the order of operations — so there were no surprises on set.\n\nThe full 18-video run was scheduled as a single production block with buffer days built in from the start. One reshoot was needed (the red block in the schedule) and it landed inside the buffer — so the deadline held.\n\nThe maths per video: roughly 1.5 hours total. Setup and soundcheck, one rehearsal pass, two to three takes, retakes if needed, then b-roll. Not faster than expected — faster because it was planned.\n\nEach shoot day ran off a run sheet that named who was on soundcheck, who was on lighting, and who was on hardware coverage. Nothing was assumed.\n\nEvery deliverable had its own status in the project tracker, so nothing slipped quietly. By the time a video was handed over, it had already been through review.`,
+
+    fieldNotes: [
+      { type: 'yellow', title: '🎬 18 videos in under 6 weeks', text: 'The full tutorial library for VP750 and VP700 — scripted, shot and edited from scratch. Delivered before the deadline with buffers still in place.' },
+      { type: 'yellow', title: '📋 Script-first production', text: 'Every video was written out step by step before filming began. The script set the shot list and the order of operations — so the camera only rolled when the run was already planned.' },
+      { type: 'yellow', title: '📐 ~1.5 hours per video', text: 'Setup, rehearsal, 2–3 takes, retakes, b-roll. Time was trackable because every variable was accounted for before the day started.' },
+      { type: 'yellow', title: '📁 Live on VIPColor\'s website', text: "All 18 tutorials are published at vipcolor.com/support/how-to-videos and on VIPColor's YouTube channel — they're the official support library for the VP750 and VP700 product line." }
+    ],
 
     images:[
 
-      {emoji:'<i data-lucide="image"></i>',label:'Product shot — VP750 hero frame'},
+      'https://www.youtube.com/watch?v=uUXc5DREAxE',
 
-      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — printhead installation step'},
+      'https://www.youtube.com/watch?v=4C0sa3aOzqU',
 
-      {emoji:'<i data-lucide="image"></i>',label:'Product shot — VP700 close detail'},
+      'https://www.youtube.com/watch?v=t_Q9x1BLIbg',
 
-      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — setup walkthrough'},
+      'https://www.youtube.com/watch?v=cEXvSyvO_VM',
 
-      {emoji:'<i data-lucide="image"></i>',label:'Social media cut — 30-second feature highlight'},
+      'https://www.youtube.com/watch?v=_-bN_f9ZYW4',
 
-      {emoji:'<i data-lucide="image"></i>',label:'Tutorial still — final quality check step'}
+      'https://www.youtube.com/watch?v=UAKUZbv7oK0'
 
     ]
 
@@ -2284,6 +2349,64 @@ const PROJECTS = {
 
   },
 
+  'acorn-oak':{
+
+    fieldNotes: [
+      { type: 'yellow', title: 'Two names killed, and why', text: 'Sprout was dropped for crowding: the baby and childcare space is already full of it. Wonderwood spoke to the kid but not to the parent, who is the one actually paying. Acorn & Oak holds both halves of the audience in one image.' },
+      { type: 'pink', title: 'The ampersand is the mark', text: 'Drawn rather than picked. It reads as an acorn and as a small animal with a curled tail at the same time, and it survives being taken off the wordmark, flattened to one colour, reversed and shrunk to mug scale.' },
+      { type: 'blue', title: 'A name that grows into a range', text: 'The acorn is the child and the oak is what shelters it, so the sub-brands fall out of the name itself: Acorn as the kids activity centre, Oak as the parent network. Naming decided the product architecture, not the other way round.' }
+    ],
+
+    groups: [
+      { id:'research', tab:'Research', title:'Research and naming',
+        note:'The map produced six branches. Three were load-bearing and two only explained the urgency, and saying which was which on the page was part of the thinking rather than a tidy-up afterwards. Two names were killed in public, with the reason for each written down.',
+        match:['mindmap','name-choices','adjectives','moodboard'] },
+      { id:'type', tab:'Type', title:'Drawing the type',
+        note:'Nine routes before Gulf Display was chosen for the wordmark and Garet for everything else. The ampersand was cut by hand so the mark would be a drawing rather than a glyph someone picked.',
+        match:['typeface-','gulf-display','garet'] },
+      { id:'mark', tab:'The mark', title:'The mark and the palette',
+        note:'Reversed, one colour, on four grounds and at mug scale. A mark that only survives on white is not finished.',
+        match:['logo-final','lockup','colour-test','palette'] },
+      { id:'system', tab:'Sub-brands', title:'Acorn for kids, Oak for parents',
+        note:'The name decided the product architecture. An acorn is the child and an oak is what shelters it, so the two halves of the audience each get their own front door.',
+        match:['acorn.svg','oak.svg'] },
+      { id:'campaign', tab:'Campaign', title:'Out in the world',
+        note:'The argument only lands if it is placed where a parent already is: a bus shelter, a station wall, a hoodie in a playground.',
+        match:['mockup-','photo-'] }
+    ],
+
+    hero: {
+      src: 'assets/projects/acorn-oak/cover-plate.webp',
+      alt: 'The Acorn and Oak wordmark in cream on kraft board, with the line less cloud, more ground',
+      caption: 'Less cloud, more ground. A brand for a startup getting children off screens and back into hands-on play.'
+    },
+
+    title:'Acorn & Oak - Brand System',
+
+    year:'2025',
+
+    discipline:'Graphic Design & Brand',
+
+    context:'Self-initiated - fictional company',
+
+    badge:'Naming, identity and campaign',
+
+    role:'Naming, Identity, Typography, Art Direction',
+
+    tools:['Illustrator','Photoshop','Gulf Display','Garet'],
+
+    overview:`Acorn & Oak is a brand for a startup helping families cut harmful screen time and get children back into hands-on play. It began as a naming problem rather than a logo problem: the brand had to speak to a child and to the parent holding the card, and the name had to survive being stretched into a product range later. Acorn & Oak does both, because an acorn is the thing still becoming something and an oak is what shelters it while it grows.`,
+
+    process:`The work ran research first. A mind map of how children grow up produced six branches, of which three were load-bearing and two only explained the urgency, and saying so on the page was part of the thinking rather than a tidy-up afterwards. Naming came next, with two candidates killed in public and the reason for each recorded. Type followed: nine routes drawn before Gulf Display was chosen for the wordmark and Garet for everything else, with the ampersand cut by hand so the mark would be a drawing rather than a glyph. The colour tests deliberately abused the mark - reversed, one colour, at mug scale, on four different grounds - before it was called final.`,
+
+    images:[
+
+      {emoji:'<i data-lucide="image"></i>',label:'Acorn & Oak - brand system'}
+
+    ]
+
+  },
+
   'rekindle':{
 
     title:'ReKindle - App Design Concept',
@@ -2545,6 +2668,15 @@ if (id === 'original-tracks') {
     document.documentElement.style.setProperty('--line', 'rgba(255, 255, 255, 0.12)');
     document.body.style.backgroundColor = '#020204';
     document.body.style.color = '#FFFFFF';
+} else if (id === 'acorn-oak') {
+    // The brand's own palette. Cream ground, brown ink: 12.1:1, well clear of AA.
+    document.documentElement.style.setProperty('--bg', '#F8F6F3');
+    document.documentElement.style.setProperty('--surf', '#EFEAE0');
+    document.documentElement.style.setProperty('--accent', '#502506');
+    document.documentElement.style.setProperty('--line', 'rgba(80, 37, 6, 0.16)');
+    // The discipline kicker defaults to the site blue, which fought the brand's
+    // brown and olive. 12.1:1 on this cream ground.
+    document.documentElement.style.setProperty('--blue', '#502506');
 } else if (id === 'gobunny') {
     // High Readability: Warm airy background, rich charcoal body text, signature strawberry accent
     document.documentElement.style.setProperty('--bg', '#FFF7F5');
@@ -2557,6 +2689,16 @@ if (id === 'original-tracks') {
     document.documentElement.style.setProperty('--surf', '#E5EFE8');
     document.documentElement.style.setProperty('--accent', '#243E36');
     document.documentElement.style.setProperty('--line', 'rgba(36, 62, 54, 0.15)');
+} else if (id === 'dear-friend') {
+    // Sampled straight from the deck: dusty gothic rose ground, near-black warm ink.
+    // Ink on bg: 11.44:1. Burgundy accent on bg: 5.22:1 — clears AA for body text.
+    document.documentElement.style.setProperty('--bg', '#E8CCBD');
+    document.documentElement.style.setProperty('--surf', '#F2E4DC');
+    document.documentElement.style.setProperty('--accent', '#7C3E49');
+    document.documentElement.style.setProperty('--line', 'rgba(124, 62, 73, 0.18)');
+    // The discipline kicker defaults to the site blue, which fought the gothic
+    // rose/burgundy palette. 5.22:1 on this ground.
+    document.documentElement.style.setProperty('--blue', '#7C3E49');
 }
 
 const rawMedia = (typeof PORTFOLIO_DATA !== 'undefined' && PORTFOLIO_DATA[id]) ? PORTFOLIO_DATA[id] : [];
@@ -2581,6 +2723,21 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               bs.forEach(b => badges += `<span class="badge bs">${b}</span>`);
           }
           
+          // Featured image. A project page used to open on a wall of text and
+          // then drop straight into the masonry gallery, so the strongest single
+          // artefact never got to be the first thing seen. Any project can now
+          // set hero:{src,alt,caption} and get one full-width plate under the
+          // header. Optional -- projects without it render exactly as before.
+          let heroImageHtml = '';
+          if (p.hero && p.hero.src) {
+            heroImageHtml = `
+              <figure class="proj-hero-plate">
+                <img src="${p.hero.src}" alt="${p.hero.alt || ''}" loading="eager" decoding="async">
+                ${p.hero.caption ? `<figcaption>${p.hero.caption}</figcaption>` : ''}
+              </figure>
+            `;
+          }
+
           // Featured Animatic / Primary Film Video Block (when videoFirst is true)
           let heroVideoHtml = '';
           const primaryVideo = media && media.length ? media.find(f => typeof f === 'string' && (f.includes('youtu.be') || f.includes('youtube.com') || f.match(/\.(mp4|mov|webm)$/i))) : null;
@@ -2608,9 +2765,15 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
           if (p.comparison) {
             tabs.push(`<a href="#sec-visdev" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> VisDev &amp; Slider</a>`);
           }
-          tabs.push(`<a href="#sec-gallery" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Production &amp; Media</a>`);
+          if (p.groups && p.groups.length) {
+            p.groups.forEach(g => {
+              tabs.push(`<a href="#sec-${g.id}" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> ${g.tab || g.title}</a>`);
+            });
+          } else {
+            tabs.push(`<a href="#sec-gallery" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Production &amp; Media</a>`);
+          }
           if (p.fieldNotes && p.fieldNotes.length) {
-            tabs.push(`<a href="#sec-fieldnotes" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Field Notes</a>`);
+            tabs.push(`<a href="#sec-fieldnotes" class="binder-tab"><span class="tab-num">${String(tabIdx++).padStart(2, '0')}</span> Production notes</a>`);
           }
           let binderTabs = `<div class="binder-tabs-nav">${tabs.join('')}</div>`;
 
@@ -2653,22 +2816,28 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
           // Field Notes Block
           let notesHtml = '';
           if (p.fieldNotes && p.fieldNotes.length) {
+            // Post-it dossier removed: pastel construction paper and a handwriting
+            // font read as classroom, and they subtracted credibility from pages
+            // that had a real award on them. Replaced with an editorial block that
+            // takes each project page's own colour tokens (--ink, --accent, --line)
+            // so it never fights the palette. Emoji prefixes are stripped at render
+            // time so the type carries the tone; the source data still has them.
+            const _stripLeadingIcon = s => String(s || '')
+              .replace(/^[\p{Extended_Pictographic}\p{Emoji_Presentation}]\uFE0F?\s*/u, '')
+              .trim();
             notesHtml = `
-              <div id="sec-fieldnotes" style="margin-top:3.5rem;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
-                  <span class="cs-badge" style="background:#FFF0D4; color:#B45309;">Production Diary</span>
-                  <h3 class="cs-title" style="margin:0;">Studio Field Notes &amp; Pipeline Insights</h3>
-                </div>
-                <div class="field-notes-dossier">
-                  ${p.fieldNotes.map(n => `
-                    <div class="field-note-postit note-${n.type}">
-                      <div class="tape-strip"></div>
-                      <h4 class="note-title">${n.title}</h4>
-                      <p class="note-text">${n.text}</p>
-                    </div>
+              <section id="sec-fieldnotes" class="prod-notes">
+                <h3 class="prod-notes-hd">Production notes</h3>
+                <ol class="prod-notes-list">
+                  ${p.fieldNotes.map((n, i) => `
+                    <li class="prod-note">
+                      <span class="prod-note-n">${String(i + 1).padStart(2, '0')}</span>
+                      <span class="prod-note-t">${_stripLeadingIcon(n.title)}</span>
+                      <p class="prod-note-d">${n.text}</p>
+                    </li>
                   `).join('')}
-                </div>
-              </div>
+                </ol>
+              </section>
             `;
           }
 
@@ -2683,6 +2852,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               <span class="proj-meta-item"><strong>Year:</strong> &nbsp;${p.year}</span>
               <div class="proj-meta-sep"></div>
               <span class="proj-meta-item"><strong>Role:</strong> &nbsp;${p.role}</span>
+              ${p.runtime ? `<div class="proj-meta-sep"></div><span class="proj-meta-item"><strong>Runtime:</strong> &nbsp;${p.runtime}</span>` : ''}
             </div>
             
             ${p.overview ? `
@@ -2698,6 +2868,8 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
 
             ${binderTabs}
           </div>
+
+          ${heroImageHtml}
 
           ${heroVideoHtml}
 
@@ -2788,6 +2960,25 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
             /* Responsive */
             @media (max-width: 900px) { .masonry-container { column-count: 2; } }
             @media (max-width: 600px) { .masonry-container { column-count: 1; } }
+            /* 2-column grid variant for projects with a lot of same-shape media
+               (VIPCOLOR: six YouTube tutorials). Cancels CSS-columns and the
+               .full-width column-span so each video fits its own cell. */
+            .masonry-container.vids-2col {
+              column-count: unset;
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              gap: 1.6rem;
+            }
+            .masonry-container.vids-2col > .media-el,
+            .masonry-container.vids-2col > .masonry-item {
+              margin-bottom: 0;
+              width: 100%;
+              max-width: 100%;
+              column-span: initial;
+            }
+            @media (max-width: 720px) {
+              .masonry-container.vids-2col { grid-template-columns: 1fr; gap: 1.25rem; }
+            }
 
             /* Case Study Sections */
             .cs-section { margin-top: 4rem; margin-bottom: 2.5rem; break-inside: avoid; column-span: all; }
@@ -3244,6 +3435,344 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               </div>`;
 
               gal.innerHTML = htmlStr;
+              return;
+          }
+
+          // 6.6. DEAR FRIEND CASE STUDY (PARSED FROM THE DEAR FRIEND.PDF)
+          if (id === 'dear-friend') {
+              const D = 'assets/projects/dear-friend/';
+              const F = 'assets/portfolio-data/Dear friend/';
+              const css = `<style>
+                body { background-image: none !important; }
+
+                .dfcs { --ink:#241713; --cream:#F2E4DC; --rose:#E8CCBD;
+                        --burgundy:#7C3E49; --burgundy-deep:#5C2E38; --gold:#7A5C25;
+                        margin-top:.5rem; }
+
+                .dfcs-bleed { margin-left:calc(50% - 50vw); width:100vw; max-width:100vw; }
+
+                .dfcs-sec { margin:5.5rem 0; }
+                .dfcs-sec:first-child { margin-top:2.5rem; }
+                .dfcs-kicker {
+                  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+                  font-weight:700; color:var(--burgundy); margin:0 0 .6rem; /* 5.22:1 on rose */
+                }
+                .dfcs-h {
+                  font-family:var(--fd); font-weight:700; letter-spacing:-.02em;
+                  font-size:clamp(1.65rem,3.4vw,2.5rem); line-height:1.1;
+                  margin:0 0 .9rem; color:var(--burgundy-deep);
+                }
+                .dfcs-lede { max-width:64ch; margin:0 0 1.4rem; font-size:1.02rem; line-height:1.7; color:#3A2420; }
+                .dfcs-cap { font-size:.78rem; line-height:1.55; color:#6B534F; margin:.7rem 0 0; }
+
+                .dfcs-story {
+                  font-family:Georgia, 'Times New Roman', serif; font-style:italic;
+                  max-width:62ch; margin:0 0 .4rem; font-size:1rem; line-height:1.75; color:#3A2420;
+                  padding:1.4rem 1.6rem; background:var(--cream); border-radius:10px;
+                  border-left:3px solid var(--burgundy);
+                }
+                .dfcs-attr { font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:700; color:var(--burgundy); margin:.7rem 0 0 1.6rem; }
+
+                .dfcs-plate img, .dfcs-plate video { display:block; width:100%; height:auto; }
+                .dfcs-plate { margin:0; }
+                .dfcs-framed img {
+                  border-radius:10px; background:#fff;
+                  box-shadow:0 18px 44px -22px rgba(36,23,19,.5), 0 3px 10px -5px rgba(36,23,19,.35);
+                }
+
+                .dfcs-two { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; align-items:start; }
+                .dfcs-three { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; align-items:start; }
+                .dfcs-sheet {
+                  background:#fff; border-radius:8px; padding:14px;
+                  box-shadow:0 10px 26px -14px rgba(36,23,19,.45);
+                }
+                .dfcs-sheet img { display:block; width:100%; height:auto; }
+                .dfcs-app img { aspect-ratio:4/3; object-fit:cover; object-position:center; background:var(--cream); }
+
+                /* Both final designs are tall portrait crops — full column width blew
+                   them up to nearly 2x viewport height. Capped and centred instead. */
+                .dfcs-final { align-items:end; justify-items:center; }
+                .dfcs-final .dfcs-plate { display:flex; justify-content:center; }
+                .dfcs-final img { width:auto; max-width:100%; max-height:380px; object-fit:contain; }
+                @media (max-width:820px){ .dfcs-final img { max-height:320px; } }
+
+                .dfcs-themes { display:grid; gap:1rem; margin:0; padding:0; list-style:none; max-width:66ch; }
+                .dfcs-theme {
+                  margin:0; padding:1.05rem 1.3rem; background:var(--cream);
+                  border-left:3px solid var(--burgundy); border-radius:0 8px 8px 0;
+                  font-size:.98rem; line-height:1.6; color:#2E1D19;
+                }
+                .dfcs-theme b { color:var(--burgundy-deep); }
+
+                .dfcs-bullets { margin:0; padding:0; list-style:none; max-width:52ch; display:grid; gap:.65rem; }
+                .dfcs-bullets li { position:relative; padding-left:1.3rem; font-size:.96rem; line-height:1.6; color:#3A2420; }
+                .dfcs-bullets li::before { content:'\\2022'; position:absolute; left:0; color:var(--burgundy); font-weight:700; }
+
+                .dfcs-quote {
+                  font-family:var(--fd); font-weight:700; letter-spacing:-.02em;
+                  font-size:clamp(1.35rem,3.1vw,2.05rem); line-height:1.25;
+                  color:var(--burgundy-deep); margin:0 0 1.4rem; max-width:34ch;
+                }
+
+                .dfcs-pal { display:grid; grid-template-columns:repeat(3,1fr); background:var(--cream); border-radius:10px; overflow:hidden; }
+                .dfcs-pal figure { margin:0; }
+                .dfcs-pal .chip { height:clamp(90px,12vw,140px); }
+                .dfcs-pal figcaption { padding:.8rem clamp(.8rem,1.6vw,1.2rem) 1.1rem; color:#292121; }
+                .dfcs-pal b { display:block; font-size:.8rem; letter-spacing:.05em; font-weight:700; }
+                .dfcs-pal span { display:block; font-size:.7rem; line-height:1.4; margin-top:.25rem; color:#5A524A; }
+
+                .dfcs-board { margin:0 0 1.6rem; }
+                .dfcs-board figcaption {
+                  margin-top:.6rem; font-size:.85rem; line-height:1.5; font-style:italic; color:#5A423E;
+                }
+
+                .dfcs-stills { display:flex; flex-wrap:wrap; gap:.6rem; }
+                .dfcs-stills figure { margin:0; flex:1 1 160px; border-radius:8px; overflow:hidden; box-shadow:0 10px 26px -14px rgba(36,23,19,.4); }
+                .dfcs-stills img { display:block; width:100%; height:100%; aspect-ratio:16/9; object-fit:cover; }
+
+                .dfcs-end {
+                  background:#2E1B18; color:#F2E4DC;
+                  padding:clamp(3.5rem,9vw,6.5rem) 1.5rem; text-align:center;
+                }
+                .dfcs-end p {
+                  font-family:var(--fd); font-weight:700; margin:0;
+                  font-size:clamp(1.3rem,3.1vw,2.1rem); letter-spacing:-.01em;
+                }
+
+                @media (max-width:820px){
+                  .dfcs-two, .dfcs-three { grid-template-columns:1fr; }
+                  .dfcs-pal { grid-template-columns:1fr; }
+                  .dfcs-sec { margin:3.75rem 0; }
+                }
+              </style>`;
+
+              const pal = [
+                ['#E8CCBD','Rose','The study itself — the ground the whole short sits on'],
+                ['#7C3E49','Burgundy','The Ghost — everything she is dismissed for, worn as a gown'],
+                ['#241713','Ink','Candlelight-adjacent dark, so no shot ever drops to true black']
+              ].map(([bg,name,role]) => `
+                <figure>
+                  <div class="chip" style="background:${bg}"></div>
+                  <figcaption><b>${name}</b><span>${bg.toUpperCase()}</span><span>${role}</span></figcaption>
+                </figure>`).join('');
+
+              const ytId = 'BPYEYUmrWfg';
+              let videoHtml;
+              if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                  const watchUrl = `https://www.youtube.com/watch?v=${ytId}`;
+                  const thumbUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                  videoHtml = `<div style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:10px; overflow:hidden; box-shadow:0 18px 44px -22px rgba(36,23,19,.5);">
+                      <img src="${thumbUrl}" alt="Dear Friend video preview" style="width:100%; height:100%; object-fit:cover; opacity:.6;" onerror="this.src='https://img.youtube.com/vi/${ytId}/hqdefault.jpg'">
+                      <a href="${watchUrl}" target="_blank" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; color:white;">
+                          <svg width="68" height="48" viewBox="0 0 68 48"><path fill="#FF0000" d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 .13 34 .13s-21.79 0-27.1.14c-2.93.78-4.64 3.26-5.42 6.19C1.34 11.55 1.34 24 1.34 24s0 12.45.14 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 47.87 34 47.87s21.79 0 27.1-.14c2.93-.78 4.64-3.26 5.42-6.19C66.66 36.45 66.66 24 66.66 24s0-12.45-.14-16.26z"/><path fill="#FFFFFF" d="M45 24 27 14v20z"/></svg>
+                          <div style="margin-top:1rem; font-family:var(--fd); font-size:1.1rem; background:rgba(0,0,0,.75); padding:.5rem 1.2rem; border-radius:6px;">Watch on YouTube</div>
+                      </a>
+                  </div>`;
+              } else {
+                  videoHtml = `<iframe src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1" style="width:100%; aspect-ratio:16/9; display:block; border:none; border-radius:10px; box-shadow:0 18px 44px -22px rgba(36,23,19,.5);" allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+              }
+
+              let h = css + '<div class="dfcs">';
+
+              // --- 00. the film -----------------------------------------------
+              h += `
+                <section class="dfcs-sec">
+                  <p class="dfcs-kicker">00 &middot; The film</p>
+                  <h2 class="dfcs-h">Watch it first</h2>
+                  <p class="dfcs-lede">Dear Friend, in full &mdash; then the story, character work, and boards behind it.</p>
+                  ${videoHtml}
+                  <div class="dfcs-stills" style="margin-top:1.2rem">
+                    <figure><img src="${F}credit1.webp" alt="Film still: the title card, the Ghost's hands on Elizabeth's shoulders" loading="lazy"></figure>
+                    <figure><img src="${F}staticshot_4.webp" alt="Film still: a memory of Elizabeth and Jane dancing together in a field" loading="lazy"></figure>
+                    <figure><img src="${F}topshotd.webp" alt="Film still: overhead shot of Elizabeth writing her letter by lamplight" loading="lazy"></figure>
+                    <figure><img src="${F}rain7.webp" alt="Film still: the finished study at night, rain against the window" loading="lazy"></figure>
+                  </div>
+                </section>`;
+
+              // --- 01. the story --------------------------------------------
+              h += `
+                <section class="dfcs-sec">
+                  <p class="dfcs-kicker">01 &middot; The story</p>
+                  <div class="dfcs-two" style="gap:clamp(1.6rem,4vw,3.5rem)">
+                    <div>
+                      <h2 class="dfcs-h">A letter, and the guest who answers it</h2>
+                      <p class="dfcs-lede">
+                        Dear Friend is a solo gothic short built around one scene: a woman
+                        writing herself into a version of the truth she can live with, on the
+                        night before that version becomes permanent. The story, as written:
+                      </p>
+                      <p class="dfcs-story">
+                        Elizabeth decides to write a letter in her study to her dear &ldquo;friend&rdquo;
+                        Jane, inviting her to her marriage. All of a sudden, she hears a creak by the
+                        window and there she sees a tall figure with a long black flowy dress and long
+                        hair &mdash; someone she put away for life, someone she had always considered
+                        abnormal, someone she thought she got rid of, for good. While initially she
+                        dismisses the ghost, things get real. The ghost confronts her and taunts her
+                        about choosing others over herself, and in the end, she othered herself. She
+                        tries to insult the ghost back, but she realises it's she who's hurting. She
+                        gets rid of the ghost at the end, and tries to write her letter. At the end,
+                        she really can't escape the ghost of her past, especially while she thinks of
+                        her &ldquo;friend&rdquo; &mdash; or in reality, her lover.
+                      </p>
+                      <p class="dfcs-attr">&mdash; Annmary Saji &bull; original story treatment</p>
+                    </div>
+                    <figure class="dfcs-plate dfcs-framed">
+                      <img src="${D}early-concept-1.webp" alt="Early concept sketch: Elizabeth leaning on a chair back, the ghost's hand on her shoulder from behind" loading="lazy">
+                    </figure>
+                  </div>
+                </section>`;
+
+              // --- 02. themes -------------------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-themes">
+                  <p class="dfcs-kicker">02 &middot; Themes</p>
+                  <div class="dfcs-two" style="gap:clamp(1.6rem,4vw,3.5rem); align-items:center">
+                    <div>
+                      <h2 class="dfcs-h">What the ghost is actually confronting her about</h2>
+                      <p class="dfcs-lede" style="margin-bottom:1.3rem">
+                        She isn't a jump scare. She's an argument Elizabeth has been avoiding,
+                        itemised before a single board was drawn:
+                      </p>
+                      <ul class="dfcs-themes">
+                        <li class="dfcs-theme"><b>Suppression of female sexuality</b> &mdash; considering love, or lust, for someone she'd been taught was abnormal, especially because it was for another woman.</li>
+                        <li class="dfcs-theme"><b>Hatred toward one's own self</b> &mdash; internalised homophobia, aimed inward rather than out.</li>
+                        <li class="dfcs-theme"><b>Physical manifestation of one's past</b> &mdash; the ghost isn't a metaphor Elizabeth chooses; she shows up uninvited, the way a memory does.</li>
+                        <li class="dfcs-theme"><b>Guilt, regret, and pressure</b> &mdash; on a woman, specifically, about marriage.</li>
+                      </ul>
+                    </div>
+                    <figure class="dfcs-plate dfcs-framed">
+                      <img src="${D}early-concept-2.webp" alt="Early concept sketch: the ghost leaning close to Elizabeth's ear, saying 'you can't run away from us'" loading="lazy">
+                      <figcaption class="dfcs-cap">&ldquo;You can't run away from us.&rdquo; &mdash; the Ghost, early concept dialogue</figcaption>
+                    </figure>
+                  </div>
+                </section>`;
+
+              // --- 03. character: elizabeth -----------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-elizabeth">
+                  <p class="dfcs-kicker">03 &middot; Character &mdash; Elizabeth</p>
+                  <div class="dfcs-two" style="gap:clamp(1.6rem,4vw,3.5rem)">
+                    <figure class="dfcs-plate dfcs-framed">
+                      <img src="${D}elizabeth-turnaround.webp" alt="Elizabeth character turnaround: full figure in a white ruffled gown, three-quarter bust, and back of head, with production note 'married: 21'" loading="lazy">
+                    </figure>
+                    <div>
+                      <h2 class="dfcs-h">The bride-shaped version of herself</h2>
+                      <ul class="dfcs-bullets">
+                        <li>White clothed &mdash; drab, lifeless, trying to fit in, to be &ldquo;pure and sinless.&rdquo;</li>
+                        <li>Curled and styled hair, kept to the beauty standards of the day.</li>
+                        <li>A sad look on her face, most of the time.</li>
+                        <li>Trying to get married as soon as possible, after being pestered and forced by family to change.</li>
+                        <li>Hates who she used to be &mdash; or does she miss it?</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>`;
+
+              // --- 04. character: the ghost -------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-ghost">
+                  <p class="dfcs-kicker">04 &middot; Character &mdash; The Ghost</p>
+                  <div class="dfcs-two" style="gap:clamp(1.6rem,4vw,3.5rem)">
+                    <div>
+                      <h2 class="dfcs-h">Not a haunting. A confrontation.</h2>
+                      <ul class="dfcs-bullets">
+                        <li>Dark clothed &mdash; deviation from societal norms and expectations.</li>
+                        <li>The colour is perceived as evil. That doesn't mean she is.</li>
+                        <li>Wild, long hair and a smirk: a manifestation of who Elizabeth used to be, back when she was courting her &ldquo;friend.&rdquo;</li>
+                        <li>Taunts Elizabeth about her own decisions &mdash; she isn't wrong, which is the point.</li>
+                      </ul>
+                    </div>
+                    <div class="dfcs-two" style="gap:1rem">
+                      <figure class="dfcs-plate dfcs-framed"><img src="${D}ghost-turnaround.webp" alt="Ghost character turnaround: full figure in a dark gown, and two close expression studies, one labelled 'ghost'" loading="lazy"></figure>
+                      <figure class="dfcs-plate dfcs-framed"><img src="${D}ghost-headshot.webp" alt="Colour headshot study of the Ghost, deep auburn hair over a dark gown" loading="lazy"></figure>
+                    </div>
+                  </div>
+                </section>`;
+
+              // --- 05. progression ---------------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-progression">
+                  <p class="dfcs-kicker">05 &middot; Face, iterated</p>
+                  <h2 class="dfcs-h">Younger, looser, closer to a person</h2>
+                  <p class="dfcs-lede">
+                    Elizabeth's face went through a full progression pass before it was allowed
+                    to hold a full scene: the working notes call for her to read younger and for
+                    the curls to loosen up, so the &ldquo;drab and lifeless&rdquo; read didn't tip
+                    into simply looking unfinished.
+                  </p>
+                  <div class="dfcs-sheet"><img src="${D}progression-row.webp" alt="Character progression sheet: three passes of Elizabeth's face, annotated 'starts looking younger' and 'maybe the curls loosen up'" loading="lazy"></div>
+                </section>`;
+
+              // --- 06. final designs ---------------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-final">
+                  <p class="dfcs-kicker">06 &middot; Final designs, side by side</p>
+                  <h2 class="dfcs-h">Same woman, told apart by colour alone</h2>
+                  <p class="dfcs-lede">
+                    Once line work was locked, colour did the rest of the storytelling: a pale,
+                    high-necked gown for the self Elizabeth presents, a deep burgundy gown, bare
+                    shoulders and loose auburn hair for the self she buried. Neither design needed
+                    to look monstrous. The contrast was the whole argument.
+                  </p>
+                  <div class="dfcs-two dfcs-final" style="margin-bottom:1.6rem">
+                    <figure class="dfcs-plate dfcs-framed"><img src="${D}final-elizabeth.webp" alt="Final character design: Elizabeth in a pale high-necked gown" loading="lazy"></figure>
+                    <figure class="dfcs-plate dfcs-framed"><img src="${D}final-ghost.webp" alt="Final character design: the Ghost in a deep burgundy off-shoulder gown" loading="lazy"></figure>
+                  </div>
+                  <p class="dfcs-cap" style="margin-bottom:.8rem">Gothic colour scripting: the palette pulled directly off these two final passes, then carried through every painted background.</p>
+                  <div class="dfcs-pal">${pal}</div>
+                </section>`;
+
+              // --- 07. storyboards ---------------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-boards">
+                  <p class="dfcs-kicker">07 &middot; Boarding the confrontation</p>
+                  <h2 class="dfcs-h">A two-hander in one room, cut for tension instead of action</h2>
+                  <p class="dfcs-lede">
+                    Almost the entire short is two women talking in one study. The boards lean on
+                    close-ups, insert cuts &mdash; a pen scratching paper, a tear landing on the
+                    letter, thunder outside the window &mdash; and page-turning rhythm to keep a
+                    static scene moving, the same way the storyboarding pass on Chase later formalised
+                    into a full pipeline.
+                  </p>
+                  <figure class="dfcs-board dfcs-plate dfcs-framed">
+                    <img src="${D}storyboard-1.webp" alt="First storyboard pass: the letter opens 'Dear Friend', the ghost arrives at the window, and the two argue across twelve panels" loading="lazy">
+                    <figcaption>&ldquo;Remember me. You tried to kill me.&rdquo; &mdash; &ldquo;Oh please, go away, stop bothering me.&rdquo; &mdash; &ldquo;But we both know you can't.&rdquo;</figcaption>
+                  </figure>
+                  <figure class="dfcs-board dfcs-plate dfcs-framed">
+                    <img src="${D}storyboard-2.webp" alt="Second storyboard pass: rain outside, Elizabeth clutching the pen, and the closing shot of the letter in shadow with a tear falling on it" loading="lazy">
+                    <figcaption>Closing beats: rain, Elizabeth's hand tightening on the pen, and the letter left in shadow with a single tear on the page.</figcaption>
+                  </figure>
+                </section>`;
+
+              // --- 08. set & environment -----------------------------------------
+              h += `
+                <section class="dfcs-sec" id="sec-set">
+                  <p class="dfcs-kicker">08 &middot; Where it happens</p>
+                  <h2 class="dfcs-h">A study built from her own furniture studies</h2>
+                  <p class="dfcs-lede">
+                    The desk, chair, lamps and mirror were drawn as standalone furniture studies
+                    before any background was painted &mdash; period photography of real Victorian
+                    libraries informed the joinery and materials during research, but nothing from
+                    those reference photos was traced or reused; every piece in the finished
+                    backgrounds is her own design.
+                  </p>
+                  <div class="dfcs-two" style="margin-bottom:1.6rem">
+                    <div class="dfcs-sheet"><img src="${D}set-sketches.webp" alt="Furniture design sketches: writing desk, chair, table lamps, hand mirror, and chair-leg studies" loading="lazy"></div>
+                    <figure class="dfcs-plate dfcs-framed"><img src="${D}bg-desk-night.webp" alt="Painted background: the study at night, moonlit window between the curtains, desk and chair in shadow" loading="lazy"></figure>
+                  </div>
+                  <div class="dfcs-three">
+                    <figure class="dfcs-plate dfcs-framed dfcs-app"><img src="${D}bg-desk-detail.webp" alt="Painted background: the desk against floral wallpaper, lamp and clock in close view" loading="lazy"></figure>
+                    <figure class="dfcs-plate dfcs-framed dfcs-app"><img src="${D}bg-desk-closeup.webp" alt="Painted background: close-up of the desk surface, with the letter, books, and a lit oil lamp" loading="lazy"></figure>
+                    <figure class="dfcs-plate dfcs-framed dfcs-app" style="display:flex; align-items:center; justify-content:center; background:var(--cream); aspect-ratio:4/3;">
+                      <p class="dfcs-cap" style="margin:0; padding:1rem; text-align:center;">Same desk. Night, daylight-toned wallpaper detail, and lamplit close-up &mdash; three passes at the one set the whole film never leaves.</p>
+                    </figure>
+                  </div>
+                </section>`;
+
+              h += `</div><div class="dfcs-bleed dfcs-end"><p>Some doors don't stay shut just because you've decided they're closed.</p></div>`;
+
+              gal.innerHTML = h;
+              if (window.lucide) window.lucide.createIcons();
               return;
           }
 
@@ -5077,9 +5606,382 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               return;
           }
 
+          // ============================================================
+          // 9.4 ACORN & OAK -- brand case study.
+          //
+          // The generic masonry showed this project as a pile of nice
+          // pictures. A brand is not a pile of pictures: it is an argument
+          // with an order, and the way to show one is the way the brand
+          // would show itself. So this branch presents the work on the
+          // brand's own ground -- kraft, cream, olive -- and rebuilds the
+          // parts that were only ever screenshots (the palette, the
+          // reversals, the naming) as real markup, which reads sharper,
+          // weighs less, and can be read by a screen reader.
+          //
+          // Bespoke per-project layouts already exist here for gobunny and
+          // green-arrow; this follows that precedent rather than inventing
+          // a parallel system. p.groups stays in place for every other
+          // project that wants ordered sections without a bespoke build.
+          // ============================================================
+          if (id === 'acorn-oak') {
+              const A = 'assets/projects/acorn-oak/';
+              const css = `<style>
+                /* The portfolio's 24px graph grid belongs to Annmary's site,
+                   not to this brand. Cream ground, no ruling, for this page only. */
+                body { background-image: none !important; }
+
+                .aocs { --k:#46301E; --cream:#F8F6F3; --brown:#502506;
+                        --olive:#7B7A49; --green:#AFBF63; --ink:#292121;
+                        margin-top:.5rem; }
+
+                /* Bands break the container so a plate can run edge to edge,
+                   the way a brand book uses a full page rather than a column. */
+                .aocs-bleed { margin-left:calc(50% - 50vw); width:100vw; max-width:100vw; }
+
+                .aocs-sec { margin:5.5rem 0; }
+                .aocs-sec:first-child { margin-top:2.5rem; }
+                .aocs-kicker {
+                  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+                  font-weight:700; color:#747345; margin:0 0 .6rem; /* 4.55:1 on cream */
+                }
+                .aocs-h {
+                  font-family:var(--fd); font-weight:700; letter-spacing:-.02em;
+                  font-size:clamp(1.65rem,3.4vw,2.5rem); line-height:1.08;
+                  margin:0 0 .9rem; color:var(--brown);
+                }
+                .aocs-lede {
+                  max-width:64ch; margin:0 0 2.2rem;
+                  font-size:1.02rem; line-height:1.7; color:#3A322C;
+                }
+                .aocs-cap { font-size:.78rem; line-height:1.5; color:#6B6259; margin:.7rem 0 0; }
+
+                /* ---- plates ---- */
+                .aocs-plate img, .aocs-plate video { display:block; width:100%; height:auto; }
+                .aocs-plate { margin:0; }
+                .aocs-framed img {
+                  border-radius:10px;
+                  box-shadow:0 18px 44px -22px rgba(24,18,10,.55), 0 3px 10px -5px rgba(24,18,10,.4);
+                }
+
+                /* ---- the naming argument, set as type rather than screenshotted ---- */
+                .aocs-names { display:grid; gap:1.6rem; margin:0; padding:0; list-style:none; max-width:60ch; }
+                .aocs-name { margin:0; }
+                .aocs-name-word {
+                  font-family:var(--fd); font-weight:700; line-height:1;
+                  font-size:clamp(1.9rem,4.6vw,3.1rem); letter-spacing:-.02em;
+                  color:#92887F; position:relative; display:inline-block; /* 3.22:1, large text */
+                }
+                .aocs-name--dead .aocs-name-word::after {
+                  content:''; position:absolute; left:-2%; right:-2%; top:52%;
+                  height:3px; background:#B4A99C; transform:rotate(-1.6deg);
+                }
+                .aocs-name--live .aocs-name-word { color:var(--brown); }
+                .aocs-name p { margin:.55rem 0 0; font-size:.95rem; line-height:1.6; color:#4A423B; max-width:52ch; }
+                .aocs-name--live p { color:#3A322C; }
+                .aocs-name-lock { display:block; width:min(380px,78%); height:auto; }
+
+                /* ---- the mark, tested the way a mark has to be tested ---- */
+                .aocs-rev { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+                .aocs-rev figure { margin:0; }
+                .aocs-rev .sw {
+                  display:grid; place-items:center; aspect-ratio:1;
+                  border-radius:10px; padding:16%;
+                }
+                .aocs-rev .sw img { width:100%; height:auto; display:block; }
+                .aocs-rev figcaption {
+                  margin-top:.5rem; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+                  font-weight:700; color:#6B6259;
+                }
+
+                /* ---- colour, as a system with jobs rather than five swatches ---- */
+                .aocs-pal { display:grid; grid-template-columns:repeat(5,1fr); background:#F8F6F3; }
+                .aocs-pal figure { margin:0; }
+                .aocs-pal .chip { height:clamp(140px,18vw,220px); }
+                .aocs-pal figcaption { padding:.9rem clamp(.8rem,1.6vw,1.4rem) 1.4rem; color:#292121; }
+                .aocs-pal b { display:block; font-size:.82rem; letter-spacing:.05em; font-weight:700; }
+                .aocs-pal span { display:block; font-size:.72rem; line-height:1.45; margin-top:.28rem; color:#5A524A; }
+
+                /* ---- two-up and three-up ---- */
+                .aocs-two { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; align-items:start; }
+                .aocs-three { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; align-items:start; }
+                .aocs-sheet {
+                  background:#fff; border-radius:8px; padding:14px;
+                  box-shadow:0 10px 26px -14px rgba(24,18,10,.5);
+                }
+                .aocs-sheet img { display:block; width:100%; height:auto; }
+
+                /* Application and imagery plates share one aspect so a row reads as
+                   a row. Without this the mug floated half the height of the shelter. */
+                .aocs-app img { aspect-ratio:4/3; object-fit:cover; object-position:center; background:#EDE7DC; }
+                .aocs-imgset img { aspect-ratio:3/4; object-fit:cover; object-position:center; }
+
+                /* ---- pull quote ---- */
+                .aocs-quote {
+                  font-family:var(--fd); font-weight:700; letter-spacing:-.02em;
+                  font-size:clamp(1.7rem,4.2vw,3rem); line-height:1.12;
+                  color:var(--brown); margin:0; max-width:18ch;
+                }
+                .aocs-quote em { font-style:normal; color:var(--olive); }
+
+                /* ---- closing ---- */
+                .aocs-end {
+                  /* Sits outside .aocs in the DOM, so it carries its own values
+                     rather than inheriting tokens that are not in scope here. */
+                  background:#46301E; color:#F8F6F3;
+                  padding:clamp(3.5rem,9vw,7rem) 1.5rem; text-align:center;
+                }
+                .aocs-end p {
+                  font-family:var(--fd); font-weight:700; margin:0;
+                  font-size:clamp(1.4rem,3.4vw,2.4rem); letter-spacing:-.01em;
+                }
+
+                @media (max-width:820px){
+                  .aocs-two, .aocs-three { grid-template-columns:1fr; }
+                  .aocs-rev { grid-template-columns:repeat(2,1fr); }
+                  .aocs-pal { grid-template-columns:repeat(2,1fr); }
+                  .aocs-sec { margin:3.75rem 0; }
+                }
+              </style>`;
+
+              const rev = [
+                ['#7B7A49', A+'ampersand-cream.svg', 'On olive'],
+                ['#502506', A+'ampersand-cream.svg', 'On brown'],
+                ['#AFBF63', A+'ampersand.svg',       'On green'],
+                ['#292121', A+'ampersand-cream.svg', 'On ink']
+              ].map(([bg,src,label]) => `
+                <figure>
+                  <div class="sw" style="background:${bg}"><img src="${src}" alt="" loading="lazy"></div>
+                  <figcaption>${label}</figcaption>
+                </figure>`).join('');
+
+              const pal = [
+                ['#292121','Ink','Body text and the darkest ground'],
+                ['#502506','Brown','The mark, headlines, Acorn'],
+                ['#7B7A49','Olive','Large text and grounds only, never body copy'],
+                ['#AFBF63','Green','Oak, highlights, calls to action'],
+                ['#F8F6F3','Cream','The page itself']
+              ].map(([bg,name,role]) => `
+                <figure>
+                  <div class="chip" style="background:${bg}${bg === '#F8F6F3' ? ';box-shadow:inset 0 0 0 1px rgba(41,33,33,.14)' : ''}"></div>
+                  <figcaption><b>${name}</b><span>${bg.toUpperCase()}</span><span>${role}</span></figcaption>
+                </figure>`).join('');
+
+              let h = css + '<div class="aocs">';
+
+              // --- where it came from -------------------------------------
+              h += `
+                <section class="aocs-sec">
+                  <p class="aocs-kicker">01 &middot; The problem</p>
+                  <div class="aocs-two" style="align-items:center; gap:clamp(1.6rem,4vw,3.5rem)">
+                    <div>
+                      <p class="aocs-quote">The algorithm is the problem. <em>Not your child.</em></p>
+                      <p class="aocs-lede" style="margin-top:1.4rem; margin-bottom:0">
+                        Acorn &amp; Oak began in a garage on a Saturday, not a boardroom. The brief was
+                        never to shame parents into confiscating tablets. It was to give a family
+                        something better to do with the afternoon, and to move the blame onto the thing
+                        that actually earns it.
+                      </p>
+                    </div>
+                    <figure class="aocs-plate aocs-framed">
+                      <img src="${A}photo-garage.jpg" alt="A parent and two children building with cardboard and a glue gun in a garage" loading="lazy">
+                    </figure>
+                  </div>
+                </section>
+
+                <section class="aocs-sec" id="sec-research">
+                  <p class="aocs-kicker">02 &middot; Research</p>
+                  <h2 class="aocs-h">Six branches, three of them load-bearing</h2>
+                  <p class="aocs-lede">
+                    Mapping how children actually grow up produced six branches. Kids, Parents and
+                    Educational are what a roadmap gets built on. Online and Algorithms explain the
+                    urgency but have no product to ship against them. Values sits under everything
+                    rather than beside it. Deciding which branches carried weight was the work; the
+                    map is just where it was written down.
+                  </p>
+                  <div class="aocs-three">
+                    <div class="aocs-sheet"><img src="${A}mindmap.webp" alt="Mind map of how kids grow up" loading="lazy"></div>
+                    <div class="aocs-sheet"><img src="${A}moodboard-historical.webp" alt="Historical moodboard: oak, acorns, carved wood, early tools" loading="lazy"></div>
+                    <div class="aocs-sheet"><img src="${A}moodboard-contemporary.webp" alt="Contemporary moodboard: acorn and oak marks, wood textures" loading="lazy"></div>
+                  </div>
+                </section>
+
+                <section class="aocs-sec" id="sec-naming">
+                  <p class="aocs-kicker">03 &middot; Naming</p>
+                  <h2 class="aocs-h">Two names killed, and why</h2>
+                  <p class="aocs-lede">
+                    The brand had to speak to a child and to the parent holding the card. Most
+                    candidates could only manage one of those.
+                  </p>
+                  <ol class="aocs-names">
+                    <li class="aocs-name aocs-name--dead">
+                      <span class="aocs-name-word">Sprout</span>
+                      <p>Growth in one syllable and easy for a five-year-old to say, but the baby and
+                      childcare space is already full of it. It would have been lost inside a week.</p>
+                    </li>
+                    <li class="aocs-name aocs-name--dead">
+                      <span class="aocs-name-word">Wonderwood</span>
+                      <p>Leans straight into imagination and real materials. It speaks to the kid and
+                      says almost nothing to the parent, who is the one actually paying.</p>
+                    </li>
+                    <li class="aocs-name aocs-name--live">
+                      <img class="aocs-name-lock" src="${A}lockup.svg" alt="Acorn &amp; Oak" loading="lazy">
+                      <p>An acorn is small and still becoming something. An oak is what shelters it
+                      while it grows. One image holds both halves of the audience, and it stretches
+                      into a range later: Acorn kits for kids, Oak guides for parents.</p>
+                    </li>
+                  </ol>
+                </section>
+
+                <section class="aocs-sec" id="sec-type">
+                  <p class="aocs-kicker">04 &middot; Type</p>
+                  <h2 class="aocs-h">Nine routes before one was right</h2>
+                  <p class="aocs-lede">
+                    Gulf Display carries the wordmark: heavy, round, warm without tipping into
+                    nursery. Garet does everything else, because a brand that argues with an algorithm
+                    needs a voice you can read a paragraph in. The ampersand was cut by hand rather
+                    than picked, which is what makes it a drawing instead of a glyph.
+                  </p>
+                  <div class="aocs-three" style="margin-bottom:1.4rem">
+                    <div class="aocs-sheet"><img src="${A}typeface-01.webp" alt="Typeface experiments, sheet one" loading="lazy"></div>
+                    <div class="aocs-sheet"><img src="${A}typeface-02.webp" alt="Typeface experiments, sheet two" loading="lazy"></div>
+                    <div class="aocs-sheet"><img src="${A}typeface-03.svg" alt="Typeface experiments, sheet three" loading="lazy"></div>
+                  </div>
+                  <div class="aocs-two">
+                    <div class="aocs-sheet"><img src="${A}gulf-display.svg" alt="Chosen font: Gulf Display" loading="lazy"></div>
+                    <div class="aocs-sheet"><img src="${A}garet.svg" alt="Secondary typeface: Garet" loading="lazy"></div>
+                  </div>
+                </section>
+
+                <section class="aocs-sec" id="sec-mark">
+                  <p class="aocs-kicker">05 &middot; The mark</p>
+                  <h2 class="aocs-h">An acorn and an animal, in one glyph</h2>
+                  <p class="aocs-lede">
+                    A mark that only survives on white is not finished. This one was tested reversed,
+                    in one colour, on four grounds and at mug scale before it was called final.
+                  </p>
+                  <div class="aocs-rev">${rev}</div>
+                </section>
+              `;
+
+              // --- colour, full bleed -------------------------------------
+              h += `
+                <section class="aocs-sec" id="sec-colour">
+                  <p class="aocs-kicker">06 &middot; Colour</p>
+                  <h2 class="aocs-h">Five colours, each with a job</h2>
+                  <p class="aocs-lede">
+                    Earth before accent. Olive is a ground and a large-text colour, never body copy,
+                    because it only reaches 4.1:1 on cream. Green carries Oak and anything that asks
+                    to be clicked.
+                  </p>
+                </section>
+                <div class="aocs-bleed"><div class="aocs-pal">${pal}</div></div>
+              `;
+
+              // --- sub-brands ---------------------------------------------
+              h += `
+                <section class="aocs-sec" id="sec-system">
+                  <p class="aocs-kicker">07 &middot; Sub-brands</p>
+                  <h2 class="aocs-h">Acorn for kids, Oak for parents</h2>
+                  <p class="aocs-lede">
+                    The name decided the product architecture rather than the other way round. Acorn is
+                    the physical activity centre, built out of the original garage Saturdays. Oak is the
+                    parent network that stops unplugged parenting being a solo battle.
+                  </p>
+                  <div class="aocs-two">
+                    <figure class="aocs-plate aocs-framed"><img src="${A}acorn.svg" alt="Acorn: kids activity centre" loading="lazy"></figure>
+                    <figure class="aocs-plate aocs-framed"><img src="${A}oak.svg" alt="Oak: parent network app" loading="lazy"></figure>
+                  </div>
+                </section>
+
+                <section class="aocs-sec" id="sec-campaign">
+                  <p class="aocs-kicker">08 &middot; In the world</p>
+                  <h2 class="aocs-h">Where a parent already is</h2>
+                  <p class="aocs-lede">
+                    The line only lands if it is placed where the argument is already happening: a
+                    station wall on the commute home, a bus shelter opposite a playground.
+                  </p>
+                </section>
+              `;
+
+              h += `<div class="aocs-bleed"><figure class="aocs-plate"><img src="${A}mockup-subway.webp" alt="Subway poster: the algorithm is the problem, not your child" loading="lazy"></figure></div>`;
+
+              h += `
+                <section class="aocs-sec">
+                  <div class="aocs-three">
+                    <figure class="aocs-plate aocs-framed aocs-app"><img src="${A}mockup-busstop.webp" alt="Bus shelter poster: let's take a new ground" loading="lazy"></figure>
+                    <figure class="aocs-plate aocs-framed aocs-app"><img src="${A}mockup-hoodie.webp" alt="The ampersand on a hoodie" loading="lazy"></figure>
+                    <figure class="aocs-plate aocs-framed aocs-app"><img src="${A}mockup-mug.webp" alt="The ampersand on a mug" loading="lazy"></figure>
+                  </div>
+                  <p class="aocs-cap">The mark had to survive a chest print and a curved ceramic handle. That is the
+                  reason it was drawn as a solid silhouette rather than an outline.</p>
+                </section>
+
+                <section class="aocs-sec">
+                  <div class="aocs-three aocs-imgset">
+                    <figure class="aocs-plate aocs-framed"><img src="${A}photo-pottery.webp" alt="Hands painting a clay pot" loading="lazy"></figure>
+                    <figure class="aocs-plate aocs-framed"><img src="${A}photo-log.webp" alt="Children walking along a fallen log" loading="lazy"></figure>
+                    <figure class="aocs-plate aocs-framed"><img src="${A}photo-football.webp" alt="A parent and child playing football on grass" loading="lazy"></figure>
+                  </div>
+                  <p class="aocs-cap">Brand imagery: hands, ground, weather. Nothing shot through a screen.</p>
+                </section>
+              `;
+
+              h += `</div><div class="aocs-bleed aocs-end"><p>It's time to ground ourselves.</p></div>`;
+
+              gal.innerHTML = h;
+              if (window.lucide) window.lucide.createIcons();
+              return;
+          }
+
+          // 9.5 GROUPED GALLERY (opt-in via p.groups)
+          // One flat masonry reflows into columns, which scrambles any order the
+          // files were listed in -- a sequence that reads as an argument on paper
+          // arrives as a pile of nice pictures. A project can now declare groups,
+          // each matching files by substring, and each renders as its own
+          // .cs-section with its own heading. Reuses the case-study classes that
+          // gobunny and green-arrow already use rather than adding a third system.
+          // Anything a group doesn't claim still renders, under a final heading,
+          // so a file can never be silently dropped by a typo in a match rule.
+          if (p.groups && p.groups.length) {
+              const claimed = new Set();
+              const pick = (rules) => media.filter(f => {
+                  if (claimed.has(f)) return false;
+                  const hit = rules.some(r => f.toLowerCase().includes(r.toLowerCase()));
+                  if (hit) claimed.add(f);
+                  return hit;
+              });
+              let htmlStr = styleBlock;
+              p.groups.forEach(g => {
+                  const files = pick(g.match || []);
+                  if (!files.length) return;
+                  htmlStr += `
+                    <div class="cs-section" id="sec-${g.id}">
+                      <h2 class="cs-heading">${g.title}</h2>
+                      ${g.note ? `<p style="margin:-0.75rem 0 1.75rem; max-width:70ch; font-size:0.98rem; line-height:1.65; color:var(--ink5);">${g.note}</p>` : ''}
+                      <div class="masonry-container">${files.map(f => renderMedia(f)).join('')}</div>
+                    </div>`;
+              });
+              const rest = media.filter(f => !claimed.has(f));
+              if (rest.length) {
+                  htmlStr += `
+                    <div class="cs-section" id="sec-more">
+                      <h2 class="cs-heading">Also from the build</h2>
+                      <div class="masonry-container">${rest.map(f => renderMedia(f)).join('')}</div>
+                    </div>`;
+              }
+              gal.innerHTML = htmlStr;
+              if (window.lucide) window.lucide.createIcons();
+              return;
+          }
+
           // 10. DEFAULT / ALL OTHER GALLERIES
           const isComic = id === 'wellbeing-planner' || id === 'jasmine-comic';
-          let htmlStr = styleBlock + `<div class="${isComic ? 'comic-grid' : 'masonry-container'}">`;
+          // Six full-width YouTube embeds stacked read as too much scroll for one
+          // section (six full rows on desktop). vipcolor-video specifically opts
+          // into a 2-column grid so 6 items become 3 rows -- .vids-2col below
+          // cancels the CSS-columns layout and the .full-width column-span rule.
+          const _twoCol = (id === 'vipcolor-video') ? ' vids-2col' : '';
+          let htmlStr = styleBlock + `<div class="${isComic ? 'comic-grid' : 'masonry-container' + _twoCol}">`;
           
           media.forEach((file) => {
               htmlStr += renderMedia(file, isComic);

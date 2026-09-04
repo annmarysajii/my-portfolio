@@ -2702,44 +2702,51 @@ body::before {
 }
 
 .soc {
+  /* Was bordered white card with an icon box -- fought the form fields, which
+     use dashed underlines. Now the socials match: minimal row with a small
+     icon and a dashed under-rule that reaches to the right edge, so left and
+     right columns read as one document. */
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  padding: 0.85rem 1.1rem;
-  border: 1.5px solid var(--ink12);
-  border-radius: 4px;
-  font-size: 0.92rem;
+  gap: 0.75rem;
+  padding: 0.7rem 0 0.5rem;
+  border: 0;
+  border-bottom: 1.5px dashed var(--ink12);
+  border-radius: 0;
+  font-family: var(--fb);
+  font-size: 0.94rem;
   font-weight: 500;
   color: var(--ink);
-  background: var(--white);
-  box-shadow: var(--sh1);
+  background: transparent;
+  box-shadow: none;
   text-decoration: none;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s var(--ease);
+  transition: color 0.2s, border-color 0.2s var(--ease), padding 0.2s var(--ease);
   width: 100%;
   box-sizing: border-box;
 }
 
 .soc:hover {
+  color: var(--blue);
   border-color: var(--blue);
-  background: rgba(24,80,168,0.06);
-  transform: translateX(4px);
+  padding-left: .35rem;
 }
 [data-theme="dark"] .soc:hover {
+  color: var(--yel);
   border-color: var(--yel);
-  background: rgba(242,192,48,0.08);
 }
 
 .soc-i {
-  width: 30px;
-  height: 30px;
-  border-radius: 4px;
-  background: var(--surf);
-  display: flex;
+  /* Was a filled 30x30 square that read as a chunky icon-box; now a plain
+     inline mark matching how the form labels sit against the paper. */
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border-radius: 0;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
+  justify-content: flex-start;
   flex-shrink: 0;
-  color: var(--ink);
+  color: var(--ink5);
 }
 
 /* .form now has exactly one usage sitewide: #contact .letter .form
@@ -12743,6 +12750,51 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   max-width: 41ch;
 }
 
+/* ABOUT credentials, visible by default. Ink on red is a real contrast
+   problem for smaller text -- cream reads 7:1 on this ground so labels
+   use a warm cream tint that stays comfortably above 5:1. Hairline
+   rules only, no card, no border: the spec sits beside the tagline as
+   part of the same intro column, not as a separate object. */
+.about-spec {
+  margin: clamp(1.4rem, 2.4vw, 1.8rem) 0 0;
+  padding: 0;
+  /* Dashed rule echoes the .bp-tear perforation at the top and bottom of
+     the section, so the spec sits inside the notebook language rather
+     than reading as a generic dl overlay on the red. */
+  border-top: 1.5px dashed rgba(255,253,248,.28);
+  max-width: 41ch;
+  display: grid;
+  gap: 0;
+  font-family: 'Archivo', sans-serif;
+}
+.about-spec > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: .6rem 0;
+  border-bottom: 1px dashed rgba(255,253,248,.18);
+}
+.about-spec dt {
+  margin: 0;
+  font-size: .72rem; /* was .66 (10.56px); >=11px per hero-critique standard */
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #F5E6C8; /* 5.8:1 on #A62818 */
+}
+.about-spec dd {
+  margin: 0;
+  font-size: .88rem;
+  line-height: 1.42;
+  color: #FFFDF8; /* 7.0:1 on #A62818 */
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .about-spec > div { grid-template-columns: 5.4rem minmax(0, 1fr); gap: .7rem; }
+  .about-spec dd { font-size: .85rem; }
+}
+
 .bp-cta {
   display: inline-flex;
   align-items: center;
@@ -13120,13 +13172,15 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   opacity: 0;
   pointer-events: none;
   width: 100%;
-  max-width: 390px;
+  /* Widened to hold the desk grid that used to float in the middle band.
+     The card is the handle; opening it reveals the whole desk. */
+  max-width: 520px;
   margin-top: 0;
   /* Same curve as every other drawer on the site: resist, release, settle. */
   transition: max-height .38s cubic-bezier(.22,.68,.24,1), opacity .3s ease-out .06s, margin-top .38s cubic-bezier(.22,.68,.24,1);
 }
 .bp-facts-panel.note-open {
-  max-height: 14rem;
+  max-height: 42rem;
   opacity: 1;
   pointer-events: auto;
   margin-top: .85rem;
@@ -13146,7 +13200,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .bp-facts-heading {
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
-  font-size: .68rem;
+  font-size: .72rem; /* was .68rem (10.88px) */;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--red);
@@ -13159,6 +13213,125 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   color: var(--ink);
 }
 .bp-facts-text strong { color: var(--red); font-weight: 700; }
+
+/* Desk grid inside the name-card drawer. Was absolute-positioned scatter
+   at 920px width in the middle band; now a tidy 3x2 grid at 520px so the
+   objects still tell the same story (six things you would find on the desk)
+   but inside the drawer that reveals them. */
+.bp-desk {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  gap: 1.1rem .6rem;
+  margin: .95rem 0 .1rem;
+  padding: .35rem 0 0;
+  border-top: 1px dashed rgba(24,23,21,.16);
+}
+.bp-desk .bp-float {
+  position: static;
+  width: 80px;
+  opacity: 1;
+  filter: none;
+  transform: rotate(var(--frot, 0deg));
+}
+.bp-desk .bp-float:hover,
+.bp-desk .bp-float:focus-visible,
+.bp-desk .bp-float[aria-expanded="true"] {
+  transform: rotate(var(--frot, 0deg)) scale(1.08);
+  z-index: 5;
+}
+.bp-desk .bp-note {
+  /* Notes still pop up on hover/focus, cancelling the item rotation. */
+  transform: rotate(calc(-1 * var(--frot, 0deg)));
+  max-width: 200px;
+}
+
+/* Studio Inventory -- Toolkit, Words and Awards visible at once,
+   replacing the three-button widget with a fill-me panel. Layout is
+   three columns of chips/list at desktop, one column stacked at mobile. */
+.bp-inventory {
+  position: relative; z-index: 2;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: clamp(2.6rem, 5.5vh, 3.6rem) clamp(1.5rem, 5vw, 3rem) 0;
+  color: var(--cream);
+}
+.bp-inv-hd {
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.4rem;
+  color: var(--cream);
+  padding-bottom: .55rem;
+  border-bottom: 1.5px dashed rgba(255,253,248,.28);
+}
+.bp-inv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: clamp(1.6rem, 3vw, 2.4rem);
+  align-items: start;
+}
+.bp-inv-col { min-width: 0; }
+.bp-inv-label {
+  font-family: 'Archivo', sans-serif;
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #F5E6C8;
+  margin: 0 0 .85rem;
+}
+.bp-inv-chips {
+  display: flex; flex-wrap: wrap; gap: .45rem .5rem;
+}
+.bp-inv-chip {
+  font-family: var(--fb);
+  font-size: .82rem;
+  font-weight: 500;
+  color: #FFFDF8;
+  background: rgba(255,253,248,.08);
+  border: 1px solid rgba(255,253,248,.24);
+  padding: .32rem .7rem;
+  border-radius: 999px;
+}
+.bp-inv-note {
+  margin: .9rem 0 0;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: rgba(255,253,248,.78);
+}
+.bp-inv-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: .8rem;
+}
+.bp-inv-list > li {
+  padding-bottom: .8rem;
+  border-bottom: 1px dashed rgba(255,253,248,.18);
+  font-size: .88rem;
+  line-height: 1.45;
+  color: #FFFDF8;
+}
+.bp-inv-list > li:last-child { border-bottom: 0; }
+.bp-inv-list strong { font-weight: 700; }
+.bp-inv-sub {
+  color: rgba(255,253,248,.75);
+  font-size: .8rem;
+  line-height: 1.5;
+}
+.bp-inventory .bp-cta { margin-top: 2.2rem; }
+
+@media (max-width: 820px) {
+  .bp-inv-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+}
+@media (max-width: 560px) {
+  .bp-desk { grid-template-columns: repeat(3, 1fr); gap: .8rem .4rem; }
+  .bp-desk .bp-float { width: 64px; }
+}
+
 
 /* -------- interactive moment: the desk, full width, its own beat --------
    This used to be squeezed into the bottom of the 320px badge column,
@@ -13723,7 +13896,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    change with the light/dark toggle, same as #about -- these are the
    fixed bold "cover" moments. */
 #contact.contact {
-  --c-red: #E8432E;
+  --c-red: #A82818;
   --c-cream: #F5F0E6;
   --c-cream-dim: #F5F0E6;
   --c-ink: #2B2825;
@@ -13852,33 +14025,33 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    ink border, hard offset shadow, lifts on hover), just one notch
    toward the paper's own dim cream so the chips read as sitting *on*
    the letter rather than being the exact same white as the page. */
+/* Was: bordered cards with an offset ink shadow and a filled icon
+   box, which fought the form fields on the right (dashed underlines,
+   quiet paper). Now: same dashed underline treatment as the form so
+   left and right columns of the letter read as one document. */
 #contact .soc {
-  background: var(--c-cream-dim) !important;
-  border: 2.5px solid var(--c-ink) !important;
-  border-radius: 8px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1.5px dashed rgba(43,40,37,.22) !important;
+  border-radius: 0 !important;
   color: var(--c-ink) !important;
-  box-shadow: 3px 4px 0 var(--c-ink) !important;
-  opacity: 0.72;
-  filter: saturate(0.7);
-  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease !important;
-}
-#contact .soc-i { background: var(--c-cream) !important; color: var(--c-ink) !important; }
-#contact .soc:hover, #contact .soc:focus-visible {
+  box-shadow: none !important;
+  padding: .75rem 0 .55rem !important;
   opacity: 1;
-  filter: saturate(1);
-  background: var(--c-cream) !important;
-  border-color: var(--c-ink) !important;
-  color: var(--c-ink) !important;
-  transform: translateX(2px) translateY(-3px) !important;
-  box-shadow: 5px 6px 0 var(--c-ink) !important;
+  filter: none;
+  transition: color 0.2s ease, border-color 0.2s ease, padding 0.2s cubic-bezier(0.34,1.56,0.64,1) !important;
 }
-#contact .soc:active {
-  transform: translate(1px, 2px) !important;
-  box-shadow: 1px 2px 0 var(--c-ink) !important;
+#contact .soc-i { background: transparent !important; color: var(--c-ink) !important; opacity: .6; }
+#contact .soc:hover, #contact .soc:focus-visible {
+  color: var(--c-red, var(--red)) !important;
+  border-bottom-color: var(--c-red, var(--red)) !important;
+  padding-left: .3rem !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 #contact .soc:hover .soc-i, #contact .soc:focus-visible .soc-i {
-  background: var(--c-gold) !important;
-  color: var(--c-ink) !important;
+  color: var(--c-red, var(--red)) !important;
+  opacity: 1;
 }
 
 /* The form used to be its own separate post-it note (own paper, own
@@ -13991,6 +14164,205 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #contact .contact-h { margin-bottom: 1.7rem !important; }
 @media (min-width: 961px) {
   #contact .letter .contact-g > .rv.d2 { margin-top: clamp(1.6rem, 4.5vw, 3.4rem); }
+}
+
+/* ================================================================
+   LEAD CARD -- one component, one instance per section.
+
+   A section's other work stays in its .grid at equal weight; the lead
+   is wider, on its own ground, and carries the process strip. That is
+   the whole hierarchy fix: range only reads as range when something
+   in it stands taller.
+
+   Everything here is driven by five custom properties, so a second
+   section gets a lead by declaring a modifier and nothing else. This
+   is deliberate -- tape was independently reimplemented nine times in
+   this file before anyone noticed, and a lead card is a much bigger
+   component than a strip of tape.
+
+     --lc-ground   the card's own surface (colour or image)
+     --lc-ink      primary text on that ground
+     --lc-dim      secondary text, must still clear 4.5:1
+     --lc-accent   kicker, step numbers, the call to action
+     --lc-mount    the cream the artwork tiles sit on
+
+   Namespaced .lc-* so nothing here collides with the !important debt
+   elsewhere in this file. No rule below overrides an existing one.
+================================================================ */
+.lc {
+  position:relative; border-radius:12px; overflow:hidden;
+  background-color:var(--lc-ground-fill);
+  background-size:cover; background-position:center;
+  border:1.5px solid rgba(0,0,0,.35);
+  box-shadow:0 2px 0 rgba(255,255,255,.22) inset, 0 14px 30px -14px rgba(24,22,20,.55);
+  color:var(--lc-ink);
+  padding:clamp(1.5rem,3.4vw,2.6rem);
+  margin-bottom:1.8rem; /* matches .grid's gap so the lead sits in the same rhythm */
+}
+.lc::after{ /* keeps text legible wherever a scanned ground goes light */
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:var(--lc-veil, none);
+}
+.lc > *{position:relative;z-index:1}
+
+.lc-head{max-width:none}
+.lc-title{margin:0}
+.lc-lockup{display:block;width:clamp(240px,38vw,430px);height:auto}
+/* Two title treatments: a brand project shows its own lockup, a film shows
+   its name set in the site face. Same slot either way. */
+.lc-title-text{
+  font-family:var(--fd);font-weight:700;line-height:1.02;letter-spacing:-.02em;
+  font-size:clamp(1.9rem,4.4vw,3rem);color:var(--lc-ink);margin:0;
+}
+.lc-sub{
+  margin:.4rem 0 0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:var(--lc-dim);
+}
+.lc-kicker{
+  margin:0 0 .5rem;
+  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  color:var(--lc-accent);
+}
+.lc-body{
+  margin-top:clamp(1.1rem,2.4vw,1.6rem);
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(1.2rem,3vw,2.4rem);align-items:start;
+}
+.lc-copy{min-width:0}
+.lc-blurb{margin:0;font-size:.95rem;line-height:1.62;color:var(--lc-ink)}
+.lc-blurb b{color:var(--lc-ink);font-weight:600}
+.lc-spec{
+  margin:1.25rem 0 0;display:grid;gap:.5rem;
+  border-top:1px solid var(--lc-rule);padding-top:.95rem;
+}
+.lc-spec > div{display:grid;grid-template-columns:5.2rem 1fr;gap:.6rem;align-items:baseline}
+.lc-spec dt{
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--lc-dim);
+}
+.lc-spec dd{margin:0;font-size:.8rem;line-height:1.4;color:var(--lc-ink)}
+
+/* The featured photograph. No border -- a 1px light stroke on a photo reads
+   as a stray outline, so the lift comes from the shadow instead. */
+.lc-scene{margin:0;border-radius:7px;overflow:hidden;box-shadow:0 10px 24px -10px rgba(0,0,0,.7), 0 2px 6px -2px rgba(0,0,0,.5);}
+.lc-scene img{
+  display:block;width:100%;aspect-ratio:16/9;object-fit:cover;
+  border:0;
+}
+.lc-scene figcaption{margin-top:.5rem;font-size:.72rem;line-height:1.4;color:var(--lc-dim)}
+
+/* ---- process strip: the part most graduate portfolios never show ---- */
+.lc-proc{margin-top:clamp(1.4rem,3vw,2rem)}
+.lc-proc-hd{
+  display:flex;align-items:center;gap:.75rem;margin:0 0 .85rem;
+  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  color:var(--lc-dim);
+}
+.lc-proc-hd::after{content:'';flex:1;height:1px;background:var(--lc-rule)}
+.lc-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin:0;padding:0;list-style:none}
+.lc-step{margin:0}
+.lc-step figure{margin:0}
+.lc-thumb{
+  /* Each source is a different page shape -- a landscape diagram, a portrait
+     poster, a type specimen. object-fit:cover cropped every one of them to the
+     same square and cut words in half, so these are contained on a cream mount
+     instead: nothing is lost, and the tiles read as proofs pinned up rather
+     than screenshots trimmed to fit. */
+  display:block;width:100%;aspect-ratio:4/3;object-fit:contain;object-position:center;
+  background:var(--lc-mount);border-radius:6px;padding:7px;
+  border:0;
+  box-shadow:0 5px 14px -6px rgba(0,0,0,.6);
+}
+/* Artwork sits in a mount; photography bleeds to the edge. Mounting a dark
+   photograph on cream made it read as a mistake rather than a decision. */
+.lc-thumb--photo{padding:0;object-fit:cover;background:#2A1C11}
+.lc-step-n{display:block;margin:.55rem 0 .15rem;font-size:.6rem;letter-spacing:.14em;font-weight:700;color:var(--lc-accent)}
+.lc-step-t{display:block;font-size:.78rem;font-weight:600;line-height:1.25;color:var(--lc-ink)}
+.lc-step-d{display:block;margin-top:.2rem;font-size:.72rem;line-height:1.35;color:var(--lc-dim)}
+
+.lc-foot{
+  margin-top:clamp(1.3rem,2.6vw,1.9rem);padding-top:1rem;
+  border-top:1px solid var(--lc-rule);
+  display:flex;gap:1rem 1.4rem;align-items:center;flex-wrap:wrap;
+}
+.lc-meta{font-size:.74rem;color:var(--lc-dim);margin:0}
+.lc-cta{
+  margin-left:auto;display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--lc-accent);color:var(--lc-cta-ink);text-decoration:none;
+  font-weight:700;font-size:.83rem;padding:.62rem 1.05rem;border-radius:7px;
+  box-shadow:0 2px 0 rgba(0,0,0,.32);
+  transition:transform .16s cubic-bezier(.22,.68,.24,1), box-shadow .16s ease;
+}
+.lc-cta:hover{transform:translateY(-2px);box-shadow:0 5px 10px -3px rgba(0,0,0,.45)}
+.lc-cta:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.32)}
+
+@media (max-width:820px){ .lc-body{grid-template-columns:1fr} }
+@media (max-width:900px){ .lc-steps{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:560px){
+  .lc-steps{grid-template-columns:repeat(2,1fr)}
+  .lc-cta{margin-left:0;width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){ .lc-cta{transition:none} }
+
+/* ---- instance: VIPCOLOR, on production graphite ---------------------
+   Not the client's brand colours. This card is about how the work was
+   run, not about VIPColor's identity, and a neutral ground lets five
+   screenshots of spreadsheets read as evidence rather than clutter.
+   Measured: body 13.4:1, dim 7.9:1, amber 7.5:1, CTA 9.3:1. */
+.lc--vipcolor{
+  --lc-ground-fill:#23272E;
+  --lc-ink:#F0F2F5;
+  --lc-dim:#B6BCC6;
+  --lc-accent:#F2A93B;
+  --lc-cta-ink:#1A1206;
+  --lc-mount:#FAFAF8;
+  --lc-rule:rgba(240,242,245,.2);
+  --lc-veil:linear-gradient(160deg, rgba(255,255,255,.04), rgba(0,0,0,.14));
+}
+
+/* ---- instance: Jasmine, on a ground calm enough to hold the work ----
+   The artwork is at full saturation everywhere, so the card cannot be.
+   Deep maroon out of the cover's own shadows; measured on it: body
+   14.9:1, dim 9.0:1, marigold 8.8:1, CTA 9.6:1. */
+.lc--jasmine{
+  --lc-ground-fill:#3B1024;
+  --lc-ink:#FBF3E9;
+  --lc-dim:#D6BCA8;
+  --lc-accent:#F2B33D;
+  --lc-cta-ink:#2A0E18;
+  --lc-mount:#FBF6EE;
+  --lc-rule:rgba(251,243,233,.22);
+  --lc-veil:linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.14));
+}
+
+/* ---- instance: Keep Yourself Safe, on the film's own indigo ---------
+   Colours sampled from the film rather than invented. Measured on the
+   ground: body 12.1:1, dim 6.6:1, pink 5.4:1, mint 8.3:1, CTA 6.8:1. */
+.lc--kys{
+  --lc-ground-fill:#2E2A47;
+  --lc-ink:#F2F0F7;
+  --lc-dim:#B4B2C0;
+  --lc-accent:#F07CBB;
+  --lc-cta-ink:#2A1030;
+  --lc-mount:#F4F2EE;
+  --lc-rule:rgba(242,240,247,.22);
+  --lc-veil:linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.12));
+}
+
+/* ---- instance: Acorn & Oak, on the brand's own kraft ----------------
+   Contrast measured against the darkened kraft: body 11.0:1, spec values
+   10.6:1, spec labels 7.2:1, kicker 7.3:1, step captions 6.2:1, photo
+   caption 5.1:1, CTA 8.7:1. */
+.lc--acorn{
+  --lc-ground-fill:#46301E;
+  --lc-ink:rgba(248,246,243,.92);
+  --lc-dim:rgba(248,246,243,.7);
+  --lc-accent:#AFBF63;
+  --lc-cta-ink:#20180F;
+  --lc-mount:#F8F6F3;
+  --lc-rule:rgba(248,246,243,.2);
+  --lc-veil:linear-gradient(105deg, rgba(35,23,14,.72) 0 46%, rgba(35,23,14,.42) 100%);
+  background-image:url('assets/projects/acorn-oak/kraft.webp');
 }
 </style>
 </head>
@@ -14487,6 +14859,73 @@ h1, h2, h3, h4, .sec-title, .hero-role {
    </div>
   </div>
   <div class="pegbar" aria-hidden="true"><i class="sl"></i><i class="rd"></i><i class="sl"></i></div>
+
+  <!-- Lead card. Same component as the one in #graphic-design; only the
+       five colour tokens and the content differ. -->
+  <article class="lc lc--kys">
+    <div class="lc-head">
+      <p class="lc-kicker">Lead project &middot; Self-produced short film</p>
+      <h3 class="lc-title lc-title-text">Keep Yourself Safe</h3>
+      <p class="lc-sub">2D animated short &middot; 2025</p>
+    </div>
+
+    <div class="lc-body">
+      <div class="lc-copy">
+        <p class="lc-blurb">A short film about how casually the internet tells a teenage girl to
+        hurt herself, and about the cheerful industry that turns up afterwards selling her the cure.
+        <b>Written, animated, sound-designed and produced solo</b>, from the first background
+        painting to the final mix, and selected for the Paris Lyon Singapore programme at Annecy
+        2025.</p>
+        <dl class="lc-spec">
+          <div><dt>Role</dt><dd>Writing, animation, sound design, production</dd></div>
+          <div><dt>Runtime</dt><dd>1 min 30 s, hand-drawn</dd></div>
+          <div><dt>Made in</dt><dd>Clip Studio Paint &middot; Rough Animator</dd></div>
+          <div><dt>Screened</dt><dd>Annecy IAFF 2025, Paris Lyon Singapore</dd></div>
+        </dl>
+      </div>
+      <figure class="lc-scene">
+        <img src="assets/projects/keep-yourself-safe/kys-cover.webp" alt="A film still: a school toilet block with KEEP YOURSELF SAFE painted across the cubicle doors" loading="lazy">
+        <figcaption>The title is graffiti inside the film, never a title card. It is also what the comments say.</figcaption>
+      </figure>
+    </div>
+
+    <section class="lc-proc">
+      <h4 class="lc-proc-hd">How it was built</h4>
+      <ol class="lc-steps">
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/keep-yourself-safe/kys-concept.webp" alt="Early concept backgrounds: a shopping street, a park, a therapy centre" loading="lazy">
+          <figcaption><span class="lc-step-n">01</span><span class="lc-step-t">The world</span>
+          <span class="lc-step-d">Shopfronts, signage and a therapy centre, built before a frame moved.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/keep-yourself-safe/kys-characters.webp" alt="A lineup of five character designs" loading="lazy">
+          <figcaption><span class="lc-step-n">02</span><span class="lc-step-t">The cast</span>
+          <span class="lc-step-d">Five silhouettes that had to read at a glance, drawn before anyone was animated.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/keep-yourself-safe/kys-stills.webp" alt="Four final film stills" loading="lazy">
+          <figcaption><span class="lc-step-n">03</span><span class="lc-step-t">The frames</span>
+          <span class="lc-step-d">The joke and the dread carried by one flat, cheerful palette.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/keep-yourself-safe/kys-closing.webp" alt="The closing shot and the special thanks card" loading="lazy">
+          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The last shot</span>
+          <span class="lc-step-d">Credits thanking a band, two parents and two friends overseas.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/keep-yourself-safe/kys-annecy.webp" alt="The film in the Annecy Paris Lyon Singapore programme" loading="lazy">
+          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">Annecy</span>
+          <span class="lc-step-d">Paris Lyon Singapore programme, Annecy IAFF 2025.</span></figcaption>
+        </figure></li>
+      </ol>
+    </section>
+
+    <div class="lc-foot">
+      <p class="lc-meta">Short film &middot; 2025</p>
+      <a class="lc-cta" data-dock-avoid href="project.html?id=keep-yourself-safe">See how it was made <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </article>
+
   <div class="grid">
 
 
@@ -14666,6 +15105,70 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     </div>
    </div>
   </div>
+
+  <!-- Lead card. Third instance of .lc; tokens and content only. -->
+  <article class="lc lc--jasmine">
+    <div class="lc-head">
+      <p class="lc-kicker">Lead project &middot; Final year project</p>
+      <h3 class="lc-title lc-title-text">Jasmine</h3>
+      <p class="lc-sub">Multimedia concept album &middot; 2026</p>
+    </div>
+
+    <div class="lc-body">
+      <div class="lc-copy">
+        <p class="lc-blurb">An Indo-jazz fusion world told in two media at once: <b>70+ comic
+        pages and six original tracks</b> that share one cast, one city and one story about
+        going home. The bar is called Jazzmine, the band plays there, and the comic follows
+        the singer who leaves and comes back.</p>
+        <dl class="lc-spec">
+          <div><dt>Scope</dt><dd>70+ comic pages, 6 original tracks</dd></div>
+          <div><dt>Role</dt><dd>Writing, character design, world-building, colour, composition</dd></div>
+          <div><dt>Brief</dt><dd>Final year project, NTU ADM</dd></div>
+        </dl>
+      </div>
+      <figure class="lc-scene">
+        <img src="assets/projects/jasmine/jas-band.webp" alt="Illustration of three musicians on stage: double bass, trumpet and a singer at the mic" loading="lazy">
+        <figcaption>The band on stage at Jazzmine. Every character in the comic exists first as somebody in this room.</figcaption>
+      </figure>
+    </div>
+
+    <section class="lc-proc">
+      <h4 class="lc-proc-hd">How it was built</h4>
+      <ol class="lc-steps">
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/jasmine/jas-concept.webp" alt="Concept development: the bar exterior, stage sketches and a colour script" loading="lazy">
+          <figcaption><span class="lc-step-n">01</span><span class="lc-step-t">The world</span>
+          <span class="lc-step-d">The bar, the stage and the colour script, before a page was drawn.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/jasmine/jas-cast.webp" alt="Two rows of character designs, the band and the wider cast" loading="lazy">
+          <figcaption><span class="lc-step-n">02</span><span class="lc-step-t">The cast</span>
+          <span class="lc-step-d">Everyone designed against a common height chart so a crowd scene holds.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/jasmine/jas-covers.webp" alt="Six track cover artworks" loading="lazy">
+          <figcaption><span class="lc-step-n">03</span><span class="lc-step-t">Six covers</span>
+          <span class="lc-step-d">One artwork per track, each a scene the comic also has to earn.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/jasmine/jas-panels.webp" alt="Sample comic panels: an airport arrival and a reunion" loading="lazy">
+          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The pages</span>
+          <span class="lc-step-d">Panels carrying the dialogue: &ldquo;you made it back&rdquo;, &ldquo;no crying here&rdquo;.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/jasmine/jas-cover.webp" alt="The Jasmine key illustration: a dancer in red against a spiral of yellow" loading="lazy">
+          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">The key art</span>
+          <span class="lc-step-d">One image the album, the comic and the reader all had to fit inside.</span></figcaption>
+        </figure></li>
+      </ol>
+    </section>
+
+    <div class="lc-foot">
+      <p class="lc-meta">Comic and album &middot; 2026</p>
+      <a class="lc-cta" data-dock-avoid href="jasmine_reader.html">Read it with the music <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </article>
+
   <div class="grid">
 
 
@@ -14847,6 +15350,71 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     </div>
    </div>
   </div>
+
+  <!-- Lead card. Fourth instance of .lc. This one leads on production
+       rather than craft, because that is what the evidence supports. -->
+  <article class="lc lc--vipcolor">
+    <div class="lc-head">
+      <p class="lc-kicker">Lead project &middot; Internship</p>
+      <h3 class="lc-title lc-title-text">VIPCOLOR &ldquo;How To?&rdquo; Series</h3>
+      <p class="lc-sub">Venture Corporation &middot; 2025</p>
+    </div>
+
+    <div class="lc-body">
+      <div class="lc-copy">
+        <p class="lc-blurb"><b>Eighteen long-form tutorial videos in under six weeks, delivered
+        before the deadline</b>, with buffers built in and multiple rounds of revision absorbed
+        along the way. Printhead installation, media loading, service station replacement: the
+        VP750 and VP700 documented step by step for the company website and its social channels.</p>
+        <dl class="lc-spec">
+          <div><dt>Delivered</dt><dd>18 long-form videos, ahead of schedule</dd></div>
+          <div><dt>Role</dt><dd>Planning, scheduling, shooting, editing</dd></div>
+          <div><dt>Client</dt><dd>VIPColor Technologies, Venture Corporation</dd></div>
+        </dl>
+      </div>
+      <figure class="lc-scene">
+        <img src="assets/projects/vipcolor/vip-frame.webp" alt="A frame from the VP750 and VP700 tutorial series" loading="lazy">
+        <figcaption>One of eighteen. Every video was scripted step by step before the camera was set up.</figcaption>
+      </figure>
+    </div>
+
+    <section class="lc-proc">
+      <h4 class="lc-proc-hd">How it was run</h4>
+      <ol class="lc-steps">
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-process.webp" alt="An eight-step production process, from brief to post-production feedback" loading="lazy">
+          <figcaption><span class="lc-step-n">01</span><span class="lc-step-t">The method</span>
+          <span class="lc-step-d">Eight steps, from clarifying the brief to collecting feedback afterwards.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-schedule.webp" alt="A dated production schedule with a reshoot block flagged in red" loading="lazy">
+          <figcaption><span class="lc-step-n">02</span><span class="lc-step-t">The schedule</span>
+          <span class="lc-step-d">The red block is a reshoot. &ldquo;First pass not what was expected.&rdquo;</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-timing.webp" alt="A per-video time estimate table totalling one to one and a half hours" loading="lazy">
+          <figcaption><span class="lc-step-n">03</span><span class="lc-step-t">The maths</span>
+          <span class="lc-step-d">Setup, rehearsal, 2 to 3 takes, retakes, b-roll. Around 1.5 h per video.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-runsheet.webp" alt="An event run sheet with times and named people in charge" loading="lazy">
+          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The people</span>
+          <span class="lc-step-d">Run sheets naming who is on soundcheck, lighting and coverage, by the minute.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-tracker.webp" alt="A project tracker with progress status per deliverable" loading="lazy">
+          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">The tracking</span>
+          <span class="lc-step-d">Every deliverable with its own status, so nothing quietly slips.</span></figcaption>
+        </figure></li>
+      </ol>
+    </section>
+
+    <div class="lc-foot">
+      <p class="lc-meta">Internship &middot; 2025</p>
+      <a class="lc-cta" data-dock-avoid href="project.html?id=vipcolor-video">See the series <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </article>
+
   <div class="grid">
 
 
@@ -14889,13 +15457,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
      <div class="ph"><div class="ph-i"><i data-lucide="image"></i></div><span class="ph-t">Image coming soon</span></div>
 
-     <span class="badge by">17+ Videos</span>
+     <span class="badge by">18 Videos</span>
 
      <div class="ov"><span class="ov-btn">View Project →</span></div>
 
     </a>
 
-    <div class="card-body"><h3 class="card-name">VIPCOLOR — How-To Video Series</h3><p class="card-role">Produced and filmed 17 tutorial and product videos for the company website and social channels.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">CapCut</span></div></div>
+    <div class="card-body"><h3 class="card-name">VIPCOLOR — How-To Video Series</h3><p class="card-role">Produced, filmed and edited 18 tutorial and product videos during an internship at Venture Corporation, for the VIPColor product line.</p><div class="card-tools"><span class="tool">Adobe Premiere Pro</span><span class="tool">CapCut</span></div></div>
 
    </article>
 
@@ -15002,6 +15570,73 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     </div>
    </div>
   </div>
+
+  <!-- Lead card. The section's other work stays in the .grid below at
+       equal weight; this one is wider and on a dark ground so the eye
+       has somewhere to land first. -->
+  <article class="lc lc--acorn">
+    <div class="lc-head">
+      <p class="lc-kicker">Lead project &middot; Brand system</p>
+      <h3 class="lc-title">
+        <img class="lc-lockup" src="assets/projects/acorn-oak/lockup-cream.svg" alt="Acorn &amp; Oak — less cloud, more ground" width="560" height="137">
+      </h3>
+    </div>
+
+    <div class="lc-body">
+      <div class="lc-copy">
+      <p class="lc-blurb">A brand for a startup helping families cut harmful screen time and get kids
+      back into hands-on play. Named, drawn and built as a system: <b>one ampersand that reads as an
+      acorn and an animal at once</b>, two sub-brands that fall out of the name itself, and a campaign
+      that puts the blame on the algorithm rather than the child.</p>
+      <dl class="lc-spec">
+        <div><dt>Role</dt><dd>Naming, identity, typography, art direction</dd></div>
+        <div><dt>Type</dt><dd>Gulf Display &middot; Garet</dd></div>
+        <div><dt>Brief</dt><dd>Self-initiated, fictional company</dd></div>
+      </dl>
+      </div>
+      <figure class="lc-scene">
+        <img src="assets/projects/acorn-oak/photo-garage.jpg" alt="A parent and two children building with cardboard and a glue gun in a garage" loading="lazy">
+        <figcaption>The whole brand starts in a garage on a Saturday. Everything else is downstream of that.</figcaption>
+      </figure>
+    </div>
+
+    <section class="lc-proc">
+      <h4 class="lc-proc-hd">How it was built</h4>
+      <ol class="lc-steps">
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/acorn-oak/t-mindmap.webp" alt="Mind map of how kids grow up, six branches" loading="lazy">
+          <figcaption><span class="lc-step-n">01</span><span class="lc-step-t">Mind map</span>
+          <span class="lc-step-d">Six branches. Three load-bearing, two only explaining urgency.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/acorn-oak/t-naming.webp" alt="Name choices: Sprout, Wonderwood, Acorn and Oak" loading="lazy">
+          <figcaption><span class="lc-step-n">02</span><span class="lc-step-t">Naming</span>
+          <span class="lc-step-d">Two names killed on the page, with the reason each one failed.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/acorn-oak/t-typeface.webp" alt="Typeface experiments" loading="lazy">
+          <figcaption><span class="lc-step-n">03</span><span class="lc-step-t">Type</span>
+          <span class="lc-step-d">Nine routes drawn before Gulf Display, then a hand-cut ampersand.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb" src="assets/projects/acorn-oak/t-mark.webp" alt="Logo colour tests" loading="lazy">
+          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The mark</span>
+          <span class="lc-step-d">Tested reversed, one-colour, and at mug scale before it was final.</span></figcaption>
+        </figure></li>
+        <li class="lc-step"><figure>
+          <img class="lc-thumb lc-thumb--photo" src="assets/projects/acorn-oak/t-campaign.webp" alt="Poster: the algorithm is the problem, not your child" loading="lazy">
+          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">The campaign</span>
+          <span class="lc-step-d">One line that moves the blame off the child and onto the feed.</span></figcaption>
+        </figure></li>
+      </ol>
+    </section>
+
+    <div class="lc-foot">
+      <p class="lc-meta">Brand system &middot; 2025</p>
+      <a class="lc-cta" data-dock-avoid href="project.html?id=acorn-oak">See the full system <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </article>
+
   <div class="grid">
 
 
@@ -15290,6 +15925,18 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <span class="bp-kicker">Studio Notebook // 2026</span>
     <h2 class="bp-headline">One person.<br><span class="bp-accent">Many mediums.</span></h2>
     <p class="bp-tagline">I'm Annmary Saji — a BFA Animation graduate from NTU's School of Art, Design and Media, Class of 2026. I animate, illustrate, shoot video, design brand systems, and produce music, often all within a single project.</p>
+    <!-- Credentials visible by default. Previously these facts were only
+         reachable by clicking the School and Now objects below; a recruiter
+         scanning About never saw graduation year or availability without
+         actively opening a drawer. Drawers now hold only personal material. -->
+    <dl class="about-spec">
+     <div><dt>Degree</dt><dd>BFA Animation, NTU ADM &middot; Class of 2026</dd></div>
+     <div><dt>Status</dt><dd>Open for full-time animation and art direction roles</dd></div>
+     <div><dt>Based in</dt><dd>Singapore</dd></div>
+     <div><dt>Reach</dt><dd>33,000+ students on campus</dd></div>
+     <div><dt>Publicity</dt><dd>Director, NTU FEST 2024, stepping in after the previous director quit</dd></div>
+     <div><dt>Funded</dt><dd>Co-secured $7,000+ from NTU for Music District equipment</dd></div>
+    </dl>
 
    </div>
 
@@ -15317,29 +15964,9 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <!-- Revealed by clicking the ID card above -->
       <div class="bp-facts-panel" id="bp-facts-panel">
        <div class="bp-facts-inner">
-        <p class="bp-facts-heading">A few facts</p>
-        <p class="bp-facts-text"><strong>I just hate sticking to one medium.</strong> Off the clock: stationery-obsessed (yes, that's why this whole site looks like this), Saizeriya, mala, a daily Milo, anime &amp; Japanese shows, rhythm games, making playlists, dressing up.</p>
-       </div>
-      </div>
-     </div>
-     </div>
-
-    </div>
-   </div>
-
-  </div><!-- /.bp-container -->
-
-  <!-- Interactive moment: the desk, full-width and given room to be the
-       centerpiece instead of a cramped footnote under the badge. -->
-  <div class="bp-interact rv d3">
-
-   <!-- Studio Desk & Field Notes cluster -- ambient set-dressing, its
-        own quiet row above the real invitation -->
-   <div class="bp-scatter" aria-label="Studio desk items">
-    <svg class="bp-doodle bp-doodle--swirl" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 30c-8 0-10-8-4-11s12 2 8 8-12 4-14-3" fill="none" stroke="var(--cream)" stroke-width="2.5" stroke-linecap="round"/></svg>
-    <svg class="bp-doodle bp-doodle--spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1v7M12 16v7M1 12h7M16 12h7" stroke="var(--cream)" stroke-width="2.5" stroke-linecap="round"/></svg>
-    <svg class="bp-doodle bp-doodle--note" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="18" r="3.1" fill="none" stroke="var(--cream)" stroke-width="2"/><path d="M10 18V4l7 3" fill="none" stroke="var(--cream)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <svg class="bp-doodle bp-doodle--heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-9.4-8.9C1 8.4 2.6 4.4 6.4 4.4c2 0 3.9 1.4 5.6 3.7 1.7-2.3 3.6-3.7 5.6-3.7 3.8 0 5.4 4 3.8 7.7C19 16.6 12 21 12 21z" fill="none" stroke="var(--cream)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="bp-facts-heading">Studio Desk</p>
+        <p class="bp-facts-text"><strong>Off the clock:</strong> stationery-obsessed (yes, that's why this whole site looks like this), Saizeriya, mala, a daily Milo, anime &amp; Japanese shows, rhythm games, making playlists, dressing up.</p>
+        <div class="bp-desk" aria-label="Studio desk items">
     <button type="button" class="bp-float bp-float--plant" aria-expanded="false" aria-controls="bp-note-plant">
      <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Fake IKEA plant on Annmary's desk" loading="lazy">
      <span class="bp-note" id="bp-note-plant" hidden>I have a fake IKEA plant on my desk because real ones die out here. 🌱</span>
@@ -15365,52 +15992,62 @@ h1, h2, h3, h4, .sec-title, .hero-role {
      <span class="bp-note" id="bp-note-pencil" hidden>Classic HB graphite. I'll always pick these over mechanical pencils. ✏️</span>
     </button>
    </div>
+       </div>
+      </div>
+     </div>
+     </div>
 
-   <p class="bp-invite"><span class="bp-invite-hand" aria-hidden="true">☝</span> Curious what's behind the pass? <span class="bp-invite-accent">Pick something off the desk.</span></p>
-
-   <div class="bp-widget">
-    <div class="bp-objects" role="group" aria-label="More about Annmary">
-     <button type="button" class="bp-obj" data-key="toolkit" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
-      <span class="bp-obj-icon-wrap">
-       <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="20" width="36" height="18" rx="3" fill="var(--cobalt)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 20v-3a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v3" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="20" y="25" width="8" height="6" rx="1" fill="var(--cream)" stroke="var(--ink)" stroke-width="1.6"/><line x1="6" y1="29" x2="20" y2="29" stroke="var(--ink)" stroke-width="1.6"/><line x1="28" y1="29" x2="42" y2="29" stroke="var(--ink)" stroke-width="1.6"/></svg>
-      </span>
-      <span class="bp-obj-caption">Toolkit</span>
-     </button>
-     <button type="button" class="bp-obj" data-key="words" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
-      <span class="bp-obj-icon-wrap">
-       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H21l-8.5 7.5a1 1 0 0 1-1.5-.75V34H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="var(--magenta)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><line x1="13" y1="19" x2="35" y2="19" stroke="var(--cream)" stroke-width="2.6" stroke-linecap="round"/><line x1="13" y1="26" x2="27" y2="26" stroke="var(--cream)" stroke-width="2.6" stroke-linecap="round"/></svg>
-      </span>
-      <span class="bp-obj-caption">Words</span>
-     </button>
-     <button type="button" class="bp-obj" data-key="school" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
-      <span class="bp-obj-icon-wrap">
-       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 46 16 24 26 2 16Z" fill="var(--moss)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 20.5v9c0 2.8 5.4 5 12 5s12-2.2 12-5v-9" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/><path d="M44 17.5v10.5" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/><circle cx="44" cy="30" r="2.2" fill="var(--ink)"/></svg>
-      </span>
-      <span class="bp-obj-caption">School</span>
-     </button>
-     <button type="button" class="bp-obj" data-key="awards" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
-      <span class="bp-obj-icon-wrap">
-       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 4l6 15M32 4l-6 15" stroke="var(--ink)" stroke-width="5.6" stroke-linecap="round" fill="none"/><circle cx="24" cy="30" r="13" fill="var(--tangerine)" stroke="var(--ink)" stroke-width="2.4"/><path d="M24 22l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="var(--cream)" stroke="var(--ink)" stroke-width="1.3" stroke-linejoin="round"/></svg>
-      </span>
-      <span class="bp-obj-caption">Awards</span>
-     </button>
-     <button type="button" class="bp-obj" data-key="now" aria-pressed="false" aria-expanded="false" aria-controls="bp-panel">
-      <span class="bp-obj-icon-wrap">
-       <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="var(--teal)" stroke="var(--ink)" stroke-width="2.6"/><path d="M24 14v10l7 5" fill="none" stroke="var(--cream)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="2.2" fill="var(--cream)"/></svg>
-      </span>
-      <span class="bp-obj-caption">Now</span>
-     </button>
-    </div>
-
-    <div class="bp-panel" id="bp-panel" data-open="false" role="region" aria-live="polite">
-     <div class="bp-panel-idle">☝ pick an object to open it</div>
-     <div class="bp-panel-content"></div>
     </div>
    </div>
 
-   <a href="#contact" class="bp-cta">Get in touch <span aria-hidden="true">→</span></a>
-  </div>
+  </div><!-- /.bp-container -->
 
+  <!-- Interactive moment: the desk, full-width and given room to be the
+       centerpiece instead of a cramped footnote under the badge. -->
+  <!-- Inventory: Toolkit, Words, Awards, all visible at once. Was
+       three separate click-to-reveal drawers with a fill-me panel below;
+       readers who never clicked never saw the tools, languages or awards.
+       Rendered flat here so the three arguments (software fluency, language
+       breadth, recognitions) reach a scanning eye without interaction. -->
+  <section class="bp-inventory rv d3" aria-labelledby="bp-inv-hd">
+   <h3 id="bp-inv-hd" class="bp-inv-hd">Studio inventory</h3>
+   <div class="bp-inv-grid">
+    <div class="bp-inv-col">
+     <p class="bp-inv-label">Toolkit</p>
+     <div class="bp-inv-chips">
+      <span class="bp-inv-chip">Photoshop</span>
+      <span class="bp-inv-chip">Illustrator</span>
+      <span class="bp-inv-chip">Premiere Pro</span>
+      <span class="bp-inv-chip">Cavalry</span>
+      <span class="bp-inv-chip">Affinity</span>
+      <span class="bp-inv-chip">Canva</span>
+      <span class="bp-inv-chip">Clip Studio Paint</span>
+      <span class="bp-inv-chip">Rough Animator</span>
+      <span class="bp-inv-chip">CapCut</span>
+      <span class="bp-inv-chip">AI Tools</span>
+     </div>
+    </div>
+    <div class="bp-inv-col">
+     <p class="bp-inv-label">Words &amp; Languages</p>
+     <div class="bp-inv-chips">
+      <span class="bp-inv-chip">English</span>
+      <span class="bp-inv-chip">Malayalam</span>
+      <span class="bp-inv-chip">Hindi</span>
+     </div>
+     <p class="bp-inv-note">Multilingual and internationally minded &mdash; I like it when disciplines (and languages) stop staying in their lane.</p>
+    </div>
+    <div class="bp-inv-col">
+     <p class="bp-inv-label">Awards &amp; Recognition</p>
+     <ul class="bp-inv-list">
+      <li><strong>Annecy IAFF 2025</strong><br><span class="bp-inv-sub">Keep Yourself Safe selected for the Paris Lyon Singapore programme.</span></li>
+      <li><strong>NTU &times; Imperial College London Design-a-thon</strong><br><span class="bp-inv-sub">2nd Place for ReKindle, an intergenerational match-and-play concept.</span></li>
+      <li><strong>Marketing Certifications, Coursera 2026</strong><br><span class="bp-inv-sub">IE Business School (IMC, Brand Strategy).</span></li>
+      <li><strong>Leadership &amp; Direction</strong><br><span class="bp-inv-sub">VP and Publicity Director, Music District NTU ADM.</span></li>
+     </ul>
+    </div>
+   </div>
+   <a href="#contact" class="bp-cta" data-dock-avoid>Get in touch <span aria-hidden="true">&rarr;</span></a>
+  </section>
   <!-- Bridge into Contact: the pass literally tears off into a stub below,
        so the color continuity reads as one object, not two sections. -->
   <div class="bp-tear" aria-hidden="true"><span class="bp-tear-label">✂ tear here</span></div>
@@ -15443,13 +16080,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
  </div>
  <p class="bp-list-sub" style="margin-top:.7rem;">Multilingual and internationally minded — I like it when disciplines (and languages) stop staying in their lane.</p>
 </template>
-<template id="bp-tpl-school">
- <div class="bp-panel-title">School</div>
- <div class="bp-fact-row"><span class="bp-fact-label">Degree</span><span class="bp-fact-val">BFA Animation</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">School</span><span class="bp-fact-val">NTU School of Art, Design and Media</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">Class of</span><span class="bp-fact-val">2026</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">Reach</span><span class="bp-fact-val">33,000+ audience on campus</span></div>
-</template>
 <template id="bp-tpl-awards">
  <div class="bp-panel-title">Awards &amp; Recognition</div>
  <div class="bp-list">
@@ -15459,15 +16089,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   <div class="bp-list-item"><span class="bp-dot"></span><div><span class="bp-list-title">Leadership &amp; Direction</span><span class="bp-list-sub">VP &amp; Publicity Director, Music District NTU ADM · Publicity Director, NTU FEST</span></div></div>
  </div>
 </template>
-<template id="bp-tpl-now">
- <div class="bp-panel-title">Now &amp; Availability</div>
- <div class="bp-fact-row"><span class="bp-fact-label">Status</span><span class="bp-fact-val">Open for full-time animation &amp; art direction roles</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">Location</span><span class="bp-fact-val">Singapore only</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">On repeat</span><span class="bp-fact-val">"Film Out" (BTS) &amp; "Precipice" (Jessie Mazin)</span></div>
- <div class="bp-fact-row"><span class="bp-fact-label">Creative fuel</span><span class="bp-fact-val">Iced Milo &amp; spicy Buldak ramen</span></div>
-</template>
-
-
 <section class="contact" id="contact">
 
  <div class="con">
@@ -15833,22 +16454,51 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         };
         img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
       } else if (file.match(/\.(mp4|mov|webm)$/i)) {
-        const video = document.createElement('video');
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('webkit-playsinline', 'true');
-        const onVideoReady = () => {
+        // A motion cover used to be held back until `canplay` or
+        // `loadeddata` fired on a detached <video>, with a 600ms timer
+        // adding .media-loaded whether or not either ever did. Two
+        // failure modes fell out of that: the card sat on "Image
+        // coming soon" for the whole decode, and if the file never
+        // decoded at all -- codec, blocked range request, offline --
+        // it sat there permanently with nothing reporting it. Eight
+        // cards run on video, including all four films, so that was
+        // the emptiest the page could look while claiming success.
+        //
+        // Every mp4 in assets/vidtogif now has a still frame beside it
+        // in posters/. Handing it to the element as `poster` paints
+        // the card on the first frame the browser has, before any
+        // video bytes arrive, and leaves it painted if the video never
+        // arrives -- the still IS the fallback, so no timer is needed.
+        // Reduced-motion callers get the still as a plain <img> and
+        // the video is never fetched; the CSS reduced-motion blocks in
+        // this file cannot pause a video, so the decision has to
+        // happen here, at construction.
+        const poster = file.replace(/^(.*\/)([^/]+)\.(?:mp4|mov|webm)$/i, '$1posters/$2.webp');
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reduced) {
+          const still = new Image();
+          still.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+          still.alt = '';
+          still.onload = () => { a.innerHTML = ''; a.appendChild(still); };
+          still.onerror = () => a.classList.add('media-loaded');
+          still.src = poster;
+          a.classList.add('media-loaded');
+        } else {
+          const video = document.createElement('video');
+          video.autoplay = true;
+          video.loop = true;
+          video.muted = true;
+          video.playsInline = true;
+          video.preload = 'auto';
+          video.poster = poster;
+          video.setAttribute('webkit-playsinline', 'true');
+          video.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
           a.innerHTML = '';
           a.appendChild(video);
           a.classList.add('media-loaded');
-        };
-        video.oncanplay = onVideoReady;
-        video.onloadeddata = onVideoReady;
-        video.onerror = () => a.classList.add('media-loaded');
-        video.src = file;
-        setTimeout(() => a.classList.add('media-loaded'), 600);
+          video.src = file;
+        }
       } else {
         const img = new Image();
         img.style.width = '100%';
@@ -18305,9 +18955,14 @@ window.addEventListener('load', () => {
   // the same reason.
   (function initPassportDockYield() {
     const dock = document.getElementById('passport-dock');
-    const foot = document.querySelector('.hero-foot');
-    const metrics = document.querySelector('.hero .metrics');
-    if (!dock || (!foot && !metrics)) return;
+    // Anything that must not sit under the dock carries data-dock-avoid, so a
+    // new component opts in with an attribute rather than another observer.
+    const targets = [
+      document.querySelector('.hero-foot'),
+      document.querySelector('.hero .metrics'),
+      ...document.querySelectorAll('[data-dock-avoid]')
+    ].filter(Boolean);
+    if (!dock || !targets.length) return;
 
     function overlaps(a, b) {
       return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
@@ -18317,9 +18972,7 @@ window.addEventListener('load', () => {
     function check() {
       ticking = false;
       const dockRect = dock.getBoundingClientRect();
-      const hits =
-        (foot && overlaps(dockRect, foot.getBoundingClientRect())) ||
-        (metrics && overlaps(dockRect, metrics.getBoundingClientRect()));
+      const hits = targets.some(t => overlaps(dockRect, t.getBoundingClientRect()));
       dock.classList.toggle('dock-yield', !!hits);
     }
     function requestCheck() {
