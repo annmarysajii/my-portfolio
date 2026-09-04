@@ -2174,22 +2174,12 @@ body::before {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-img {
-  display: block;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  background: var(--surf);
-  border-radius: 255px 15px 0 0/15px 225px 0 0;
-  text-decoration: none;
-}
-.card-img img, .card-img video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+/* .card-img itself and its img/video rules used to live here too, but
+   the later "PERFECT PROJECT CARD IMAGE FRAMING" block further down
+   re-declares every property on both with !important, so this pair was
+   dead weight -- every value here was fully shadowed and editing it did
+   nothing. Deleted per the project's own rule: fix or remove the block
+   that actually renders, don't stack another override on a dead one. */
 
 .badge {
   position: absolute;
@@ -7598,9 +7588,49 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   width: 100% !important;
   aspect-ratio: 16 / 11.5 !important;
   overflow: hidden !important;
-  background: #14131A !important;
+  background: var(--surf) !important;
   border-radius: 14px 14px 0 0 !important;
   text-decoration: none !important;
+}
+
+/* Loading placeholder ("Image coming soon"). This only ever paints for
+   the brief window before loadCard() (PART 3.3 below) swaps in the real
+   <img>/<video> -- object-fit:cover always fills the frame once media
+   arrives, so .ph never shows through afterward. It had no styling of
+   its own before, which meant a bare browser default: unstyled link-blue
+   text top-left on whatever .card-img's background happened to be. */
+.ph {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--surf);
+  color: var(--ink5);
+  pointer-events: none;
+}
+.ph-i {
+  display: flex;
+  color: var(--ink12);
+}
+.ph-i svg {
+  width: 26px;
+  height: 26px;
+  animation: ph-breathe 1.8s ease-in-out infinite;
+}
+.ph-t {
+  font-family: var(--fb);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+@keyframes ph-breathe {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
 }
 
 .card-img img,
@@ -7610,7 +7640,12 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
   object-fit: cover !important;
   object-position: center top !important;
   display: block !important;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important, opacity 0.35s ease !important;
+}
+.card-img img.ph-in,
+.card-img video.ph-in {
+  opacity: 1;
 }
 
 .card:hover .card-img img,
@@ -16509,12 +16544,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           a.innerHTML = '';
           a.appendChild(img);
           a.classList.add('media-loaded');
+          requestAnimationFrame(() => img.classList.add('ph-in'));
         };
         img.onerror = () => {
           img.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
           a.innerHTML = '';
           a.appendChild(img);
           a.classList.add('media-loaded');
+          requestAnimationFrame(() => img.classList.add('ph-in'));
         };
         img.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
       } else if (file.match(/\.(mp4|mov|webm)$/i)) {
@@ -16544,7 +16581,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           const still = new Image();
           still.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
           still.alt = '';
-          still.onload = () => { a.innerHTML = ''; a.appendChild(still); };
+          still.onload = () => {
+            a.innerHTML = '';
+            a.appendChild(still);
+            requestAnimationFrame(() => still.classList.add('ph-in'));
+          };
           still.onerror = () => a.classList.add('media-loaded');
           still.src = poster;
           a.classList.add('media-loaded');
@@ -16562,6 +16603,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           a.appendChild(video);
           a.classList.add('media-loaded');
           video.src = file;
+          // The poster attribute above already paints on insertion --
+          // this just crossfades it in from the placeholder instead of
+          // popping, same as the static-image and reduced-motion paths.
+          requestAnimationFrame(() => video.classList.add('ph-in'));
         }
       } else {
         const img = new Image();
@@ -16573,6 +16618,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           a.innerHTML = '';
           a.appendChild(img);
           a.classList.add('media-loaded');
+          requestAnimationFrame(() => img.classList.add('ph-in'));
         };
         img.onerror = () => {
           a.classList.add('media-loaded');
