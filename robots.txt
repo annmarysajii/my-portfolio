@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /desk-kit.html
+Disallow: /*.csv$
+Disallow: /*.xlsx$
+Disallow: /*.md$
+Disallow: /*.ps1$
+
+Sitemap: https://annmarysajii.github.io/my-portfolio/sitemap.xml
