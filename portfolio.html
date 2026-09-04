@@ -7600,14 +7600,22 @@ a[href*="original-tracks"] img,
 }
 
 a[href*="nangele"] img,
-a[href*="mock-posters"] img,
 a[href*="freelance-commissions"] img,
-a[href*="internship-comics"] img,
-a[href*="wellbeing-planner"] img,
 a[href*="ntu-banners"] img,
 a[href*="ntu-fest"] img,
-a[href*="gobunny"] img {
+a[href*="wellbeing-planner"] img,
+a[href*="internship-comics"] img,
+a[href*="music-district-design"] img,
+a[href*="mock-posters"] img {
   object-position: center top !important;
+}
+
+/* gobunny's logo sits centred in a square canvas with the wordmark
+   curling below it -- a top anchor left a band of empty red at the top
+   of the card and cut the bottom of the BUNNY lettering. Centring the
+   crop keeps the whole logo, lettering included. */
+a[href*="gobunny"] img {
+  object-position: center center !important;
 }
 
 /* ================================================================
@@ -16403,8 +16411,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       'chase': 'assets/vidtogif/The_chase.mp4',
       'jasmine-visdev': 'assets/portfolio-data/Jasmine_Visdev/actual pic of someone reading my work.webp',
       'digital-paintings': 'assets/portfolio-data/Digital painting/a6_ann.webp',
-      'wellbeing-planner': 'assets/portfolio-data/Campus wellbeing comic/FINAL IMAGE.webp',
-      'internship-comics': 'assets/portfolio-data/Internship experience comic series/opening pah.webp',
+      'wellbeing-planner': 'assets/portfolio-data/Campus wellbeing comic/cover.webp',
+      'internship-comics': 'assets/portfolio-data/Internship experience comic series/cover.webp',
       'jasmine-comic': 'assets/portfolio-data/Jasmine_Visdev/jazz entrance_color.webp',
       'freelance-commissions': 'assets/portfolio-data/Character and concept art/Illustration37.webp',
       'nangele': 'assets/portfolio-data/Nangeli/nangeli cover image.webp',

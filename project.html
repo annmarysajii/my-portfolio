@@ -881,9 +881,24 @@ html.has-custom-cursor #star-cursor {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
+  /* One pill is pinned to each corner, so on a narrow phone screen long
+     labels can each grow past half the slider's width and meet in the
+     middle. Capping each at just under half the container (with room for
+     both 14px offsets) means they can never touch, whatever the width. */
+  max-width: calc(50% - 24px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .tag-before { right: 14px; background: rgba(18, 17, 25, 0.85); color: #FFF; border: 1px solid rgba(255,255,255,0.15); }
 .tag-after { left: 14px; background: rgba(217, 48, 32, 0.9); color: #FFF; border: 1px solid rgba(255,255,255,0.2); }
+@media (max-width: 480px) {
+  .comp-tag {
+    font-size: 0.64rem;
+    padding: 5px 10px;
+    max-width: calc(50% - 18px);
+  }
+}
 
 .comp-handle {
   position: absolute;
