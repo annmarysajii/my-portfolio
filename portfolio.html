@@ -7653,6 +7653,14 @@ a[href*="gobunny"] img {
   object-position: center center !important;
 }
 
+/* Same graffiti-wall shot as the lead card above, but the card grid is a
+   narrower crop -- push it all the way right so "SAFE" and the F in
+   "YOURSELF" survive. */
+a[href*="keep-yourself-safe"] img,
+a[href*="keep-yourself-safe"] video {
+  object-position: 100% center !important;
+}
+
 /* ================================================================
    ABOUT SECTION: TACTILE ARTIST POLAROID & STUDIO DESK (NO TEAL)
 ================================================================ */
@@ -14291,6 +14299,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .lc-scene img{
   display:block;width:100%;aspect-ratio:16/9;object-fit:cover;
   border:0;
+}
+/* The KYS still is wider than the 16:9 frame and the graffiti text runs
+   close to its right edge -- a centred crop clips the last letter. */
+.lc--kys .lc-scene img{
+  object-position: 100% center;
 }
 .lc-scene figcaption{margin-top:.5rem;font-size:.72rem;line-height:1.4;color:var(--lc-dim)}
 
