@@ -294,11 +294,11 @@ body::before {
    properly rather than re-guess the offset.
 ================================================================ */
 
-/* CNT-03 punched leaf: REMOVED. It painted mat-coloured dots onto the
-   sheet to fake punch-holes, but the sheet sits ABOVE the mat with a
-   drop shadow -- a flat dot in the desk colour can't read as a hole cut
-   through paper, so it read as a row of stray dots across the top of
-   every section. A real hole would need an inner shadow and a lit lower
+/* CNT-03 punched leaf: REMOVED. It painted mat-coloured dots onto the
+   sheet to fake punch-holes, but the sheet sits ABOVE the mat with a
+   drop shadow -- a flat dot in the desk colour can't read as a hole cut
+   through paper, so it read as a row of stray dots across the top of
+   every section. A real hole would need an inner shadow and a lit lower
    lip; not worth it for decoration nobody asked for. */
 
 /* FST-03 -- peg bar, Animation's fastener. Real sprocket-peg shape --
@@ -563,7 +563,7 @@ body::before {
 }
 .metric-drawer .margin-note.metric-reveal {
   max-width: 100%;
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   margin-top: 0;
 }
 .metric-drawer .margin-note.note-collapsible.note-open {
@@ -689,6 +689,19 @@ body::before {
 .nav-item-work {
   position: relative;
 }
+.nav-item-work > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.nav-work-caret {
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+.nav-item-work:hover .nav-work-caret,
+.nav-item-work:focus-within .nav-work-caret {
+  transform: rotate(180deg);
+}
 .nav-work-dropdown {
   position: absolute;
   top: calc(100% + 0.9rem);
@@ -724,7 +737,10 @@ body::before {
   list-style: none;
 }
 .nav-work-dropdown a {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
   font-size: 0.84rem;
   padding: 0.55rem 0.7rem;
   border-radius: 6px;
@@ -733,6 +749,17 @@ body::before {
 .nav-work-dropdown a:hover,
 .nav-work-dropdown a:focus-visible {
   background: var(--ink12);
+  opacity: 1;
+}
+.nav-work-featured {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: #F2C030;
+  color: #14131A;
   opacity: 1;
 }
 
@@ -1250,7 +1277,7 @@ body::before {
 }
 .margin-note.metric-reveal {
   max-width: 100%;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 /* Right Page — Dual Reel Switcher & Polaroid Frame */
@@ -1567,15 +1594,18 @@ body::before {
   border-radius: 8px;
   font-size: 0.78rem;
   box-sizing: border-box;
-  /* --ink5/--ink12 assume a light background -- true for most of the
-     site, but this row sits directly on the hero's dark cutting-mat
-     texture with no card of its own (design-critique finding,
-     2026-09-02: measured 1.51:1 in light mode, essentially unreadable).
-     Hardcoded to a light color here instead of the token; dark mode
-     restores the token below since that pairing (light text, already
-     light-on-dark by default) was never broken. */
-  color: rgba(245,242,230,0.85);
-  border: 1.5px dashed rgba(245,242,230,0.2);
+  /* This used to be hardcoded to a light near-white (rgba(245,242,230,.85))
+     because the hero sat on a dark cutting-mat texture at the time
+     (design-critique finding, 2026-09-02: measured 1.51:1, unreadable).
+     The hero's own background is the light cream --bg/--paper token now,
+     not that dark texture, so the hardcoded light-on-light color had
+     regressed back to unreadable in the other direction (impeccable
+     critique, 2026-09-05: 1.0:1). --ink5/--ink12 assume a light
+     background, which is true here again -- back to the tokens, matching
+     what dark mode already did below (now redundant there, left in place
+     since it costs nothing to keep explicit). */
+  color: var(--ink5);
+  border: 1.5px dashed var(--ink12);
 }
 [data-theme="dark"] .hero-foot {
   color: var(--ink5);
@@ -1765,14 +1795,14 @@ body::before {
     padding: 5px 2px;
   }
   .reel-foot-title {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
   }
   .hero-foot {
     flex-direction: column;
     gap: 0.3rem;
     text-align: center;
     padding: 0.55rem;
-    font-size: 0.72rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -2168,6 +2198,21 @@ body::before {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 1.8rem;
+}
+/* auto-fill maxes out at exactly 3 columns for this grid (its container
+   never gets wide enough for a 4th) -- so a section with exactly 4
+   cards, like Videography, always leaves the 4th alone in its own row
+   with two empty tracks beside it, reading as a broken layout rather
+   than a choice (impeccable critique, 2026-09-05). :last-child asserts
+   there really are only 4 -- add a 5th card later and this naturally
+   stops applying instead of misfiring. Centered in the middle column
+   rather than spanned, so it doesn't stretch a card designed for one
+   column's width. 1200px is where this grid actually reaches 3 columns
+   (measured live, not guessed from viewport alone). */
+@media (min-width: 1200px) {
+  .grid > .card:nth-child(4):last-child {
+    grid-column: 2;
+  }
 }
 
 .card {
@@ -3157,7 +3202,7 @@ body::before {
     padding: 0.2rem 0.45rem;
   }
   .reel-sound-toggle {
-    font-size: 0.65rem;
+    font-size: 0.72rem;
     padding: 0.2rem 0.55rem;
   }
   .nav-in {
@@ -3250,6 +3295,12 @@ body::before {
     font-size: 0.85rem;
     padding: 0.55rem 0.75rem;
     opacity: 0.7;
+  }
+  /* The rotate-on-open caret is a desktop hover cue; the mobile list is
+     always expanded already, so a static arrow here would just be noise
+     that never does anything. */
+  .nav-work-caret {
+    display: none;
   }
   .nav-cta,
   .nav-links a.nav-cta {
@@ -3516,7 +3567,10 @@ body::before {
   color: var(--ink) !important;
 }
 .dl-h em {
-  color: #C08800 !important;
+  /* #C08800 measured 2.7:1 against this band's #F5EDD8 background --
+     under the 3:1 large-text floor. Darkened within the same gold family
+     rather than switching hue. */
+  color: #B37A00 !important;
 }
 .dl-btn {
   background: rgba(255, 253, 248, 0.9) !important;
@@ -6968,7 +7022,7 @@ html, body, a, button, input, textarea, select, [role="button"], .orbit-item, .c
 }
 
 .pg-tag {
-  font-size: 0.68rem !important;
+  font-size: 0.72rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
@@ -9697,7 +9751,7 @@ a[href*="keep-yourself-safe"] video {
 }
 
 .polaroid-sub {
-  font-size: 0.65rem !important;
+  font-size: 0.72rem !important;
   color: #5C5854 !important;
 }
 
@@ -10083,6 +10137,7 @@ a[href*="keep-yourself-safe"] video {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+  font-size: 0.7rem !important;
 }
 .hud-lut-tag {
   flex-shrink: 0 !important;
@@ -10101,7 +10156,7 @@ a[href*="keep-yourself-safe"] video {
   flex: 1 !important;
   padding: 3px 2px !important;
   font-family: var(--fd) !important;
-  font-size: 0.62rem !important;
+  font-size: 0.7rem !important;
   font-weight: 700 !important;
   background: #1E1C22 !important;
   color: #C9C4BC !important;
@@ -11179,7 +11234,7 @@ a[href*="keep-yourself-safe"] video {
     right: -7px !important;
     min-width: 20px !important;
     padding: 2px 5px !important;
-    font-size: 0.68rem !important;
+    font-size: 0.7rem !important;
     line-height: 1.4 !important;
     text-align: center !important;
     border: 1.5px solid #14131A !important;
@@ -11725,7 +11780,7 @@ a[href*="keep-yourself-safe"] video {
   flex: 1 !important;
   padding: 3px 2px !important;
   font-family: var(--fd) !important;
-  font-size: 0.65rem !important;
+  font-size: 0.72rem !important;
   font-weight: 800 !important;
   background: #F9F6F0 !important;
   border: 1px solid rgba(43,40,37,0.2) !important;
@@ -11823,7 +11878,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 
 .vector-bottom-hint {
-  font-size: 0.68rem !important;
+  font-size: 0.74rem !important;
   font-weight: 700 !important;
   color: #7A756D !important;
   text-align: center !important;
@@ -12120,7 +12175,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
-  font-size: 0.72rem !important;
+  font-size: 0.78rem !important;
   font-weight: 700 !important;
   color: #5C5854 !important;
 }
@@ -12455,6 +12510,15 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .d-pipe-item {
   text-align: center !important;
   line-height: 1.3 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.3em !important;
+}
+.d-pipe-icon {
+  width: 12px !important;
+  height: 12px !important;
+  flex-shrink: 0 !important;
 }
 .d-pipe-item:not(:last-child) {
   border-right: 1px dashed rgba(43, 40, 37, 0.2) !important;
@@ -14390,7 +14454,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 .lc-kicker{
   margin:0 0 .5rem;
-  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
   color:var(--lc-accent);
 }
 .lc-body{
@@ -14407,7 +14471,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 .lc-spec > div{display:grid;grid-template-columns:5.2rem 1fr;gap:.6rem;align-items:baseline}
 .lc-spec dt{
-  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
   color:var(--lc-dim);
 }
 .lc-spec dd{margin:0;font-size:.8rem;line-height:1.4;color:var(--lc-ink)}
@@ -14430,7 +14494,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .lc-proc{margin-top:clamp(1.4rem,3vw,2rem)}
 .lc-proc-hd{
   display:flex;align-items:center;gap:.75rem;margin:0 0 .85rem;
-  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
   color:var(--lc-dim);
 }
 .lc-proc-hd::after{content:'';flex:1;height:1px;background:var(--lc-rule)}
@@ -14451,9 +14515,9 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 /* Artwork sits in a mount; photography bleeds to the edge. Mounting a dark
    photograph on cream made it read as a mistake rather than a decision. */
 .lc-thumb--photo{padding:0;object-fit:cover;background:#2A1C11}
-.lc-step-n{display:block;margin:.55rem 0 .15rem;font-size:.6rem;letter-spacing:.14em;font-weight:700;color:var(--lc-accent)}
+.lc-step-n{display:block;margin:.55rem 0 .15rem;font-size:.7rem;letter-spacing:.14em;font-weight:700;color:var(--lc-accent)}
 .lc-step-t{display:block;font-size:.78rem;font-weight:600;line-height:1.25;color:var(--lc-ink)}
-.lc-step-d{display:block;margin-top:.2rem;font-size:.72rem;line-height:1.35;color:var(--lc-dim)}
+.lc-step-d{display:block;margin-top:.2rem;font-size:.78rem;line-height:1.35;color:var(--lc-dim)}
 
 .lc-foot{
   margin-top:clamp(1.3rem,2.6vw,1.9rem);padding-top:1rem;
@@ -14698,9 +14762,15 @@ h1, h2, h3, h4, .sec-title, .hero-role {
            plain always-visible indented sub-list inside the hamburger
            flyout instead, since hover has no equivalent on touch. -->
       <li class="nav-item-work">
-        <a href="#animation">Work</a>
+        <a href="#animation">Work<svg class="nav-work-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <!-- Critique finding: the dropdown answered "where are the sections"
+             but not "which one is the best of the best" -- a visitor had to
+             read every section to find the strongest credential. Annecy
+             selection already existed in the Animation lead card's body
+             copy; this just also surfaces it at the point someone is
+             deciding where to click first. -->
         <ul class="nav-work-dropdown">
-          <li><a href="#animation">Animation</a></li>
+          <li><a href="#animation">Animation<span class="nav-work-featured">★ Annecy '25</span></a></li>
           <li><a href="#illustration">Illustration</a></li>
           <li><a href="#videography">Videography</a></li>
           <li><a href="#graphic-design">Graphic Design</a></li>
@@ -14823,7 +14893,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
             <span class="drawer-pull" aria-hidden="true"></span>
           </button>
         </div>
-      
+      
       </div>
       <!-- The drawer. It sits outside the stat card but is built from the
            same material -- same border, same fill, top border removed, only the
@@ -14832,15 +14902,15 @@ h1, h2, h3, h4, .sec-title, .hero-role {
            wrapping the flex row, which stacked the three tiles. -->
 <!-- One shared drawer, INSIDE the stat card. Opened outside it, the
             card's own bottom border cut straight through the text -- the fact
-            has to come out of the cabinet, not sit under it. Three narrow drawers inside
-            the tiles wrapped the text to 1-3 words a line and knocked the row
-            out of alignment when one opened. A cabinet has one drawer out at a
-            time, full width -- which is both the readable shape and the honest
-            one. The tiles are the fronts; this is what they open. -->
-      <div class="metric-drawer" id="metric-drawer">
-        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2025-reveal"><span class="margin-note-inner">↳ Finished the Annecy film while also doing my internship at the same time.</span></div>
-        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-50-reveal"><span class="margin-note-inner">↳ Bought my first paid drawing software using my first ever commission. My freelance career actually started in the BTS and Sk8 the Infinity fandoms.</span></div>
-        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2nd-reveal"><span class="margin-note-inner">↳ Finished the slide decks alone the night before the presentation because my teammates were unavailable.</span></div>
+            has to come out of the cabinet, not sit under it. Three narrow drawers inside
+            the tiles wrapped the text to 1-3 words a line and knocked the row
+            out of alignment when one opened. A cabinet has one drawer out at a
+            time, full width -- which is both the readable shape and the honest
+            one. The tiles are the fronts; this is what they open. -->
+      <div class="metric-drawer" id="metric-drawer">
+        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2025-reveal"><span class="margin-note-inner">↳ Finished the Annecy film while also doing my internship at the same time.</span></div>
+        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-50-reveal"><span class="margin-note-inner">↳ Bought my first paid drawing software using my first ever commission. My freelance career actually started in the BTS and Sk8 the Infinity fandoms.</span></div>
+        <div class="margin-note line-boil metric-reveal note-collapsible" id="metric-2nd-reveal"><span class="margin-note-inner">↳ Finished the slide decks alone the night before the presentation because my teammates were unavailable.</span></div>
        </div>
     </div>
 
@@ -14911,8 +14981,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
                  alt="Annmary Saji" class="reel-intro-avatar" />
             <div class="reel-intro-title">Meet Annmary Saji</div>
             <div class="reel-intro-sub">Visual Storyteller • Animator • Video Director • Composer</div>
+            <!-- "instagram" isn't a real Lucide icon name (dropped from
+                 newer Lucide sets, per the console warning it left behind
+                 49 times over) -- the site's own Contact section already
+                 draws an Instagram glyph as inline SVG; reused verbatim
+                 rather than reaching for a different substitute icon. -->
             <a href="https://www.instagram.com/reel/DcEQu0ZMUvc/?igsi=MWZkeWJ4N2kweG9yeg==" target="_blank" rel="noopener" class="reel-ig-cta">
-              <i data-lucide="instagram"></i>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
               <span>Watch Intro Reel on Instagram ↗</span>
             </a>
           </div>
@@ -14928,11 +15003,17 @@ h1, h2, h3, h4, .sec-title, .hero-role {
             <span class="d-pill-tag"><span class="d-pulse-red"></span> FIELD LOG // 2026</span>
           </div>
           <div class="director-pipeline-row">
-            <span class="d-pipe-item">🎬 2D Animation &amp; VisDev</span>
+            <!-- Emoji standing in for icons (quieter pass, 2026-09-05):
+                 every other icon on this page is a drawn Lucide glyph in
+                 one consistent stroke weight; these three were the one
+                 spot still reaching for a platform emoji font instead,
+                 which reads a size and a style out of step with its own
+                 neighbors. -->
+            <span class="d-pipe-item"><i data-lucide="clapperboard" class="d-pipe-icon"></i> 2D Animation &amp; VisDev</span>
             <span class="d-pipe-sep">•</span>
-            <span class="d-pipe-item">🎥 Video Directing</span>
+            <span class="d-pipe-item"><i data-lucide="video" class="d-pipe-icon"></i> Video Directing</span>
             <span class="d-pipe-sep">•</span>
-            <span class="d-pipe-item">🎹 GarageBand &amp; Score</span>
+            <span class="d-pipe-item"><i data-lucide="music" class="d-pipe-icon"></i> GarageBand &amp; Score</span>
           </div>
         </div>
 
@@ -16120,7 +16201,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
          reachable by clicking the School and Now objects below; a recruiter
          scanning About never saw graduation year or availability without
          actively opening a drawer. Drawers now hold only personal material. -->
-    <dl class="about-spec">
+    <dl class="about-spec" data-dock-avoid>
      <div><dt>Degree</dt><dd>BFA Animation, NTU ADM &middot; Class of 2026</dd></div>
      <div><dt>Status</dt><dd>Open for full-time animation and art direction roles</dd></div>
      <div><dt>Based in</dt><dd>Singapore</dd></div>
