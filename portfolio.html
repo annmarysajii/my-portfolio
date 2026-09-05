@@ -1594,22 +1594,19 @@ body::before {
   border-radius: 8px;
   font-size: 0.78rem;
   box-sizing: border-box;
-  /* This used to be hardcoded to a light near-white (rgba(245,242,230,.85))
-     because the hero sat on a dark cutting-mat texture at the time
-     (design-critique finding, 2026-09-02: measured 1.51:1, unreadable).
-     The hero's own background is the light cream --bg/--paper token now,
-     not that dark texture, so the hardcoded light-on-light color had
-     regressed back to unreadable in the other direction (impeccable
-     critique, 2026-09-05: 1.0:1). --ink5/--ink12 assume a light
-     background, which is true here again -- back to the tokens, matching
-     what dark mode already did below (now redundant there, left in place
-     since it costs nothing to keep explicit). */
-  color: var(--ink5);
-  border: 1.5px dashed var(--ink12);
-}
-[data-theme="dark"] .hero-foot {
-  color: var(--ink5);
-  border-color: var(--ink12);
+  /* User correction, 2026-09-06: the previous fix here (var(--ink5), a
+     dark ink token) was wrong -- confirmed unreadable live. #hero's flat
+     --sec-hero-bg color is NOT what paints behind this row: #hero also
+     layers an opaque navy linear-gradient into its own background-image
+     ("base -- deep navy, darker than the literal --blue token", a few
+     lines up) that fully covers --sec-hero-bg wherever .hero-sketchbook's
+     own opaque card doesn't sit on top of it -- which is exactly where
+     .hero-foot lives, below the card. That navy base is identical in
+     both themes, so this row needs one light color unconditionally, not
+     a light/dark split keyed to a background token that was never the
+     real one. Verified 5.8-8.85:1 across the gradient's two stops. */
+  color: rgba(245,242,230,0.85);
+  border: 1.5px dashed rgba(245,242,230,0.2);
 }
 
 /* ================================================================
