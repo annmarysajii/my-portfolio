@@ -5,8 +5,18 @@
 <head>
   <script src="scripts/data.js?v=1787342124"></script>
 
+  <!-- Every one of the ~30 case studies below lives at this same
+       project.html path, distinguished only by a ?id= query string.
+       Without their own description/canonical/og:url, search engines
+       saw ~30 copies of one generic page instead of ~30 distinct,
+       specific things people could search for. The render script below
+       (see "RENDER") overwrites all of these once it resolves ?id --
+       these are just the pre-JS/no-id fallback. -->
+  <meta name="description" content="A project case study from the portfolio of Annmary Saji — 2D Animator, Brand Designer, Graphic Storyteller, and Audio Producer based in Singapore." />
+  <link rel="canonical" href="https://annmarysajii.github.io/my-portfolio/project.html" />
   <meta property="og:site_name" content="Annmary Saji — Portfolio" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://annmarysajii.github.io/my-portfolio/project.html" />
   <meta property="og:title" content="Annmary Saji — Animation, Brand Design & Visual Storytelling" />
   <meta property="og:description" content="Portfolio of Annmary Saji — 2D Animator, Brand Designer, Graphic Storyteller, and Audio Producer based in Singapore." />
   <meta property="og:image" content="https://annmarysajii.github.io/my-portfolio/assets/social/og-card.png" />
@@ -2673,7 +2683,30 @@ function renderMedia(file, isComic = false, explicitCaption = '') {
 // RENDER
 const id = new URLSearchParams(location.search).get('id');
 const p = PROJECTS[id];
-if (p) { document.title = `${p.title} — Annmary Saji`; window.scrollTo(0, 0); }
+if (p) {
+    document.title = `${p.title} — Annmary Saji`;
+    window.scrollTo(0, 0);
+
+    // Give this specific project its own description/canonical/social tags
+    // instead of the generic portfolio-wide ones set in <head> -- see the
+    // comment up there for why every one of these ?id= pages needs its own.
+    const rawDesc = (p.overview || p.context || p.role || `A project from Annmary Saji's portfolio.`).replace(/\s+/g, ' ').trim();
+    const desc = rawDesc.length > 160 ? rawDesc.slice(0, 157).replace(/\s+\S*$/, '') + '…' : rawDesc;
+    const canonicalUrl = `https://annmarysajii.github.io/my-portfolio/project.html?id=${id}`;
+    const ogTitle = `${p.title} — Annmary Saji`;
+
+    const setMeta = (selector, attr, value) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(attr, value);
+    };
+    setMeta('meta[name="description"]', 'content', desc);
+    setMeta('link[rel="canonical"]', 'href', canonicalUrl);
+    setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+    setMeta('meta[property="og:title"]', 'content', ogTitle);
+    setMeta('meta[property="og:description"]', 'content', desc);
+    setMeta('meta[name="twitter:title"]', 'content', ogTitle);
+    setMeta('meta[name="twitter:description"]', 'content', desc);
+}
 const main = document.getElementById('main');
 
 // Per-project theme overrides — applied synchronously (before the page paints) so the
