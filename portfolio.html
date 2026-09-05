@@ -682,6 +682,60 @@ body::before {
   color: var(--yel);
 }
 
+/* "Work" -> discipline dropdown (desktop). Hidden by default, shown on
+   hover or keyboard focus within the trigger's own <li> so a Tab press
+   reveals it exactly like a mouseover would. Mobile gets a different,
+   simpler treatment inside the <=640px block further down. */
+.nav-item-work {
+  position: relative;
+}
+.nav-work-dropdown {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 180px;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  background: var(--bg);
+  border: 1.5px solid var(--ink12);
+  border-radius: 10px;
+  box-shadow: var(--sh2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+[data-theme="dark"] .nav-work-dropdown {
+  box-shadow: 0 14px 32px rgba(0,0,0,0.5);
+}
+.nav-item-work:hover .nav-work-dropdown,
+.nav-item-work:focus-within .nav-work-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-work-dropdown li {
+  list-style: none;
+}
+.nav-work-dropdown a {
+  display: block;
+  font-size: 0.84rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.nav-work-dropdown a:hover,
+.nav-work-dropdown a:focus-visible {
+  background: var(--ink12);
+  opacity: 1;
+}
+
 .nav-r {
   display: flex;
   align-items: center;
@@ -3166,6 +3220,36 @@ body::before {
   .nav-links a:active {
     background: var(--ink12);
     opacity: 1;
+  }
+  /* The hover-driven desktop dropdown has no touch equivalent, so on
+     mobile the same 5 links just render as a plain, always-visible,
+     indented sub-list under "Work" inside the existing hamburger
+     flyout -- no second tap or hover state to discover. Tapping "Work"
+     itself (its href still jumps straight to #animation) leaves the
+     link focused since nothing navigates the page away to clear it, so
+     the desktop :focus-within reveal rule -- two classes, higher
+     specificity than the plain reset above -- would otherwise keep
+     winning here and fight this layout. Repeating that exact selector
+     is what actually neutralizes it. */
+  .nav-work-dropdown,
+  .nav-item-work:hover .nav-work-dropdown,
+  .nav-item-work:focus-within .nav-work-dropdown {
+    position: static;
+    flex-direction: column;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0 0 0.3rem 0.9rem;
+    margin-top: 0.1rem;
+  }
+  .nav-work-dropdown a {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.75rem;
+    opacity: 0.7;
   }
   .nav-cta,
   .nav-links a.nav-cta {
@@ -14606,7 +14690,23 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   <div class="nav-in">
     <a href="index.html" class="nav-logo">Annmary Saji</a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#animation">Work</a></li>
+      <!-- "Work" used to jump straight to #animation with no way to reach
+           Illustration/Videography/Graphic Design/Music without scrolling
+           past everything ahead of it. This dropdown gives each discipline
+           its own direct link. Hover/focus-driven on desktop (see the
+           .nav-item-work rules); on mobile the same markup renders as a
+           plain always-visible indented sub-list inside the hamburger
+           flyout instead, since hover has no equivalent on touch. -->
+      <li class="nav-item-work">
+        <a href="#animation">Work</a>
+        <ul class="nav-work-dropdown">
+          <li><a href="#animation">Animation</a></li>
+          <li><a href="#illustration">Illustration</a></li>
+          <li><a href="#videography">Videography</a></li>
+          <li><a href="#graphic-design">Graphic Design</a></li>
+          <li><a href="#music">Music</a></li>
+        </ul>
+      </li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
