@@ -12690,215 +12690,24 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 .bp-note[hidden] { display: none; }
 
-/* -------- hand-composed scatter, desktop/tablet only --------
-   Below this breakpoint the six items stay exactly the tidy flex row
-   they've always been (.bp-float's base rule above) -- deliberately not
-   touched, since absolute-positioned/independently-rotated objects are
-   easy to get wrong on narrow screens (drifting off-edge, colliding with
-   text, overlapping the wrong way). Above it, each item gets its own
-   hand-placed spot, rotation, scale and stacking order instead of an
-   even flex row, so the cluster reads as composed rather than lined up. */
-@media (min-width: 641px) {
-  .bp-scatter {
-    display: block;
-    width: 100%;
-    max-width: 920px;
-    /* Bumped up alongside the bigger per-object scale below -- the
-       cluster was reading as too much empty red around small icons. */
-    height: clamp(210px, 27vw, 290px);
-    margin: 0 auto -.2rem;
-  }
-  .bp-float {
-    position: absolute;
-    left: var(--sleft, 50%);
-    top: var(--stop, 50%);
-    width: calc(var(--fw, 64px) * var(--sscale, 1));
-    z-index: var(--sz, 1);
-    transform: translate(-50%, -50%) rotate(var(--srot, var(--frot, 0deg)));
-  }
-  .bp-interact.in .bp-float:hover,
-  .bp-interact.in .bp-float:focus-visible,
-  .bp-interact.in .bp-float[aria-expanded="true"] {
-    transform: translate(-50%, -50%) rotate(calc(var(--srot, var(--frot, 0deg)) + 4deg)) scale(1.14);
-    z-index: 30;
-  }
-  /* Cancel out the button's own rotation so the note pops up level and
-     readable no matter how far its object is tilted. */
-  .bp-note { transform: rotate(calc(-1 * var(--srot, var(--frot, 0deg)) - 1.4deg)); }
-
-  /* Edge anchoring re-tuned for the scattered spots (plant sits at the
-     far left same as before; headphones is the new far-right occupant,
-     replacing pouch/pencil which are no longer out at the edge). */
-  .bp-float--boba .bp-note,
-  .bp-float--pouch .bp-note {
-    left: 50%; right: auto; translate: -50% 0;
-  }
-  .bp-float--boba .bp-note::after,
-  .bp-float--pouch .bp-note::after {
-    left: 50%; right: auto; translate: -50% 0;
-  }
-  .bp-float--headphones .bp-note { left: auto; right: 0; translate: 0 0; }
-  .bp-float--headphones .bp-note::after {
-    left: auto;
-    right: calc(var(--fw, 64px) * var(--sscale, 1) / 2);
-    translate: 50% 0;
-  }
-  /* Pencil sits right next to journal as a deliberate overlapping pile
-     -- a centered note landed squarely on top of the journal icon.
-     Anchor it to open rightward (away from journal, which is to its
-     left) instead. */
-  .bp-float--pencil .bp-note { left: 0; right: auto; translate: 0 0; }
-  .bp-float--pencil .bp-note::after {
-    left: calc(var(--fw, 64px) * var(--sscale, 1) / 2);
-    right: auto;
-    translate: -50% 0;
-  }
-
-  /* Plant, journal, and pouch all sit high, close to the bio text above
-     -- opening their notes upward (the default direction) lands on top
-     of that text, or gets covered by the ID card in .bp-container,
-     which paints above .bp-interact (z-index 3 vs 2). Flip all three to
-     open downward, where there's clear space either way. (Journal was
-     missed in the first pass -- its --stop: 8% is just as high up as
-     plant's, so it needed the exact same fix.) */
-  .bp-float--plant .bp-note,
-  .bp-float--journal .bp-note,
-  .bp-float--pouch .bp-note {
-    bottom: auto;
-    top: calc(100% + 12px);
-  }
-  .bp-float--plant .bp-note::after,
-  .bp-float--journal .bp-note::after,
-  .bp-float--pouch .bp-note::after {
-    top: auto;
-    bottom: 100%;
-    border-top-color: transparent;
-    border-bottom-color: var(--ink);
-  }
-
-  /* Redistributed to actually fill the gap that was sitting empty right
-     under the bio text, instead of leaving that quiet and piling
-     everything low, crowding the invite line below. Journal moved up
-     into the spot the swirl doodle used to sit in; pencil's rotation
-     steepened so its tip reads as pointing down into the pile instead
-     of level. */
-  .bp-float--plant      { --sleft: 8%;  --stop: 14%; --srot: -13deg; --sscale: 1.55; --sz: 2; }
-  .bp-float--journal    { --sleft: 33%; --stop: 8%;  --srot: -10deg; --sscale: 1.5;  --sz: 3; }
-  .bp-float--pouch      { --sleft: 64%; --stop: 36%; --srot: 13deg;  --sscale: 1.3;  --sz: 4; }
-  .bp-float--headphones { --sleft: 87%; --stop: 30%; --srot: -16deg; --sscale: 1.85; --sz: 2; }
-  .bp-float--boba       { --sleft: 23%; --stop: 50%; --srot: 9deg;   --sscale: 1.45; --sz: 3; }
-  .bp-float--pencil     { --sleft: 47%; --stop: 44%; --srot: 34deg;  --sscale: 1.45; --sz: 6; }
-
-  /* Background doodles -- quick hand-drawn marks (not new image assets,
-     just inline SVG strokes in the section's own cream), pulling from
-     the same idea vocabulary as the rest of the site (music, ink-stamp
-     line work) instead of generic swirls/sparkles alone. Spread across
-     four spots so the remaining gaps read as textured negative space,
-     not holes. */
-  .bp-doodle {
-    display: block;
-    position: absolute;
-    z-index: 1;
-    pointer-events: none;
-    opacity: .3;
-  }
-  .bp-doodle--swirl { left: 53%; top: 10%; width: 40px; }
-  .bp-doodle--note  { left: 74%; top: 56%; width: 30px; }
-  .bp-doodle--spark { left: 15%; top: 60%; width: 28px; }
-  .bp-doodle--heart { left: 39%; top: 66%; width: 30px; }
-
-  /* PART 2.d -- Very slow, small-amplitude drift as the page scrolls
-     past, restrained per "calm pages" (a few px, not an attention
-     grab). Each doodle gets its own small hand-set amplitude/direction
-     rather than one shared motion, same "specific values, not a
-     randomizer" spirit as .bp-float's desk-object placement above.
-     Chrome/Edge/Safari 26+ only -- animation-range:entry is required
-     in the @supports check itself to filter out partial-support
-     browsers, per the scroll-driven-animations guide. Purely
-     decorative and progressively enhanced, so unsupported browsers
-     (Firefox included) just keep today's static doodles -- no JS
-     scroll-listener fallback is worth writing for this. */
-  @supports ((animation-timeline: view()) and (animation-range: entry)) {
-    @media (prefers-reduced-motion: no-preference) {
-      .bp-doodle {
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        animation-timeline: view();
-        animation-range: entry 0% exit 100%;
-      }
-      .bp-doodle--swirl { animation-name: bpDoodleDriftSwirl; }
-      .bp-doodle--note  { animation-name: bpDoodleDriftNote; }
-      .bp-doodle--spark { animation-name: bpDoodleDriftSpark; }
-      .bp-doodle--heart { animation-name: bpDoodleDriftHeart; }
-    }
-  }
-}
-
-@supports ((animation-timeline: view()) and (animation-range: entry)) {
-  @keyframes bpDoodleDriftSwirl { from { transform: translateY(-7px) rotate(-3deg); } to { transform: translateY(6px) rotate(2deg); } }
-  @keyframes bpDoodleDriftNote  { from { transform: translateY(5px); }                to { transform: translateY(-6px); } }
-  @keyframes bpDoodleDriftSpark { from { transform: translateY(-4px) rotate(4deg); }  to { transform: translateY(7px) rotate(-4deg); } }
-  @keyframes bpDoodleDriftHeart { from { transform: translateY(6px); }                to { transform: translateY(-5px); } }
-}
-
-/* 3-column grid: plant/journal sit in the left column, headphones/pencil
-   in the right column -- a note centered on any of those four would
-   overhang into the next item over (or off the viewport edge for the
-   two outermost). Anchor those four inward; boba/pouch sit in the
-   center column, where a centered note already has room either side. */
-.bp-float--plant .bp-note,
-.bp-float--journal .bp-note {
-  left: 0;
-  translate: 0 0;
-}
-.bp-float--plant .bp-note::after,
-.bp-float--journal .bp-note::after {
-  left: calc(var(--fw, 64px) / 2);
-  translate: -50% 0;
-}
-.bp-float--headphones .bp-note,
-.bp-float--pencil .bp-note {
-  left: auto;
-  right: 0;
-  translate: 0 0;
-}
-.bp-float--headphones .bp-note::after,
-.bp-float--pencil .bp-note::after {
-  left: auto;
-  right: calc(var(--fw, 64px) / 2);
-  translate: 50% 0;
-}
-/* Notes are wide relative to how close together the grid packs these
-   six items -- narrower + smaller type on mobile keeps them from
-   overlapping the neighboring item even with the anchoring above. */
-@media (max-width: 640px) {
-  .bp-note {
-    width: 150px;
-    font-size: .72rem;
-    padding: .55rem .65rem;
-  }
-  /* Top grid row (plant/boba/headphones) sits right under the ID card
-     in .bp-container, which paints above .bp-interact (z-index 3 vs 2)
-     -- a note opening upward from these three lands directly behind the
-     card and gets clipped, same issue the desktop layout already works
-     around for its own top-sitting items. Flip these three to open
-     downward into the clear space above row two instead. */
-  .bp-float--plant .bp-note,
-  .bp-float--boba .bp-note,
-  .bp-float--headphones .bp-note {
-    bottom: auto;
-    top: calc(100% + 12px);
-  }
-  .bp-float--plant .bp-note::after,
-  .bp-float--boba .bp-note::after,
-  .bp-float--headphones .bp-note::after {
-    top: auto;
-    bottom: 100%;
-    border-top-color: transparent;
-    border-bottom-color: var(--ink);
-  }
-}
-
+/* -------- dead code removed --------
+   Everything from here to .bp-float--plant's --frot line below used to
+   place these six items on an absolute-positioned 920px "scatter" canvas
+   (.bp-scatter) with its own hand-picked --sleft/--stop/--srot/--sscale
+   coordinates, plus a 3-column-grid anchor/direction-flip pass for an
+   even earlier single-row version. Both predate .bp-desk, the current
+   3x2 grid inside the ID-card drawer -- .bp-scatter and .bp-interact
+   don't exist in the markup any more (superseded by .bp-desk, see the
+   About section restructure). But their selectors were bare class
+   selectors (.bp-float--journal .bp-note, not .bp-scatter
+   .bp-float--journal .bp-note), so they kept matching .bp-desk's live
+   buttons: journal/pouch/plant were still getting flipped to open
+   downward and anchored left/right for a canvas that no longer exists,
+   pushing their notes past .bp-facts-panel's bottom edge where its
+   overflow:hidden clipped them -- the pouch/journal bug. Deleted rather
+   than scoped, per this repo's "delete legacy blocks, don't stack
+   another override on top" rule; .bp-desk .bp-note's own default
+   (centered, opens upward) already fits inside the panel. */
 .bp-float--plant      { --fw: 68px; --frot: -8deg;  --fy: 0px;   transition-delay: .34s; }
 .bp-float--boba       { --fw: 54px; --frot: 6deg;   --fy: 10px;  transition-delay: .4s; }
 .bp-float--headphones { --fw: 70px; --frot: -5deg;  --fy: -6px;  transition-delay: .46s; }
@@ -13460,7 +13269,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   border-top: 1px dashed rgba(24,23,21,.16);
 }
 .bp-desk .bp-float {
-  position: static;
+  /* Was position:static -- that strips this button as a positioning
+     context, so its child .bp-note (position:absolute) fell through to
+     some distant ancestor's box instead of anchoring to the button
+     itself. The note still rendered, just wherever that ancestor's
+     edges happened to put it -- usually outside .bp-facts-panel, which
+     clips overflow, so pouch's and journal's notes were invisible.
+     relative restores the button as the note's anchor. */
+  position: relative;
   width: 80px;
   opacity: 1;
   filter: none;
@@ -13476,6 +13292,27 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   /* Notes still pop up on hover/focus, cancelling the item rotation. */
   transform: rotate(calc(-1 * var(--frot, 0deg)));
   max-width: 200px;
+}
+/* Column 1 (plant, journal) and column 3 (headphones, pencil) sit close
+   enough to .bp-facts-panel's edge that a centered note (translate:-50%,
+   sized off its own 188px width, not the ~110-150px column it's in)
+   pokes past the panel's side, where overflow:hidden clips a few
+   characters -- smaller version of the same bug pouch/journal had.
+   Anchoring to the button's own edge instead of centering scales
+   correctly at both the 80px (desktop) and 64px (mobile) button width,
+   unlike a hand-tuned percentage nudge. Column 2 (boba, pouch) has
+   room on both sides and keeps the default centered note. The pointer
+   (::after) is left centered on the button on purpose. */
+.bp-desk .bp-float--plant .bp-note,
+.bp-desk .bp-float--journal .bp-note {
+  left: 0;
+  translate: 0 0;
+}
+.bp-desk .bp-float--headphones .bp-note,
+.bp-desk .bp-float--pencil .bp-note {
+  left: auto;
+  right: 0;
+  translate: 0 0;
 }
 
 /* Studio Inventory -- Toolkit, Words and Awards visible at once,
