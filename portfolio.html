@@ -45,6 +45,15 @@
 </script>
 <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
 <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
+<!-- The hero wordmark's dark-theme variant (hero_name_dark.webp, ~240KB) was
+     only ever fetched at the moment toggleTheme() set img.src to it -- a cold
+     network fetch + decode on every first toggle, which on a phone read as
+     the name card taking a few seconds to switch. fetchpriority="low" so this
+     warms the browser cache in the background without competing with the
+     light-mode image already loading as the page's LCP candidate; by the
+     time someone actually clicks the toggle it's typically already cached,
+     so the src swap in updateHeroImage() is instant. -->
+<link rel="preload" as="image" href="assets/svg-opt/hero_name_dark.webp" fetchpriority="low"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
@@ -15490,14 +15499,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
           <span class="lc-step-d">Setup, rehearsal, 2 to 3 takes, retakes, b-roll. Around 1.5 h per video.</span></figcaption>
         </figure></li>
         <li class="lc-step"><figure>
-          <img class="lc-thumb" src="assets/projects/vipcolor/vip-runsheet.webp" alt="An event run sheet with times and named people in charge" loading="lazy">
-          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The people</span>
-          <span class="lc-step-d">Run sheets naming who is on soundcheck, lighting and coverage, by the minute.</span></figcaption>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-essentials.webp" alt="A checklist of pre-production requirements and video-shoot equipment logistics" loading="lazy">
+          <figcaption><span class="lc-step-n">04</span><span class="lc-step-t">The essentials</span>
+          <span class="lc-step-d">A demonstrator's time worked out in advance, same as the camera and lighting kit.</span></figcaption>
         </figure></li>
         <li class="lc-step"><figure>
-          <img class="lc-thumb" src="assets/projects/vipcolor/vip-tracker.webp" alt="A project tracker with progress status per deliverable" loading="lazy">
-          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">The tracking</span>
-          <span class="lc-step-d">Every deliverable with its own status, so nothing quietly slips.</span></figcaption>
+          <img class="lc-thumb" src="assets/projects/vipcolor/vip-script.webp" alt="A hand-drawn storyboard for the printhead installation video, panel by panel" loading="lazy">
+          <figcaption><span class="lc-step-n">05</span><span class="lc-step-t">The scripts</span>
+          <span class="lc-step-d">Every video storyboarded panel by panel before a camera was set up.</span></figcaption>
         </figure></li>
       </ol>
     </section>

@@ -4358,26 +4358,60 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                    PERFECT ZERO-SCROLL ALL-IN-ONE MOBILE DJ STUDIO
                    ================================================================ */
                 @media (max-width: 880px) {
+                  /* 100vh on a phone is the *largest* possible viewport --
+                     the height you'd get with the browser's address bar and
+                     home-indicator bar both hidden. Real, on-screen height is
+                     smaller than that whenever that chrome is showing (which
+                     is most of the time), so locking html/body/#main to
+                     100vh + overflow:hidden made the bottom of this "fits in
+                     one screen" layout render *below* the real fold, with no
+                     scroll available to reach it -- the deck and the start of
+                     the playlist were fine, but the rest read as cut off.
+                     100dvh tracks the browser's actual visible viewport
+                     instead. Declared after the 100vh line on purpose: an
+                     unsupported unit is simply invalid and ignored, so older
+                     browsers keep the 100vh line above as their fallback. */
                   html, body {
                     overflow: hidden !important;
                     height: 100vh !important;
+                    height: 100dvh !important;
                     max-height: 100vh !important;
+                    max-height: 100dvh !important;
                     width: 100% !important;
                   }
                   body.dj-studio-mode #main,
-                  body.dj-studio-mode .con,
                   body.dj-studio-mode #dynamic-gallery {
                     padding: 0 !important;
                     margin: 0 auto !important;
                     width: 100% !important;
                     max-width: 100% !important;
                     height: 100vh !important;
+                    height: 100dvh !important;
                     overflow: hidden !important;
+                    box-sizing: border-box !important;
+                  }
+                  /* .con here is just the footer "Back to Portfolio" link --
+                     it was caught by the shared selector above and forced to
+                     its own extra 100vh, silently doubling #main's total
+                     height to 200vh. #main's own overflow:hidden then hid
+                     that entire second screen's worth of space with no way
+                     to scroll to it. Harmless today only because the nav bar
+                     already carries its own "Back to Portfolio" link, so
+                     nothing reachable was actually lost -- but it's exactly
+                     the kind of dead space that turns into a real cutoff the
+                     moment this footer ever grows a second element. Sized to
+                     its own content instead. */
+                  body.dj-studio-mode .con {
+                    padding: 0 !important;
+                    margin: 0 auto !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
                     box-sizing: border-box !important;
                   }
                   .dj-studio-stage {
                     padding: 5.2rem 1rem 1.5rem 1rem !important;
                     min-height: 100vh !important;
+                    min-height: 100dvh !important;
                     width: 100% !important;
                     max-width: 360px !important;
                     margin: 0 auto !important;
@@ -4589,7 +4623,11 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                   .track-card-btn {
                     flex: none !important;
                     width: 100% !important;
-                    padding: 0.55rem 0.70rem !important;
+                    /* Right padding bumped up from 0.70rem -- with a 12px border-radius,
+                       that left the live-wave-bars dots (right-aligned by
+                       .track-name-row's space-between) sitting almost exactly where the
+                       corner starts curving, reading as jammed into the edge. */
+                    padding: 0.55rem 1rem 0.55rem 0.70rem !important;
                     border-radius: 12px !important;
                     gap: 0.70rem !important;
                     background: rgba(255, 255, 255, 0.05) !important;
@@ -4912,8 +4950,10 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               let audioCtx = null;
               let analyser = null;
               let audioSrcNode = null;
+              let videoSrcNode = null;
               let freqData = null;
-              
+              let eqFilterNode = null; // the FLTR dial's real lowpass/highpass, not just a label
+
               function initWebAudio() {
                 try {
                   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -4923,7 +4963,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                   if (audioCtx && audioCtx.state === 'suspended') {
                     audioCtx.resume();
                   }
-                  
+
                   // Chromium/WebKit blocks createMediaElementSource on file:// URLs (outputs zeroes / mutes audio)
                   // On file:// we keep native direct audio speaker output; on http/https we connect the live AnalyserNode
                   const isLocalFile = (window.location.protocol === 'file:');
@@ -4932,14 +4972,38 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     analyser.fftSize = 512;
                     analyser.smoothingTimeConstant = 0.60;
                     freqData = new Uint8Array(analyser.frequencyBinCount);
-                    
+                    // Sits between the source and the analyser so the FLTR dial
+                    // actually changes both what you hear AND what the
+                    // visualizer sees -- a lowpass genuinely dims the hat/air
+                    // beams because that frequency data really is gone, not
+                    // just a label change with a decorative knob rotation.
+                    eqFilterNode = audioCtx.createBiquadFilter();
+                    eqFilterNode.type = 'allpass';
+                    eqFilterNode.frequency.value = 20000;
+                    eqFilterNode.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+
                     if (!audioSrcNode && audio) {
                       try {
                         audioSrcNode = audioCtx.createMediaElementSource(audio);
-                        audioSrcNode.connect(analyser);
-                        analyser.connect(audioCtx.destination);
+                        audioSrcNode.connect(eqFilterNode);
                       } catch (e) {
                         console.warn('AudioSource routing note:', e);
+                      }
+                    }
+                    // Cloudy Days and Paradise play through bgVideo, a separate
+                    // element the filter never touched -- clicking FLTR did
+                    // nothing audible on either of them. Routing bgVideo's audio
+                    // through the same filter node fixes that for all three
+                    // tracks. createMediaElementSource can only be called once
+                    // per element ever (a second call throws), which is what
+                    // the !videoSrcNode guard is for.
+                    if (!videoSrcNode && bgVideo) {
+                      try {
+                        videoSrcNode = audioCtx.createMediaElementSource(bgVideo);
+                        videoSrcNode.connect(eqFilterNode);
+                      } catch (e) {
+                        console.warn('VideoSource routing note:', e);
                       }
                     }
                   }
@@ -4956,7 +5020,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                   return smoothed + (raw - smoothed) * decayCoeff;  // slow decay
                 }
               }
-              
+
               let smoothBass = 0.05;
               let smoothMid = 0.08;
               let smoothTreble = 0.05;
@@ -5049,6 +5113,51 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               // 3. MAIN RENDER LOOP
               // ================================================================
               let animTime = 0;
+              // Club Got Boots rave-light state (persists across frames).
+              // Two tones, not six -- the six-color-per-band version read as
+              // busy/uncoordinated rather than premium. Green matches this
+              // track's own established color (--track-color on its playlist
+              // row, its vinyl label); magenta is purely the accent for
+              // electricity-crack flashes, never the base scene color.
+              const clubPrimary = '80, 255, 170';
+              const clubAccent = '230, 60, 255';
+              let clubShockwaves = [];
+              let clubCracks = [];
+              let clubStrobeAlpha = 0;
+              let clubStrobeColor = clubPrimary;
+              const clubBuffer = document.createElement('canvas');
+              const clubBufferCtx = clubBuffer.getContext('2d');
+              // The ring's center/radius are computed from the actual on-screen
+              // gap between the nav bar and the deck panel (both opaque DOM
+              // elements sitting on top of this canvas), not a fraction of the
+              // viewport -- a fixed fraction put the ring's lower half behind
+              // the panel, which is what read as a weirdly cropped circle:
+              // that was the panel covering it, not a rendering bug.
+              const clubDeckEl = document.querySelector('.dj-deck-wrapper');
+              const clubNavEl = document.querySelector('.nav');
+              let clubSafeCy = 120;
+              let clubSafeMaxR = 90;
+              // Arrangement tracking: this track isn't one texture throughout --
+              // it opens on lead/mid with the sub/bass held back, then the sub
+              // drop lands around the 8s mark and the full band comes in. Rather
+              // than hardcode that timing (fragile, and wrong for any other
+              // track), presence is a slow (~2-3s) smoothed read per band of
+              // "is this instrument actually part of the arrangement right now",
+              // separate from the fast per-frame energy already used for
+              // brightness/flicker. A beam only lights up once its band's
+              // presence clears its floor, so the scene genuinely starts sparse
+              // and fills in as instruments arrive, instead of all six firing
+              // at full brightness from the first frame.
+              let clubPresence = [0, 0, 0, 0, 0, 0];
+              let clubSubBaseline = 0;
+              let clubSubBaselineOld = 0;
+              let clubSubTrendTimer = 0;
+              const clubPresenceFloors = [0.30, 0.35, 0.20, 0.20, 0.40, 0.30];
+              let clubActiveMask = [false, false, false, false, false, false];
+              let clubIgniteUntil = [0, 0, 0, 0, 0, 0]; // performance.now() timestamps
+              let clubDropCooldown = 0;
+              let clubSubRiseRate = 0; // coarse (1.5s-step) rise rate, drives the build-tension ring
+              const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
               // ================================================================
               // PRO AUDIO DSP ENGINE: ROLLING AVERAGE ONSET & EQUAL-LOUDNESS
               // ================================================================
@@ -5113,17 +5222,26 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               }
               
               if (filterDial) {
+                // type/freq here are the actual BiquadFilterNode settings applied
+                // in initWebAudio() -- 'allpass' is a true no-op (passes every
+                // frequency unchanged), so OFF is really off, not just a label.
                 const filters = [
-                  { label: 'FLTR:OFF', deg: 0 },
-                  { label: 'FLTR:LP', deg: -45 },
-                  { label: 'FLTR:HP', deg: 45 }
+                  { label: 'FLTR:OFF', deg: 0, type: 'allpass', freq: 20000 },
+                  { label: 'FLTR:LP', deg: -45, type: 'lowpass', freq: 700 },
+                  { label: 'FLTR:HP', deg: 45, type: 'highpass', freq: 700 }
                 ];
                 let fIdx = 0;
                 filterDial.onclick = () => {
+                  initWebAudio(); // no-op if already set up; guarantees eqFilterNode exists
                   fIdx = (fIdx + 1) % filters.length;
-                  filterDial.style.transform = `rotate(${filters[fIdx].deg}deg)`;
+                  const f = filters[fIdx];
+                  filterDial.style.transform = `rotate(${f.deg}deg)`;
                   const fl = document.getElementById('filter-label');
-                  if (fl) fl.textContent = filters[fIdx].label;
+                  if (fl) fl.textContent = f.label;
+                  if (eqFilterNode) {
+                    eqFilterNode.type = f.type;
+                    eqFilterNode.frequency.setTargetAtTime(f.freq, audioCtx.currentTime, 0.01);
+                  }
                 };
               }
               
@@ -5240,6 +5358,24 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     canvas.style.height = H + 'px';
                     ctx.scale(dpr, dpr);
                   }
+                  // Offscreen buffer for the club scene: drawn sharp once, then
+                  // composited onto the main canvas twice through ctx.filter blur
+                  // at increasing radii (additive) before the sharp pass on top --
+                  // a real bloom, not a per-shape gradient glow, which is what
+                  // actual light sources look like on camera/in a real 3D render.
+                  if (clubBuffer.width !== canvas.width || clubBuffer.height !== canvas.height) {
+                    clubBuffer.width = canvas.width;
+                    clubBuffer.height = canvas.height;
+                    clubBufferCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    if (clubDeckEl) {
+                      const panelTop = clubDeckEl.getBoundingClientRect().top;
+                      const navBottom = clubNavEl ? clubNavEl.getBoundingClientRect().bottom : 0;
+                      const zoneTop = navBottom + 16;
+                      const zoneBottom = panelTop - 16;
+                      clubSafeCy = Math.max(zoneTop + 10, (zoneTop + zoneBottom) / 2);
+                      clubSafeMaxR = Math.max(40, Math.min((zoneBottom - zoneTop) / 2, W * 0.42));
+                    }
+                  }
                   
                   const track = tracks[currentIdx];
                   const activeMedia = getActiveMedia();
@@ -5316,8 +5452,10 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                   // 1. CLUB GOT BOOTS — BOILER ROOM / RAVE LASER HORIZON & OSCILLOSCOPE STAGE
                   // ================================================================
                   if (track.genre === 'club') {
-                    // Deep warehouse carbon black
-                    ctx.fillStyle = '#020403';
+                    // Deep warehouse carbon black -- neutral instead of the old
+                    // slightly-green #020403, so it doesn't bias every color that
+                    // now gets mixed on top of it back toward green.
+                    ctx.fillStyle = '#050308';
                     ctx.fillRect(0, 0, W, H);
                     
                     const activeGain = (audio.muted || audio.volume <= 0.01) ? 0 : audio.volume;
@@ -5391,122 +5529,279 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     smoothMid = applyAttackDecay(midEnergy, smoothMid, 0.70, 0.08);
                     smoothTreble = applyAttackDecay(hatEnergy, smoothTreble, 0.90, 0.16);
                     
-                    // 3. PERSPECTIVE LASER HORIZON WIREFRAME (Floor & Ceiling Grid)
-                    const horizonY = H * 0.52;
-                    const fov = Math.min(W, H) * 0.85;
-                    const gridSpeed = (cTime * 180) % 100;
-                    
-                    ctx.save();
-                    
-                    // Perspective Floor Lines
-                    const numVLines = 18;
-                    for (let i = -numVLines / 2; i <= numVLines / 2; i++) {
-                      const xNorm = i / (numVLines / 2);
-                      const topX = W / 2 + xNorm * (W * 0.15);
-                      const botX = W / 2 + xNorm * (W * 1.15);
-                      
-                      const lineAlpha = (1.0 - Math.abs(xNorm) * 0.6) * (0.08 + smoothBass * 0.18 + kickPunch * 0.25);
-                      ctx.strokeStyle = kickPunch > 0.3 ? `rgba(235, 255, 245, ${lineAlpha})` : `rgba(0, 255, 102, ${lineAlpha})`;
-                      ctx.lineWidth = 1;
-                      ctx.beginPath();
-                      ctx.moveTo(topX, horizonY);
-                      ctx.lineTo(botX, H);
-                      ctx.stroke();
+                    // 3. ARRANGEMENT TRACKING -- this track doesn't sit on one
+                    // texture the whole way through: it opens on lead/mid with
+                    // the sub held back, the sub lands hard around the drop, and
+                    // the arrangement thins and refills afterward. `presence` is
+                    // each band's SLOW (~2-3s) smoothed level -- "is this
+                    // instrument actually part of the arrangement right now" --
+                    // separate from the fast per-frame energy above. A band only
+                    // lights its beam once presence clears its own floor, so the
+                    // scene genuinely starts sparse and fills in as instruments
+                    // arrive, and thins back out if the arrangement does, instead
+                    // of every element firing at once for the whole track.
+                    const bandEnergies = [airEnergy, hatEnergy, leadEnergy, midEnergy, bassEnergy, subEnergy];
+                    for (let i = 0; i < 6; i++) {
+                      clubPresence[i] = applyAttackDecay(bandEnergies[i], clubPresence[i], 0.045, 0.02);
                     }
-                    
-                    // Horizontal Depth Rings (Moving forward in perspective)
-                    for (let d = 1; d <= 8; d++) {
-                      const z = (d * 50 - gridSpeed) / 400;
-                      if (z > 0.02 && z < 1.0) {
-                        const y = horizonY + Math.pow(z, 2.2) * (H - horizonY);
-                        const hAlpha = (1.0 - z) * z * (0.15 + smoothBass * 0.35 + kickPunch * 0.40);
-                        ctx.strokeStyle = `rgba(0, 255, 102, ${hAlpha})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(0, y);
-                        ctx.lineTo(W, y);
-                        ctx.stroke();
+                    const prevActiveMask = clubActiveMask;
+                    clubActiveMask = clubPresence.map((v, i) => v > clubPresenceFloors[i]);
+                    for (let i = 0; i < 6; i++) {
+                      if (clubActiveMask[i] && !prevActiveMask[i]) clubIgniteUntil[i] = nowMs + 500;
+                    }
+                    const activeCount = clubActiveMask.filter(Boolean).length;
+
+                    // Sub presence specifically is this track's drop signal (the
+                    // held-back bass that lands hard), tracked against its own
+                    // slow baseline so a genuine section change -- baseline was
+                    // low, sub just jumped -- fires once, instead of every kick
+                    // once the bass is already sitting there.
+                    clubSubBaseline = applyAttackDecay(clubPresence[5], clubSubBaseline, 0.006, 0.006);
+                    if (clubDropCooldown > 0) clubDropCooldown--;
+                    let dropEvent = false;
+                    if (cTime > 2 && clubDropCooldown === 0 && clubSubBaseline < 0.28 && clubPresence[5] - clubSubBaseline > 0.30) {
+                      dropEvent = true;
+                      clubDropCooldown = 60 * 5; // ~5s at 60fps
+                    }
+                    // Coarse (1.5s-step) rise rate on the sub baseline -- high
+                    // while a build is climbing toward that drop, ~0 once it has
+                    // already landed and gone flat. Drives the tension ring below.
+                    if (nowMs > clubSubTrendTimer) {
+                      clubSubTrendTimer = nowMs + 1500;
+                      clubSubRiseRate = Math.max(0, clubSubBaseline - clubSubBaselineOld);
+                      clubSubBaselineOld = clubSubBaseline;
+                    }
+                    const buildTension = Math.min(1, clubSubRiseRate * 9);
+
+                    // 4. BROKEN-RING LIGHT TUNNEL -- a symmetric ring of glowing
+                    // arcs, not six independent beams fanning off-screen. The
+                    // six-beam, six-color version above photographed as busy and
+                    // uncoordinated rather than premium; real reference visuals
+                    // (a TouchDesigner audio-reactive rig, a Neon Particle Tunnel
+                    // AE template) commit to one or two tones and a symmetric
+                    // composition, and lean on real bloom, not many competing
+                    // hues. Arc count still comes from activeCount -- the ring is
+                    // broken/sparse in the intro and completes at the drop -- but
+                    // every arc is the same color; only its own band's energy
+                    // varies its brightness slightly.
+                    // Center/radius come from the real gap between the nav and
+                    // the deck panel (clubSafeCy/clubSafeMaxR, computed on
+                    // resize above) so the ring physically cannot reach behind
+                    // either -- that overlap was the actual cause of the
+                    // "weirdly cropped circle" look, not a rendering bug.
+                    const cx = W * 0.5;
+                    const cy = clubSafeCy;
+                    // Pulse is a much bigger swing than before (was a ~9% radius
+                    // change, imperceptible) -- 58% to 100% of the available
+                    // radius, so the ring visibly breathes with the bass and
+                    // punches outward on every kick instead of looking static.
+                    const pulse = Math.min(1, smoothBass * 0.75 + kickPunch * 0.7);
+                    const baseRadius = clubSafeMaxR * (0.58 + pulse * 0.42);
+                    const arcSpan = (Math.PI * 2) / 6 * 0.62; // each arc covers ~62% of its slot, rest is the gap
+                    // Rotation speed itself now tracks energy -- near-still at
+                    // idle, visibly spinning up through a build, fastest right
+                    // at a kick -- so motion itself reads as reacting to the
+                    // track, not just brightness.
+                    const ringRotation = cTime * (0.06 + smoothBass * 0.5 + kickPunch * 0.5);
+
+                    clubBufferCtx.clearRect(0, 0, W, H);
+                    clubBufferCtx.save();
+                    clubBufferCtx.globalCompositeOperation = 'lighter';
+                    for (let i = 0; i < 6; i++) {
+                      const igniting = nowMs < clubIgniteUntil[i];
+                      if (!clubActiveMask[i] && !igniting) continue;
+                      const igniteBoost = igniting ? (1 - (clubIgniteUntil[i] - nowMs) / 500) : 0;
+                      const energy = bandEnergies[i];
+                      const slotAngle = (Math.PI * 2 / 6) * i + ringRotation;
+                      // Wider dynamic range top to bottom (was 0.35-1.0, now
+                      // 0.18-1.0) so quiet moments genuinely look quiet and
+                      // loud moments genuinely pop, instead of a narrow band
+                      // that always looks about the same brightness.
+                      const alpha = (0.18 + energy * 0.55 + kickPunch * 0.35) * (0.7 + igniteBoost * 0.3);
+                      clubBufferCtx.strokeStyle = `rgba(${clubPrimary}, ${Math.min(1, alpha)})`;
+                      clubBufferCtx.lineWidth = 3 + energy * 12 + kickPunch * 10;
+                      clubBufferCtx.lineCap = 'round';
+                      clubBufferCtx.beginPath();
+                      clubBufferCtx.arc(cx, cy, baseRadius, slotAngle - arcSpan / 2, slotAngle + arcSpan / 2);
+                      clubBufferCtx.stroke();
+                    }
+
+                    // Rotating sweep highlight -- a single bright point that
+                    // continuously orbits the ring regardless of section, so
+                    // there's always some visible life even in a quiet moment
+                    // between kicks, not just a static arrangement of arcs.
+                    if (!prefersReducedMotion) {
+                      const sweepAngle = cTime * 0.5;
+                      const sx = cx + Math.cos(sweepAngle) * baseRadius;
+                      const sy = cy + Math.sin(sweepAngle) * baseRadius;
+                      clubBufferCtx.fillStyle = `rgba(${clubPrimary}, ${0.5 + kickPunch * 0.4})`;
+                      clubBufferCtx.beginPath();
+                      clubBufferCtx.arc(sx, sy, 3 + kickPunch * 4, 0, Math.PI * 2);
+                      clubBufferCtx.fill();
+                    }
+
+                    // Thin inner ring, counter-rotating, very low alpha -- cheap
+                    // depth cue (two rings reading as a tunnel, not one flat
+                    // circle) without a second color.
+                    clubBufferCtx.strokeStyle = `rgba(${clubPrimary}, ${0.10 + smoothBass * 0.12})`;
+                    clubBufferCtx.lineWidth = 1;
+                    clubBufferCtx.beginPath();
+                    clubBufferCtx.arc(cx, cy, baseRadius * 0.62, -ringRotation * 1.4, -ringRotation * 1.4 + Math.PI * 1.5);
+                    clubBufferCtx.stroke();
+
+                    // Center glow -- brightest right on the beat, like the hot
+                    // core of the reference tunnel/torus visuals. Range widened
+                    // (was 0.25-0.9, now 0.10-1.0) to actually punch on a kick.
+                    const centerAlpha = 0.10 + kickPunch * 0.7 + smoothBass * 0.2;
+                    clubBufferCtx.fillStyle = `rgba(${clubPrimary}, ${Math.min(1, centerAlpha)})`;
+                    clubBufferCtx.beginPath();
+                    clubBufferCtx.arc(cx, cy, 4 + kickPunch * 22, 0, Math.PI * 2);
+                    clubBufferCtx.fill();
+                    clubBufferCtx.restore();
+
+                    // 5. BUILD-TENSION RING -- only visible while the sub baseline
+                    // is actively climbing toward a section change: a slowly
+                    // contracting outer ring, same primary tone, giving the
+                    // anticipation its own shape instead of just louder arcs.
+                    // Scaled off clubSafeMaxR (not the full viewport, which is
+                    // what let this one reach behind the deck panel too).
+                    if (buildTension > 0.03 && !prefersReducedMotion) {
+                      const cyclePos = (cTime * 0.6) % 1;
+                      const ringRadius = clubSafeMaxR * (1.1 - cyclePos * 0.55);
+                      const ringAlpha = buildTension * (1 - cyclePos) * 0.35;
+                      clubBufferCtx.save();
+                      clubBufferCtx.globalCompositeOperation = 'lighter';
+                      clubBufferCtx.strokeStyle = `rgba(${clubPrimary}, ${ringAlpha})`;
+                      clubBufferCtx.lineWidth = 1.5;
+                      clubBufferCtx.beginPath();
+                      clubBufferCtx.arc(cx, cy, Math.max(4, ringRadius), 0, Math.PI * 2);
+                      clubBufferCtx.stroke();
+                      clubBufferCtx.restore();
+                    }
+
+                    // 6. ELECTRICITY CRACKS -- jagged accent-color lines that
+                    // fire outward from the ring only on the drop or a hard kick,
+                    // not continuously, so the second tone stays an accent
+                    // instead of competing with the primary color for attention.
+                    if (dropEvent || kickPunch > 0.55) {
+                      const already = clubCracks.some(c => nowMs - c.t0 < 80);
+                      if (!already) {
+                        const crackCount = dropEvent ? 5 : 2;
+                        for (let c = 0; c < crackCount; c++) {
+                          const a0 = Math.random() * Math.PI * 2;
+                          const points = [[cx + Math.cos(a0) * baseRadius, cy + Math.sin(a0) * baseRadius]];
+                          let ang = a0;
+                          let dist = baseRadius;
+                          const reach = Math.max(W, H) * (dropEvent ? 0.6 : 0.35);
+                          for (let s = 0; s < 5; s++) {
+                            ang += (Math.random() - 0.5) * 0.7;
+                            dist += reach / 5;
+                            points.push([cx + Math.cos(ang) * dist, cy + Math.sin(ang) * dist]);
+                          }
+                          clubCracks.push({ t0: nowMs, points });
+                        }
                       }
                     }
-                    
-                    ctx.restore();
-                    
-                    // 4. KINETIC AUDIO OSCILLOSCOPE WAVEFORM RIBBON (Across the Horizon)
-                    ctx.save();
-                    const numWavePoints = 120;
-                    const waveAmp = (25 + smoothBass * 80 + kickPunch * 60) * activeGain;
-                    
-                    // Sub-Bass Glow Ribbon
-                    ctx.beginPath();
-                    for (let i = 0; i <= numWavePoints; i++) {
-                      const wx = (i / numWavePoints) * W;
-                      const normX = (i / numWavePoints - 0.5) * 2;
-                      const envelope = Math.cos(normX * Math.PI * 0.5); // Center taper
-                      
-                      const freqWave = Math.sin(i * 0.35 + cTime * 8.0) * (smoothMid * 0.6);
-                      const kickWave = Math.sin(i * 0.15 - cTime * 12.0) * (smoothBass * 0.8);
-                      const hatSpark = (Math.random() - 0.5) * (smoothTreble * 18);
-                      
-                      const wy = horizonY + (freqWave + kickWave) * waveAmp * envelope + hatSpark;
-                      if (i === 0) ctx.moveTo(wx, wy);
-                      else ctx.lineTo(wx, wy);
+                    clubCracks = clubCracks.filter(c => nowMs - c.t0 < 260);
+                    clubBufferCtx.save();
+                    clubBufferCtx.globalCompositeOperation = 'lighter';
+                    for (const c of clubCracks) {
+                      const age = (nowMs - c.t0) / 260;
+                      clubBufferCtx.strokeStyle = `rgba(${clubAccent}, ${(1 - age) * 0.8})`;
+                      clubBufferCtx.lineWidth = 1.5;
+                      clubBufferCtx.beginPath();
+                      clubBufferCtx.moveTo(c.points[0][0], c.points[0][1]);
+                      for (let p = 1; p < c.points.length; p++) clubBufferCtx.lineTo(c.points[p][0], c.points[p][1]);
+                      clubBufferCtx.stroke();
                     }
-                    
-                    ctx.strokeStyle = kickPunch > 0.2 ? `rgba(245, 255, 250, ${0.4 + kickPunch * 0.5})` : `rgba(0, 255, 102, ${0.25 + smoothBass * 0.45})`;
-                    ctx.lineWidth = 2.0 + kickPunch * 1.5;
-                    ctx.stroke();
-                    ctx.restore();
-                    
-                    // 5. TRANSIENT LASER HORIZON BEAM ON BEAT DROPS
-                    if (kickPunch > 0.05 && activeGain > 0) {
-                      ctx.save();
-                      // Intense Core Laser Line
-                      ctx.strokeStyle = `rgba(255, 255, 255, ${kickPunch * 0.85})`;
-                      ctx.lineWidth = 2.0;
-                      ctx.beginPath();
-                      ctx.moveTo(0, horizonY);
-                      ctx.lineTo(W, horizonY);
-                      ctx.stroke();
-                      
-                      // Volumetric Laser Haze
-                      const laserHaze = ctx.createLinearGradient(0, horizonY - 40 * kickPunch, 0, horizonY + 40 * kickPunch);
-                      laserHaze.addColorStop(0, 'rgba(0, 255, 102, 0)');
-                      laserHaze.addColorStop(0.5, `rgba(0, 255, 102, ${kickPunch * 0.35})`);
-                      laserHaze.addColorStop(1, 'rgba(0, 255, 102, 0)');
-                      ctx.fillStyle = laserHaze;
-                      ctx.fillRect(0, horizonY - 40 * kickPunch, W, 80 * kickPunch);
-                      ctx.restore();
+                    clubBufferCtx.restore();
+
+                    // 7. DROP BURST + PER-KICK SHOCKWAVE -- one large expanding
+                    // ring exactly on the structural drop, a smaller one on
+                    // ordinary kicks, both in the same primary tone (white-hot
+                    // for the drop specifically, since a real strobe hit reads
+                    // brighter than color).
+                    if (dropEvent) {
+                      clubShockwaves.push({ t0: nowMs, color: '255, 255, 255', big: true });
+                      clubStrobeColor = '255, 255, 255';
+                      clubStrobeAlpha = prefersReducedMotion ? 0 : 0.4;
+                    } else if (isDynamicKick) {
+                      clubShockwaves.push({ t0: nowMs, color: clubPrimary });
+                      clubStrobeColor = clubPrimary;
+                      clubStrobeAlpha = prefersReducedMotion ? 0 : 0.12;
                     }
-                    
-                    // 6. ATMOSPHERIC HI-HAT STARDUST PARTICLES (Warehouse Smoke Glitter)
-                    if (cloudyDots && isPlaying && activeGain > 0) {
-                      ctx.save();
+                    clubStrobeAlpha *= 0.88;
+
+                    clubShockwaves = clubShockwaves.filter(sw => nowMs - sw.t0 < (sw.big ? 1100 : 550));
+                    clubBufferCtx.save();
+                    clubBufferCtx.globalCompositeOperation = 'lighter';
+                    for (const sw of clubShockwaves) {
+                      const dur = sw.big ? 1100 : 550;
+                      const age = (nowMs - sw.t0) / dur;
+                      const reach = sw.big ? 0.9 : 0.5;
+                      const radius = baseRadius + age * Math.max(W, H) * reach;
+                      const ringAlpha = (1 - age) * (sw.big ? 0.6 : 0.35);
+                      clubBufferCtx.strokeStyle = `rgba(${sw.color}, ${ringAlpha})`;
+                      clubBufferCtx.lineWidth = (sw.big ? 4 : 2) * (1 - age) + 1;
+                      clubBufferCtx.beginPath();
+                      clubBufferCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+                      clubBufferCtx.stroke();
+                    }
+                    clubBufferCtx.restore();
+
+                    // 8. A FEW EMBERS, NOT A PARTICLE STORM -- sparse, single-
+                    // toned, only present once the arrangement has actually
+                    // filled in, so the intro stays clean rather than busy.
+                    if (cloudyDots && isPlaying && activeGain > 0 && activeCount > 3) {
+                      clubBufferCtx.save();
+                      clubBufferCtx.globalCompositeOperation = 'lighter';
                       const trebleSpark = Math.max(0, smoothTreble);
-                      for (let i = 0; i < 40; i++) {
-                        const pt = cloudyDots[i];
-                        const px = (pt.xRel * W + cTime * 25) % W;
+                      const particleCount = Math.min(14, (activeCount - 3) * 5);
+                      for (let i = 0; i < particleCount; i++) {
+                        const pt = cloudyDots[i % cloudyDots.length];
+                        const px = (pt.xRel * W + cTime * 15) % W;
                         const py = pt.yRel * H;
-                        const pAlpha = (pt.baseAlpha * 0.4 + trebleSpark * 0.6) * activeGain;
-                        const pSize = 1.0 + (trebleSpark * 2.0);
-                        
-                        ctx.fillStyle = (i % 3 === 0) ? `rgba(235, 255, 245, ${pAlpha})` : `rgba(0, 255, 102, ${pAlpha})`;
-                        ctx.beginPath();
-                        ctx.arc(px, py, pSize, 0, Math.PI * 2);
-                        ctx.fill();
+                        const pAlpha = (pt.baseAlpha * 0.35 + trebleSpark * 0.4) * activeGain;
+                        clubBufferCtx.fillStyle = `rgba(${clubPrimary}, ${pAlpha})`;
+                        clubBufferCtx.beginPath();
+                        clubBufferCtx.arc(px, py, 1.1 + trebleSpark * 1.6, 0, Math.PI * 2);
+                        clubBufferCtx.fill();
                       }
-                      ctx.restore();
+                      clubBufferCtx.restore();
                     }
-                    
-                    // 7. SUBTLE HARDWARE TELEMETRY BADGES
-                    ctx.font = '600 9px "SF Mono", "Fira Code", monospace';
-                    ctx.fillStyle = 'rgba(0, 255, 102, 0.40)';
-                    ctx.textAlign = 'left';
-                    ctx.fillText(`128 BPM // ACID RAVE MATRIX // PEAK: ${Math.round(smoothBass * 100)}%`, W * 0.05, H * 0.94);
-                    
-                    // 8. CINEMATIC STAGE VIGNETTE
-                    const vignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
+
+                    if (clubStrobeAlpha > 0.006) {
+                      clubBufferCtx.save();
+                      clubBufferCtx.fillStyle = `rgba(${clubStrobeColor}, ${clubStrobeAlpha})`;
+                      clubBufferCtx.fillRect(0, 0, W, H);
+                      clubBufferCtx.restore();
+                    }
+
+                    // 9. COMPOSITE: base black, then the buffer twice through a
+                    // real gaussian blur (ctx.filter) at two radii, additive, so
+                    // bright shapes actually bleed soft light into the dark
+                    // around them -- then the buffer once more at full sharpness
+                    // on top for a defined core. This is what was actually
+                    // missing before: per-shape shadowBlur glows around flat
+                    // shapes, never a real bloom pass over the whole scene.
+                    ctx.fillStyle = '#050308';
+                    ctx.fillRect(0, 0, W, H);
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.filter = 'blur(24px)';
+                    ctx.drawImage(clubBuffer, 0, 0, W, H);
+                    ctx.filter = 'blur(8px)';
+                    ctx.globalAlpha = 0.85;
+                    ctx.drawImage(clubBuffer, 0, 0, W, H);
+                    ctx.globalAlpha = 1;
+                    ctx.filter = 'none';
+                    ctx.restore();
+                    ctx.drawImage(clubBuffer, 0, 0, W, H);
+
+                    // 10. CINEMATIC STAGE VIGNETTE
+                    const vignette = ctx.createRadialGradient(cx, cy, Math.min(W, H) * 0.22, cx, cy, Math.max(W, H) * 0.85);
                     vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-                    vignette.addColorStop(1, 'rgba(1, 3, 2, 0.85)');
+                    vignette.addColorStop(1, 'rgba(3, 2, 6, 0.6)');
                     ctx.fillStyle = vignette;
                     ctx.fillRect(0, 0, W, H);
                   }
@@ -5528,9 +5823,14 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     }
                     
                     // 2. Cinematic Soft Stage Vignette (Clean contrast for deck)
+                    // 0.80 at the edge was crushing the actual music video to near-
+                    // black almost everywhere the deck panel doesn't already cover it
+                    // -- the one place on the page the video was supposed to be
+                    // visible while listening. 0.42 keeps enough contrast for the
+                    // deck's text without hiding the video behind it.
                     const expVignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
-                    expVignette.addColorStop(0, 'rgba(8, 11, 16, 0.15)');
-                    expVignette.addColorStop(1, 'rgba(3, 5, 8, 0.80)');
+                    expVignette.addColorStop(0, 'rgba(8, 11, 16, 0.08)');
+                    expVignette.addColorStop(1, 'rgba(3, 5, 8, 0.42)');
                     ctx.fillStyle = expVignette;
                     ctx.fillRect(0, 0, W, H);
                   }
@@ -5555,9 +5855,12 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     }
                     
                     // 2. Cinematic Wong Kar-wai Warm Dark Vignette
+                    // Same fix as Cloudy Days' vignette above: 0.80 was crushing the
+                    // Paradise video to near-black outside the deck panel. 0.42 keeps
+                    // the mood without hiding the video someone came here to watch.
                     const popVignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.85);
-                    popVignette.addColorStop(0, 'rgba(15, 6, 22, 0.15)');
-                    popVignette.addColorStop(1, 'rgba(4, 2, 7, 0.80)');
+                    popVignette.addColorStop(0, 'rgba(15, 6, 22, 0.08)');
+                    popVignette.addColorStop(1, 'rgba(4, 2, 7, 0.42)');
                     ctx.fillStyle = popVignette;
                     ctx.fillRect(0, 0, W, H);
                   }
