@@ -4586,6 +4586,13 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                   .track-deck-panel {
                     position: relative !important;
                     width: 100% !important;
+                    /* The desktop rule's min-width:340px was never reset here,
+                       so width:100% lost to it on any phone narrower than
+                       ~340px + the stage's own padding -- the panel (and
+                       everything right-aligned inside it, like the track
+                       titles and "N COMPOSITIONS") overflowed past the
+                       screen edge instead of actually filling 100%. */
+                    min-width: 0 !important;
                     background: transparent !important;
                     backdrop-filter: none !important;
                     -webkit-backdrop-filter: none !important;
@@ -4893,27 +4900,24 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                 setTimeout(updatePlayIcons, 50);
               }
 
-              // Keeps bgVideo mirroring the <audio> element's play/pause state for
-              // video tracks. Was being called below (native 'play'/'pause' listeners)
-              // but was never actually defined -- every play/pause threw a
-              // ReferenceError that aborted the listener before it reached
-              // updatePlayIcons(), which is why the button icon would get stuck
-              // showing the wrong state after the first click.
-              function syncVideoState(isPlaying) {
-                const currentTrack = tracks[currentIdx];
-                if (!bgVideo || !currentTrack || !currentTrack.video) return;
-                if (isPlaying) {
-                  if (bgVideo.paused) bgVideo.play().catch(() => {});
-                } else if (!bgVideo.paused) {
-                  bgVideo.pause();
-                }
-              }
-
               loadTrackVideo(currentIdx);
 
-              // Hook video sync and icon update to audio/video events
-              audio.addEventListener('play', () => { syncVideoState(true); updatePlayIcons(); });
-              audio.addEventListener('pause', () => { syncVideoState(false); updatePlayIcons(); });
+              // There used to be a syncVideoState() here mirroring bgVideo to
+              // audio's play/pause events, meant for cases where something
+              // called audio.play()/pause() directly. Nothing ever did --
+              // audio.play()/pause() are only ever called from inside
+              // syncMasterPlay() above, which already sets bgVideo's state
+              // explicitly in the same call. The mirror was worse than
+              // redundant: switching from an audio track to a video one calls
+              // audio.pause() as a side effect (stopping the old track), and
+              // since that 'pause' event fires async, it landed after
+              // currentIdx had already moved to the new (video) track --
+              // syncVideoState then "helpfully" paused the video that
+              // syncMasterPlay had just started playing. That race is what
+              // made switching to Cloudy Days or Paradise while something
+              // else was already playing silently fail to start.
+              audio.addEventListener('play', () => { updatePlayIcons(); });
+              audio.addEventListener('pause', () => { updatePlayIcons(); });
               if (bgVideo) {
                 bgVideo.addEventListener('play', () => updatePlayIcons());
                 bgVideo.addEventListener('pause', () => updatePlayIcons());

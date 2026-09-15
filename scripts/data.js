@@ -173,8 +173,6 @@ window.PORTFOLIO_DATA = {
     "https://youtu.be/gGdk8_vq0Mk",
     "assets/portfolio-data/Keep yourself safe/shots (1).webp",
     "assets/portfolio-data/Keep yourself safe/shots (2).webp",
-    "assets/portfolio-data/Keep yourself safe/shots (3).webp",
-    "assets/portfolio-data/Keep yourself safe/shots (4).webp",
     "assets/portfolio-data/Keep yourself safe/shots (5).webp",
     "assets/portfolio-data/Keep yourself safe/concept images/exploration (1).webp",
     "assets/portfolio-data/Keep yourself safe/concept images/exploration (2).webp",
@@ -183,7 +181,9 @@ window.PORTFOLIO_DATA = {
     "assets/portfolio-data/Keep yourself safe/concept images/exploration (5).webp",
     "assets/portfolio-data/Keep yourself safe/concept images/exploration (6).webp",
     "assets/portfolio-data/Keep yourself safe/concept images/exploration (7).webp",
-    "assets/portfolio-data/Keep yourself safe/concept images/exploration (8).webp"
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (8).webp",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (9).webp",
+    "assets/portfolio-data/Keep yourself safe/concept images/exploration (10).webp"
   ],
   "music-district-video": [
     "https://youtu.be/Z98oacHxtM8",
