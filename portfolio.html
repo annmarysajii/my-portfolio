@@ -15777,25 +15777,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #hero .xs-t   { font: 6px var(--hn-hand); fill: var(--hn-pencil); letter-spacing: .04em; }
 #hero .xs-n   { font: 8.5px var(--hn-hand); fill: var(--hn-pencil); text-anchor: middle; }
 
-/* the cast: one character per project, straight from her sketch sheet, in her own pen */
-#hero .hn-cast {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: .35rem;
-  align-items: end;
-  margin: 1.5rem 0 0;
-  padding: 0 .2rem;
-}
-#hero .hn-cast figure { margin: 0; text-align: center; }
-#hero .hn-cast img { display: block; width: 96%; height: auto; margin: 0 auto; }
-#hero .hn-cast figcaption {
-  min-height: 2.1em;
-  margin-top: .35rem;
-  font: var(--hn-t4)/1.05 var(--hn-hand);
-  color: var(--hn-ink-2);
-}
-
 /* narrower screens: the ephemera go first, then it is just the print and its caption */
 @media (max-width: 900px) {
   #hero .hn-xsheet, #hero .hn-deco { display: none; }
@@ -15809,7 +15790,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   #hero .hn-strip-col { max-width: none; margin-top: 0; }
 }
 @media (max-width: 767px) {
-  #hero .hn-cast { display: none; }
   #hero .hn-rg { width: 100%; }
   #hero .tape-tl { left: -14px; }
   #hero .tape-tr { right: -14px; }
@@ -16211,7 +16191,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
       </div>
     
-      <div class="hn-cast" aria-hidden="true"><figure><img src="assets/hand/cast/kys.svg" alt="" width="200" height="173" loading="lazy" decoding="async"><figcaption>Keep Yourself Safe</figcaption></figure><figure><img src="assets/hand/cast/jasmine.svg" alt="" width="301" height="227" loading="lazy" decoding="async"><figcaption>Jasmine</figcaption></figure><figure><img src="assets/hand/cast/dear-friend.svg" alt="" width="267" height="179" loading="lazy" decoding="async"><figcaption>Dear Friend</figcaption></figure><figure><img src="assets/hand/cast/chase.svg" alt="" width="235" height="184" loading="lazy" decoding="async"><figcaption>Chase</figcaption></figure></div>
       </div><!-- /.hn-rg -->
     </div>
 
