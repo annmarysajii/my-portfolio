@@ -15854,8 +15854,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   --pool: 1; --key-day: 0; --key-night: 1;
   --gr: 154; --gg: 170; --gb: 192; --vig: .5; --amb: .5;   /* was 178/196/222 when the paper itself was dimmer: same unlit look, brighter lit paper */
 }
-/* a mode switch interpolates the whole set over ~600ms */
-:root {
+/* a mode switch interpolates the whole set over ~600ms. The transition lives on #hero, not :root: the variables
+   still change on :root at once, but only the hero's own subtree is re-styled on every frame of the blend (on
+   :root it was the whole 19k-line document, which made the switch stutter). */
+#hero {
   transition:
     --light-x var(--hn-mode-t) var(--hn-ease), --light-y var(--hn-mode-t) var(--hn-ease),
     --lr var(--hn-mode-t) var(--hn-ease), --lg var(--hn-mode-t) var(--hn-ease), --lb var(--hn-mode-t) var(--hn-ease),
@@ -15866,7 +15868,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     --gr var(--hn-mode-t) var(--hn-ease), --gg var(--hn-mode-t) var(--hn-ease), --gb var(--hn-mode-t) var(--hn-ease),
     --vig var(--hn-mode-t) var(--hn-ease), --amb var(--hn-mode-t) var(--hn-ease);
 }
-@media (prefers-reduced-motion: reduce) { :root { transition: none; } }
+@media (prefers-reduced-motion: reduce) { #hero { transition: none; } }
 
 /* ---- 1. layered shadows on everything stuck or taped ---------------- */
 /* Tape has torn ends made with clip-path, and clip-path clips the element's own box-shadow, so tape
@@ -16045,14 +16047,17 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 @media (prefers-reduced-motion: reduce) { #soundBtn { transition: none; } }
 
 /* ---- 6. depth: mouse parallax + falloff at the far edges of the mat ------------------------- */
-/* --px / --py are the eased pointer position, -1..1, set on #hero by one small script. Three depths, each
-   the amount that layer moves in total: mat 2px, notebook 4px, taped items 6px. The taped items ride on the
-   notebook, so they only add 2px of their own (4 + 2 = 6). Everything moves opposite the pointer, far things
-   least. Off for touch, narrow screens and reduced motion. */
-#hero { background-position: calc(var(--px, 0) * -2px) calc(var(--py, 0) * -2px); }
-#hero .hero-sketchbook { translate: calc(var(--px, 0) * -4px) calc(var(--py, 0) * -4px); }
+/* Parallax, kept cheap on purpose. The notebook is moved by writing its own `translate` (no custom property, so
+   nothing inherits and nothing below it is restyled per frame) and it is promoted to its own layer so the move
+   is a compositor transform, not a repaint. The three taped items add 2px of their own on top of the notebook's
+   4 (so 6 in total) through --px / --py set on those three small elements only. The mat does NOT move: shifting
+   its 8-layer background repainted the whole hero every frame, and that was the lag. Off for touch, narrow
+   screens and reduced motion. */
+#hero .hero-sketchbook, #hero .reel-frame, #hero .metrics, #hero .hn-xsheet { will-change: translate; }
 @media (prefers-reduced-motion: reduce), (max-width: 900px), (hover: none) {
-  #hero { --px: 0 !important; --py: 0 !important; }
+  #hero .hero-sketchbook { translate: none !important; }
+  #hero .reel-frame, #hero .metrics, #hero .hn-xsheet { --px: 0 !important; --py: 0 !important; will-change: auto; }
+  #hero .hero-sketchbook { will-change: auto; }
 }
 
 /* Edge falloff: the far edges of the mat go soft and dark, like depth of field and light dying off at the
@@ -18277,32 +18282,40 @@ html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
 
   // ================================================================
   // HERO DEPTH -- mouse parallax. One listener, one requestAnimationFrame loop that only runs while the
-  // layers are still easing (exponential ease-out, no overshoot). Writes two numbers, --px / --py (-1..1,
-  // from the pointer's place in the viewport), on #hero; the CSS turns them into 2 / 4 / 6px of movement.
-  // Mouse only, wide screens only, never with reduced motion (the CSS also zeroes them there).
+  // layers are still easing (exponential ease-out, no overshoot). The notebook gets an inline `translate`
+  // (4px at most); the three taped items get --px / --py (-1..1) and add 2px of their own (6 in total).
+  // Nothing is written on #hero itself: a custom property there re-styled every descendant every frame.
+  // Mouse only, wide screens only, never with reduced motion (the CSS also zeroes it there).
   // ================================================================
   (function initHeroDepth() {
     const hero = document.getElementById('hero');
     if (!hero) return;
+    const book = hero.querySelector('.hero-sketchbook');
+    const items = [...hero.querySelectorAll('.reel-frame, .metrics, .hn-xsheet')];
     const fine = matchMedia('(hover: hover) and (pointer: fine)');
     const calm = matchMedia('(prefers-reduced-motion: reduce)');
     const wide = matchMedia('(min-width: 901px)');
     const ok = () => fine.matches && wide.matches && !calm.matches;
     let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
     const clamp = v => Math.max(-1, Math.min(1, v));
+    function paint() {
+      const rest = x === 0 && y === 0;
+      if (book) book.style.translate = rest ? '' : (-x * 4).toFixed(2) + 'px ' + (-y * 4).toFixed(2) + 'px';
+      const sx = x.toFixed(3), sy = y.toFixed(3);
+      for (const el of items) { el.style.setProperty('--px', sx); el.style.setProperty('--py', sy); }
+    }
     function tick() {
       x += (tx - x) * 0.08; y += (ty - y) * 0.08;
-      const done = Math.abs(tx - x) < 0.002 && Math.abs(ty - y) < 0.002;
-      if (done) { x = tx; y = ty; raf = 0; } else raf = requestAnimationFrame(tick);
-      hero.style.setProperty('--px', x.toFixed(3)); hero.style.setProperty('--py', y.toFixed(3));
+      if (Math.abs(tx - x) < 0.002 && Math.abs(ty - y) < 0.002) { x = tx; y = ty; raf = 0; } else raf = requestAnimationFrame(tick);
+      paint();
     }
     const go = () => { if (!raf) raf = requestAnimationFrame(tick); };
     hero.addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse' || !ok()) return;
       tx = clamp((e.clientX / innerWidth - 0.5) * 2); ty = clamp((e.clientY / innerHeight - 0.5) * 2); go();
-    });
+    }, { passive: true });
     hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; go(); });                  // settle back to rest
-    [calm, wide].forEach(m => m.addEventListener('change', () => { if (!ok()) { tx = ty = x = y = 0; hero.style.setProperty('--px', 0); hero.style.setProperty('--py', 0); } }));
+    [calm, wide].forEach(m => m.addEventListener('change', () => { if (!ok()) { tx = ty = x = y = 0; paint(); } }));
   })();
 
 
