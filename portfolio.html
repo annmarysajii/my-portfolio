@@ -15845,7 +15845,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   --tr: 74;  --tg: 92;  --tb: 118;     /* sky-lit blue in the long, faint layer */
   --sh-k: .85;
   --pool: 0; --key-day: 1; --key-night: 0;
-  --gr: 255; --gg: 250; --gb: 242; --vig: .14; --amb: .5;
+  --gr: 196; --gg: 212; --gb: 232; --vig: .16; --amb: .5;     /* day: cool tint that lifts the blacks, soft vignette */
 
   /* which way shadows fall: away from the light, relative to the middle of the hero */
   --sx: calc((50 - var(--light-x)) / 50);
@@ -15988,6 +15988,33 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   content: ''; position: absolute; inset: 0;
   background: #2B4C7E; border-radius: 2px 2px 0 0;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+}
+
+/* ---- 3. colour grade and vignette: one static overlay per mode ------ */
+#hero { isolation: isolate; }                       /* blend modes below act on the hero only */
+.hn-atm { display: contents; }   /* no box, no stacking context of its own: the layers below must sit directly in
+                                     #hero's group or their blend modes would blend against nothing */
+.hn-grade { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+/* Day: soft and cool. Lifted blacks (a faint cool tint over everything), a touch of warmth on the paper
+   around the window, and a gentle vignette. Plain alpha, no filters. */
+.hn-grade-day {
+  opacity: var(--key-day);
+  background:
+    radial-gradient(ellipse 85% 75% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), rgba(255, 230, 190, .075), transparent 72%),
+    radial-gradient(ellipse 125% 115% at 50% 46%, transparent 50%, rgba(28, 34, 50, var(--vig)) 100%),
+    linear-gradient(rgba(var(--gr), var(--gg), var(--gb), .055), rgba(var(--gr), var(--gg), var(--gb), .055));
+}
+/* Night: an illumination map, multiplied. Multiply darkens ink and paper together, so text keeps its
+   contrast (a flat dark wash would flatten it). Near-white at the lamp, then desaturated blue-teal, then
+   deep teal at the far edges: shadows are never neutral grey, and the mat's grid fades into the dark. */
+.hn-grade-night {
+  opacity: var(--key-night);
+  mix-blend-mode: multiply;
+  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgb(255, 247, 233) 0%,
+    rgb(calc(var(--gr) + 34), calc(var(--gg) + 24), calc(var(--gb) + 6)) 30%,
+    rgb(var(--gr), var(--gg), var(--gb)) 58%,
+    rgb(calc(var(--gr) * (1 - var(--vig) * 1.1)), calc(var(--gg) * (1 - var(--vig) * .95)), calc(var(--gb) * (1 - var(--vig) * .8))) 100%);
 }
 </style>
 </head>
@@ -16461,6 +16488,12 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   <div class="hero-foot">
     <span><strong>English</strong>, Malayalam, Hindi</span>
     <span class="scroll-cue">Scroll to explore ↓</span>
+  </div>
+
+  <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
+  <div class="hn-atm" aria-hidden="true">
+    <div class="hn-grade hn-grade-day"></div>
+    <div class="hn-grade hn-grade-night"></div>
   </div>
 
 </section>
