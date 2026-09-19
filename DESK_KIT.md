@@ -280,3 +280,12 @@ exists (see public/audio/README.txt).
 line to `PEEK` (which card, which edge, how far along, how big). A new project: add its name to `PROJ`, its card to `HOSTS`,
 optionally a title lettering to `TITLES`. Testing: `hnRewards.find('pd-kys-phone')`, `.findAll()`, `.grant('music')`,
 `.grantAll()`, `.reset()` in the console.
+
+**The next page of the notebook (desktop).** The hero notebook's right page has a lifted corner, "turn the page". The next page
+is blank dotted paper, "Your page", with a rack of six rubber stamps (Hello, I was here, Heart, Nice, Looks good, 10/10, drawn in her
+handwriting) and three ink pads. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
+that page is hers: it is the visitor's page in her book. It uses the `stamp` sound slot.
+
+**Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
+silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
+Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.
