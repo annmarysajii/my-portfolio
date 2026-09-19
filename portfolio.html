@@ -7,11 +7,14 @@
        (the hardcoded attribute above) and only corrects to dark once
        the theme script deep in the body runs, thousands of lines of
        HTML later. That flash is what read as "can't read the cards." */
+    /* Night (the dark theme) by default between 7pm and 6am local time, day otherwise. A choice made with
+       the lamp switch overrides that for this browser session only (sessionStorage), so a visitor who flips
+       it is not fought, but the next visit follows the clock again. Storage may be unavailable: then it is
+       just the clock. */
     (function(){
-      try {
-        var saved = localStorage.getItem('theme');
-        if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-      } catch(e) {}
+      var h = new Date().getHours(), t = (h >= 19 || h < 6) ? 'dark' : 'light';
+      try { var o = sessionStorage.getItem('hn-theme'); if (o === 'dark' || o === 'light') t = o; } catch(e) {}
+      document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
   <link rel="preload" href="assets/hand/annmary-hand.woff2" as="font" type="font/woff2" crossorigin>
@@ -15214,7 +15217,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 [data-theme="dark"] {
   --hn-ink:    #1B2430;
   --hn-ink-2:  #333E4E;
-  --hn-red:    #8E2019;   /* darker so the stamp text holds 4.5:1 on the dimmed paper */
+  --hn-red:    #7B1C15;   /* darker so the stamp text holds 4.5:1 on the dimmed paper, with the warm lamp pool over it */
   --hn-paper-l:    #D6D0BF;   /* the same paper in dimmer light */
   --hn-paper-r:    #D9D4C4;
   --hn-paper-2:    #DEDACB;
@@ -16029,6 +16032,37 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   mix-blend-mode: multiply;
   opacity: calc(var(--key-day) * .16);
 }
+
+/* ---- 2. key light, night: a warm lamp pool ---------------------------------------------- */
+/* Multi-stop radial gradient with non-linear falloff: tight and bright at the centre, dropping off fast,
+   then a long faint tail (roughly how a lamp's light dies with distance). Slightly oval and tilted, and
+   centred on --light-x / --light-y, so it is off-centre and never a perfect circle. Soft-light: it warms
+   the lit paper and shifts it toward amber without lifting the ink's blacks (screen would, and text would
+   lose contrast). Sits above the night grade so the amber is not muddied by it. */
+.hn-key-lamp {
+  z-index: 41;
+  inset: 0;
+  transform: rotate(-11deg);
+  transform-origin: calc(var(--light-x) * 1%) calc(var(--light-y) * 1%);
+  mix-blend-mode: soft-light;
+  opacity: calc(var(--key-night) * var(--pool));
+  background: radial-gradient(ellipse 64% 50% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgba(var(--lr), var(--lg), var(--lb), .95) 0%,
+    rgba(var(--lr), var(--lg), var(--lb), .80) 6%,
+    rgba(var(--lr), var(--lg), var(--lb), .52) 14%,
+    rgba(var(--lr), var(--lg), var(--lb), .28) 26%,
+    rgba(var(--lr), var(--lg), var(--lb), .12) 42%,
+    rgba(var(--lr), var(--lg), var(--lb), .045) 65%,
+    rgba(var(--lr), var(--lg), var(--lb), 0) 100%);
+}
+
+/* ---- the lamp switch (the moon button) ----------------------------------------------------- */
+/* A soft press state, shadow only: pressed in while the lamp is on and while it is being pressed. */
+#themeBtn { transition: box-shadow 300ms var(--hn-ease), translate 300ms var(--hn-ease); }
+#themeBtn[aria-pressed="true"] { box-shadow: inset 0 1px 3px rgba(var(--hn-shadow-rgb), .45), inset 0 0 0 1px rgba(var(--lr), var(--lg), var(--lb), .18); }
+#themeBtn:active { box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .55); translate: 0 1px; }
+#themeBtn:focus-visible { outline: 2px solid var(--yel, #F2C030); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #themeBtn { transition: none; } }
 </style>
 </head>
 <body>
@@ -16227,7 +16261,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
       <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
       <!-- Mobile hamburger -- user feedback (2026-09-02): "spacing btw
            my name - work - about - contact and resume" felt cramped on
@@ -16506,6 +16540,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
   <div class="hn-atm" aria-hidden="true">
     <div class="hn-key hn-key-window"></div>
+    <div class="hn-key hn-key-lamp"></div>
     <div class="hn-grade hn-grade-day"></div>
     <div class="hn-grade hn-grade-night"></div>
   </div>
@@ -18013,9 +18048,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   // 3. Theme Toggle (Preserve User Preference)
   (function initTheme(){
-    const saved = localStorage.getItem('theme') || 'light';
+    const saved = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';   // set before first paint (clock or session)
     document.documentElement.setAttribute('data-theme', saved);
     updateHeroImage(saved);
+    const lampBtn = document.getElementById('themeBtn');
+    if (lampBtn) lampBtn.setAttribute('aria-pressed', saved === 'dark' ? 'true' : 'false');
     const icon = document.getElementById('themeIcon');
     if (icon) icon.setAttribute('data-lucide', saved === 'dark' ? 'sun' : 'moon');
     if (window.lucide) lucide.createIcons();
@@ -18025,7 +18062,9 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const next = isDark ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    try { sessionStorage.setItem('hn-theme', next); } catch (e) {}      // override for this session only
+    const lampBtn = document.getElementById('themeBtn');
+    if (lampBtn) lampBtn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
     updateHeroImage(next);
 
     const icon = document.getElementById('themeIcon');
