@@ -15959,7 +15959,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #hero .reel-frame, #hero .metrics, #hero .hn-xsheet {
   --lift: 0;
   transition: --lift 450ms var(--hn-ease) !important;
-  translate: calc(var(--lift) * var(--sx) * -.8px) calc(var(--lift) * -2px);
+  translate: calc(var(--lift) * var(--sx) * -.8px + var(--px, 0) * -2px) calc(var(--lift) * -2px + var(--py, 0) * -2px);
 }
 #hero .reel-frame:hover, #hero .metrics:hover, #hero .hn-xsheet:hover { --lift: 1; }
 @media (prefers-reduced-motion: reduce) {
@@ -16075,6 +16075,33 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #soundBtn:active { box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .55); translate: 0 1px; }
 #soundBtn:focus-visible { outline: 2px solid var(--yel, #F2C030); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { #soundBtn { transition: none; } }
+
+/* ---- 6. depth: mouse parallax + falloff at the far edges of the mat ------------------------- */
+/* --px / --py are the eased pointer position, -1..1, set on #hero by one small script. Three depths, each
+   the amount that layer moves in total: mat 2px, notebook 4px, taped items 6px. The taped items ride on the
+   notebook, so they only add 2px of their own (4 + 2 = 6). Everything moves opposite the pointer, far things
+   least. Off for touch, narrow screens and reduced motion. */
+#hero { background-position: calc(var(--px, 0) * -2px) calc(var(--py, 0) * -2px); }
+#hero .hero-sketchbook { translate: calc(var(--px, 0) * -4px) calc(var(--py, 0) * -4px); }
+@media (prefers-reduced-motion: reduce), (max-width: 900px), (hover: none) {
+  #hero { --px: 0 !important; --py: 0 !important; }
+}
+
+/* Edge falloff: the far edges of the mat go soft and dark, like depth of field and light dying off at the
+   edge of a desk. Four thin static strips UNDER the notebook (z 1, the book is z 5), so they can only ever
+   touch the mat. The blur is a 2px backdrop blur, faded out by a mask; the darkening is the shadow colour of
+   the current mode. Nothing here moves. */
+.hn-edge {
+  position: absolute; z-index: 1; pointer-events: none;
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+}
+.hn-edge-t, .hn-edge-b { left: 0; right: 0; height: 12%; }
+.hn-edge-l, .hn-edge-r { top: 0; bottom: 0; width: 7%; }
+.hn-edge-t { top: 0;    background: linear-gradient(to bottom, rgba(var(--sr), var(--sg), var(--sb), calc(.20 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to bottom, #000, transparent); mask-image: linear-gradient(to bottom, #000, transparent); }
+.hn-edge-b { bottom: 0; background: linear-gradient(to top,    rgba(var(--sr), var(--sg), var(--sb), calc(.24 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to top,    #000, transparent); mask-image: linear-gradient(to top,    #000, transparent); }
+.hn-edge-l { left: 0;   background: linear-gradient(to right,  rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to right,  #000, transparent); mask-image: linear-gradient(to right,  #000, transparent); }
+.hn-edge-r { right: 0;  background: linear-gradient(to left,   rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to left,   #000, transparent); mask-image: linear-gradient(to left,   #000, transparent); }
+@media (max-width: 900px) { .hn-edge { -webkit-backdrop-filter: none; backdrop-filter: none; } }   /* phones: darkening only, no blur */
 </style>
 </head>
 <body>
@@ -16552,6 +16579,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
   <div class="hn-atm" aria-hidden="true">
+    <div class="hn-edge hn-edge-t"></div><div class="hn-edge hn-edge-b"></div><div class="hn-edge hn-edge-l"></div><div class="hn-edge hn-edge-r"></div>
     <div class="hn-key hn-key-window"></div>
     <div class="hn-key hn-key-lamp"></div>
     <div class="hn-grade hn-grade-day"></div>
@@ -18208,6 +18236,37 @@ h1, h2, h3, h4, .sec-title, .hero-role {
         once('rustle', num('--snd-rustle', .07));
       });
     });
+  })();
+
+
+  // ================================================================
+  // HERO DEPTH -- mouse parallax. One listener, one requestAnimationFrame loop that only runs while the
+  // layers are still easing (exponential ease-out, no overshoot). Writes two numbers, --px / --py (-1..1,
+  // from the pointer's place in the viewport), on #hero; the CSS turns them into 2 / 4 / 6px of movement.
+  // Mouse only, wide screens only, never with reduced motion (the CSS also zeroes them there).
+  // ================================================================
+  (function initHeroDepth() {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+    const fine = matchMedia('(hover: hover) and (pointer: fine)');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)');
+    const wide = matchMedia('(min-width: 901px)');
+    const ok = () => fine.matches && wide.matches && !calm.matches;
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+    const clamp = v => Math.max(-1, Math.min(1, v));
+    function tick() {
+      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+      const done = Math.abs(tx - x) < 0.002 && Math.abs(ty - y) < 0.002;
+      if (done) { x = tx; y = ty; raf = 0; } else raf = requestAnimationFrame(tick);
+      hero.style.setProperty('--px', x.toFixed(3)); hero.style.setProperty('--py', y.toFixed(3));
+    }
+    const go = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    hero.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse' || !ok()) return;
+      tx = clamp((e.clientX / innerWidth - 0.5) * 2); ty = clamp((e.clientY / innerHeight - 0.5) * 2); go();
+    });
+    hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; go(); });                  // settle back to rest
+    [calm, wide].forEach(m => m.addEventListener('change', () => { if (!ok()) { tx = ty = x = y = 0; hero.style.setProperty('--px', 0); hero.style.setProperty('--py', 0); } }));
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
