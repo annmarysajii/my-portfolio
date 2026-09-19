@@ -16,6 +16,10 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Hero notebook voices: Caveat (handwriting, variable weight) and Courier
+       Prime 400 (typewriter). Two files added; both swap in over a system
+       fallback (see --hn-hand / --hn-type). -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..700&family=Courier+Prime:wght@400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -1411,7 +1415,7 @@ body::after {
       linear-gradient(180deg, #6E170C, #8F2013 72%, #A82818);
     background-size: 26px 100%, 26px 100%, auto;
     background-repeat: round no-repeat, round no-repeat, no-repeat;
-    box-shadow: inset 0 -7px 10px -4px rgba(0,0,0,.45), 0 3px 0 rgba(0,0,0,.22);
+    box-shadow: inset 0 -7px 10px -4px rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.30);
   }
   .bk-frame {
     position: absolute;
@@ -15159,6 +15163,175 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   --lc-cta-ink:#20180F;
   --lc-mount:#F8F6F3;
 }
+
+/* ================================================================
+   HERO NOTEBOOK PASS
+   The hero as a real notebook on a desk. Step 1 of 5: the three type
+   voices, the paper / ink / tape / shadow tokens, and the two pages'
+   paper. Later steps restyle the individual objects.
+
+   Three voices only:
+     ransom-note cut-outs  the name only (hero_name.webp, untouched)
+     --hn-hand             pen / marker: role line, captions, numbers
+     --hn-type             typewriter: information text
+   The bold geometric grotesque (--fd / --fb) stays on the nav only.
+
+   One light source, top left, so every shadow falls down and to the
+   right: tight and faint for flat paper, wider for taped or raised
+   things. No hard offset shadows anywhere in the hero.
+
+   Scoped with #hero so it out-ranks the ten-odd legacy hero blocks
+   above without adding to the !important pile. Dark mode DIMS the paper
+   (it does not invert it); ink stays dark, so contrast holds in both.
+   The reel lightbox is position:fixed inside .reel-frame -- never put a
+   transform or filter on .reel-frame or anything above it.
+================================================================ */
+:root {
+  --hn-hand: 'Caveat', 'Bradley Hand', 'Segoe Print', 'Comic Sans MS', cursive;
+  --hn-type: 'Courier Prime', 'Courier New', Courier, monospace;
+
+  --hn-ink:        #1E2733;   /* blue-black pen, primary text */
+  --hn-ink-2:      #3D4858;   /* secondary text, still >= 4.5:1 on either page */
+  --hn-stamp-red:  #A8281F;
+  --hn-stamp-navy: #1F3D75;
+  --hn-pencil:     rgba(52, 56, 66, .34);   /* decorative only, never text */
+  --hn-hi:         #F5DE4A;   /* highlighter */
+
+  --hn-paper-l:    #F7F3E8;   /* left page: dot grid */
+  --hn-paper-r:    #FAF8F1;   /* right page: plain sketch paper */
+  --hn-paper-veil: rgba(247, 243, 232, .58);  /* flattens the crumple texture */
+  --hn-dot:        rgba(72, 60, 38, .30);
+  --hn-tape:       rgba(233, 205, 128, .74);
+  --hn-tape-blue:  rgba(118, 152, 196, .70);
+  --hn-tape-rose:  rgba(214, 120, 112, .68);
+
+  --hn-shadow-rgb: 46, 34, 20;
+  --hn-sh-flat:   0 .5px 1px rgba(var(--hn-shadow-rgb), .24), 0 1px 2px rgba(var(--hn-shadow-rgb), .10);
+  --hn-sh-raised: 0 1px 2px rgba(var(--hn-shadow-rgb), .22), 1px 3px 6px rgba(var(--hn-shadow-rgb), .16);
+  --hn-sh-lifted: 1px 2px 4px rgba(var(--hn-shadow-rgb), .22), 3px 9px 16px rgba(var(--hn-shadow-rgb), .20);
+  --hn-sh-book:   0 1px 1px rgba(var(--hn-shadow-rgb), .28), 2px 5px 9px rgba(var(--hn-shadow-rgb), .20), 6px 18px 34px rgba(var(--hn-shadow-rgb), .22);
+}
+[data-theme="dark"] {
+  --hn-ink:        #1B2430;
+  --hn-ink-2:      #333E4E;
+  --hn-paper-l:    #D6D0BF;   /* the same paper, in dimmer light */
+  --hn-paper-r:    #D9D4C4;
+  --hn-paper-veil: rgba(214, 208, 191, .55);
+  --hn-dot:        rgba(50, 42, 26, .34);
+  --hn-tape:       rgba(214, 186, 112, .78);
+  --hn-shadow-rgb: 0, 0, 0;
+  --hn-sh-flat:   0 .5px 1px rgba(0, 0, 0, .40), 0 1px 2px rgba(0, 0, 0, .22);
+  --hn-sh-raised: 0 1px 2px rgba(0, 0, 0, .40), 1px 3px 6px rgba(0, 0, 0, .30);
+  --hn-sh-lifted: 1px 2px 4px rgba(0, 0, 0, .42), 3px 9px 16px rgba(0, 0, 0, .36);
+  --hn-sh-book:   0 1px 1px rgba(0, 0, 0, .5), 2px 5px 9px rgba(0, 0, 0, .40), 6px 18px 34px rgba(0, 0, 0, .42);
+}
+
+/* --- the book: the two pages carry the paper, the shell is just the spread --- */
+#hero .hero-sketchbook {
+  background: none !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  box-shadow: var(--hn-sh-book) !important;
+  font-family: var(--hn-type);
+  color: var(--hn-ink);
+}
+#hero .book-page-left,
+#hero .book-page-right {
+  padding: clamp(1.5rem, 3.4vh, 2.3rem) clamp(1.4rem, 3vw, 2.6rem) !important;
+  color: var(--hn-ink);
+}
+/* left page: dot grid. 28px pitch so the bio in step 2 can sit on the rows. */
+#hero .book-page-left {
+  border-radius: 8px 0 0 8px;
+  background-color: var(--hn-paper-l) !important;
+  background-image:
+    radial-gradient(circle at center, var(--hn-dot) 1.1px, transparent 1.6px),
+    linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)),
+    url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: 28px 28px, auto, 400px 400px !important;
+  background-position: 14px 14px, 0 0, 0 0 !important;
+  background-repeat: repeat, no-repeat, repeat !important;
+}
+/* right page: plain sketch paper, same crumple, no grid */
+#hero .book-page-right {
+  border-radius: 0 8px 8px 0;
+  background-color: var(--hn-paper-r) !important;
+  background-image:
+    linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)),
+    url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, 400px 400px !important;
+  background-position: 0 0, 0 0 !important;
+  background-repeat: no-repeat, repeat !important;
+}
+/* phones stack the two pages: round the outer corners of the stack instead */
+@media (max-width: 767px) {
+  #hero .book-page-left  { border-radius: 8px 8px 0 0; }
+  #hero .book-page-right { border-radius: 0 0 8px 8px; }
+}
+/* the page-turn layers (desktop book opening) use the same paper */
+#hero .bk-leaf span,
+#hero .bk-cover-back {
+  background-color: var(--hn-paper-r) !important;
+  background-image: url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: 400px 400px !important;
+}
+
+/* --- voices ----------------------------------------------------- */
+#hero .hero-role,
+#hero .disc, #hero .disc *,
+#hero .metric-num,
+#hero .reel-foot-title,
+#hero .hero-badge-pill, #hero .hero-badge-pill *,
+#hero .margin-note-inner {
+  font-family: var(--hn-hand) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+#hero .hero-bio,
+#hero .metric-lbl,
+#hero .disc-tip,
+#hero .reel-sound-toggle,
+#hero .hero-seal-sticker, #hero .hero-seal-sticker * {
+  font-family: var(--hn-type) !important;
+}
+#hero .hero-role {
+  font-weight: 600 !important;
+  font-size: clamp(1.55rem, 2.3vw, 1.95rem) !important;
+  line-height: 1.15 !important;
+  color: var(--hn-ink) !important;
+}
+#hero .hero-bio {
+  font-weight: 400 !important;
+  font-size: .95rem !important;
+  color: var(--hn-ink) !important;
+}
+#hero .hero-bio strong { font-weight: 400 !important; }   /* highlighter comes in step 2 */
+#hero .metric-num { font-weight: 700 !important; color: var(--hn-ink) !important; }
+#hero .metric-lbl { color: var(--hn-ink-2) !important; }
+#hero .disc, #hero .disc *:not(.disc-thumb):not(img) { color: var(--hn-ink) !important; }
+#hero .reel-foot-title { font-weight: 600 !important; color: var(--hn-ink) !important; }
+#hero .margin-note-inner { color: var(--hn-ink) !important; }
+
+/* --- shadows: no hard offsets left in the hero ------------------- */
+#hero .hero-badge-pill-inner,
+#hero .disc,
+#hero .metrics,
+#hero .metric-drawer .margin-note,
+#hero .hero-fabric-swatch,
+#hero .hero-bookmark-ribbon { box-shadow: var(--hn-sh-flat) !important; text-shadow: none !important; }
+#hero .hero-seal-sticker,
+#hero .reel-frame { box-shadow: var(--hn-sh-raised) !important; text-shadow: none !important; }
+/* Interim, until steps 2 and 3 replace these objects: keep the old pills and
+   stat card readable on the dimmed paper instead of carrying their dark-mode fills. */
+#hero .disc, #hero .metrics { background-color: var(--hn-paper-r) !important; }
+#hero .hero-bio strong { background: none !important; color: inherit !important; }
+#hero .hero-badge-pill { box-shadow: none !important; }   /* wrapper only; the stamp replaces it in step 2 */
+#hero .bk-cover-front { box-shadow: var(--hn-sh-lifted) !important; }   /* desktop opening cover */
+@media (min-width: 901px) {
+  #hero .bk-spine { box-shadow: inset -6px 0 10px -4px rgba(0,0,0,.45), 2px 0 4px rgba(0,0,0,.28) !important; }
+}
 </style>
 </head>
 <body>
@@ -15168,6 +15341,34 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch" />
   </filter>
   <rect width="100%" height="100%" filter="url(#filmGrainFilter)" />
+</svg>
+
+<!-- Shared filters for the hero notebook (see HERO NOTEBOOK PASS in the
+     stylesheet). Defined once, referenced by url(#id).
+     Only ever put these on small leaf elements (stamp, tape, slips): a CSS
+     filter on an ancestor becomes the containing block for position:fixed
+     descendants, which would break the fullscreen reel. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- pen / ink line that is not quite straight -->
+    <filter id="hn-ink-rough" x="-3%" y="-10%" width="106%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- rubber stamp: wobbly edge plus grain that drops ink out in patches -->
+    <filter id="hn-stamp" x="-6%" y="-14%" width="112%" height="128%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.5" result="ink"/>
+      <feComposite in="rough" in2="ink" operator="in"/>
+    </filter>
+    <!-- cut / torn paper edge: a gentle, low-frequency wander -->
+    <filter id="hn-paper-edge" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
 </svg>
 
 
