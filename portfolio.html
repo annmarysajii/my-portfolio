@@ -16062,11 +16062,11 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
 /* Edge falloff: the far edges of the mat go soft and dark, like depth of field and light dying off at the
    edge of a desk. Four thin static strips UNDER the notebook (z 1, the book is z 5), so they can only ever
-   touch the mat. The blur is a 2px backdrop blur, faded out by a mask; the darkening is the shadow colour of
-   the current mode. Nothing here moves. */
+   touch the mat. Darkening only (the shadow colour of the current mode, faded by a mask); there used to be a 2px
+   backdrop blur here too, removed: it cost an extra render pass every video frame for an almost invisible gain.
+   Nothing here moves. */
 .hn-edge {
   position: absolute; z-index: 1; pointer-events: none;
-  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
 }
 .hn-edge-t, .hn-edge-b { left: 0; right: 0; height: 12%; }
 .hn-edge-l, .hn-edge-r { top: 0; bottom: 0; width: 7%; }
@@ -16074,7 +16074,6 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .hn-edge-b { bottom: 0; background: linear-gradient(to top,    rgba(var(--sr), var(--sg), var(--sb), calc(.24 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to top,    #000, transparent); mask-image: linear-gradient(to top,    #000, transparent); }
 .hn-edge-l { left: 0;   background: linear-gradient(to right,  rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to right,  #000, transparent); mask-image: linear-gradient(to right,  #000, transparent); }
 .hn-edge-r { right: 0;  background: linear-gradient(to left,   rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to left,   #000, transparent); mask-image: linear-gradient(to left,   #000, transparent); }
-@media (max-width: 900px) { .hn-edge { -webkit-backdrop-filter: none; backdrop-filter: none; } }   /* phones: darkening only, no blur */
 
 /* ---- 7. ambient motion: one slow thing per mode, under 5% strength ---------------------------- */
 /* Day: a cloud's shadow drifting across the desk, one pass in 52s. A wide soft-edged patch of the cool shadow
@@ -16090,13 +16089,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   z-index: 39; left: 0; top: -20%; width: 80%; height: 140%;
   opacity: calc(var(--key-day) * var(--amb) * .08);
   background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(var(--sr), var(--sg), var(--sb), 1) 0%, rgba(var(--sr), var(--sg), var(--sb), .62) 35%, rgba(var(--sr), var(--sg), var(--sb), .2) 65%, rgba(var(--sr), var(--sg), var(--sb), 0) 100%);
-  animation: hn-cloud 52s linear infinite;
+  animation: hn-cloud 52s steps(420) infinite;   /* ~8 updates/s: a 3px hop of a 4% soft patch cannot be seen */
 }
 .hn-amb-night {
   z-index: 1; left: 0; right: 0; top: calc(var(--rain-tile) * -1); height: calc(100% + var(--rain-tile));
   opacity: calc(var(--key-night) * var(--amb) * .07);
   background: url("public/textures/rain-streaks.webp") 0 0 / var(--rain-tile) var(--rain-tile) repeat;
-  animation: hn-rain 44s linear infinite;
+  animation: hn-rain 44s steps(528) infinite;    /* 12 updates/s, ~1.5px each, at 3.5% */
 }
 @keyframes hn-cloud { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(125%, 0, 0); } }
 @keyframes hn-rain  { from { transform: translate3d(0, 0, 0); }    to { transform: translate3d(0, var(--rain-tile), 0); } }
@@ -16139,37 +16138,42 @@ html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
     rgba(var(--lr), var(--lg), var(--lb), 0) 100%);
 }
 
-/* ---- the pens: the wordmark's colours, used only for things drawn by hand ------------------------ */
-/* The ransom-letter name is the one loud, multicoloured thing on an otherwise ink-and-cream page, which made it
-   read as pasted on. Fix: a small set of pens taken from its letters (tomato, cornflower, raspberry, orange,
-   violet, each a shade deeper than the paper letter so it still holds 3:1 as a mark on cream), used ONLY for
-   hand-made marks: the discipline doodles, the circled numbers and their pen "+", the heart and star.
-   Never for fills, never for text: the words stay ink, so the hierarchy does not change, and the name becomes
-   the biggest cut-out from the same set. The highlighter and the tapes were already in this family. */
-:root {
-  --pen-red:    #C8372A;
-  --pen-blue:   #2A5FC4;
-  --pen-rasp:   #B01F5C;
-  --pen-orange: #C75B00;
-  --pen-violet: #6B43C2;
+/* ---- the discipline doodles wear their section's colour ------------------------------------------ */
+/* Each doodle takes the identity colour of the section it links to (--sec-*-accent), so the row previews the
+   colour a visitor lands in, and the multicoloured name stops being the only colour on the page. Only the marks
+   are coloured: the words stay ink, so the hierarchy is unchanged. The hero paper is light in BOTH modes, so
+   these are the DAY accents (the dark-theme accents are pale pastels for dark grounds and would vanish here),
+   and two are a shade deeper so every doodle holds 3:1 or better on the paper (illustration 4.1, design 3.7). */
+#hero {
+  --ic-anim:   #1E4CC8;   /* = --sec-anim-accent   (6.5:1) */
+  --ic-illus:  #D93A26;   /* --sec-illus-accent #E8432E, a shade deeper */
+  --ic-video:  #1E7A4E;   /* = --sec-video-accent  (4.8:1) */
+  --ic-design: #A57508;   /* --sec-design-accent #B8840A, a shade deeper */
+  --ic-music:  #6540CC;   /* = --sec-music-accent  (6.0:1) */
 }
-#hero .disc-anim   .disc-ic { color: var(--pen-red); }
-#hero .disc-illus  .disc-ic { color: var(--pen-blue); }
-#hero .disc-video  .disc-ic { color: var(--pen-rasp); }
-#hero .disc-design .disc-ic { color: var(--pen-orange); }
-#hero .disc-music  .disc-ic { color: var(--pen-violet); }
-#hero .metrics .metric:nth-child(1) { --pen: var(--pen-red); }
-#hero .metrics .metric:nth-child(3) { --pen: var(--pen-blue); }
-#hero .metrics .metric:nth-child(5) { --pen: var(--pen-rasp); }
-/* the circle was a red-stroked image; as a mask it takes whichever pen the row has */
-#hero .metric-num::after {
-  background: var(--pen, var(--pen-red)) !important;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M14 9C34 2 76 3 91 13c10 8 1 24-28 28C36 44 9 39 7 25 6 15 24 8 50 6' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M14 9C34 2 76 3 91 13c10 8 1 24-28 28C36 44 9 39 7 25 6 15 24 8 50 6' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+#hero .disc-anim   .disc-ic { color: var(--ic-anim); }
+#hero .disc-illus  .disc-ic { color: var(--ic-illus); }
+#hero .disc-video  .disc-ic { color: var(--ic-video); }
+#hero .disc-design .disc-ic { color: var(--ic-design); }
+#hero .disc-music  .disc-ic { color: var(--ic-music); }
+#hero .hn-deco-star  { color: var(--ic-design); opacity: .9; }
+#hero .hn-deco-heart { color: var(--hn-red); }
+
+/* ---- lite mode: the same light, with the expensive parts swapped for cheap ones ------------------ */
+/* Switched on automatically (see the frame monitor below) when the hero cannot hold ~30fps, or by hand with
+   ?lite=1 in the address (?lite=0 forces it off). The blend layers over the reel video are what cost most: every
+   video frame re-blends them. Lite drops the window shadow, the lamp's soft-light, the mat glow, the ambient motion
+   and the parallax, and turns the night grade into one plain-alpha overlay (warm at the lamp, dark and blue-teal
+   away from it). Shadows, paper, pens and the mode switch are untouched. */
+html.hn-lite .hn-amb, html.hn-lite .hn-key-window, html.hn-lite .hn-key-lamp, html.hn-lite .hn-mat-lit { display: none; }
+html.hn-lite #hero .hero-sketchbook { will-change: auto; translate: none !important; }
+html.hn-lite #hero .reel-frame, html.hn-lite #hero .metrics, html.hn-lite #hero .hn-xsheet { will-change: auto; --px: 0 !important; --py: 0 !important; }
+html.hn-lite .hn-grade-night {
+  mix-blend-mode: normal;
+  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgba(255, 190, 110, .11) 0%, rgba(255, 190, 110, .04) 18%, rgba(10, 24, 44, .22) 42%,
+    rgba(8, 20, 38, .42) 68%, rgba(4, 10, 22, .68) 100%);
 }
-#hero .metric-toggle .drawer-pull::after { color: var(--pen, var(--hn-red)); }
-#hero .hn-deco-star  { color: var(--pen-orange); opacity: .9; }
-#hero .hn-deco-heart { color: var(--pen-red); }
 </style>
 </head>
 <body>
@@ -18327,7 +18331,7 @@ html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
     const fine = matchMedia('(hover: hover) and (pointer: fine)');
     const calm = matchMedia('(prefers-reduced-motion: reduce)');
     const wide = matchMedia('(min-width: 901px)');
-    const ok = () => fine.matches && wide.matches && !calm.matches;
+    const ok = () => fine.matches && wide.matches && !calm.matches && !document.documentElement.classList.contains('hn-lite');
     let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
     const clamp = v => Math.max(-1, Math.min(1, v));
     function paint() {
@@ -18368,6 +18372,37 @@ html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
     addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(set); }, { passive: true });
     addEventListener('resize', set);
     set();
+  })();
+
+
+  // ================================================================
+  // FRAME MONITOR -- adaptive quality. Watches the frame rate while the hero is on screen; if two windows of ~120
+  // frames in a row average slower than 30ms (under ~33fps) it switches the page to lite mode (CSS above) and
+  // remembers that for the session. Starts after the opening animation has settled. ?lite=1 forces it on,
+  // ?lite=0 forces it off. It only ever turns lite ON: it never flaps back and forth.
+  // ================================================================
+  (function initFrameMonitor() {
+    const root = document.documentElement, hero = document.getElementById('hero');
+    if (!hero) return;
+    if (/[?&]lite=1\b/.test(location.search)) { root.classList.add('hn-lite'); return; }
+    if (/[?&]lite=0\b/.test(location.search)) return;
+    try { if (sessionStorage.getItem('hn-lite') === '1') { root.classList.add('hn-lite'); return; } } catch (e) {}
+    let inView = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { inView = es[es.length - 1].isIntersecting; }).observe(hero);
+    let last = 0, n = 0, sum = 0, bad = 0, windows = 0;
+    function frame(t) {
+      if (document.hidden || !inView) { last = 0; requestAnimationFrame(frame); return; }
+      if (last) { const d = t - last; if (d < 250) { sum += d; n++; } }
+      last = t;
+      if (n >= 120) {
+        bad = (sum / n > 30) ? bad + 1 : 0;
+        if (bad >= 2) { root.classList.add('hn-lite'); try { sessionStorage.setItem('hn-lite', '1'); } catch (e) {} return; }
+        sum = 0; n = 0;
+        if (++windows >= 8) return;                          // watched long enough, it is fine
+      }
+      requestAnimationFrame(frame);
+    }
+    setTimeout(() => requestAnimationFrame(frame), 3500);
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
