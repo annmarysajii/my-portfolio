@@ -268,10 +268,13 @@ that belongs on a desk, and must never get in the way.** No pop-ups, no dialogs,
 Jasmine's twelve doodles are spread over three sections (Illustration lead sheet, its Animation card, its Music card), on purpose:
 completing her set means exploring the whole desk.
 
-Everything earned is a sticker. Pick it from the tray (bottom left), click anywhere to stick it there; it stays on the
-visitor's desk on later visits (localStorage `hn-rewards-v1`), click it to pick it up again, Esc puts it back.
-Notices are small slips in the same corner that fade by themselves. Sounds are slots (`stamp`, `reward`, `stickerPeel`,
-`stickerPlace`, `rewardFinal`) that stay silent until a file exists (see public/audio/README.txt).
+Everything earned is a sticker, and it all lives in ONE place: the **Studio Passport tab** (bottom right) opens a small
+sticker book panel: stamps and every project's doodles, found ones in colour, missing ones as outlines with a hint about
+where to look. It is not a dialog: nothing dims, the page stays usable, and it closes with its x, Esc, or the tab. Pick a
+sticker there, click anywhere on the page to stick it; it stays on the visitor's desk on later visits (localStorage
+`hn-rewards-v1`); click it there to move it; Esc puts it back. Notices are one tiny slip above the tab that fades by
+itself. Sounds are slots (`stamp`, `reward`, `stickerPeel`, `stickerPlace`, `rewardFinal`) that stay silent until a file
+exists (see public/audio/README.txt).
 
 **Adding to it:** draw a doodle into `assets/hand/project-doodles-sprite.svg` (id `pd-...`), add its size to `PD` and one
 line to `PEEK` (which card, which edge, how far along, how big). A new project: add its name to `PROJ`, its card to `HOSTS`,
