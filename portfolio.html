@@ -16016,6 +16016,19 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     rgb(var(--gr), var(--gg), var(--gb)) 58%,
     rgb(calc(var(--gr) * (1 - var(--vig) * 1.1)), calc(var(--gg) * (1 - var(--vig) * .95)), calc(var(--gb) * (1 - var(--vig) * .8))) 100%);
 }
+
+/* ---- 2. key light, day: a window-frame shadow over the mat and the notebook ---------------- */
+/* A real image (public/textures/window-shadow.webp), multiplied at 16%: white lets light through, the sash
+   bars darken. Soft-edged and angled from the upper left, where the mat's own daylight glow already is.
+   The file is currently a generated PLACEHOLDER; drop the real one in over it. It is a little larger than
+   the hero (inset -3%) so it can drift later without showing an edge. */
+.hn-key { position: absolute; inset: -3%; pointer-events: none; }
+.hn-key-window {
+  z-index: 38;
+  background: url("public/textures/window-shadow.webp") 0 0 / cover no-repeat;
+  mix-blend-mode: multiply;
+  opacity: calc(var(--key-day) * .16);
+}
 </style>
 </head>
 <body>
@@ -16492,6 +16505,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
   <div class="hn-atm" aria-hidden="true">
+    <div class="hn-key hn-key-window"></div>
     <div class="hn-grade hn-grade-day"></div>
     <div class="hn-grade hn-grade-night"></div>
   </div>
