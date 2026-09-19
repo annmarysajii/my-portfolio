@@ -16102,6 +16102,34 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .hn-edge-l { left: 0;   background: linear-gradient(to right,  rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to right,  #000, transparent); mask-image: linear-gradient(to right,  #000, transparent); }
 .hn-edge-r { right: 0;  background: linear-gradient(to left,   rgba(var(--sr), var(--sg), var(--sb), calc(.22 * var(--sh-k))), transparent); -webkit-mask-image: linear-gradient(to left,   #000, transparent); mask-image: linear-gradient(to left,   #000, transparent); }
 @media (max-width: 900px) { .hn-edge { -webkit-backdrop-filter: none; backdrop-filter: none; } }   /* phones: darkening only, no blur */
+
+/* ---- 7. ambient motion: one slow thing per mode, under 5% strength ---------------------------- */
+/* Day: a cloud's shadow drifting across the desk, one pass in 52s. A wide soft-edged patch of the cool shadow
+   colour, plain alpha (no blend mode, so it stays cheap), moving by transform only; it starts and ends fully
+   outside the hero, so the loop has no seam and no pop. Strength = --key-day * --amb * .08 = 4%.
+   Night: faint rain-on-glass light streaks on the MAT only (it sits under the notebook, so it can never touch
+   text), sliding down by exactly one tile (--rain-tile) every 44s. A static image, moved by transform only.
+   Strength = --key-night * --amb * .07 = 3.5%. Both are removed on phones and with reduced motion, and pause
+   while the hero is off screen (the .hn-off class from the small observer script). */
+:root { --rain-tile: 800px; }
+.hn-amb { position: absolute; pointer-events: none; will-change: transform; }
+.hn-amb-day {
+  z-index: 39; left: 0; top: -20%; width: 80%; height: 140%;
+  opacity: calc(var(--key-day) * var(--amb) * .08);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(var(--sr), var(--sg), var(--sb), 1) 0%, rgba(var(--sr), var(--sg), var(--sb), .62) 35%, rgba(var(--sr), var(--sg), var(--sb), .2) 65%, rgba(var(--sr), var(--sg), var(--sb), 0) 100%);
+  animation: hn-cloud 52s linear infinite;
+}
+.hn-amb-night {
+  z-index: 1; left: 0; right: 0; top: calc(var(--rain-tile) * -1); height: calc(100% + var(--rain-tile));
+  opacity: calc(var(--key-night) * var(--amb) * .07);
+  background: url("public/textures/rain-streaks.webp") 0 0 / var(--rain-tile) var(--rain-tile) repeat;
+  animation: hn-rain 44s linear infinite;
+}
+@keyframes hn-cloud { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(125%, 0, 0); } }
+@keyframes hn-rain  { from { transform: translate3d(0, 0, 0); }    to { transform: translate3d(0, var(--rain-tile), 0); } }
+#hero.hn-off .hn-amb { animation-play-state: paused; }
+:root:not([data-theme="dark"]) .hn-amb-night, [data-theme="dark"] .hn-amb-day { animation-play-state: paused; }   /* the other mode's layer is invisible, so it does not run */
+@media (prefers-reduced-motion: reduce), (max-width: 900px) { .hn-amb { display: none; animation: none; } }
 </style>
 </head>
 <body>
@@ -16580,6 +16608,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
   <div class="hn-atm" aria-hidden="true">
     <div class="hn-edge hn-edge-t"></div><div class="hn-edge hn-edge-b"></div><div class="hn-edge hn-edge-l"></div><div class="hn-edge hn-edge-r"></div>
+    <div class="hn-amb hn-amb-day"></div>
+    <div class="hn-amb hn-amb-night"></div>
     <div class="hn-key hn-key-window"></div>
     <div class="hn-key hn-key-lamp"></div>
     <div class="hn-grade hn-grade-day"></div>
@@ -18267,6 +18297,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     });
     hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; go(); });                  // settle back to rest
     [calm, wide].forEach(m => m.addEventListener('change', () => { if (!ok()) { tx = ty = x = y = 0; hero.style.setProperty('--px', 0); hero.style.setProperty('--py', 0); } }));
+  })();
+
+
+  // Ambient layers pause while the hero is off screen (nothing to see, nothing to run).
+  (function pauseAmbientOffscreen() {
+    const hero = document.getElementById('hero');
+    if (!hero || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(es => hero.classList.toggle('hn-off', !es[es.length - 1].isIntersecting)).observe(hero);
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
