@@ -15797,6 +15797,198 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   #hero .tape-tr { right: -14px; }
   #hero .hero-fabric-swatch { display: none !important; }   /* the old corner swatch would sit on the caption */
 }
+
+/* ================================================================
+   HERO LIGHT AND ATMOSPHERE -- one system
+   Day and night are two variable sets, not two builds. Every shadow,
+   glow and tint below reads these, so light and atmosphere always
+   agree. Registered (@property) so a mode switch interpolates over
+   ~600ms instead of snapping. Night = the site's dark theme.
+
+   Layers (budget of six, nothing else): 1 layered shadows, 2 key light
+   (window by day, lamp by night), 3 colour grade + vignette, 4 film
+   grain (the site's existing global overlay), 5 one ambient motion
+   layer, 6 depth. The cutting mat (#hero's own background) is not
+   touched; its baked-in daylight glow sits at 12% / 8%, so the day
+   light position matches it.
+================================================================ */
+@property --light-x { syntax: '<number>'; inherits: true; initial-value: 12; }  /* % across the hero */
+@property --light-y { syntax: '<number>'; inherits: true; initial-value: 8; }   /* % down the hero */
+@property --lr { syntax: '<number>'; inherits: true; initial-value: 255; }      /* light colour */
+@property --lg { syntax: '<number>'; inherits: true; initial-value: 238; }
+@property --lb { syntax: '<number>'; inherits: true; initial-value: 210; }
+@property --sr { syntax: '<number>'; inherits: true; initial-value: 44; }       /* shadow colour */
+@property --sg { syntax: '<number>'; inherits: true; initial-value: 40; }
+@property --sb { syntax: '<number>'; inherits: true; initial-value: 52; }
+@property --tr { syntax: '<number>'; inherits: true; initial-value: 70; }       /* shadow tint (wide layer) */
+@property --tg { syntax: '<number>'; inherits: true; initial-value: 88; }
+@property --tb { syntax: '<number>'; inherits: true; initial-value: 112; }
+@property --sh-k   { syntax: '<number>'; inherits: true; initial-value: .85; }  /* shadow strength */
+@property --pool   { syntax: '<number>'; inherits: true; initial-value: 0; }    /* lamp pool intensity */
+@property --key-day   { syntax: '<number>'; inherits: true; initial-value: 1; } /* layer opacities */
+@property --key-night { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --gr { syntax: '<number>'; inherits: true; initial-value: 255; }      /* grade tint (multiply) */
+@property --gg { syntax: '<number>'; inherits: true; initial-value: 255; }
+@property --gb { syntax: '<number>'; inherits: true; initial-value: 255; }
+@property --vig { syntax: '<number>'; inherits: true; initial-value: .14; }     /* vignette strength */
+@property --amb { syntax: '<number>'; inherits: true; initial-value: .5; }      /* ambient layer opacity */
+@property --lift { syntax: '<number>'; inherits: true; initial-value: 0; }      /* hover lift, 0..1 */
+
+:root {
+  --hn-ease: cubic-bezier(.2, .7, .2, 1);   /* the one easing curve: slow ease-out, no bounce */
+  --hn-mode-t: 600ms;
+
+  /* DAY: quiet morning studio, soft window light from the upper left */
+  --light-x: 12; --light-y: 8;
+  --lr: 255; --lg: 238; --lb: 210;
+  --sr: 44;  --sg: 40;  --sb: 52;      /* soft neutral shadow */
+  --tr: 74;  --tg: 92;  --tb: 118;     /* sky-lit blue in the long, faint layer */
+  --sh-k: .85;
+  --pool: 0; --key-day: 1; --key-night: 0;
+  --gr: 255; --gg: 250; --gb: 242; --vig: .14; --amb: .5;
+
+  /* which way shadows fall: away from the light, relative to the middle of the hero */
+  --sx: calc((50 - var(--light-x)) / 50);
+  --sy: calc((50 - var(--light-y)) / 50);
+  --hn-shadow-rgb: var(--sr), var(--sg), var(--sb);
+  --hn-tint-rgb:   var(--tr), var(--tg), var(--tb);
+
+  /* three stacked shadows per item: tight contact, medium, wide faint (the wide one picks up the tint) */
+  --hn-sh-flat:
+    calc(var(--sx) * .5px) calc(var(--sy) * 1px) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))),
+    calc(var(--sx) * 1.5px) calc(var(--sy) * 2.5px) 4px rgba(var(--hn-shadow-rgb), calc(.16 * var(--sh-k))),
+    calc(var(--sx) * 4px) calc(var(--sy) * 7px) 14px rgba(var(--hn-tint-rgb), calc(.11 * var(--sh-k)));
+  --hn-sh-taped:
+    calc(var(--sx) * .8px) calc(var(--sy) * 1.4px) 1.5px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))),
+    calc(var(--sx) * 3px) calc(var(--sy) * 4.5px) 7px rgba(var(--hn-shadow-rgb), calc(.2 * var(--sh-k))),
+    calc(var(--sx) * 9px) calc(var(--sy) * 13px) 24px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k)));
+  --hn-sh-raised:
+    calc(var(--sx) * 1px) calc(var(--sy) * 1.6px) 2px rgba(var(--hn-shadow-rgb), calc(.4 * var(--sh-k))),
+    calc(var(--sx) * 4px) calc(var(--sy) * 6px) 10px rgba(var(--hn-shadow-rgb), calc(.22 * var(--sh-k))),
+    calc(var(--sx) * 12px) calc(var(--sy) * 18px) 30px rgba(var(--hn-tint-rgb), calc(.16 * var(--sh-k)));
+  --hn-sh-lifted: var(--hn-sh-raised);
+  /* the notebook casts a slightly larger, softer shadow onto the mat */
+  --hn-sh-book:
+    calc(var(--sx) * 1px) calc(var(--sy) * 1.6px) 2px rgba(var(--hn-shadow-rgb), calc(.5 * var(--sh-k))),
+    calc(var(--sx) * 7px) calc(var(--sy) * 10px) 18px rgba(var(--hn-shadow-rgb), calc(.3 * var(--sh-k))),
+    calc(var(--sx) * 20px) calc(var(--sy) * 28px) 54px rgba(var(--hn-tint-rgb), calc(.26 * var(--sh-k)));
+}
+[data-theme="dark"] {
+  /* NIGHT: late night in an animator's studio, one lamp on, rain outside */
+  --light-x: 30; --light-y: 36;                /* the lamp: off-centre, left of the book */
+  --lr: 255; --lg: 184; --lb: 104;             /* warm tungsten */
+  --sr: 5;   --sg: 8;   --sb: 15;              /* near-black, blue */
+  --tr: 12;  --tg: 36;  --tb: 50;              /* teal in the long, faint layer */
+  --sh-k: 1.25;
+  --pool: 1; --key-day: 0; --key-night: 1;
+  --gr: 178; --gg: 196; --gb: 222; --vig: .5; --amb: .5;
+}
+/* a mode switch interpolates the whole set over ~600ms */
+:root {
+  transition:
+    --light-x var(--hn-mode-t) var(--hn-ease), --light-y var(--hn-mode-t) var(--hn-ease),
+    --lr var(--hn-mode-t) var(--hn-ease), --lg var(--hn-mode-t) var(--hn-ease), --lb var(--hn-mode-t) var(--hn-ease),
+    --sr var(--hn-mode-t) var(--hn-ease), --sg var(--hn-mode-t) var(--hn-ease), --sb var(--hn-mode-t) var(--hn-ease),
+    --tr var(--hn-mode-t) var(--hn-ease), --tg var(--hn-mode-t) var(--hn-ease), --tb var(--hn-mode-t) var(--hn-ease),
+    --sh-k var(--hn-mode-t) var(--hn-ease), --pool var(--hn-mode-t) var(--hn-ease),
+    --key-day var(--hn-mode-t) var(--hn-ease), --key-night var(--hn-mode-t) var(--hn-ease),
+    --gr var(--hn-mode-t) var(--hn-ease), --gg var(--hn-mode-t) var(--hn-ease), --gb var(--hn-mode-t) var(--hn-ease),
+    --vig var(--hn-mode-t) var(--hn-ease), --amb var(--hn-mode-t) var(--hn-ease);
+}
+@media (prefers-reduced-motion: reduce) { :root { transition: none; } }
+
+/* ---- 1. layered shadows on everything stuck or taped ---------------- */
+/* Tape has torn ends made with clip-path, and clip-path clips the element's own box-shadow, so tape
+   has never actually cast a shadow. Split it: the element is an unclipped box that casts the shadow;
+   ::before is the visible strip with the torn ends. */
+#hero .tape, #hero .tape-corner {
+  background: none !important;
+  clip-path: none !important;
+  box-shadow: var(--hn-sh-taped) !important;
+  --tape-fill: var(--tape-color, var(--gold));
+}
+#hero .tape-tl { --tape-fill: var(--hn-tape-gold); }
+#hero .tape-tr { --tape-fill: var(--hn-tape-blue); }
+#hero .tape::before, #hero .tape-corner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.24) 0 5px, transparent 5px 11px), var(--tape-fill);
+  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%);
+}
+/* the strip's tape is a pseudo-element: ::before casts the shadow, ::after is the visible strip */
+#hero .hn-strip-col::before { background: none !important; clip-path: none !important; box-shadow: var(--hn-sh-taped) !important; }
+#hero .hn-strip-col::after {
+  content: '';
+  position: absolute; z-index: 3;
+  top: .05rem; left: 50%;
+  width: 96px; height: 26px; margin-left: -48px;
+  transform: rotate(-3deg);
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.24) 0 5px, transparent 5px 11px), var(--hn-tape-pink);
+  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%);
+  pointer-events: none;
+}
+
+/* Items whose shadow is a filter (their paper has a torn edge made with clip-path) get the same three
+   layers as drop-shadows. The lift variable (0 at rest, 1 on hover) pushes the shadow away from the
+   surface, so a lifted item throws a longer shadow in the direction the light says. */
+#hero .metrics {
+  filter:
+    drop-shadow(calc(var(--sx) * (.6px + var(--lift) * .8px)) calc(var(--sy) * (1px + var(--lift) * 1.2px)) 1px rgba(var(--hn-shadow-rgb), calc(.36 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * (2.5px + var(--lift) * 2px)) calc(var(--sy) * (4px + var(--lift) * 3px)) 6px rgba(var(--hn-shadow-rgb), calc(.2 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * (8px + var(--lift) * 5px)) calc(var(--sy) * (12px + var(--lift) * 7px)) 20px rgba(var(--hn-tint-rgb), calc(.16 * var(--sh-k))));
+}
+#hero .hn-xsheet {
+  filter:
+    drop-shadow(calc(var(--sx) * (.5px + var(--lift) * .8px)) calc(var(--sy) * (1px + var(--lift) * 1.2px)) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * (2px + var(--lift) * 2px)) calc(var(--sy) * (3.5px + var(--lift) * 3px)) 5px rgba(var(--hn-shadow-rgb), calc(.18 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * (7px + var(--lift) * 5px)) calc(var(--sy) * (11px + var(--lift) * 7px)) 18px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k))));
+  pointer-events: auto;
+}
+/* the print: its shadow is written here, not read from a token, so it can react to --lift */
+#hero .reel-screen-stage {
+  box-shadow:
+    calc(var(--sx) * (1px + var(--lift) * .8px)) calc(var(--sy) * (1.6px + var(--lift) * 1.2px)) 2px rgba(var(--hn-shadow-rgb), calc(.4 * var(--sh-k))),
+    calc(var(--sx) * (4px + var(--lift) * 3px)) calc(var(--sy) * (6px + var(--lift) * 4px)) 10px rgba(var(--hn-shadow-rgb), calc(.22 * var(--sh-k))),
+    calc(var(--sx) * (12px + var(--lift) * 7px)) calc(var(--sy) * (18px + var(--lift) * 10px)) 30px rgba(var(--hn-tint-rgb), calc(.16 * var(--sh-k)));
+}
+
+/* ---- hover: lifts 1 to 2px and the shadow follows the light --------- */
+#hero .reel-frame, #hero .metrics, #hero .hn-xsheet {
+  --lift: 0;
+  transition: --lift 450ms var(--hn-ease) !important;
+  translate: calc(var(--lift) * var(--sx) * -.8px) calc(var(--lift) * -2px);
+}
+#hero .reel-frame:hover, #hero .metrics:hover, #hero .hn-xsheet:hover { --lift: 1; }
+@media (prefers-reduced-motion: reduce) {
+  #hero .reel-frame, #hero .metrics, #hero .hn-xsheet { transition: none !important; }
+}
+
+/* the gingham swatch and the bookmark ribbon are cut with clip-path too, so they get the same split */
+#hero .hero-fabric-swatch {
+  background: none !important; background-image: none !important;
+  clip-path: none !important; border: 0 !important;
+  box-shadow: var(--hn-sh-taped) !important;
+}
+#hero .hero-fabric-swatch::before {
+  content: ''; position: absolute; inset: 0; box-sizing: border-box;
+  background-color: #FFFDF8;
+  background-image:
+    repeating-linear-gradient(0deg, var(--teal) 0 3px, transparent 3px 10px),
+    repeating-linear-gradient(90deg, var(--gold) 0 3px, transparent 3px 10px);
+  background-blend-mode: multiply, multiply;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 22% 100%, 0 78%);
+  border: 1px solid rgba(32, 28, 22, .18);
+}
+[data-theme="dark"] #hero .hero-fabric-swatch::before { border-color: rgba(255, 255, 255, .22); }
+#hero .hero-bookmark-ribbon {
+  background: none !important; clip-path: none !important; border-radius: 0 !important;
+  box-shadow: var(--hn-sh-taped) !important;
+}
+#hero .hero-bookmark-ribbon::before {
+  content: ''; position: absolute; inset: 0;
+  background: #2B4C7E; border-radius: 2px 2px 0 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+}
 </style>
 </head>
 <body>
