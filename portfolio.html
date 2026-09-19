@@ -18212,8 +18212,9 @@ html.hn-lite .hn-grade-night {
     if (!btn) return;
     const root = document.documentElement;
     const BASE = 'public/audio/';
-    const EXTS = ['webm', 'm4a', 'mp3', 'ogg'];                          // first one that exists wins
-    const FILES = { night: 'night-rain', day: 'day-birds', click: 'lamp-click', rustle: 'paper-rustle' };
+    const EXTS = ['mp3', 'm4a', 'webm', 'ogg'];                          // first one that exists wins
+    const FILES = { night: 'night-music', day: 'day-music', click: 'lamp-click', rustle: 'paper-rustle' };
+    const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
     let ctx = null, master = null, on = false, armed = false, loop = null, loopMode = null;
     const bufs = {}, missing = {};
@@ -18226,8 +18227,10 @@ html.hn-lite .hn-grade-night {
     function paint(note) {
       const pressed = on || armed;
       btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-      btn.setAttribute('aria-label', note ? 'Room sound (' + note + ')' : 'Room sound');
-      btn.title = note ? 'Room sound: ' + note : 'Room sound';
+      const playing = on && loop ? 'now playing: ' + NOW_PLAYING[loopMode] : '';
+      const say = note || playing;
+      btn.setAttribute('aria-label', say ? 'Room sound (' + say + ')' : 'Room sound');
+      btn.title = say ? 'Room sound: ' + say : 'Room sound';
       btn.classList.toggle('is-on', pressed);
     }
     function ensureCtx() {
@@ -18268,7 +18271,7 @@ html.hn-lite .hn-grade-night {
       const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
       const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
       g.gain.linearRampToValueAtTime(num('--snd-loop', .5), ctx.currentTime + FADE);
-      loop = { src, g }; loopMode = m;
+      loop = { src, g }; loopMode = m; paint();
       return true;
     }
     async function turnOn() {
