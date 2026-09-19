@@ -15295,12 +15295,14 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #hero .hero-badge-pill {
   display: inline-block !important;
   padding: 0 !important;
-  margin: 0 0 .55rem .3rem !important;
+  /* headroom: the tilt lifts the stamp's right end and its double border adds ~4px, so without this it
+     pokes above the top edge of the page */
+  margin: 1rem 0 .55rem .3rem !important;
   background: none !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  transform: rotate(-4deg) !important;
+  transform: rotate(-3deg) !important;
   transform-origin: 0 60%;
   color: var(--hn-red) !important;
   filter: url(#hn-stamp);
@@ -15314,9 +15316,9 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   outline: 1.2px solid currentColor;
   outline-offset: 3px;
   font-family: var(--hn-hand) !important;
-  font-size: var(--hn-t4) !important;
+  font-size: calc(var(--hn-t4) * .95) !important;
   font-weight: 400 !important;
-  letter-spacing: .13em !important;
+  letter-spacing: .12em !important;
   text-transform: uppercase !important;
   line-height: 1.15 !important;
   white-space: nowrap;
