@@ -16528,12 +16528,13 @@ body::after, [data-theme="dark"] body::after {
 /* ---- F. THE OTHER SECTIONS: same desk, each with its own object ---------------------------------------------- */
 /* Every .desk section shares the paper, shadows, hand lettering and prints from D and E. What changes is the
    thing the lead sheet is fixed with, and the section's colour (--acc), which lives only in pens and links. */
-/* --acc-ink is the section colour deep enough for small text on paper (4.5:1+); --acc is the pen colour */
-#animation { --acc: #1E4CC8; --acc-ink: #1E4CC8; }
-#illustration { --acc: #D93A26; --acc-ink: #B52D1B; }
-#videography { --acc: #1E7A4E; --acc-ink: #1E7A4E; }
-#graphic-design { --acc: #A57508; --acc-ink: #85600A; }
-#music { --acc: #6540CC; --acc-ink: #6540CC; }
+/* --acc-ink is the section colour deep enough for small text on paper (5.5:1+, so it still clears 4.5:1 under the
+   fixed light overlay near the screen edges); --acc is the pen colour */
+#animation { --acc: #1E4CC8; --acc-ink: #1A3FA3; }
+#illustration { --acc: #D93A26; --acc-ink: #A02618; }
+#videography { --acc: #1E7A4E; --acc-ink: #15663F; }
+#graphic-design { --acc: #A57508; --acc-ink: #6F4F06; }
+#music { --acc: #6540CC; --acc-ink: #5A36BD; }
 
 /* Illustration: a sketchbook page, bound with a spiral down the left edge */
 #illustration .lc { padding-left: calc(clamp(1.5rem, 3.4vw, 2.6rem) + 28px) !important; }
@@ -16697,7 +16698,7 @@ body::after, [data-theme="dark"] body::after {
 html::before {
   content: ""; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
   background: url("public/textures/window-shadow-alpha.webp") 0 0 / cover no-repeat;
-  opacity: calc(var(--key-day) * .16 * (1 - var(--hv, 0)));
+  opacity: calc(var(--key-day) * .18 * (1 - var(--hv, 0)));
 }
 html::after, [data-theme="dark"] html::after {
   background:
@@ -16834,6 +16835,25 @@ html.hn-lite::before { display: none; }
   background: #f6e27a !important; color: var(--hn-ink) !important; font-family: var(--hn-hand) !important; font-size: var(--hn-t4) !important;
   letter-spacing: 0 !important; border-radius: 1px !important; border: 0 !important; box-shadow: var(--hn-edge), var(--hn-sh-raised) !important;
 }
+
+/* ---- L. THE STRONG LIGHT GOES BEHIND THE PAPER, ONTO THE MAT ------------------------------------------------- */
+/* The hero reads as more "lit" than the rest because its light both pools and falls off hard, and it can afford to:
+   its text is all inside the pool. Below it, a strong overlay OVER the content made small coloured text fail
+   contrast near the screen edges (measured). So the strong part sits BEHIND the content, fixed to the screen,
+   between the mat and the paper: the lamp pool on the mat around the sheets, and a real fall-off into the dark
+   at the edges of the desk. The sheets keep their gentle overlay and stay fully readable; the room around them
+   is as lit and as dark as the hero's. Plain alpha, no blend mode, one static layer. */
+#wrap::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 36% 32% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.16 + var(--key-night) * .30)) 0%, rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .10)) 55%, transparent 100%),
+    radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      transparent 0%, transparent 18%,
+      rgba(var(--sr), var(--sg), var(--sb), calc(.22 + var(--key-night) * .30)) 58%,
+      rgba(var(--sr), var(--sg), var(--sb), calc(.50 + var(--key-night) * .38)) 100%);
+}
+html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
 /* ==== HN-SITE-END ==== */
 
 /* the level meter on the speaker button: three bars that follow the real signal (see the script) */
@@ -18881,9 +18901,25 @@ html.hn-lite::before { display: none; }
     const EXTS = ['mp3', 'ogg'];                                         // first one that exists wins
     const say = (...a) => { try { console.info('[room sound]', ...a); } catch (e) {} };
     const warn = (...a) => { try { console.warn('[room sound]', ...a); } catch (e) {} };
-    const FILES = { night: 'night-music', day: 'day-music', click: 'lamp-click',
-                    paper1: 'paper-1', paper2: 'paper-2', paper3: 'paper-3', drawerOpen: 'drawer-open', drawerClose: 'drawer-close' };
-    const PAPER = ['paper1', 'paper2', 'paper3'];                        // three pitches of the same sheet, so it never repeats exactly
+    const FILES = { night: 'night-music', day: 'day-music', click: 'lamp-click', drawerOpen: 'drawer-open', drawerClose: 'drawer-close' };
+    // SOUND SLOTS: one per kind of thing that can make a sound. A slot plays public/audio/<own>-1.mp3, -2, -3, -4
+    // (any that exist, random, never the same twice in a row). Until a slot has its own file it borrows the generic
+    // fallback recordings (paper-1/2/3 for the three paper slots), and a slot with neither stays silent. So
+    // adding a better sound for one kind is just dropping <own>-1.mp3 (and -2, -3 for variety) into public/audio/.
+    const GENERIC_PAPER = ['paper-1', 'paper-2', 'paper-3'];
+    const SLOTS = {
+      paperPrint:  { own: 'paper-print',  fall: GENERIC_PAPER },   // a photo print or a card
+      paperSheet:  { own: 'paper-sheet',  fall: GENERIC_PAPER },   // a big sheet or the notebook page
+      paperSlip:   { own: 'paper-slip',   fall: GENERIC_PAPER },   // a torn slip, a sticky note, a taped scrap
+      tape:        { own: 'tape',         fall: [] },              // tape peeled or pressed
+      stamp:       { own: 'stamp',        fall: [] },              // a rubber stamp landing (a reward)
+      stickerPeel: { own: 'sticker-peel', fall: [] },
+      stickerPlace:{ own: 'sticker-place', fall: [] },
+      reward:      { own: 'reward',       fall: [] },              // a small chime
+      rewardFinal: { own: 'reward-final', fall: [] },              // the last stamp
+      drawerOpen:  { own: 'drawer-open',  fall: [] },
+      drawerClose: { own: 'drawer-close', fall: [] }
+    };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
     let ctx = null, master = null, an = null, on = false, armed = false, loop = null, loopMode = null, meterT = 0, silent = 0, lastErr = '';
@@ -18910,19 +18946,20 @@ html.hn-lite::before { display: none; }
       say('audio context created, state:', ctx.state, ', sample rate:', ctx.sampleRate);
       return ctx;
     }
-    async function load(key) {
+    async function load(key, quiet) {
       if (bufs[key]) return bufs[key];
       if (missing[key] || !ctx) return null;
-      for (const ext of EXTS) {
-        const url = BASE + FILES[key] + '.' + ext;
+      const base = FILES[key] || key;
+      for (const ext of (quiet ? ['mp3'] : EXTS)) {
+        const url = BASE + base + '.' + ext;
         try {
           const r = await fetch(url);
-          if (!r.ok) { lastErr = FILES[key] + ' returned ' + r.status; warn(url, 'returned HTTP', r.status, '(is the public/ folder being served?)'); continue; }
+          if (!r.ok) { if (!quiet) { lastErr = base + ' returned ' + r.status; warn(url, 'returned HTTP', r.status, '(is the public/ folder being served?)'); } continue; }
           const ab = await r.arrayBuffer();
           bufs[key] = await new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
           say('loaded', url, '-', Math.round(bufs[key].duration) + 's,', bufs[key].numberOfChannels + ' channels');
           return bufs[key];
-        } catch (e) { lastErr = FILES[key] + ' could not be loaded'; warn('could not load or decode', url, e && (e.message || e)); }
+        } catch (e) { if (!quiet) { lastErr = base + ' could not be loaded'; warn('could not load or decode', url, e && (e.message || e)); } }
       }
       missing[key] = true;
       return null;
@@ -18995,29 +19032,49 @@ html.hn-lite::before { display: none; }
       else if (on) ctx.resume();
     });
 
+    const slotFiles = {};
     let lastPick = '';
+    async function pickSlot(name) {
+      const sl = SLOTS[name];
+      if (!sl) return name;
+      if (!slotFiles[name]) {
+        const found = [];
+        for (let i = 1; i <= 4; i++) { const k = sl.own + '-' + i; if (await load(k, true)) found.push(k); else break; }
+        if (!found.length && await load(sl.own, true)) found.push(sl.own);
+        slotFiles[name] = found.length ? found : sl.fall.slice();
+      }
+      const list = slotFiles[name]; if (!list.length) return null;
+      const pool = list.filter(k => k !== lastPick);
+      return (pool.length ? pool : list)[Math.floor(Math.random() * (pool.length || list.length))];
+    }
     async function once(key, vol) {
       if (!on || !ctx || ctx.state !== 'running') return;
-      if (Array.isArray(key)) { const pool = key.filter(k => k !== lastPick); key = pool[Math.floor(Math.random() * pool.length)]; lastPick = key; }
-      const b = await load(key); if (!b) return;
+      key = await pickSlot(key); if (!key) return;
+      lastPick = key;
+      const b = await load(key, true); if (!b) return;
       const s = ctx.createBufferSource(); s.buffer = b;
       const g = ctx.createGain(); g.gain.value = vol; s.connect(g); g.connect(master); s.start();
     }
     window.__hnLampClick = () => once('click', num('--snd-ui', .5));
-    // the page's foley, for anything else to call: paper, drawerOpen, drawerClose (silent unless room sound is on)
-    window.__hnSfx = name => {
-      if (name === 'paper') once(PAPER, num('--snd-rustle', .25));
-      else if (name === 'drawerOpen' || name === 'drawerClose') once(name, num('--snd-ui', .5));
-    };
-    // paper: a sheet, print or card hovered by a mouse (at most once every 1.1s, quiet), plus the drawer handle
-    let lastRustle = 0;
-    document.querySelectorAll('#hero .reel-frame, #hero .metrics, #hero .hn-xsheet, .desk .grid .card, .desk .lc, #downloads .dl-btn, #about .bp-intro-block, #about .bp-inv-col, #about .about-spec').forEach(el => {
+    // the page's foley, for anything else to call by slot name (silent unless room sound is on)
+    window.__hnSfx = name => once(/^paper/.test(name) ? name : name, /^paper/.test(name) ? num('--snd-rustle', .22) : num('--snd-ui', .55));
+    // Paper on hover was too much (every card, all the time). Now: mouse only, once per object per 20 seconds, and
+    // never more than one paper sound every 3.5 seconds anywhere. Each kind of paper has its own slot.
+    const HOVER = [
+      ['#hero .reel-frame, #hero .metrics, #hero .hn-xsheet, #about .bp-inv-col, #about .about-spec', 'paperSlip'],
+      ['.desk .grid .card, #downloads .dl-btn', 'paperPrint'],
+      ['.desk .lc, #about .bp-intro-block', 'paperSheet']
+    ];
+    const seenAt = new WeakMap(); let lastHover = 0;
+    HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
       el.addEventListener('pointerenter', e => {
         if (e.pointerType !== 'mouse') return;
-        const now = performance.now(); if (now - lastRustle < 1100) return; lastRustle = now;
-        window.__hnSfx('paper');
+        const now = performance.now();
+        if (now - lastHover < 3500 || now - (seenAt.get(el) || -1e9) < 20000) return;
+        seenAt.set(el, now); lastHover = now;
+        window.__hnSfx(slot);
       });
-    });
+    }));
     // the About drawer (the badge that opens "Studio Desk"): a drawer sound as it opens and closes
     const bp = document.querySelector('.bp-badge--toggle');
     if (bp) bp.addEventListener('click', () => setTimeout(() => window.__hnSfx(bp.getAttribute('aria-expanded') === 'true' ? 'drawerOpen' : 'drawerClose'), 0));
@@ -19155,7 +19212,7 @@ html.hn-lite::before { display: none; }
         const cs = getComputedStyle(el);
         let bg = null, p = el;                                           // the pill's own fill, or whatever it sits on
         while (p) { const c = getComputedStyle(p).backgroundColor, a = (c.match(/[\d.]+/g) || [])[3]; if (a === undefined || +a >= .5) { bg = rgb(c); break; } p = p.parentElement; }
-        if (!bg || ratio(rgb(cs.color), bg) >= 4.5) return;
+        if (!bg || ratio(rgb(cs.color), bg) >= 5.5) return;          // 5.5, not 4.5: headroom for the light overlay
         el.style.setProperty('color', ratio(INK, bg) >= ratio(CREAM, bg) ? '#1E2733' : '#FFFDF8', 'important');
       });
     }
