@@ -17,7 +17,7 @@
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
-  <link rel="preload" href="assets/hand/annmary-hand.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/hand/annmary-hand.woff2?v=2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15157,7 +15157,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 ================================================================ */
 @font-face {
   font-family: 'Annmary Hand';
-  src: url('assets/hand/annmary-hand.woff2') format('woff2');
+  src: url('assets/hand/annmary-hand.woff2?v=2') format('woff2');
   font-display: swap;
 }
 :root {
@@ -16174,6 +16174,276 @@ html.hn-lite .hn-grade-night {
     rgba(255, 190, 110, .11) 0%, rgba(255, 190, 110, .04) 18%, rgba(10, 24, 44, .22) 42%,
     rgba(8, 20, 38, .42) 68%, rgba(4, 10, 22, .68) 100%);
 }
+/* ==== HN-SITE-BEGIN ==== */
+/* ==========================================================================================================
+   THE WHOLE SITE IS ONE DESK.  (DESK_KIT.md, extended.)
+   One mat under every section, one light (the variables from the hero), one paper, one shadow recipe, and
+   handwriting for anything written by a person. Section colour lives in the marks (tape, pens, tabs), not in
+   full-width bands. Animation is the first section rebuilt this way; the others follow the same parts.
+   ========================================================================================================== */
+
+/* ---- A. the derived light tokens are re-resolved inside the hero, so a mode switch blends the shadows too ---- */
+/* (the tokens are declared on :root and resolve there, which made them snap while the registered variables
+   blended on #hero; declaring them again on #hero makes them follow the blend.) */
+#hero {
+  /* which way shadows fall: away from the light, relative to the middle of the hero */
+  --sx: calc((50 - var(--light-x)) / 50);
+  --sy: calc((50 - var(--light-y)) / 50);
+  --hn-shadow-rgb: var(--sr), var(--sg), var(--sb);
+  --hn-tint-rgb:   var(--tr), var(--tg), var(--tb);
+
+  /* three stacked shadows per item: tight contact, medium, wide faint (the wide one picks up the tint) */
+  --hn-sh-flat:
+    calc(var(--sx) * .5px) calc(var(--sy) * 1px) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))),
+    calc(var(--sx) * 1.5px) calc(var(--sy) * 2.5px) 4px rgba(var(--hn-shadow-rgb), calc(.16 * var(--sh-k))),
+    calc(var(--sx) * 4px) calc(var(--sy) * 7px) 14px rgba(var(--hn-tint-rgb), calc(.11 * var(--sh-k)));
+  --hn-sh-taped:
+    calc(var(--sx) * .8px) calc(var(--sy) * 1.4px) 1.5px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))),
+    calc(var(--sx) * 3px) calc(var(--sy) * 4.5px) 7px rgba(var(--hn-shadow-rgb), calc(.2 * var(--sh-k))),
+    calc(var(--sx) * 9px) calc(var(--sy) * 13px) 24px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k)));
+  --hn-sh-raised:
+    calc(var(--sx) * 1px) calc(var(--sy) * 1.6px) 2px rgba(var(--hn-shadow-rgb), calc(.4 * var(--sh-k))),
+    calc(var(--sx) * 4px) calc(var(--sy) * 6px) 10px rgba(var(--hn-shadow-rgb), calc(.22 * var(--sh-k))),
+    calc(var(--sx) * 12px) calc(var(--sy) * 18px) 30px rgba(var(--hn-tint-rgb), calc(.16 * var(--sh-k)));
+  --hn-sh-lifted: var(--hn-sh-raised);
+  /* the notebook casts a slightly larger, softer shadow onto the mat */
+  --hn-sh-book:
+    calc(var(--sx) * 1px) calc(var(--sy) * 1.6px) 2px rgba(var(--hn-shadow-rgb), calc(.5 * var(--sh-k))),
+    calc(var(--sx) * 7px) calc(var(--sy) * 10px) 18px rgba(var(--hn-shadow-rgb), calc(.3 * var(--sh-k))),
+    calc(var(--sx) * 20px) calc(var(--sy) * 28px) 54px rgba(var(--hn-tint-rgb), calc(.26 * var(--sh-k)));
+}
+
+/* ---- B. the same mat under every section, not just the hero -------------------------------------------- */
+/* Same look as the hero's mat (grain, scratches, grid, navy base), on the body, so wherever a sheet does not
+   reach you are still looking at the same desk. The hero paints its mat from eight CSS gradient layers, which is
+   fine for one screen but was slow when rasterised over a 17000px-tall page, so here the grain, scratches and
+   grid are one pre-rendered 600px seamless tile (assets/svg-opt/mat-day.webp / mat-night.webp; 600 = 10 grid
+   cells, so the grid lines up with the hero's) over the same navy base. */
+html body {
+  background-color: #2B4C7E;
+  background-image: url("assets/svg-opt/mat-day.webp"), linear-gradient(90deg, #2B4C7E 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #2B4C7E 100%);
+  background-size: 600px 600px, auto;
+  background-repeat: repeat, no-repeat;
+}
+html[data-theme="dark"] body {
+  background-color: #16305A;
+  background-image: url("assets/svg-opt/mat-night.webp"), linear-gradient(90deg, #16305A 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #16305A 100%);
+  background-size: 600px 600px, auto;
+  background-repeat: repeat, no-repeat;
+}
+
+/* ---- C. one light for the rest of the page: cheap, fixed to the screen, plain alpha ----------------------- */
+/* The two old sitewide layers (a soft-light wash from the upper left and a multiply falloff at the lower right)
+   were their own light, in their own colours. They are now the same lamp / window as the hero, from the same
+   variables, and they use NO blend modes (a blend layer over scrolling content is re-blended on every frame,
+   which is exactly what made the hero laggy). Fixed to the screen on purpose: the light is where you are
+   reading, so text is always lit; the hero fades these two out (--hv) and uses its richer layers instead. */
+html::after, [data-theme="dark"] html::after {
+  mix-blend-mode: normal;
+  background: radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgba(var(--lr), var(--lg), var(--lb), .085) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
+}
+body::after, [data-theme="dark"] body::after {
+  mix-blend-mode: normal;
+  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    transparent 0%, transparent 26%,
+    rgba(var(--sr), var(--sg), var(--sb), calc(.08 + var(--key-night) * .2)) 58%,
+    rgba(var(--sr), var(--sg), var(--sb), calc(.18 + var(--key-night) * .3)) 100%);
+}
+
+/* ---- D0. the quick-look drawer between the hero and the first section: cards, not buttons ------------------- */
+#downloads.dl-sec { background: transparent !important; box-shadow: none !important; border: 0 !important; }
+/* (the drawer's navy frame and gold pull are the site's existing drawer; the quick-look block keeps them, and gets
+   a proper wooden drawer later, as the first thing a visitor pulls open.) */
+#downloads .dl-h {
+  position: relative; display: inline-block; z-index: 0; rotate: -.6deg;
+  padding: 1rem 1.7rem 1.05rem !important; margin-bottom: 1.4rem !important;
+  font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important;
+  font-size: clamp(1.9rem, 4vw, 2.7rem) !important; line-height: 1.05 !important; color: var(--hn-ink) !important;
+  filter:
+    drop-shadow(calc(var(--sx) * .5px) calc(var(--sy) * 1px) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3.5px) 5px rgba(var(--hn-shadow-rgb), calc(.18 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 7px) calc(var(--sy) * 11px) 18px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k))));
+}
+#downloads .dl-h::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background-color: var(--hn-paper-2);
+  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp");
+  background-size: auto, 400px 400px;
+  clip-path: polygon(0 3%, 7% 0, 19% 3%, 33% 0, 47% 3%, 61% 0, 75% 3%, 89% 0, 100% 3%, 100% 97%, 93% 100%, 78% 97%, 60% 100%, 42% 97%, 24% 100%, 9% 97%, 0 100%);
+}
+#downloads .dl-h span, #downloads .dl-h em { color: var(--hn-red) !important; font-style: normal; }
+#downloads .dl-btn {
+  border: 0 !important; border-radius: 2px !important;
+  background-color: var(--hn-paper-r) !important;
+  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
+  box-shadow: var(--hn-sh-raised) !important; color: var(--hn-ink) !important;
+  rotate: -.4deg; transition: translate 450ms var(--hn-ease) !important;
+}
+#downloads .dl-btn:nth-child(even) { rotate: .5deg; }
+#downloads .dl-btn:hover, #downloads .dl-btn:focus-visible { translate: 0 -2px; }
+#downloads .dl-btn:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
+#downloads .dl-txt { font-family: var(--hn-hand) !important; font-size: var(--hn-t3) !important; line-height: 1.05 !important; letter-spacing: 0 !important; color: var(--hn-ink) !important; }
+#downloads .dl-txt small, #downloads .dl-txt em, #downloads .dl-txt span { font-family: var(--hn-hand) !important; color: var(--hn-ink-2) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: var(--hn-t4) !important; }
+#downloads .dl-ico { background: none !important; box-shadow: none !important; border: 0 !important; }
+#downloads .dl-ico.ib { color: #1E4CC8 !important; } #downloads .dl-ico.ir { color: #D93A26 !important; }
+#downloads .dl-ico.ig { color: #1E7A4E !important; } #downloads .dl-ico.iy { color: #A57508 !important; }
+
+/* ---- D. ANIMATION: layout sheets on a peg bar ----------------------------------------------------------- */
+/* The section stops being a coloured page. The mat shows around it; a paper slip carries the title, and the
+   work is hung on a peg bar (the real animator's peg bar: oblong, round, oblong) as punched sheets and prints.
+   Section colour: blue, in the pen and the tape. */
+#animation.sec {
+  background: transparent !important; background-image: none !important;
+  box-shadow: none !important; border: 0 !important; border-radius: 0 !important;
+}
+#animation .sec-bg-canvas { display: none !important; }
+
+/* the title slip */
+#animation .sec-hd {
+  border-bottom: 0 !important; padding-bottom: 0 !important;
+  margin-bottom: 1.2rem !important; align-items: start !important;
+}
+#animation .sec-hd > div:first-child {
+  position: relative; max-width: 35rem;
+  padding: 1.7rem 2.1rem 1.5rem !important;
+  rotate: -.7deg;
+  filter:
+    drop-shadow(calc(var(--sx) * .5px) calc(var(--sy) * 1px) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3.5px) 5px rgba(var(--hn-shadow-rgb), calc(.18 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 7px) calc(var(--sy) * 11px) 18px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k))));
+}
+#animation .sec-hd > div:first-child::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background-color: var(--hn-paper-2);
+  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp");
+  background-size: auto, 400px 400px;
+  clip-path: polygon(0 2%, 7% 0, 19% 2%, 33% 0, 47% 2%, 61% 0, 75% 2%, 89% 0, 100% 2%, 100% 98%, 93% 100%, 78% 98%, 60% 100%, 42% 98%, 24% 100%, 9% 98%, 0 100%);
+}
+#animation .sec-hd > div:first-child > * { position: relative; z-index: 1; }
+#animation .sec-title {
+  font-family: var(--hn-hand) !important; font-weight: 400 !important;
+  font-size: clamp(2.3rem, 4.6vw, 3.2rem) !important; line-height: 1.02 !important;
+  letter-spacing: 0 !important; text-transform: none !important;
+  color: var(--hn-ink) !important; margin: 0 0 .9rem !important;
+}
+#animation .sec-title .disc-stamp { display: none !important; }
+/* a hand-drawn underline in red pen (a mask, so it takes the token colour) */
+#animation .sec-title::after {
+  content: ""; display: block; width: 78%; height: .3em; margin-top: .15em;
+  background: var(--hn-red);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7C30 3 58 10 96 5s72 4 100-1' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7C30 3 58 10 96 5s72 4 100-1' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+#animation .sec-intro {
+  font-family: var(--hn-hand) !important; font-size: calc(var(--hn-t4) * 1.05) !important;
+  line-height: 1.28 !important; letter-spacing: 0 !important; color: var(--hn-ink-2) !important; margin: 0 !important;
+}
+/* the toy's tag is a paper slip in both modes (the old dark theme turned it into a black bar) */
+#animation .pg-tag-closed {
+  background-color: #F8F5EC !important; background-image: url("assets/svg-opt/paper-light-tile.webp") !important;
+  color: var(--hn-ink) !important;
+}
+#animation .pg-tag-text {
+  font-family: var(--hn-hand) !important; font-weight: 400 !important; text-transform: none !important;
+  letter-spacing: 0 !important; font-size: var(--hn-t3) !important;
+}
+
+/* the peg bar: a metal strip with the three pegs; the sheet below hangs from them */
+#animation .pegbar {
+  display: flex !important; align-items: center; justify-content: center; gap: 30px;
+  position: relative; z-index: 4;
+  width: 100% !important; height: 16px !important; margin: 2.4rem 0 0 !important; padding: 0 !important;
+  border-radius: 2px !important;
+  background: linear-gradient(#e9ecee 0%, #bcc3c8 40%, #8f989e 60%, #cbd1d5 100%) !important;
+  box-shadow: var(--hn-sh-taped) !important;
+}
+#animation .pegbar i {
+  position: relative; top: 13px; display: block; flex: none;
+  background: linear-gradient(#f5f7f8, #a4acb2 60%, #8a939a) !important;
+  box-shadow: inset 0 -1px 1px rgba(0,0,0,.3), var(--hn-sh-flat);
+}
+#animation .pegbar i.sl { width: 26px !important; height: 12px !important; border-radius: 6px !important; }
+#animation .pegbar i.rd { width: 14px !important; height: 14px !important; border-radius: 50% !important; }
+
+/* one paper, hung on the pegs: the lead project */
+#animation .lc {
+  --lc-ink: var(--hn-ink); --lc-dim: var(--hn-ink-2);
+  --lc-accent: #1E4CC8; --lc-accent-ink: #1E4CC8; --lc-cta-ink: var(--hn-ink);
+  --lc-rule: rgba(30, 39, 51, .16); --lc-mount: var(--hn-paper-2);
+  border: 0 !important; border-radius: 2px !important;
+  background-color: var(--hn-paper-r) !important;
+  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
+  box-shadow: var(--hn-sh-book) !important;
+  rotate: -.25deg;
+  margin-top: 0 !important;
+}
+/* three punched holes, at the same x as the pegs (offsets +-50px and 0) */
+#animation .lc::before {
+  content: "" !important; position: absolute !important; left: 0 !important; top: 0 !important; right: auto !important;
+  width: 100% !important; height: 30px !important; transform: none !important; clip-path: none !important;
+  background:
+    radial-gradient(ellipse 15px 8px at calc(50% - 50px) 13px, rgba(10,22,42,.92) 94%, transparent 100%) no-repeat,
+    radial-gradient(ellipse 9px 9px  at 50% 13px,              rgba(10,22,42,.92) 94%, transparent 100%) no-repeat,
+    radial-gradient(ellipse 15px 8px at calc(50% + 50px) 13px, rgba(10,22,42,.92) 94%, transparent 100%) no-repeat !important;
+  box-shadow: none !important; opacity: 1 !important; z-index: 2 !important; pointer-events: none;
+}
+#animation .lc-title-text {
+  font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important;
+  font-size: clamp(2.4rem, 5vw, 3.4rem) !important; line-height: 1 !important;
+}
+#animation .lc-blurb, #animation .lc-spec dd { color: var(--hn-ink) !important; }
+#animation .lc-scene img { border-radius: 1px !important; box-shadow: var(--hn-sh-raised) !important; }
+#animation .lc-thumb { border-radius: 1px !important; box-shadow: var(--hn-sh-flat) !important; }
+#animation .lc-step-n, #animation .lc-kicker { color: #1E4CC8 !important; }
+#animation .lc-proc-hd { word-spacing: .45em; color: var(--hn-ink-2) !important; }
+#animation .lc-cta {
+  background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+  color: #1E4CC8 !important; font-family: var(--hn-hand) !important; font-weight: 400 !important;
+  font-size: var(--hn-t3) !important; padding: .1rem .15rem !important;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .22em;
+}
+#animation .lc-cta:hover, #animation .lc-cta:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%) !important; }
+#animation .lc-cta:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
+
+/* the rest of the work: prints scattered on the mat, each a little off-square */
+#animation .grid { align-items: start !important; gap: 2.3rem 1.9rem !important; margin-top: 2.2rem !important; }
+#animation .grid .card {
+  border: 0 !important; border-radius: 2px !important;
+  background-color: var(--hn-paper-r) !important;
+  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
+  box-shadow: var(--hn-sh-raised) !important;
+  rotate: -.5deg;
+  transition: translate 450ms var(--hn-ease), box-shadow 450ms var(--hn-ease) !important;
+}
+#animation .grid .card:nth-child(even) { rotate: .55deg; margin-top: 1.9rem !important; }
+#animation .grid .card:nth-child(3n) { rotate: -.2deg; }
+#animation .grid .card:hover, #animation .grid .card:focus-within { translate: 0 -2px; }
+#animation .grid .card .card-img {
+  width: calc(100% - 22px) !important; margin: 11px 11px 0 !important;
+  border: 0 !important; border-radius: 1px !important; box-shadow: var(--hn-sh-flat) !important;
+}
+#animation .card-name {
+  font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important;
+  font-size: var(--hn-t2) !important; line-height: 1.05 !important; color: var(--hn-ink) !important;
+}
+#animation .card-role { color: var(--hn-ink-2) !important; }
+#animation .card .tool {
+  background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  border-bottom: 1.5px solid rgba(30, 39, 51, .38) !important; padding: 0 .1rem !important;
+  font-family: var(--hn-hand) !important; font-size: var(--hn-t4) !important; letter-spacing: 0 !important;
+  color: var(--hn-ink-2) !important; text-transform: none !important;
+}
+@media (max-width: 900px) {
+  #animation .sec-hd > div:first-child { max-width: none; }
+  #animation .grid .card:nth-child(even) { margin-top: 0 !important; }
+  #animation .pegbar { gap: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { #animation .grid .card { transition: none !important; } }
+/* ==== HN-SITE-END ==== */
 </style>
 </head>
 <body>

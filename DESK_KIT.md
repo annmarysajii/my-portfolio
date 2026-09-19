@@ -224,3 +224,29 @@ building the same nine tapes a tenth time.
   `@media (prefers-reduced-motion: reduce)` rule.
 - Verify contrast numerically (WCAG: 4.5:1 body, 3:1 large) rather than by eye.
   Contrast bugs have shipped on this project twice.
+
+---
+
+## 8. Extended direction (Sept 2026): one desk, one light, one camera
+
+Decided with Annmary after the hero notebook and lighting work. It supersedes anything above that conflicts.
+
+- **The site is a desk viewed from above; scrolling is the camera moving down it.** Not a website with a desk theme.
+  Exploring someone's desk: things are pulled, lifted, flipped, opened. Every object has one small thing to find.
+- **The mat is under everything.** Sections are objects on it, never full-width colour bands. Section colour lives in
+  marks: tape, pen, tab, doodle. (`html body` paints the mat from a 600px tile, `mat-day/night.webp`.)
+- **One light.** The variables from the hero (`--light-x/y`, `--lr..`, `--sr..`, `--sh-k`, `--key-*`) drive everything.
+  Shadows: only the `--hn-sh-*` tokens (three stacked layers, direction from the light). Below the hero the light is two
+  fixed, plain-alpha layers (`html::after` warm pool, `body::after` falloff). **No blend modes over scrolling content**
+  (re-blended every frame; it was the cause of the hero lag).
+- **One paper, both modes.** `--hn-paper-*` are identical day and night; light does the dimming. Paper recipe:
+  `--hn-paper-r` + `--hn-paper-veil` + `paper-light-tile.webp` at 400px.
+- **Type.** Handwriting (`--hn-hand`, extended with dashes, dot, curly quotes, ellipsis, x, % from her own strokes) for
+  anything a person writes: titles, names, tags, links, annotations. Small printed labels and long copy stay in
+  General Sans on the sheet, like a printed form with handwriting on it. No cut-out letters beyond the wordmark.
+  Clash Display is retired from section content as sections are rebuilt.
+- **Objects.** Animation = punched layout sheets on a peg bar (built); the rest follow section by section
+  (Illustration sketchbook, Videography contact sheet, Graphic Design proofs taped to the mat, Music cassette J-card,
+  About = wooden desk + drawer, Contact = letter taped down). A visible drawer opens for anything personal.
+- **Rewards** (later): stamps earned by exploring become stickers the visitor can place on the notebook.
+- **Sound**: opt-in only, never on load, never resumed by itself. Music loops in `public/audio/`, foley one-shots to come.
