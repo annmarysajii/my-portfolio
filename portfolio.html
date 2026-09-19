@@ -16292,18 +16292,18 @@ body::after, [data-theme="dark"] body::after {
 /* The section stops being a coloured page. The mat shows around it; a paper slip carries the title, and the
    work is hung on a peg bar (the real animator's peg bar: oblong, round, oblong) as punched sheets and prints.
    Section colour: blue, in the pen and the tape. */
-#animation.sec {
+#wrap .desk.sec {
   background: transparent !important; background-image: none !important;
   box-shadow: none !important; border: 0 !important; border-radius: 0 !important;
 }
-#animation .sec-bg-canvas { display: none !important; }
+#wrap .desk .sec-bg-canvas { display: none !important; }
 
 /* the title slip */
-#animation .sec-hd {
+#wrap .desk .sec-hd {
   border-bottom: 0 !important; padding-bottom: 0 !important;
   margin-bottom: 1.2rem !important; align-items: start !important;
 }
-#animation .sec-hd > div:first-child {
+#wrap .desk .sec-hd > div:first-child {
   position: relative; max-width: 35rem;
   padding: 1.7rem 2.1rem 1.5rem !important;
   rotate: -.7deg;
@@ -16312,38 +16312,38 @@ body::after, [data-theme="dark"] body::after {
     drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3.5px) 5px rgba(var(--hn-shadow-rgb), calc(.18 * var(--sh-k))))
     drop-shadow(calc(var(--sx) * 7px) calc(var(--sy) * 11px) 18px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k))));
 }
-#animation .sec-hd > div:first-child::before {
+#wrap .desk .sec-hd > div:first-child::before {
   content: ""; position: absolute; inset: 0; z-index: 0;
   background-color: var(--hn-paper-2);
   background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp");
   background-size: auto, 400px 400px;
   clip-path: polygon(0 2%, 7% 0, 19% 2%, 33% 0, 47% 2%, 61% 0, 75% 2%, 89% 0, 100% 2%, 100% 98%, 93% 100%, 78% 98%, 60% 100%, 42% 98%, 24% 100%, 9% 98%, 0 100%);
 }
-#animation .sec-hd > div:first-child > * { position: relative; z-index: 1; }
-#animation .sec-title {
+#wrap .desk .sec-hd > div:first-child > * { position: relative; z-index: 1; }
+#wrap .desk .sec-title {
   font-family: var(--hn-hand) !important; font-weight: 400 !important;
   font-size: clamp(2.3rem, 4.6vw, 3.2rem) !important; line-height: 1.02 !important;
   letter-spacing: 0 !important; text-transform: none !important;
   color: var(--hn-ink) !important; margin: 0 0 .9rem !important;
 }
-#animation .sec-title .disc-stamp { display: none !important; }
+#wrap .desk .sec-title .disc-stamp { display: none !important; }
 /* a hand-drawn underline in red pen (a mask, so it takes the token colour) */
-#animation .sec-title::after {
+#wrap .desk .sec-title::after {
   content: ""; display: block; width: 78%; height: .3em; margin-top: .15em;
   background: var(--hn-red);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7C30 3 58 10 96 5s72 4 100-1' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
           mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7C30 3 58 10 96 5s72 4 100-1' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
-#animation .sec-intro {
+#wrap .desk .sec-intro {
   font-family: var(--hn-hand) !important; font-size: calc(var(--hn-t4) * 1.05) !important;
   line-height: 1.28 !important; letter-spacing: 0 !important; color: var(--hn-ink-2) !important; margin: 0 !important;
 }
 /* the toy's tag is a paper slip in both modes (the old dark theme turned it into a black bar) */
-#animation .pg-tag-closed {
+#wrap .desk .pg-tag-closed {
   background-color: #F8F5EC !important; background-image: url("assets/svg-opt/paper-light-tile.webp") !important;
   color: var(--hn-ink) !important;
 }
-#animation .pg-tag-text {
+#wrap .desk .pg-tag-text {
   font-family: var(--hn-hand) !important; font-weight: 400 !important; text-transform: none !important;
   letter-spacing: 0 !important; font-size: var(--hn-t3) !important;
 }
@@ -16366,9 +16366,9 @@ body::after, [data-theme="dark"] body::after {
 #animation .pegbar i.rd { width: 14px !important; height: 14px !important; border-radius: 50% !important; }
 
 /* one paper, hung on the pegs: the lead project */
-#animation .lc {
+#wrap .desk .lc {
   --lc-ink: var(--hn-ink); --lc-dim: var(--hn-ink-2);
-  --lc-accent: #1E4CC8; --lc-accent-ink: #1E4CC8; --lc-cta-ink: var(--hn-ink);
+  --lc-accent: var(--acc-ink); --lc-accent-ink: var(--acc-ink); --lc-cta-ink: var(--hn-ink);
   --lc-rule: rgba(30, 39, 51, .16); --lc-mount: var(--hn-paper-2);
   border: 0 !important; border-radius: 2px !important;
   background-color: var(--hn-paper-r) !important;
@@ -16385,56 +16385,56 @@ body::after, [data-theme="dark"] body::after {
     radial-gradient(ellipse 15px 8px at calc(50% + 50px) 13px, rgba(10,22,42,.92) 94%, transparent 100%) no-repeat !important;
   box-shadow: none !important; opacity: 1 !important; z-index: 2 !important; pointer-events: none;
 }
-#animation .lc-title-text {
+#wrap .desk .lc-title-text {
   font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important;
   font-size: clamp(2.4rem, 5vw, 3.4rem) !important; line-height: 1 !important;
 }
-#animation .lc-blurb, #animation .lc-spec dd { color: var(--hn-ink) !important; }
-#animation .lc-scene img { border-radius: 1px !important; box-shadow: var(--hn-sh-raised) !important; }
-#animation .lc-thumb { border-radius: 1px !important; box-shadow: var(--hn-sh-flat) !important; }
-#animation .lc-step-n, #animation .lc-kicker { color: #1E4CC8 !important; }
-#animation .lc-proc-hd { word-spacing: .45em; color: var(--hn-ink-2) !important; }
-#animation .lc-cta {
+#wrap .desk .lc-blurb, #wrap .desk .lc-spec dd { color: var(--hn-ink) !important; }
+#wrap .desk .lc-scene img { border-radius: 1px !important; box-shadow: var(--hn-sh-raised) !important; }
+#wrap .desk .lc-thumb { border-radius: 1px !important; box-shadow: var(--hn-sh-flat) !important; }
+#wrap .desk .lc-step-n, #wrap .desk .lc-kicker { color: var(--acc-ink) !important; }
+#wrap .desk .lc-proc-hd { word-spacing: .45em; color: var(--hn-ink-2) !important; }
+#wrap .desk .lc-cta {
   background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
-  color: #1E4CC8 !important; font-family: var(--hn-hand) !important; font-weight: 400 !important;
+  color: var(--acc-ink) !important; font-family: var(--hn-hand) !important; font-weight: 400 !important;
   font-size: var(--hn-t3) !important; padding: .1rem .15rem !important;
   text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .22em;
 }
-#animation .lc-cta:hover, #animation .lc-cta:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%) !important; }
-#animation .lc-cta:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
+#wrap .desk .lc-cta:hover, #wrap .desk .lc-cta:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%) !important; }
+#wrap .desk .lc-cta:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
 
 /* the rest of the work: prints scattered on the mat, each a little off-square */
-#animation .grid { align-items: start !important; gap: 2.3rem 1.9rem !important; margin-top: 2.2rem !important; }
-#animation .grid .card {
+#wrap .desk .grid { align-items: start !important; gap: 2.3rem 1.9rem !important; margin-top: 2.2rem !important; }
+#wrap .desk .grid .card {
   border: 0 !important; border-radius: 2px !important;
   background-color: var(--hn-paper-r) !important;
   rotate: -.5deg;
   transition: translate 450ms var(--hn-ease), box-shadow 450ms var(--hn-ease) !important;
 }
-#animation .grid .card:nth-child(even) { rotate: .55deg; margin-top: 1.9rem !important; }
-#animation .grid .card:nth-child(3n) { rotate: -.2deg; }
-#animation .grid .card:hover, #animation .grid .card:focus-within { translate: 0 -2px; }
-#animation .grid .card .card-img {
+#wrap .desk .grid .card:nth-child(even) { rotate: .55deg; margin-top: 1.9rem !important; }
+#wrap .desk .grid .card:nth-child(3n) { rotate: -.2deg; }
+#wrap .desk .grid .card:hover, #wrap .desk .grid .card:focus-within { translate: 0 -2px; }
+#wrap .desk .grid .card .card-img {
   width: calc(100% - 22px) !important; margin: 11px 11px 0 !important;
   border: 0 !important; border-radius: 1px !important; box-shadow: var(--hn-sh-flat) !important;
 }
-#animation .card-name {
+#wrap .desk .card-name {
   font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important;
   font-size: var(--hn-t2) !important; line-height: 1.05 !important; color: var(--hn-ink) !important;
 }
-#animation .card-role { color: var(--hn-ink-2) !important; }
-#animation .card .tool {
+#wrap .desk .card-role { color: var(--hn-ink-2) !important; }
+#wrap .desk .card .tool {
   background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
   border-bottom: 1.5px solid rgba(30, 39, 51, .38) !important; padding: 0 .1rem !important;
   font-family: var(--hn-hand) !important; font-size: var(--hn-t4) !important; letter-spacing: 0 !important;
   color: var(--hn-ink-2) !important; text-transform: none !important;
 }
 @media (max-width: 900px) {
-  #animation .sec-hd > div:first-child { max-width: none; }
-  #animation .grid .card:nth-child(even) { margin-top: 0 !important; }
+  #wrap .desk .sec-hd > div:first-child { max-width: none; }
+  #wrap .desk .grid .card:nth-child(even) { margin-top: 0 !important; }
   #animation .pegbar { gap: 22px; }
 }
-@media (prefers-reduced-motion: reduce) { #animation .grid .card { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { #wrap .desk .grid .card { transition: none !important; } }
 /* ---- E. PAPER, MADE PHYSICAL ---------------------------------------------------------------------------------- */
 /* What makes a photographed sheet look like paper and not a rectangle: it is lit unevenly, it has a thickness
    (the edge facing the light catches it, the far edge is in shade), it sits on other sheets, it is not perfectly
@@ -16452,7 +16452,7 @@ body::after, [data-theme="dark"] body::after {
 }
 /* the surface: light falling across the sheet, a soft hot spot near the lit corner, slight cockling, then the
    flat veil and the crumple texture. --paper-tint lets each sheet be a slightly different stock. */
-#animation .lc, #animation .grid .card, #downloads .dl-btn {
+#wrap .desk .lc, #wrap .desk .grid .card, #downloads .dl-btn {
   background-color: var(--hn-paper-r) !important;
   background-image:
     linear-gradient(132deg, rgba(255, 255, 255, .34) 0%, rgba(255, 255, 255, 0) 42%, rgba(70, 52, 28, .055) 100%),
@@ -16464,13 +16464,13 @@ body::after, [data-theme="dark"] body::after {
   background-size: auto, auto, auto, auto, auto, 400px 400px !important;
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat !important;
 }
-#animation .lc { box-shadow: var(--hn-edge), var(--hn-stack), var(--hn-sh-book) !important; }
-#animation .grid .card { box-shadow: var(--hn-edge), var(--hn-sh-raised) !important; }
+#wrap .desk .lc { box-shadow: var(--hn-edge), var(--hn-stack), var(--hn-sh-book) !important; }
+#wrap .desk .grid .card { box-shadow: var(--hn-edge), var(--hn-sh-raised) !important; }
 #downloads .dl-btn { box-shadow: var(--hn-edge), var(--hn-sh-taped) !important; }
 /* different stocks: ivory, cool grey, blush, plain */
-#animation .grid .card:nth-child(4n+1) { --paper-tint: rgba(255, 240, 204, .24); }
-#animation .grid .card:nth-child(4n+3) { --paper-tint: rgba(216, 230, 246, .26); }
-#animation .grid .card:nth-child(4n+4) { --paper-tint: rgba(248, 222, 218, .22); }
+#wrap .desk .grid .card:nth-child(4n+1) { --paper-tint: rgba(255, 240, 204, .24); }
+#wrap .desk .grid .card:nth-child(4n+3) { --paper-tint: rgba(216, 230, 246, .26); }
+#wrap .desk .grid .card:nth-child(4n+4) { --paper-tint: rgba(248, 222, 218, .22); }
 #downloads .dl-btn:nth-child(3n+1) { --paper-tint: rgba(255, 240, 204, .22); }
 #downloads .dl-btn:nth-child(3n+2) { --paper-tint: rgba(216, 230, 246, .22); }
 
@@ -16496,21 +16496,21 @@ body::after, [data-theme="dark"] body::after {
   filter: drop-shadow(calc(var(--sx) * 2.5px) calc(var(--sy) * 3.5px) 1.5px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))));
 }
 /* prints: a glossy sheen across the photograph and a definite edge, like a real print on a white border */
-#animation .card .card-img::after {
+#wrap .desk .card .card-img::after {
   content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: linear-gradient(118deg, rgba(255, 255, 255, .22) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 68%, rgba(255, 255, 255, .08) 100%);
   box-shadow: inset 0 0 0 1px rgba(20, 16, 10, .28), inset 0 0 14px rgba(20, 16, 10, .12);
 }
-#animation .lc-scene img { box-shadow: 0 0 0 5px #fbfaf5, 0 0 0 6px rgba(20, 16, 10, .10), var(--hn-sh-raised) !important; }
+#wrap .desk .lc-scene img { box-shadow: 0 0 0 5px #fbfaf5, 0 0 0 6px rgba(20, 16, 10, .10), var(--hn-sh-raised) !important; }
 /* torn slips: a pale, fibrous rim where the tear showed the paper's inner layer */
-#animation .sec-hd > div:first-child::after, #downloads .dl-h::after {
+#wrap .desk .sec-hd > div:first-child::after, #downloads .dl-h::after {
   content: ""; position: absolute; inset: -2.5px; z-index: -1; pointer-events: none; background: #fdfbf5;
   clip-path: polygon(0 1%, 5% 0, 12% 2.5%, 21% 0, 30% 2%, 40% 0, 49% 2.5%, 58% 0, 68% 2%, 79% 0, 90% 2.5%, 100% 0, 100% 99%, 94% 100%, 84% 97.5%, 72% 100%, 62% 98%, 50% 100%, 38% 97.5%, 26% 100%, 15% 98%, 5% 100%, 0 98%);
 }
 /* tape is translucent: the paper shows through it */
-#animation .grid .card::before { opacity: .8 !important; }
+#wrap .desk .grid .card::before { opacity: .8 !important; }
 /* ink soaks in: a whisker of roughness on the handwritten titles (the same ink filter as the hero) */
-#animation .sec-title, #animation .lc-title-text, #animation .card-name, #downloads .dl-h { filter: url(#hn-ink); }
+#wrap .desk .sec-title, #wrap .desk .lc-title-text, #wrap .desk .card-name, #downloads .dl-h { filter: url(#hn-ink); }
 /* the peg bar: brushed steel with a specular line, two screws, and pegs that catch the light */
 #animation .pegbar {
   background:
@@ -16525,6 +16525,189 @@ body::after, [data-theme="dark"] body::after {
 #animation .pegbar::before { left: 14px; }
 #animation .pegbar::after { right: 14px; }
 #animation .pegbar i { box-shadow: inset 0 -1px 1px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.7), var(--hn-sh-flat); }
+/* ---- F. THE OTHER SECTIONS: same desk, each with its own object ---------------------------------------------- */
+/* Every .desk section shares the paper, shadows, hand lettering and prints from D and E. What changes is the
+   thing the lead sheet is fixed with, and the section's colour (--acc), which lives only in pens and links. */
+/* --acc-ink is the section colour deep enough for small text on paper (4.5:1+); --acc is the pen colour */
+#animation { --acc: #1E4CC8; --acc-ink: #1E4CC8; }
+#illustration { --acc: #D93A26; --acc-ink: #B52D1B; }
+#videography { --acc: #1E7A4E; --acc-ink: #1E7A4E; }
+#graphic-design { --acc: #A57508; --acc-ink: #85600A; }
+#music { --acc: #6540CC; --acc-ink: #6540CC; }
+
+/* Illustration: a sketchbook page, bound with a spiral down the left edge */
+#illustration .lc { padding-left: calc(clamp(1.5rem, 3.4vw, 2.6rem) + 28px) !important; }
+#illustration .lc::before {
+  content: "" !important; position: absolute !important; left: -9px !important; top: 18px !important; bottom: 18px !important;
+  right: auto !important; width: 36px !important; height: auto !important; transform: none !important; clip-path: none !important;
+  z-index: 3 !important; pointer-events: none; opacity: 1 !important; box-shadow: none !important;
+  background:
+    radial-gradient(ellipse 5px 5px at 24px 16px, rgba(6, 16, 34, .95) 60%, rgba(255, 255, 255, .55) 96%, transparent 100%),
+    radial-gradient(ellipse 16px 4.4px at 13px 16px, transparent 56%, #d3d9dc 63%, #7c868c 88%, transparent 100%) !important;
+  background-size: 36px 34px !important; background-repeat: repeat-y !important;
+  filter: drop-shadow(calc(var(--sx) * 1.5px) calc(var(--sy) * 2px) 1px rgba(var(--hn-shadow-rgb), calc(.4 * var(--sh-k))));
+}
+/* Videography: a contact sheet, with a strip of film along its top edge */
+#videography .lc { padding-top: calc(clamp(1.5rem, 3.4vw, 2.6rem) + 24px) !important; }
+#videography .lc::before {
+  content: "" !important; position: absolute !important; left: 0 !important; right: 0 !important; top: 0 !important;
+  width: auto !important; height: 26px !important; transform: none !important; clip-path: none !important;
+  z-index: 3 !important; pointer-events: none; opacity: 1 !important; border-radius: 2px 2px 0 0;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .10) !important;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='26'%3E%3Crect x='7' y='8' width='14' height='10' rx='2.5' fill='%23f1ecdf'/%3E%3C/svg%3E") 0 0 / 28px 26px repeat-x,
+    linear-gradient(#1b2025, #0f1317) !important;
+}
+/* Graphic design: proofs pinned to the mat, one pin at each top corner */
+#graphic-design .lc::before {
+  content: "" !important; position: absolute !important; left: 0 !important; right: 0 !important; top: -8px !important;
+  width: auto !important; height: 26px !important; transform: none !important; clip-path: none !important;
+  z-index: 6 !important; pointer-events: none; opacity: 1 !important; box-shadow: none !important;
+  background:
+    radial-gradient(circle 8px at 30px 13px, #ffa595 0 14%, #d9432f 46%, #86190f 100%),
+    radial-gradient(circle 8px at calc(100% - 30px) 13px, #9cc4ff 0 14%, #2f66d0 46%, #17408f 100%) !important;
+  background-repeat: no-repeat !important;
+  filter: drop-shadow(calc(var(--sx) * 3px) calc(var(--sy) * 4px) 2px rgba(var(--hn-shadow-rgb), calc(.45 * var(--sh-k))));
+}
+/* Music: every album is a cassette J-card, folded in three (a narrow spine each side) */
+#music .grid .card::after {
+  content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent calc(7% - 8px), rgba(70, 52, 28, .05) calc(7% - 1px), rgba(255, 255, 255, .5) 7%, transparent calc(7% + 9px)),
+    linear-gradient(90deg, transparent calc(93% - 9px), rgba(255, 255, 255, .42) calc(93% - 1px), rgba(70, 52, 28, .05) 93%, transparent calc(93% + 8px));
+}
+
+/* ---- G. QUICK LOOK: A REAL DRAWER ------------------------------------------------------------------------- */
+/* Seen from above, the way the rest of the desk is: the wooden front panel is the near edge, with a handle and a
+   label card in a brass holder. Pull it and the drawer slides out towards you: the box appears above the front
+   panel (dark wood inside) with the download cards lying in it. Closed by default; the handle is a real button. */
+#downloads.dl-sec {
+  --dl-ease: cubic-bezier(.22, .7, .2, 1);
+  background: none !important; box-shadow: none !important; border: 0 !important;
+  max-width: 64rem; margin: 0 auto; padding: 2.6rem clamp(.75rem, 3vw, 1.5rem) 3rem !important; position: relative; z-index: 5;
+}
+#downloads::before, #downloads::after { display: none !important; }
+/* the tray: the drawer box, revealed by animating its height from nothing */
+#downloads .dl-tray { display: grid; grid-template-rows: 0fr; visibility: hidden;
+  transition: grid-template-rows 640ms var(--dl-ease), visibility 0s linear 640ms; }
+#downloads.is-open .dl-tray { grid-template-rows: 1fr; visibility: visible; transition-delay: 0s; }
+#downloads .dl-tray-clip { overflow: hidden; min-height: 0; }
+#downloads .dl-well {
+  position: relative; margin: 0 7px; padding: 1.5rem clamp(.9rem, 2.4vw, 1.6rem) 1.7rem; border-radius: 3px 3px 0 0;
+  background-color: #4a3120;
+  background-image:
+    linear-gradient(180deg, rgba(8, 4, 2, .62), rgba(8, 4, 2, .18) 60%, rgba(8, 4, 2, .4)),
+    url("assets/svg-opt/wood-tile.webp");
+  background-size: auto, 512px 512px;
+  box-shadow:
+    inset 0 16px 24px rgba(0, 0, 0, .6), inset 0 -8px 12px rgba(0, 0, 0, .4),
+    inset 10px 0 16px rgba(0, 0, 0, .38), inset -10px 0 16px rgba(0, 0, 0, .38);
+}
+#downloads .dl-in { padding: 0 !important; margin: 0 !important; max-width: none !important; background: none !important; box-shadow: none !important; }
+#downloads .dl-feat, #downloads .dl-grid { position: relative; z-index: 1; }
+/* the front panel: a raised-panel drawer front in lit wood */
+#downloads .dl-front {
+  position: relative; z-index: 3; padding: 1.7rem clamp(1rem, 3vw, 2rem) 1.6rem; border-radius: 3px;
+  display: grid; justify-items: center; gap: 1.1rem;
+  background-color: #8a5d37;
+  background-image:
+    linear-gradient(132deg, rgba(255, 236, 200, .20), rgba(255, 236, 200, 0) 45%, rgba(20, 8, 0, .18)),
+    url("assets/svg-opt/wood-tile.webp");
+  background-size: auto, 512px 512px;
+  box-shadow: var(--hn-edge), 0 -2px 0 rgba(10, 5, 2, .75), var(--hn-sh-book);
+  transition: translate 640ms var(--dl-ease);
+}
+#downloads .dl-front::before {          /* the raised panel: a bevel inside the front */
+  content: ""; position: absolute; inset: 11px; border-radius: 2px; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(20, 8, 0, .35), inset 1px 1px 0 2px rgba(255, 236, 200, .10), inset -1px -1px 0 2px rgba(20, 8, 0, .16);
+}
+/* the label card: clean paper in a brass holder */
+#downloads .dl-front .dl-h {
+  position: relative; z-index: 1; display: block; width: max-content; max-width: 100%; margin: 0 !important; rotate: 0deg;
+  padding: .55rem 1.4rem .6rem !important; text-align: center;
+  font-size: clamp(1.35rem, 3.6vw, 1.9rem) !important;
+  filter: none;
+  background-color: var(--hn-paper-2); background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp");
+  background-size: auto, 400px 400px; border-radius: 1px;
+  box-shadow: 0 0 0 3px #b8934a, 0 0 0 4px rgba(20, 10, 0, .55), inset 0 0 0 1px rgba(20, 10, 0, .10), 1px 3px 4px rgba(20, 8, 0, .45);
+}
+#downloads .dl-front .dl-h::before, #downloads .dl-front .dl-h::after { display: none !important; }
+/* the handle: a steel bar pull on two screws */
+#downloads .dl-pull {
+  position: relative; z-index: 1; appearance: none; border: 0; background: none; cursor: grab; padding: .5rem 1.2rem .35rem;
+  display: grid; justify-items: center; gap: .4rem; color: #f6ead6;
+  font-family: var(--hn-hand); font-size: var(--hn-t4); letter-spacing: 0; text-shadow: 0 1px 2px rgba(20, 8, 0, .8);
+}
+#downloads .dl-pull:active { cursor: grabbing; }
+#downloads .dl-handle {
+  position: relative; display: block; width: clamp(150px, 34vw, 230px); height: 20px; border-radius: 10px;
+  background: linear-gradient(#f5f6f7 0%, #c5ccd1 40%, #838c93 60%, #d4d9dd 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), inset 0 -1px 2px rgba(0, 0, 0, .35),
+    calc(var(--sx) * 2px) calc(var(--sy) * 4px) 4px rgba(var(--hn-shadow-rgb), calc(.5 * var(--sh-k))),
+    calc(var(--sx) * 7px) calc(var(--sy) * 10px) 12px rgba(var(--hn-shadow-rgb), calc(.3 * var(--sh-k)));
+}
+#downloads .dl-handle::before, #downloads .dl-handle::after {
+  content: ""; position: absolute; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #eef1f3 0 20%, #9aa3a9 55%, #666f75 100%);
+}
+#downloads .dl-handle::before { left: 10px; } #downloads .dl-handle::after { right: 10px; }
+#downloads .dl-pull:hover .dl-handle, #downloads .dl-pull:focus-visible .dl-handle { filter: brightness(1.06); }
+#downloads .dl-pull:focus-visible { outline: 2px solid #f5de4a; outline-offset: 4px; border-radius: 6px; }
+#downloads .dl-pull .dl-pull-txt::after { content: "Pull to open"; }
+#downloads.is-open .dl-pull .dl-pull-txt::after { content: "Push to close"; }
+/* a first, gentle tug to say "this moves" (once, when it scrolls into view) */
+@keyframes dlNudge { 0%, 100% { translate: 0 0; } 30% { translate: 0 8px; } 60% { translate: 0 2px; } 80% { translate: 0 5px; } }
+#downloads.nudge .dl-front { animation: dlNudge 1100ms var(--dl-ease) 1; }
+@media (prefers-reduced-motion: reduce) {
+  #downloads .dl-tray, #downloads .dl-front { transition: none !important; }
+  #downloads.nudge .dl-front { animation: none; }
+}
+/* the cards inside keep the shared paper; lay them a little loosely */
+#downloads .dl-feat, #downloads .dl-grid { gap: .9rem !important; }
+
+/* ---- H. ABOUT AND CONTACT: you have reached the desk itself ------------------------------------------------ */
+/* The red fields become the desk's own timber (a darkened walnut so the cream and gold type written for red keeps
+   its contrast). The letter in Contact is paper on that wood. */
+#about.about, #contact.contact {
+  background-color: #4b3322 !important;
+  background-image:
+    linear-gradient(rgba(20, 10, 4, .40), rgba(20, 10, 4, .40)),
+    url("assets/svg-opt/wood-tile.webp") !important;
+  background-size: auto, 512px 512px !important; background-repeat: no-repeat, repeat !important;
+  box-shadow: inset 0 46px 60px -34px rgba(0, 0, 0, .65) !important;
+}
+#contact .letter {
+  border: 0 !important; border-radius: 2px !important; rotate: -.35deg;
+  background-color: var(--hn-paper-r) !important;
+  background-image:
+    linear-gradient(132deg, rgba(255, 255, 255, .34) 0%, rgba(255, 255, 255, 0) 42%, rgba(70, 52, 28, .055) 100%),
+    radial-gradient(ellipse 90% 70% at 16% 10%, rgba(255, 255, 255, .24), transparent 62%),
+    radial-gradient(ellipse 80% 55% at 90% 94%, rgba(110, 88, 52, .075), transparent 66%),
+    linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, auto, auto, auto, 400px 400px !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat !important;
+  box-shadow: var(--hn-edge), var(--hn-stack), var(--hn-sh-book) !important;
+}
+#contact .letter h2, #contact .letter h3 { font-family: var(--hn-hand) !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important; }
+
+/* ---- I. ONE LIGHT, ALSO BELOW THE HERO --------------------------------------------------------------------- */
+/* In the hero the window (day) and the lamp (night) are richer. Below it they must feel like the same room, so:
+   day gets the same window-frame shadow (a baked plain-alpha copy of the hero's texture, fixed to the screen, no
+   blend mode), and the night lamp pool is stronger. The hero fades these out (--hv) and uses its own. */
+html::before {
+  content: ""; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  background: url("public/textures/window-shadow-alpha.webp") 0 0 / cover no-repeat;
+  opacity: calc(var(--key-day) * .16 * (1 - var(--hv, 0)));
+}
+html::after, [data-theme="dark"] html::after {
+  background:
+    radial-gradient(ellipse 34% 30% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .08)) 0%, transparent 100%),
+    radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.085 + var(--key-night) * .05)) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
+}
+/* lite mode (see the frame monitor) also drops the fixed window layer */
+html.hn-lite::before { display: none; }
 /* ==== HN-SITE-END ==== */
 
 /* the level meter on the speaker button: three bars that follow the real signal (see the script) */
@@ -17029,17 +17212,8 @@ body::after, [data-theme="dark"] body::after {
 
 <div class="dl-sec" id="downloads">
 
-  <div class="dl-drawer-front" aria-hidden="true"></div>
-  <div class="dl-drawer-handle" aria-hidden="true"></div>
-  <div class="dl-drawer-side dl-drawer-side-left" aria-hidden="true"></div>
-  <div class="dl-drawer-side dl-drawer-side-right" aria-hidden="true"></div>
-  <div class="dl-drawer-bottom" aria-hidden="true"></div>
-
+  <div class="dl-tray" id="dl-tray"><div class="dl-tray-clip"><div class="dl-well">
   <div class="dl-in">
-
-    <h2 class="dl-h">Need a quick look? <em>Download the portfolio.</em></h2>
-
-    
 
     <div class="dl-feat">
 
@@ -17064,6 +17238,12 @@ body::after, [data-theme="dark"] body::after {
     </div>
 
   </div>
+  </div></div></div>
+
+  <div class="dl-front">
+    <h2 class="dl-h">Need a quick look? <em>Download the portfolio.</em></h2>
+    <button type="button" class="dl-pull" id="dl-pull" aria-expanded="false" aria-controls="dl-tray"><span class="dl-handle" aria-hidden="true"></span><span class="dl-pull-txt"></span></button>
+  </div>
 
 </div>
 
@@ -17071,7 +17251,7 @@ body::after, [data-theme="dark"] body::after {
 
 <!-- 01 ANIMATION -->
 
-<section class="sec" id="animation">
+<section class="sec desk" id="animation">
  <div class="con">
   <div class="sec-hd">
    <div>
@@ -17287,7 +17467,7 @@ body::after, [data-theme="dark"] body::after {
 
 <!-- 02 ILLUSTRATION -->
 
-<section class="sec" id="illustration">
+<section class="sec desk" id="illustration">
  <!-- Bridge from #animation -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-anim-bg); --tear-to: var(--sec-illus-bg);"><span class="bp-tear-label">✂ next sketch</span></div>
@@ -17516,7 +17696,7 @@ body::after, [data-theme="dark"] body::after {
 
 <!-- 03 VIDEOGRAPHY -->
 
-<section class="sec" id="videography">
+<section class="sec desk" id="videography">
  <!-- Bridge from #illustration -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-illus-bg); --tear-to: var(--sec-video-bg);"><span class="bp-tear-label">✂ roll camera</span></div>
@@ -17738,7 +17918,7 @@ body::after, [data-theme="dark"] body::after {
 
 <!-- 04 GRAPHIC DESIGN -->
 
-<section class="sec" id="graphic-design">
+<section class="sec desk" id="graphic-design">
  <!-- FST-04 registration marks, one per corner of the sheet -- proofs
       pinned to the mat carry a printer's crop/reg marks, not tape. -->
  <span class="reg-mark" style="top: 14px; left: 14px;" aria-hidden="true"><i></i></span>
@@ -18028,7 +18208,7 @@ body::after, [data-theme="dark"] body::after {
 
 <!-- 05 MUSIC -->
 
-<section class="sec" id="music">
+<section class="sec desk" id="music">
  <!-- Bridge from #graphic-design -- same torn-paper seam as #music->#about,
       recolored for paper-on-paper (see .bp-tear--paper). -->
  <div class="bp-tear bp-tear--paper" aria-hidden="true" style="--tear-from: var(--sec-design-bg); --tear-to: var(--sec-music-bg);"><span class="bp-tear-label">✂ press play</span></div>
@@ -18793,6 +18973,27 @@ body::after, [data-theme="dark"] body::after {
       requestAnimationFrame(frame);
     }
     setTimeout(() => requestAnimationFrame(frame), 3500);
+  })();
+
+
+  // ================================================================
+  // QUICK LOOK DRAWER -- the download cards live in a drawer. Closed by default; the handle is a real button
+  // (aria-expanded, keyboard, works with the reduced-motion rule in the CSS). It gives one gentle tug the first
+  // time it scrolls into view, so people know it moves. Anything that links to #downloads opens it.
+  // ================================================================
+  (function initQuickLookDrawer() {
+    const box = document.getElementById('downloads'), btn = document.getElementById('dl-pull');
+    if (!box || !btn) return;
+    const set = open => { box.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+    btn.addEventListener('click', () => set(!box.classList.contains('is-open')));
+    document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[href="#downloads"]'); if (a) set(true); });
+    if (location.hash === '#downloads') set(true);
+    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver(es => {
+        if (es[0].isIntersecting) { setTimeout(() => { if (!box.classList.contains('is-open')) { box.classList.add('nudge'); setTimeout(() => box.classList.remove('nudge'), 1300); } }, 500); io.disconnect(); }
+      }, { threshold: 0.6 });
+      io.observe(box);
+    }
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).

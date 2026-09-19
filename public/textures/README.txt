@@ -9,3 +9,8 @@ rain-streaks.webp    PLACEHOLDER (generated). Replace with a real, faint rain-on
                      Transparent ground with pale streaks/beads, 800x800, seamless top to bottom (it
                      loops by sliding down exactly 800px), shown on the mat only at ~3.5% at night.
                      If you change its height, change --rain-tile in the hero CSS to match.
+
+window-shadow-alpha.webp  DERIVED from window-shadow.webp (a plain-alpha copy: dark where the shadow is, transparent
+                     elsewhere), used by the fixed light BELOW the hero so it needs no blend mode. When you replace
+                     window-shadow.webp with the real photograph, regenerate this one too (the recipe is:
+                     alpha = (1 - luminance) normalised to 0..1, colour rgb(24,30,44), resized to 960x600).
