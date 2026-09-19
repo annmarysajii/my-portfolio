@@ -16035,8 +16035,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 @media (prefers-reduced-motion: reduce) { #themeBtn { transition: none; } }
 
 /* ---- sound: levels live with the rest of the variables (JS reads them), and the toggle mirrors the lamp switch ---- */
-:root { --snd-loop: .40; --snd-ui: .45; --snd-rustle: .06; }                 /* day: a soft room */
-[data-theme="dark"] { --snd-loop: .55; --snd-ui: .55; --snd-rustle: .07; }   /* night: a little closer, a little louder */
+:root { --snd-loop: .70; --snd-ui: .45; --snd-rustle: .06; }                 /* day: a soft room */
+[data-theme="dark"] { --snd-loop: .80; --snd-ui: .55; --snd-rustle: .07; }   /* night: a little closer, a little louder */
 #soundBtn .snd-on { display: none; }
 #soundBtn[aria-pressed="true"] .snd-off { display: none; }
 #soundBtn[aria-pressed="true"] .snd-on { display: block; }
@@ -16276,9 +16276,7 @@ body::after, [data-theme="dark"] body::after {
 #downloads .dl-btn {
   border: 0 !important; border-radius: 2px !important;
   background-color: var(--hn-paper-r) !important;
-  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
-  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
-  box-shadow: var(--hn-sh-raised) !important; color: var(--hn-ink) !important;
+  color: var(--hn-ink) !important;   /* paper surface and shadow: see E */
   rotate: -.4deg; transition: translate 450ms var(--hn-ease) !important;
 }
 #downloads .dl-btn:nth-child(even) { rotate: .5deg; }
@@ -16360,7 +16358,7 @@ body::after, [data-theme="dark"] body::after {
   box-shadow: var(--hn-sh-taped) !important;
 }
 #animation .pegbar i {
-  position: relative; top: 13px; display: block; flex: none;
+  position: relative; top: 19px; display: block; flex: none;
   background: linear-gradient(#f5f7f8, #a4acb2 60%, #8a939a) !important;
   box-shadow: inset 0 -1px 1px rgba(0,0,0,.3), var(--hn-sh-flat);
 }
@@ -16374,9 +16372,6 @@ body::after, [data-theme="dark"] body::after {
   --lc-rule: rgba(30, 39, 51, .16); --lc-mount: var(--hn-paper-2);
   border: 0 !important; border-radius: 2px !important;
   background-color: var(--hn-paper-r) !important;
-  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
-  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
-  box-shadow: var(--hn-sh-book) !important;
   rotate: -.25deg;
   margin-top: 0 !important;
 }
@@ -16413,9 +16408,6 @@ body::after, [data-theme="dark"] body::after {
 #animation .grid .card {
   border: 0 !important; border-radius: 2px !important;
   background-color: var(--hn-paper-r) !important;
-  background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp") !important;
-  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important;
-  box-shadow: var(--hn-sh-raised) !important;
   rotate: -.5deg;
   transition: translate 450ms var(--hn-ease), box-shadow 450ms var(--hn-ease) !important;
 }
@@ -16443,7 +16435,106 @@ body::after, [data-theme="dark"] body::after {
   #animation .pegbar { gap: 22px; }
 }
 @media (prefers-reduced-motion: reduce) { #animation .grid .card { transition: none !important; } }
+/* ---- E. PAPER, MADE PHYSICAL ---------------------------------------------------------------------------------- */
+/* What makes a photographed sheet look like paper and not a rectangle: it is lit unevenly, it has a thickness
+   (the edge facing the light catches it, the far edge is in shade), it sits on other sheets, it is not perfectly
+   flat, it has a fold somewhere, and its edges are never quite clean. Everything below reads the same light
+   variables as the shadows, so the lit edge is always the edge facing the lamp or window. */
+:root {
+  /* the thickness of a sheet: a bright hairline on the edges facing the light, a faint dark one on the far edges */
+  --hn-edge:
+    inset calc(var(--sx) * 1.8px) calc(var(--sy) * 1.8px) 0 rgba(255, 255, 255, .72),
+    inset calc(var(--sx) * -1.3px) calc(var(--sy) * -1.3px) 0 rgba(var(--hn-shadow-rgb), .11);
+  /* the loose pages under the top sheet, showing on the shadow side */
+  --hn-stack:
+    calc(var(--sx) * 1.4px) calc(var(--sy) * 1.6px) 0 #e6e1d4,
+    calc(var(--sx) * 2.8px) calc(var(--sy) * 3.2px) 0 #d4cebe;
+}
+/* the surface: light falling across the sheet, a soft hot spot near the lit corner, slight cockling, then the
+   flat veil and the crumple texture. --paper-tint lets each sheet be a slightly different stock. */
+#animation .lc, #animation .grid .card, #downloads .dl-btn {
+  background-color: var(--hn-paper-r) !important;
+  background-image:
+    linear-gradient(132deg, rgba(255, 255, 255, .34) 0%, rgba(255, 255, 255, 0) 42%, rgba(70, 52, 28, .055) 100%),
+    radial-gradient(ellipse 90% 70% at 16% 10%, rgba(255, 255, 255, .24), transparent 62%),
+    radial-gradient(ellipse 80% 55% at 90% 94%, rgba(110, 88, 52, .075), transparent 66%),
+    linear-gradient(var(--paper-tint, transparent), var(--paper-tint, transparent)),
+    linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)),
+    url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, auto, auto, auto, auto, 400px 400px !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat !important;
+}
+#animation .lc { box-shadow: var(--hn-edge), var(--hn-stack), var(--hn-sh-book) !important; }
+#animation .grid .card { box-shadow: var(--hn-edge), var(--hn-sh-raised) !important; }
+#downloads .dl-btn { box-shadow: var(--hn-edge), var(--hn-sh-taped) !important; }
+/* different stocks: ivory, cool grey, blush, plain */
+#animation .grid .card:nth-child(4n+1) { --paper-tint: rgba(255, 240, 204, .24); }
+#animation .grid .card:nth-child(4n+3) { --paper-tint: rgba(216, 230, 246, .26); }
+#animation .grid .card:nth-child(4n+4) { --paper-tint: rgba(248, 222, 218, .22); }
+#downloads .dl-btn:nth-child(3n+1) { --paper-tint: rgba(255, 240, 204, .22); }
+#downloads .dl-btn:nth-child(3n+2) { --paper-tint: rgba(216, 230, 246, .22); }
+
+/* the layout sheet was folded in three to be posted: two soft creases, a shade and a highlight either side */
+#animation .lc::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+  background:
+    linear-gradient(180deg, transparent calc(33.3% - 22px), rgba(70, 52, 28, .045) calc(33.3% - 2px), rgba(255, 255, 255, .6) 33.3%, rgba(70, 52, 28, .05) calc(33.3% + 2px), rgba(255, 255, 255, .16) calc(33.3% + 12px), transparent calc(33.3% + 26px)),
+    linear-gradient(180deg, transparent calc(66.6% - 22px), rgba(70, 52, 28, .04) calc(66.6% - 2px), rgba(255, 255, 255, .55) 66.6%, rgba(70, 52, 28, .045) calc(66.6% + 2px), rgba(255, 255, 255, .14) calc(66.6% + 12px), transparent calc(66.6% + 26px));
+}
+/* punched holes: a bright rim where the punch cut, and a shade inside the top of the hole */
+#animation .lc::before {
+  background:
+    radial-gradient(ellipse 15px 8px at calc(50% - 50px) 13px, rgba(6, 16, 34, .95) 62%, rgba(24, 40, 66, .9) 92%, rgba(255, 255, 255, .6) 96%, transparent 100%) no-repeat,
+    radial-gradient(ellipse 9px 9px  at 50% 13px,              rgba(6, 16, 34, .95) 58%, rgba(24, 40, 66, .9) 90%, rgba(255, 255, 255, .6) 95%, transparent 100%) no-repeat,
+    radial-gradient(ellipse 15px 8px at calc(50% + 50px) 13px, rgba(6, 16, 34, .95) 62%, rgba(24, 40, 66, .9) 92%, rgba(255, 255, 255, .6) 96%, transparent 100%) no-repeat !important;
+}
+/* a steel paper clip on the corner of the lead sheet (the shadow follows the light like everything else) */
+#animation .lc-head::after {
+  content: ""; position: absolute; top: -2.5rem; right: -1.6rem; width: 26px; height: 74px; z-index: 5; pointer-events: none;
+  rotate: 7deg;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 74'%3E%3Cpath d='M7 60V13a6 6 0 0 1 12 0v46a9 9 0 0 1-18 0V22' fill='none' stroke='%23858f96' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpath d='M7 60V13a6 6 0 0 1 12 0v46a9 9 0 0 1-18 0V22' fill='none' stroke='%23d9dfe3' stroke-width='1' stroke-linecap='round' transform='translate(-.6 -.6)'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(calc(var(--sx) * 2.5px) calc(var(--sy) * 3.5px) 1.5px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))));
+}
+/* prints: a glossy sheen across the photograph and a definite edge, like a real print on a white border */
+#animation .card .card-img::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: linear-gradient(118deg, rgba(255, 255, 255, .22) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 68%, rgba(255, 255, 255, .08) 100%);
+  box-shadow: inset 0 0 0 1px rgba(20, 16, 10, .28), inset 0 0 14px rgba(20, 16, 10, .12);
+}
+#animation .lc-scene img { box-shadow: 0 0 0 5px #fbfaf5, 0 0 0 6px rgba(20, 16, 10, .10), var(--hn-sh-raised) !important; }
+/* torn slips: a pale, fibrous rim where the tear showed the paper's inner layer */
+#animation .sec-hd > div:first-child::after, #downloads .dl-h::after {
+  content: ""; position: absolute; inset: -2.5px; z-index: -1; pointer-events: none; background: #fdfbf5;
+  clip-path: polygon(0 1%, 5% 0, 12% 2.5%, 21% 0, 30% 2%, 40% 0, 49% 2.5%, 58% 0, 68% 2%, 79% 0, 90% 2.5%, 100% 0, 100% 99%, 94% 100%, 84% 97.5%, 72% 100%, 62% 98%, 50% 100%, 38% 97.5%, 26% 100%, 15% 98%, 5% 100%, 0 98%);
+}
+/* tape is translucent: the paper shows through it */
+#animation .grid .card::before { opacity: .8 !important; }
+/* ink soaks in: a whisker of roughness on the handwritten titles (the same ink filter as the hero) */
+#animation .sec-title, #animation .lc-title-text, #animation .card-name, #downloads .dl-h { filter: url(#hn-ink); }
+/* the peg bar: brushed steel with a specular line, two screws, and pegs that catch the light */
+#animation .pegbar {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.22) 18%, rgba(255,255,255,0) 40%, rgba(255,255,255,.16) 72%, rgba(255,255,255,0)),
+    linear-gradient(#f1f3f4 0%, #c3cacf 38%, #8b949b 58%, #cfd5d9 100%) !important;
+}
+#animation .pegbar::before, #animation .pegbar::after {
+  content: ""; position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e9edef 0 22%, #9aa3a9 55%, #6b747a 100%);
+  box-shadow: inset 0 0 0 1px rgba(40, 48, 54, .35);
+}
+#animation .pegbar::before { left: 14px; }
+#animation .pegbar::after { right: 14px; }
+#animation .pegbar i { box-shadow: inset 0 -1px 1px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.7), var(--hn-sh-flat); }
 /* ==== HN-SITE-END ==== */
+
+/* the level meter on the speaker button: three bars that follow the real signal (see the script) */
+#soundBtn .snd-meter { display: none; align-items: flex-end; gap: 2px; height: 14px; margin-left: 7px; }
+#soundBtn[aria-pressed="true"] .snd-meter { display: inline-flex; }
+#soundBtn .snd-meter i { display: block; width: 3px; border-radius: 1px; background: currentColor;
+  height: calc(3px + var(--lvl, 0) * 11px); transition: height 110ms linear; }
+#soundBtn .snd-meter i:nth-child(1) { height: calc(3px + var(--lvl, 0) * 8px); }
+#soundBtn .snd-meter i:nth-child(3) { height: calc(3px + var(--lvl, 0) * 9.5px); }
+@media (prefers-reduced-motion: reduce) { #soundBtn .snd-meter i { transition: none; } }
 </style>
 </head>
 <body>
@@ -16643,7 +16734,7 @@ body::after, [data-theme="dark"] body::after {
     </ul>
     <div class="nav-r">
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
-      <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></button>
+      <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="snd-meter" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
       <!-- Mobile hamburger -- user feedback (2026-09-02): "spacing btw
            my name - work - about - contact and resume" felt cramped on
@@ -18481,11 +18572,13 @@ body::after, [data-theme="dark"] body::after {
     if (!btn) return;
     const root = document.documentElement;
     const BASE = 'public/audio/';
-    const EXTS = ['mp3', 'm4a', 'webm', 'ogg'];                          // first one that exists wins
+    const EXTS = ['mp3', 'ogg'];                                         // first one that exists wins
+    const say = (...a) => { try { console.info('[room sound]', ...a); } catch (e) {} };
+    const warn = (...a) => { try { console.warn('[room sound]', ...a); } catch (e) {} };
     const FILES = { night: 'night-music', day: 'day-music', click: 'lamp-click', rustle: 'paper-rustle' };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
-    let ctx = null, master = null, on = false, armed = false, loop = null, loopMode = null;
+    let ctx = null, master = null, an = null, on = false, armed = false, loop = null, loopMode = null, meterT = 0, silent = 0, lastErr = '';
     const bufs = {}, missing = {};
 
     const num = (name, fallback) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fallback : v; };
@@ -18495,9 +18588,9 @@ body::after, [data-theme="dark"] body::after {
       const pressed = on || armed;
       btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
       const playing = on && loop ? 'now playing: ' + NOW_PLAYING[loopMode] : '';
-      const say = note || playing;
-      btn.setAttribute('aria-label', say ? 'Room sound (' + say + ')' : 'Room sound');
-      btn.title = say ? 'Room sound: ' + say : 'Room sound';
+      const msg = note || playing;
+      btn.setAttribute('aria-label', msg ? 'Room sound (' + msg + ')' : 'Room sound');
+      btn.title = msg ? 'Room sound: ' + msg : 'Room sound';
       btn.classList.toggle('is-on', pressed);
     }
     function ensureCtx() {
@@ -18505,19 +18598,23 @@ body::after, [data-theme="dark"] body::after {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
       ctx = new AC(); master = ctx.createGain(); master.gain.value = 1; master.connect(ctx.destination);
+      an = ctx.createAnalyser(); an.fftSize = 1024; master.connect(an);     // only listens; feeds the little meter on the button
+      say('audio context created, state:', ctx.state, ', sample rate:', ctx.sampleRate);
       return ctx;
     }
     async function load(key) {
       if (bufs[key]) return bufs[key];
       if (missing[key] || !ctx) return null;
       for (const ext of EXTS) {
+        const url = BASE + FILES[key] + '.' + ext;
         try {
-          const r = await fetch(BASE + FILES[key] + '.' + ext);
-          if (!r.ok) continue;
+          const r = await fetch(url);
+          if (!r.ok) { lastErr = FILES[key] + ' returned ' + r.status; warn(url, 'returned HTTP', r.status, '(is the public/ folder being served?)'); continue; }
           const ab = await r.arrayBuffer();
           bufs[key] = await new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
+          say('loaded', url, '-', Math.round(bufs[key].duration) + 's,', bufs[key].numberOfChannels + ' channels');
           return bufs[key];
-        } catch (e) { /* try the next format */ }
+        } catch (e) { lastErr = FILES[key] + ' could not be loaded'; warn('could not load or decode', url, e && (e.message || e)); }
       }
       missing[key] = true;
       return null;
@@ -18537,24 +18634,44 @@ body::after, [data-theme="dark"] body::after {
       fadeOut(loop);
       const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
       const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
-      g.gain.linearRampToValueAtTime(num('--snd-loop', .5), ctx.currentTime + FADE);
-      loop = { src, g }; loopMode = m; paint();
+      const target = num('--snd-loop', .6);
+      g.gain.linearRampToValueAtTime(target, ctx.currentTime + FADE);
+      say('playing', m, 'loop at gain', target, ', context state:', ctx.state);
+      silent = 0; loop = { src, g }; loopMode = m; paint();
       return true;
     }
     async function turnOn() {
       if (!ensureCtx()) { paint('not supported in this browser'); return; }
-      try { await ctx.resume(); } catch (e) {}
-      on = true; armed = false; paint();
+      try { await ctx.resume(); } catch (e) { warn('resume() failed', e && e.message); }
+      on = true; armed = false; paint(); startMeter();
       const ok = await startLoop(mode());
-      if (!ok) {                                                                    // nothing to play yet: say so, stay off
-        on = false; paint('sound files have not been added yet');
+      if (!ok) {                                                                    // nothing to play: say why, stay off
+        on = false; stopMeter(); paint(lastErr ? "couldn't start: " + lastErr : 'sound files have not been added yet');
       }
     }
     function turnOff() {
-      on = false; armed = false; paint();
+      on = false; armed = false; stopMeter(); paint();
       if (ctx) fadeOut(loop); loop = null; loopMode = null;
     }
+    // The meter: three bars on the button that move with the REAL signal at the output stage. If they move but you
+    // hear nothing, the page is playing and the problem is outside it (tab or window muted, wrong output device,
+    // system volume). If they stay flat while it claims to play, the page says so in the console and the tooltip.
+    const mbuf = new Float32Array(1024);
+    function meter() {
+      if (!on || !ctx || !an || document.hidden) return;
+      an.getFloatTimeDomainData(mbuf);
+      let sum = 0; for (let i = 0; i < mbuf.length; i++) sum += mbuf[i] * mbuf[i];
+      const rms = Math.sqrt(sum / mbuf.length), db = rms > 1e-7 ? 20 * Math.log10(rms) : -100;
+      btn.style.setProperty('--lvl', Math.max(0, Math.min(1, (db + 55) / 43)).toFixed(2));
+      if (loop && ctx.state === 'running' && db < -80) {
+        if (++silent === 40) { warn('the music is "playing" but the output is silent; context state:', ctx.state); paint('playing, but no signal reaches the output'); }
+      } else silent = 0;
+    }
+    function startMeter() { if (!meterT) meterT = setInterval(meter, 100); }
+    function stopMeter() { clearInterval(meterT); meterT = 0; btn.style.setProperty('--lvl', '0'); }
     btn.addEventListener('click', () => { (on || armed) ? turnOff() : turnOn(); });
+    // safety net: some browsers and embedded panes suspend audio behind our back; any touch of the page brings it back
+    document.addEventListener('pointerdown', () => { if (on && ctx && ctx.state !== 'running') { say('context was', ctx.state, '- resuming'); ctx.resume().catch(() => {}); } }, true);
 
     // Sound is opt-in EVERY page load: nothing starts by itself, not even after a reload where it had been on.
     // (It used to remember 'on' for the session and start on the first click anywhere after a reload, which
@@ -18562,7 +18679,13 @@ body::after, [data-theme="dark"] body::after {
 
     // the loop follows the mode (crossfade); day and night each have their own room
     new MutationObserver(() => { if (on && ctx) startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else if (on) ctx.resume(); });
+    let hideT = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (!ctx) return;
+      clearTimeout(hideT);
+      if (document.hidden) hideT = setTimeout(() => { if (document.hidden && on) ctx.suspend(); }, 5000);   // a tab left alone for 5s stops playing
+      else if (on) ctx.resume();
+    });
 
     async function once(key, vol) {
       if (!on || !ctx || ctx.state !== 'running') return;
