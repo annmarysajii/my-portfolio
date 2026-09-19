@@ -16855,82 +16855,110 @@ html.hn-lite::before { display: none; }
 }
 html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
 
-/* ---- M. REWARDS: stamps, die-cut stickers, the tray -------------------------------------------------------- */
+/* ---- M. REWARDS: stamps, doodles, die-cut stickers, and the corner they live in ------------------------------ */
 .hn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-/* a die-cut round sticker: white vinyl with the section's doodle in its colour, a soft gloss, and a shadow that
-   follows the light like every other object */
+
+/* the corner: one column at the bottom left holding small notices above the tray. It never covers the work: the
+   notices are slips that fade by themselves (and can be dismissed), and there is no dialog and no dimming. */
+#hn-dock { position: fixed; left: 14px; bottom: 14px; z-index: 80; display: flex; flex-direction: column; gap: .7rem; width: min(330px, calc(100vw - 96px)); pointer-events: none; }
+#hn-dock > * { pointer-events: auto; }
+.hn-toast {
+  position: relative; padding: .65rem 2rem .7rem .95rem; rotate: -.8deg; color: var(--hn-ink); border-radius: 2px;
+  font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.25;
+  background-color: var(--hn-paper-2); background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp"); background-size: auto, 400px 400px;
+  box-shadow: var(--hn-edge), var(--hn-sh-raised); animation: hnToastIn 420ms var(--hn-ease, ease) 1; transition: opacity 320ms, translate 320ms;
+}
+.hn-toast.is-out { opacity: 0; translate: -14px 0; }
+@keyframes hnToastIn { from { opacity: 0; translate: -18px 6px; } to { opacity: 1; translate: 0 0; } }
+.hn-toast-b b { font-weight: 400; color: var(--hn-red); }
+.hn-toast-b a { color: var(--hn-ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
+.hn-toast-b a:hover, .hn-toast-b a:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); outline: none; }
+.hn-toast-x { position: absolute; top: .3rem; right: .45rem; appearance: none; border: 0; background: none; cursor: pointer; font: 400 1.25rem/1 var(--hn-hand); color: var(--hn-ink-2); padding: 0 .2rem; }
+.hn-toast-x:hover, .hn-toast-x:focus-visible { color: var(--hn-red); }
+.hn-toast-tape { position: absolute; top: -8px; left: 14px; width: 54px; height: 17px; rotate: -5deg; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .22) 0 5px, transparent 5px 11px), rgba(233, 205, 128, .85);
+  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%); }
+
+/* a die-cut sticker: white vinyl, the doodle in ink or in the section's colour, a soft gloss, a shadow that follows the light */
 .hn-stk {
   --r: 0deg; appearance: none; border: 0; padding: 0; cursor: pointer; position: relative; flex: none;
   width: 60px; height: 60px; border-radius: 50%; color: var(--c, #1E4CC8); rotate: var(--r);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, 0) 45%),
-    radial-gradient(circle at 50% 50%, #fffdf6 0 62%, #f3eee0 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, 0) 45%), radial-gradient(circle at 50% 50%, #fffdf6 0 62%, #f3eee0 100%);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .9), inset 0 0 0 3px rgba(60, 46, 24, .10), var(--hn-sh-taped);
   transition: translate 300ms var(--hn-ease, ease), scale 300ms var(--hn-ease, ease);
 }
+.hn-stk--wide { width: 96px; height: 68px; border-radius: 16px; }
 .hn-stk svg { position: absolute; inset: 11px; width: calc(100% - 22px); height: calc(100% - 22px); overflow: visible; }
+.hn-stk--wide svg { inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); }
 .hn-stk:hover, .hn-stk:focus-visible { translate: 0 -2px; scale: 1.05; }
 .hn-stk:focus-visible { outline: 2px solid #f5de4a; outline-offset: 3px; }
-.hn-stk--placed { position: absolute; z-index: 60; width: 56px; height: 56px; margin: -28px 0 0 -28px; }
+.hn-stk--placed { position: absolute; z-index: 60; width: 56px; height: 56px; transform: translate(-50%, -50%); }
+.hn-stk--placed.hn-stk--wide { width: 90px; height: 64px; }
 .hn-stk--placed.is-new { animation: hnStick 520ms var(--hn-ease, ease) 1; }
 @keyframes hnStick { 0% { scale: 1.5; opacity: 0; } 55% { scale: .93; opacity: 1; } 100% { scale: 1; } }
 .hn-stk--ghost { position: fixed; left: 0; top: 0; z-index: 9993; pointer-events: none; rotate: 0deg; scale: 1.08; opacity: .96; }
 html.hn-placing, html.hn-placing body { cursor: copy; }
+
 /* the tray: a strip of backing paper with the stickers you have not stuck down yet */
-#hn-tray {
-  position: fixed; left: 14px; bottom: 14px; z-index: 80; max-width: min(340px, calc(100vw - 96px)); padding: .8rem 1rem .7rem; rotate: -1deg;
-  color: var(--hn-ink); background-color: var(--hn-paper-2);
+#hn-tray { position: relative; padding: .8rem 1rem .6rem; rotate: -1deg; color: var(--hn-ink); background-color: var(--hn-paper-2); border-radius: 2px;
   background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp"); background-size: auto, 400px 400px;
-  box-shadow: var(--hn-edge), var(--hn-sh-raised); border-radius: 2px;
-}
-#hn-tray::before {                          /* a piece of tape */
-  content: ""; position: absolute; top: -9px; left: 18px; width: 64px; height: 20px; rotate: -4deg;
+  box-shadow: var(--hn-edge), var(--hn-sh-raised); }
+#hn-tray::before { content: ""; position: absolute; top: -9px; left: 18px; width: 64px; height: 20px; rotate: -4deg;
   background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .22) 0 5px, transparent 5px 11px), rgba(226, 150, 144, .85);
-  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%);
-}
+  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%); }
 .hn-tray-h { margin: 0 0 .5rem; font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.15; color: var(--hn-ink-2); }
-.hn-tray-row { display: flex; flex-wrap: wrap; gap: .55rem; }
-.hn-stk--tray { width: 52px; height: 52px; }
+.hn-tray-row { display: flex; flex-wrap: wrap; gap: .5rem; max-height: 132px; overflow: auto; padding: 2px; }
+.hn-tray-n { margin: .5rem 0 0; font-family: var(--hn-hand); font-size: var(--hn-t4); color: var(--hn-ink-2); }
+.hn-stk--tray { width: 48px; height: 48px; }
+.hn-stk--tray.hn-stk--wide { width: 76px; height: 52px; }
+.hn-stk--tray svg { inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); }
 .hn-stk--tray.is-held { opacity: .35; }
-.hn-tray-reset { appearance: none; border: 0; background: none; padding: .35rem 0 0; cursor: pointer; font-family: var(--hn-hand); font-size: var(--hn-t4); color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; }
+.hn-tray-reset { appearance: none; border: 0; background: none; padding: .25rem 0 0; cursor: pointer; font-family: var(--hn-hand); font-size: var(--hn-t4); color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; }
 .hn-tray-reset:hover, .hn-tray-reset:focus-visible { color: var(--hn-red); }
-/* the stamp landing */
-.hn-stampfx {
-  position: fixed; right: clamp(16px, 4vw, 48px); bottom: 92px; width: 150px; height: 150px; z-index: 9990; pointer-events: none; opacity: 0;
-  font-family: var(--hn-hand); mix-blend-mode: multiply; filter: url(#hn-stamp); animation: hnStampIn 2000ms var(--hn-ease, ease) 1 forwards;
-}
+
+/* the stamp landing (a passing moment, not a dialog: it fades by itself and is not clickable) */
+.hn-stampfx { position: fixed; right: clamp(16px, 4vw, 48px); bottom: 92px; width: 150px; height: 150px; z-index: 9990; pointer-events: none; opacity: 0;
+  font-family: var(--hn-hand); mix-blend-mode: multiply; filter: url(#hn-stamp); animation: hnStampIn 2000ms var(--hn-ease, ease) 1 forwards; }
 .hn-stampfx svg { width: 100%; height: 100%; overflow: visible; }
 @keyframes hnStampIn {
-  0% { opacity: 0; transform: scale(2) rotate(-16deg); }
-  22% { opacity: .95; transform: scale(.92) rotate(-9deg); }
-  30% { transform: scale(1.03) rotate(-8deg); }
-  36% { transform: scale(1) rotate(-8deg); }
-  78% { opacity: .9; transform: scale(1) rotate(-8deg); }
-  100% { opacity: 0; transform: scale(1) rotate(-8deg); }
+  0% { opacity: 0; transform: scale(2) rotate(-16deg); } 22% { opacity: .95; transform: scale(.92) rotate(-9deg); }
+  30% { transform: scale(1.03) rotate(-8deg); } 36% { transform: scale(1) rotate(-8deg); }
+  78% { opacity: .9; transform: scale(1) rotate(-8deg); } 100% { opacity: 0; transform: scale(1) rotate(-8deg); }
 }
-/* the thank-you */
-.hn-final {
-  position: fixed; left: 50%; top: 50%; z-index: 9991; width: min(400px, calc(100vw - 32px)); padding: 1.7rem 1.6rem 1.3rem; translate: -50% -50%; rotate: -1.2deg;
-  color: var(--hn-ink); background-color: var(--hn-paper-r);
-  background-image: radial-gradient(circle, rgba(72, 60, 38, .26) 1.1px, transparent 1.6px), linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp");
-  background-size: 28px 28px, auto, 400px 400px; box-shadow: var(--hn-edge), var(--hn-stack), var(--hn-sh-book), 0 0 0 100vmax rgba(8, 14, 28, .35);
-  border-radius: 2px; animation: hnFinalIn 600ms var(--hn-ease, ease) 1;
+
+/* PROJECT DOODLES: her characters and props, cut out like stickers and hiding behind the edge of that project's
+   sheet or print. Only the part outside the edge shows, so they look tucked behind it. Resting on one reveals a
+   little more; focus reveals it all. Each is a real button. */
+.pd-peek {
+  position: absolute; z-index: 8; width: var(--w); height: var(--h); padding: 0; border: 0; background: none; cursor: pointer; color: var(--hn-ink);
+  rotate: var(--rot); transition: translate 260ms var(--hn-ease, ease), clip-path 260ms var(--hn-ease, ease);
+  filter: drop-shadow(2px 0 0 #fdfcf7) drop-shadow(-2px 0 0 #fdfcf7) drop-shadow(0 2px 0 #fdfcf7) drop-shadow(0 -2px 0 #fdfcf7)
+    drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3px) 2px rgba(var(--hn-shadow-rgb), calc(.45 * var(--sh-k))));
 }
-@keyframes hnFinalIn { from { opacity: 0; translate: -50% -46%; } to { opacity: 1; translate: -50% -50%; } }
-.hn-final p { margin: 0 0 .8rem; font-family: var(--hn-hand); font-size: calc(var(--hn-t4) * 1.15); line-height: 1.3; }
-.hn-final .hn-final-h { font-size: var(--hn-t1); line-height: 1.05; color: var(--hn-red); }
-.hn-final-tape { position: absolute; top: -12px; left: 50%; margin-left: -42px; width: 84px; height: 24px; rotate: 3deg;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .22) 0 5px, transparent 5px 11px), rgba(233, 205, 128, .85);
-  clip-path: polygon(2% 6%, 24% 0, 58% 4%, 98% 0, 100% 36%, 97% 70%, 99% 100%, 64% 95%, 30% 100%, 3% 96%, 0 62%, 2% 30%); }
-.hn-final-row { display: flex; gap: 1rem; align-items: center; }
-.hn-final-go, .hn-final-x { font-family: var(--hn-hand); font-size: var(--hn-t3); color: var(--hn-ink); background: none; border: 0; cursor: pointer; padding: .1rem .2rem;
-  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .22em; }
-.hn-final-go:hover, .hn-final-go:focus-visible, .hn-final-x:hover, .hn-final-x:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); outline: none; }
-@media (max-width: 600px) { .hn-stk--placed { width: 48px; height: 48px; margin: -24px 0 0 -24px; } #hn-tray { bottom: 74px; } }
+.pd-peek svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.pd-top    { left: calc(var(--at) - var(--w) / 2); top: calc(var(--h) * -.54);   clip-path: inset(0 0 46% 0); }
+.pd-bottom { left: calc(var(--at) - var(--w) / 2); top: calc(100% - var(--h) * .46); clip-path: inset(46% 0 0 0); }
+.pd-right  { top: calc(var(--at) - var(--h) / 2);  left: calc(100% - var(--w) * .46); clip-path: inset(0 0 0 46%); }
+.pd-left   { top: calc(var(--at) - var(--h) / 2);  left: calc(var(--w) * -.54);  clip-path: inset(0 46% 0 0); }
+.pd-top:hover, .pd-top.is-nudge { clip-path: inset(0 0 24% 0); translate: 0 -5px; }
+.pd-bottom:hover, .pd-bottom.is-nudge { clip-path: inset(24% 0 0 0); translate: 0 5px; }
+.pd-right:hover, .pd-right.is-nudge { clip-path: inset(0 0 0 24%); translate: 5px 0; }
+.pd-left:hover, .pd-left.is-nudge { clip-path: inset(0 24% 0 0); translate: -5px 0; }
+.pd-peek:focus-visible { clip-path: none; outline: 2px solid #f5de4a; outline-offset: 4px; z-index: 12; }
+.pd-peek.is-nudge { animation: pdWiggle 1000ms var(--hn-ease, ease) 1; }
+@keyframes pdWiggle { 0%, 100% { rotate: var(--rot); } 25% { rotate: calc(var(--rot) - 7deg); } 60% { rotate: calc(var(--rot) + 6deg); } 80% { rotate: calc(var(--rot) - 3deg); } }
+.pd-peek.is-taken { animation: pdTaken 300ms ease-in 1 forwards; clip-path: none; pointer-events: none; }
+@keyframes pdTaken { to { opacity: 0; scale: .5; translate: 0 -14px; } }
+@media (max-width: 600px) {
+  .hn-stk--placed { width: 48px; height: 48px; }
+  #hn-dock { bottom: 74px; }
+  .pd-peek { scale: .8; }
+}
 @media (prefers-reduced-motion: reduce) {
   .hn-stampfx { animation: hnStampFade 1800ms linear 1 forwards; }
   @keyframes hnStampFade { 0%, 80% { opacity: .9; } 100% { opacity: 0; } }
-  .hn-stk--placed.is-new, .hn-final { animation: none; }
+  .hn-stk--placed.is-new, .hn-toast, .pd-peek.is-nudge, .pd-peek.is-taken { animation: none; }
+  .pd-peek { transition: none; }
 }
 /* ==== HN-SITE-END ==== */
 
@@ -19300,27 +19328,78 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
 
 
   // ================================================================
-  // REWARDS -- stamps become stickers, stickers go anywhere on the desk.
-  // The Studio Passport already counts the stamps a visitor earns by playing with each section's toy. This layer
-  // (a) makes that honest (it used to hand out one free stamp, so everyone started on 1/6) and remembers it, (b) gives
-  // every new stamp a moment: a rubber stamp lands, a chime (silent until a sound is added), and a die-cut sticker
-  // of the section's doodle drops into a small tray, (c) lets the visitor peel a sticker from the tray and stick it
-  // ANYWHERE on the page (it stays where they put it; click a stuck sticker to pick it up again), and (d) at all
-  // five, a handwritten thank-you and a gold star. Everything is kept in localStorage (try/catch: storage may be
-  // blocked). For testing: hnRewards.grant('music'), hnRewards.grantAll(), hnRewards.reset() in the console.
+  // REWARDS -- a planned system, not a gimmick. (Also written up in DESK_KIT.md, section 9.)
+  //
+  //   TWO WAYS TO EARN, each tied to how people already browse the work:
+  //   1. STAMPS (discipline level). The Studio Passport counts the stamps earned by playing with each section's toy
+  //      (five sections). Each new one lands as a rubber stamp and gives a die-cut sticker of the section's doodle.
+  //   2. DOODLES (project level). Her project doodles (assets/hand/project-doodles-sprite.svg) live on the work
+  //      itself: characters and props peek over the edge of that project's sheet or print, drawn as paper cut-outs. A
+  //      visitor who looks closely at a project finds them and clicks one to keep it. Jasmine's band is spread across
+  //      three sections (Illustration, Animation, Music), so finding all of them means exploring the whole desk.
+  //      Completing a project's set gives its hand-lettered title as a big sticker.
+  //   Everything earned is a sticker: pick one from the tray, click anywhere to stick it there. It stays on the
+  //   visitor's desk on later visits. All five stamps: a gold star and a thank-you.
+  //   Nothing here blocks the page: notices are small slips in the bottom-left corner that fade by themselves.
+  //
+  //   ADDING A DOODLE OR A PROJECT: draw it into the sprite (id pd-...), add its size to PD and one line to PEEK
+  //   (which card it hides behind, which edge, how far along it, how big). Sets live in SETS.
+  //   For testing, in the console: hnRewards.grant('music'), hnRewards.grantAll(), hnRewards.find('pd-kys-phone'),
+  //   hnRewards.findAll(), hnRewards.reset().
   // ================================================================
   (function initRewards() {
     const KEY = 'hn-rewards-v1';
+    const SPRITE = 'assets/hand/project-doodles-sprite.svg';
+    const INK = '#1E2733';
+    // stamps (the five sections) -> stickers from the hero's own doodle sprite, in the section colours
     const DEFS = {
       animation:        { sym: 'dd-runner',     col: '#1E4CC8', name: 'Animation' },
       illustration:     { sym: 'dd-pencil',     col: '#D93A26', name: 'Illustration' },
       videography:      { sym: 'dd-camera',     col: '#1E7A4E', name: 'Videography' },
       'graphic-design': { sym: 'dd-ruler',      col: '#A57508', name: 'Graphic design' },
       music:            { sym: 'dd-headphones', col: '#6540CC', name: 'Music' },
-      master:           { sym: 'dd-star-solid', col: '#D9A21B', name: 'All five' }
+      master:           { sym: 'dd-star-solid', col: '#D9A21B', name: 'All five stamps' }
     };
     const FIVE = ['animation', 'illustration', 'videography', 'graphic-design', 'music'];
+    // doodles: id -> viewBox size (from the sprite) and project
+    const PD = {
+      'pd-kys-head': [200, 173, 'kys'], 'pd-kys-phone': [129, 142, 'kys'], 'pd-kys-toilet': [88, 158, 'kys'], 'pd-kys-sprite': [111, 135, 'kys'],
+      'pd-jas-head-1': [170, 146, 'jas'], 'pd-jas-head-2': [149, 134, 'jas'], 'pd-jas-head-3': [163, 129, 'jas'], 'pd-jas-head-4': [138, 139, 'jas'],
+      'pd-jas-head-5': [151, 127, 'jas'], 'pd-jas-head-6': [136, 117, 'jas'], 'pd-jas-guitar': [295, 124, 'jas'], 'pd-jas-sticks': [100, 98, 'jas'],
+      'pd-jas-note-1': [61, 85, 'jas'], 'pd-jas-note-2': [72, 86, 'jas'], 'pd-jas-bass': [166, 262, 'jas'], 'pd-saxophone': [196, 217, 'jas'],
+      'pd-df-head-1': [159, 126, 'df'], 'pd-df-head-2': [162, 158, 'df'], 'pd-df-head-3': [182, 147, 'df'], 'pd-df-medal': [169, 127, 'df'],
+      'pd-ch-board': [166, 121, 'ch'], 'pd-ch-head-1': [203, 136, 'ch'], 'pd-ch-head-2': [136, 127, 'ch'], 'pd-ch-bike': [181, 116, 'ch']
+    };
+    // the hand-lettered titles: the reward for completing a project's set (Keep Yourself Safe has none yet)
+    const TITLES = { jas: ['pd-jasmine', 301, 227], df: ['pd-dear-friend', 267, 179], ch: ['pd-chase', 235, 184] };
+    const PROJ = { kys: 'Keep Yourself Safe', jas: 'Jasmine', df: 'Dear Friend', ch: 'Chase' };
+    const SETS = {};
+    Object.keys(PD).forEach(id => { (SETS[PD[id][2]] = SETS[PD[id][2]] || []).push(id); });
+    Object.keys(PD).forEach(id => { DEFS[id] = { sym: id, ext: true, col: INK, name: PROJ[PD[id][2]] + ' doodle' }; });
+    Object.keys(TITLES).forEach(p => { DEFS[TITLES[p][0]] = { sym: TITLES[p][0], ext: true, wide: true, col: INK, name: PROJ[p] + ' title' }; });
     const norm = id => id === 'design' ? 'graphic-design' : id;
+    const isDoodle = id => !!PD[id];
+
+    // where each doodle hides: host card, edge, how far along that edge (%), width in px, tilt
+    // hosts: a CSS selector, or [selector, text the card's name must contain]
+    const HOSTS = {
+      kys: ['#animation .lc--kys'],
+      jasIll: ['#illustration .lc--jasmine'],
+      jasAnim: ['#animation .card', 'Jasmine'],
+      jasMus: ['#music .card', 'Jasmine'],
+      df: ['#animation .card', 'Dear Friend'],
+      ch: ['#animation .card', 'Chase']
+    };
+    const PEEK = [
+      ['kys', 'pd-kys-head', 'bottom', 16, 84, -5], ['kys', 'pd-kys-phone', 'right', 42, 58, 9], ['kys', 'pd-kys-toilet', 'right', 76, 40, 6], ['kys', 'pd-kys-sprite', 'bottom', 84, 50, -7],
+      ['jasIll', 'pd-jas-head-1', 'top', 10, 76, -6], ['jasIll', 'pd-jas-head-2', 'top', 36, 68, 4], ['jasIll', 'pd-jas-head-3', 'top', 62, 72, -3], ['jasIll', 'pd-jas-head-4', 'top', 88, 64, 6],
+      ['jasAnim', 'pd-jas-head-5', 'right', 46, 58, 8], ['jasAnim', 'pd-jas-head-6', 'bottom', 70, 54, -5],
+      ['jasMus', 'pd-jas-guitar', 'top', 30, 112, -4], ['jasMus', 'pd-jas-bass', 'right', 52, 46, 5], ['jasMus', 'pd-jas-sticks', 'bottom', 22, 54, -8],
+      ['jasMus', 'pd-jas-note-1', 'top', 82, 30, 7], ['jasMus', 'pd-jas-note-2', 'right', 14, 38, -6], ['jasMus', 'pd-saxophone', 'bottom', 72, 62, 6],
+      ['df', 'pd-df-head-1', 'top', 22, 62, -5], ['df', 'pd-df-head-2', 'right', 56, 58, 7], ['df', 'pd-df-head-3', 'bottom', 26, 60, 4], ['df', 'pd-df-medal', 'bottom', 80, 60, -9],
+      ['ch', 'pd-ch-board', 'top', 56, 70, 4], ['ch', 'pd-ch-head-1', 'right', 30, 64, -7], ['ch', 'pd-ch-head-2', 'bottom', 36, 52, 5], ['ch', 'pd-ch-bike', 'bottom', 78, 74, -4]
+    ];
+
     let st = { got: [], placed: {} };
     try { const r = JSON.parse(localStorage.getItem(KEY) || 'null'); if (r && Array.isArray(r.got)) st = { got: r.got.filter(i => DEFS[i]), placed: r.placed || {} }; } catch (e) {}
     const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
@@ -19329,24 +19408,40 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
     const live = document.createElement('div'); live.setAttribute('aria-live', 'polite'); live.className = 'hn-sr'; document.body.appendChild(live);
     const say = t => { live.textContent = ''; setTimeout(() => { live.textContent = t; }, 30); };
 
-    function sticker(id, cls) {
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'hn-stk ' + (cls || ''); b.dataset.id = id;
-      b.style.setProperty('--c', DEFS[id].col);
-      b.innerHTML = '<svg aria-hidden="true" focusable="false"><use href="#' + DEFS[id].sym + '"/></svg>';
-      return b;
+    // ---- the corner: notices and the tray live in one column, bottom left, out of the way ----
+    const dock = document.createElement('div'); dock.id = 'hn-dock'; document.body.appendChild(dock);
+    function toast(html, opts) {
+      opts = opts || {};
+      while (dock.querySelectorAll('.hn-toast').length >= 2) dock.querySelector('.hn-toast').remove();
+      const t = document.createElement('div'); t.className = 'hn-toast'; t.setAttribute('role', 'status');
+      t.innerHTML = '<span class="hn-toast-tape" aria-hidden="true"></span><div class="hn-toast-b">' + html + '</div><button type="button" class="hn-toast-x" aria-label="Dismiss">×</button>';
+      let timer = 0; const off = () => { clearTimeout(timer); t.classList.add('is-out'); setTimeout(() => t.remove(), 350); };
+      const arm = () => { timer = setTimeout(off, opts.ms || 8000); };
+      t.querySelector('.hn-toast-x').addEventListener('click', off);
+      t.addEventListener('pointerenter', () => clearTimeout(timer)); t.addEventListener('pointerleave', arm);
+      t.querySelectorAll('a').forEach(a => a.addEventListener('click', off));
+      const trayEl = dock.querySelector('#hn-tray'); if (trayEl) dock.insertBefore(t, trayEl); else dock.appendChild(t); arm();
     }
 
-    // ---- the tray: stickers waiting to be stuck down ----
+    // ---- stickers ----
+    function sticker(id, cls) {
+      const d = DEFS[id], b = document.createElement('button'); b.type = 'button'; b.className = 'hn-stk ' + (d.wide ? 'hn-stk--wide ' : '') + (cls || ''); b.dataset.id = id;
+      b.style.setProperty('--c', d.col);
+      b.innerHTML = '<svg aria-hidden="true" focusable="false"><use href="' + (d.ext ? SPRITE : '') + '#' + d.sym + '"/></svg>';
+      return b;
+    }
     let tray = null, held = null, ghost = null;
     const unplaced = () => st.got.filter(i => !st.placed[i]);
+    const found = () => st.got.filter(isDoodle).length;
     function renderTray() {
       const list = unplaced();
       if (!list.length && !held) { if (tray) { tray.remove(); tray = null; } return; }
       if (!tray) {
-        tray = document.createElement('div'); tray.id = 'hn-tray'; tray.setAttribute('role', 'group'); tray.setAttribute('aria-label', 'Your stickers');
-        document.body.appendChild(tray);
+        tray = document.createElement('div'); tray.id = 'hn-tray'; tray.setAttribute('role', 'group'); tray.setAttribute('aria-label', 'Your stickers'); dock.appendChild(tray);
       }
-      tray.innerHTML = '<p class="hn-tray-h">' + (held ? 'Click anywhere to stick it. Esc to put it back.' : 'Your stickers: pick one, then click anywhere to stick it') + '</p><div class="hn-tray-row"></div>';
+      const total = Object.keys(PD).length;
+      tray.innerHTML = '<p class="hn-tray-h">' + (held ? 'Click anywhere to stick it. Esc puts it back.' : 'Your stickers: pick one, then click anywhere to stick it') + '</p>' +
+        '<div class="hn-tray-row"></div><p class="hn-tray-n">Doodles found: ' + found() + ' of ' + total + '</p>';
       const row = tray.querySelector('.hn-tray-row');
       list.forEach(id => {
         const b = sticker(id, 'hn-stk--tray' + (held && held.id === id ? ' is-held' : ''));
@@ -19357,8 +19452,6 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'hn-tray-reset'; reset.textContent = 'start over';
       reset.addEventListener('click', () => api.reset()); tray.appendChild(reset);
     }
-
-    // ---- picking up and sticking down ----
     function pick(id) {
       drop(true);
       held = { id }; sfx('stickerPeel');
@@ -19371,10 +19464,10 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       const had = held; held = null; if (had && !quiet) renderTray();
     }
     addEventListener('pointermove', e => { if (ghost) ghost.style.transform = 'translate(' + (e.clientX - 32) + 'px,' + (e.clientY - 32) + 'px) rotate(-8deg)'; }, { passive: true });
-    addEventListener('keydown', e => { if (e.key === 'Escape' && held) { drop(); } });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && held) drop(); });
     document.addEventListener('click', e => {
       if (!held) return;
-      if (e.target.closest && e.target.closest('#hn-tray')) return;
+      if (e.target.closest && e.target.closest('#hn-dock')) return;
       e.preventDefault(); e.stopPropagation();
       const host = (e.target.closest && e.target.closest('#hero, #downloads, #about, #contact, .desk')) || document.getElementById('wrap');
       const r = host.getBoundingClientRect();
@@ -19394,7 +19487,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
     }
     function restore() { Object.keys(st.placed).forEach(id => { if (st.got.includes(id)) stick(id, st.placed[id], false); }); renderTray(); }
 
-    // ---- the moments ----
+    // ---- stamps ----
     function stampFx(id) {
       const d = document.createElement('div'); d.className = 'hn-stampfx'; d.setAttribute('aria-hidden', 'true');
       d.innerHTML = '<svg viewBox="0 0 200 200"><defs><path id="hnArc" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/></defs>' +
@@ -19403,21 +19496,68 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
         '<text x="100" y="108" text-anchor="middle" font-size="25" fill="currentColor">' + DEFS[id].name.toUpperCase() + '</text></svg>';
       d.style.color = 'var(--hn-red)'; document.body.appendChild(d); setTimeout(() => d.remove(), 2200);
     }
-    function onNew(id) {
-      st.got.push(id); save(); stampFx(id); sfx('stamp'); setTimeout(() => sfx('reward'), 380);
-      say('Stamp collected: ' + DEFS[id].name + '. A sticker was added to your tray.'); renderTray();
-      if (FIVE.every(i => st.got.includes(i)) && !st.got.includes('master')) setTimeout(final, 1900);
+    function onStamp(id) {
+      st.got.push(id); save(); stampFx(id); sfx('stamp'); setTimeout(() => sfx('reward'), 380); renderTray();
+      say('Stamp collected: ' + DEFS[id].name + '. A sticker was added to your tray.');
+      toast('<b>Stamp collected: ' + DEFS[id].name + '.</b> A sticker is in your tray.');
+      if (FIVE.every(i => st.got.includes(i)) && !st.got.includes('master')) setTimeout(final, 2600);
     }
     function final() {
       if (st.got.includes('master')) return;
       st.got.push('master'); save(); sfx('rewardFinal'); renderTray();
-      const n = document.createElement('div'); n.className = 'hn-final'; n.setAttribute('role', 'dialog'); n.setAttribute('aria-label', 'Thank you');
-      n.innerHTML = '<span class="hn-final-tape" aria-hidden="true"></span><p class="hn-final-h">You found every stamp!</p>' +
-        '<p>Thank you for poking around my desk. A gold star is in your tray. If any of this made you smile, I would love to make something with you.</p>' +
-        '<div class="hn-final-row"><a href="#contact" class="hn-final-go">Say hi</a><button type="button" class="hn-final-x">Close</button></div>';
-      document.body.appendChild(n);
-      const off = () => n.remove(); n.querySelector('.hn-final-x').addEventListener('click', off); n.querySelector('.hn-final-go').addEventListener('click', off);
-      n.querySelector('.hn-final-x').focus({ preventScroll: true }); say('You found every stamp. A gold star was added to your tray.');
+      toast('<b>You found every stamp!</b> Thank you for poking around my desk. A gold star is in your tray. If any of it made you smile, I would love to make something with you. <a href="#contact">Say hi</a>', { ms: 14000 });
+      say('You found every stamp. A gold star was added to your tray.');
+    }
+
+    // ---- doodles: peeking over the edge of the work ----
+    function keepDoodle(id, btn) {
+      if (st.got.includes(id)) return;
+      st.got.push(id); save(); sfx('reward'); sfx('stickerPeel');
+      if (btn) { btn.classList.add('is-taken'); setTimeout(() => btn.remove(), 320); }
+      renderTray();
+      const p = PD[id][2], set = SETS[p], have = set.filter(i => st.got.includes(i)).length;
+      say('Doodle found: ' + PROJ[p] + ', ' + have + ' of ' + set.length + '.');
+      if (have === set.length) {
+        const t = TITLES[p];
+        if (t && !st.got.includes(t[0])) { st.got.push(t[0]); save(); renderTray(); }
+        toast('<b>' + PROJ[p] + ': the whole set.</b>' + (t ? ' Its hand-lettered title is in your tray.' : ''), { ms: 9000 });
+      } else {
+        toast('<b>Found: ' + PROJ[p] + '</b> · ' + have + ' of ' + set.length + (set.length > 6 ? '. The rest are hiding in other sections.' : '. Keep looking.'), { ms: 5500 });
+      }
+    }
+    function makePeek(spec, host) {
+      const [, id, side, at, w, rot] = spec;
+      if (st.got.includes(id) || host.querySelector('.pd-peek[data-id="' + id + '"]')) return;
+      const size = PD[id], h = Math.round(w * size[1] / size[0]);
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'pd-peek pd-' + side; b.dataset.id = id;
+      b.setAttribute('aria-label', 'A doodle from ' + PROJ[size[2]] + ' is hiding here. Press to keep it');
+      b.style.setProperty('--w', w + 'px'); b.style.setProperty('--h', h + 'px'); b.style.setProperty('--at', at + '%'); b.style.setProperty('--rot', rot + 'deg');
+      b.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 ' + size[0] + ' ' + size[1] + '"><use href="' + SPRITE + '#' + id + '"/></svg>';
+      b.addEventListener('click', e => { e.stopPropagation(); keepDoodle(id, b); });
+      host.appendChild(b);
+    }
+    function initPeeks() {
+      const groups = {}; PEEK.forEach(s => { (groups[s[0]] = groups[s[0]] || []).push(s); });
+      Object.keys(groups).forEach(key => {
+        const [sel, needle] = HOSTS[key];
+        const host = [...document.querySelectorAll(sel)].find(c => !needle || (c.querySelector('.card-name, h3, .lc-title') || c).textContent.indexOf(needle) > -1);
+        if (!host) return;
+        if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+        const add = () => groups[key].forEach(s => makePeek(s, host));
+        if ('IntersectionObserver' in window) {                       // the sprite (450KB) is fetched only when a host is near the screen
+          const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); add(); nudgeOnce(host); } }, { rootMargin: '300px 0px' });
+          io.observe(host);
+        } else add();
+      });
+    }
+    // a little wiggle so people know these are alive: once when you first rest on a project, once when it scrolls
+    // properly into view (for touch), never for anything already found, never with reduced motion
+    function nudgeOnce(host) {
+      if (calm()) return;
+      let done = false;
+      const go = () => { if (done) return; const list = [...host.querySelectorAll('.pd-peek')]; if (!list.length) return; done = true; const el = list[Math.floor(Math.random() * list.length)]; el.classList.add('is-nudge'); setTimeout(() => el.classList.remove('is-nudge'), 1100); };
+      let t = 0; host.addEventListener('pointerenter', () => { t = setTimeout(go, 700); }); host.addEventListener('pointerleave', () => clearTimeout(t));
+      if ('IntersectionObserver' in window) { let t2 = 0; new IntersectionObserver(es => { clearTimeout(t2); if (es[0].isIntersecting) t2 = setTimeout(go, 2200); }, { threshold: 0.6 }).observe(host); }
     }
 
     // ---- hooking the passport (its code is defined later in the file, so wait for the page to finish loading) ----
@@ -19425,17 +19565,19 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       const orig = window.unlockStamp; if (typeof orig !== 'function' || orig.__hn) return;
       const wrapped = function (raw) {
         const id = norm(raw); const isNew = FIVE.includes(id) && !st.got.includes(id);
-        const out = orig.apply(this, arguments); if (isNew) onNew(id); return out;
+        const out = orig.apply(this, arguments); if (isNew) onStamp(id); return out;
       };
       wrapped.__hn = true; window.unlockStamp = wrapped;
-      st.got.filter(i => FIVE.includes(i)).forEach(i => { try { orig(i === 'graphic-design' ? 'graphic-design' : i); } catch (e) {} });   // remembered stamps come back quietly
+      st.got.filter(i => FIVE.includes(i)).forEach(i => { try { orig(i); } catch (e) {} });        // remembered stamps come back quietly
     }
     const api = window.hnRewards = {
-      grant: id => { id = norm(id); if (FIVE.includes(id) && !st.got.includes(id)) { if (window.unlockStamp) window.unlockStamp(id); else onNew(id); } },
+      grant: id => { id = norm(id); if (FIVE.includes(id) && !st.got.includes(id)) { if (window.unlockStamp) window.unlockStamp(id); else onStamp(id); } },
       grantAll: () => FIVE.forEach((id, i) => setTimeout(() => api.grant(id), i * 2300)),
+      find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
+      findAll: () => Object.keys(PD).forEach((id, i) => setTimeout(() => api.find(id), i * 350)),
       reset: () => { drop(true); try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); }
     };
-    const boot = () => { hook(); restore(); };
+    const boot = () => { hook(); restore(); initPeeks(); };
     if (document.readyState === 'complete') setTimeout(boot, 0); else addEventListener('load', () => setTimeout(boot, 50));
   })();
 

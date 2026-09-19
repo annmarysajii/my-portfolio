@@ -250,3 +250,30 @@ Decided with Annmary after the hero notebook and lighting work. It supersedes an
   About = wooden desk + drawer, Contact = letter taped down). A visible drawer opens for anything personal.
 - **Rewards** (later): stamps earned by exploring become stickers the visitor can place on the notebook.
 - **Sound**: opt-in only, never on load, never resumed by itself. Music loops in `public/audio/`, foley one-shots to come.
+
+---
+
+## 9. Rewards: one planned system (Sept 2026)
+
+Design rule: **a reward must come from doing what a visitor already came to do (look at the work), must be something
+that belongs on a desk, and must never get in the way.** No pop-ups, no dialogs, nothing that dims the page.
+
+| Tier | Earned by | What you get | Where it lives |
+|---|---|---|---|
+| Stamp (5) | playing with a section's toy (the Studio Passport already counts these) | a rubber-stamp moment + a die-cut sticker of the section's doodle in its colour | `window.unlockStamp` (wrapped) |
+| Doodle (24) | looking closely at a project: its characters and props peek over the edge of its sheet or print, drawn as paper cut-outs; click one to keep it | a die-cut sticker of that doodle | the `PEEK` table in the rewards script |
+| Set | finding every doodle of one project | that project's hand-lettered title as a big sticker (Keep Yourself Safe has none yet) | `TITLES` |
+| Everything | all five stamps | a gold star sticker and a thank-you slip | `final()` |
+
+Jasmine's twelve doodles are spread over three sections (Illustration lead sheet, its Animation card, its Music card), on purpose:
+completing her set means exploring the whole desk.
+
+Everything earned is a sticker. Pick it from the tray (bottom left), click anywhere to stick it there; it stays on the
+visitor's desk on later visits (localStorage `hn-rewards-v1`), click it to pick it up again, Esc puts it back.
+Notices are small slips in the same corner that fade by themselves. Sounds are slots (`stamp`, `reward`, `stickerPeel`,
+`stickerPlace`, `rewardFinal`) that stay silent until a file exists (see public/audio/README.txt).
+
+**Adding to it:** draw a doodle into `assets/hand/project-doodles-sprite.svg` (id `pd-...`), add its size to `PD` and one
+line to `PEEK` (which card, which edge, how far along, how big). A new project: add its name to `PROJ`, its card to `HOSTS`,
+optionally a title lettering to `TITLES`. Testing: `hnRewards.find('pd-kys-phone')`, `.findAll()`, `.grant('music')`,
+`.grantAll()`, `.reset()` in the console.
