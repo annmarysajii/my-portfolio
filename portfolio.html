@@ -16708,6 +16708,20 @@ html::after, [data-theme="dark"] html::after {
 }
 /* lite mode (see the frame monitor) also drops the fixed window layer */
 html.hn-lite::before { display: none; }
+
+/* ---- J. THINGS WRITTEN ON PAPER STAY INK, IN BOTH MODES; THE DESK HAS AN EDGE, NOT A TEAR LINE ---------------- */
+/* The toy tag is a paper slip in both modes (I made it one), so its words are ink in both. The toy cards and the
+   little badges keep their own per-mode colours; the few badge colour pairs that fail are fixed at run time by the
+   contrast guard in the script (a legacy of thousands of overriding rules is not worth fighting one pill at a time). */
+#wrap .desk .pg-tag-closed, #wrap .desk .pg-tag-text { color: var(--hn-ink) !important; }
+/* "tear here" belongs on a sheet of paper. On the wooden desk there is nothing to tear: the seam is now simply
+   the edge of the desk, a dark bevel with a lit lip, where the mat ends and the timber begins. */
+#about .bp-tear, #about .bp-tear-label { display: none !important; }
+#about.about { border-top: 5px solid #2a190e !important; }
+#about.about::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2; pointer-events: none;
+  background: linear-gradient(rgba(255, 232, 190, .34), rgba(255, 232, 190, .06));
+}
 /* ==== HN-SITE-END ==== */
 
 /* the level meter on the speaker button: three bars that follow the real signal (see the script) */
@@ -18994,6 +19008,31 @@ html.hn-lite::before { display: none; }
       }, { threshold: 0.6 });
       io.observe(box);
     }
+  })();
+
+
+  // ================================================================
+  // CONTRAST GUARD -- the small pills (.badge) carry background/text colour pairs written separately for each
+  // theme, and a few of them fail 4.5:1 in one mode. After each theme change this picks ink or cream, whichever
+  // reads better on that pill's own background, and only touches a pill that fails. Nothing else is changed.
+  // ================================================================
+  (function initContrastGuard() {
+    const lum = c => { const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }; return .2126 * f(c[0]) + .7152 * f(c[1]) + .0722 * f(c[2]); };
+    const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+    const rgb = s => (s.match(/[\d.]+/g) || [0, 0, 0]).slice(0, 3).map(Number);
+    const INK = [30, 39, 51], CREAM = [255, 253, 248];
+    function run() {
+      document.querySelectorAll('.badge').forEach(el => {
+        el.style.removeProperty('color');
+        const cs = getComputedStyle(el);
+        let bg = null, p = el;                                           // the pill's own fill, or whatever it sits on
+        while (p) { const c = getComputedStyle(p).backgroundColor, a = (c.match(/[\d.]+/g) || [])[3]; if (a === undefined || +a >= .5) { bg = rgb(c); break; } p = p.parentElement; }
+        if (!bg || ratio(rgb(cs.color), bg) >= 4.5) return;
+        el.style.setProperty('color', ratio(INK, bg) >= ratio(CREAM, bg) ? '#1E2733' : '#FFFDF8', 'important');
+      });
+    }
+    run();
+    new MutationObserver(() => setTimeout(run, 50)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
