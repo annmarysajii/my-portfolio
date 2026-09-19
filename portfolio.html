@@ -16063,6 +16063,18 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #themeBtn:active { box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .55); translate: 0 1px; }
 #themeBtn:focus-visible { outline: 2px solid var(--yel, #F2C030); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { #themeBtn { transition: none; } }
+
+/* ---- sound: levels live with the rest of the variables (JS reads them), and the toggle mirrors the lamp switch ---- */
+:root { --snd-loop: .40; --snd-ui: .45; --snd-rustle: .06; }                 /* day: a soft room */
+[data-theme="dark"] { --snd-loop: .55; --snd-ui: .55; --snd-rustle: .07; }   /* night: a little closer, a little louder */
+#soundBtn .snd-on { display: none; }
+#soundBtn[aria-pressed="true"] .snd-off { display: none; }
+#soundBtn[aria-pressed="true"] .snd-on { display: block; }
+#soundBtn { transition: box-shadow 300ms var(--hn-ease), translate 300ms var(--hn-ease); }
+#soundBtn[aria-pressed="true"] { box-shadow: inset 0 1px 3px rgba(var(--hn-shadow-rgb), .45), inset 0 0 0 1px rgba(var(--lr), var(--lg), var(--lb), .18); }
+#soundBtn:active { box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .55); translate: 0 1px; }
+#soundBtn:focus-visible { outline: 2px solid var(--yel, #F2C030); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #soundBtn { transition: none; } }
 </style>
 </head>
 <body>
@@ -16262,6 +16274,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     </ul>
     <div class="nav-r">
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
+      <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></button>
       <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
       <!-- Mobile hamburger -- user feedback (2026-09-02): "spacing btw
            my name - work - about - contact and resume" felt cramped on
@@ -18066,6 +18079,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     const lampBtn = document.getElementById('themeBtn');
     if (lampBtn) lampBtn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
     updateHeroImage(next);
+    if (window.__hnLampClick) window.__hnLampClick();   // quiet click, only if room sound is on
 
     const icon = document.getElementById('themeIcon');
     if (icon) {
@@ -18075,6 +18089,126 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     const sf = document.getElementById('warp-sfx');
     if (sf) { sf.currentTime = 0; sf.play().catch(()=>{}); }
   };
+
+
+  // ================================================================
+  // ROOM SOUND -- opt-in, separate from everything else.
+  // Off by default. Never autoplays: nothing is even created until a user gesture. Night = quiet room tone with
+  // faint rain on glass; day = soft room tone with distant birds; both seamless loops (AudioBufferSource,
+  // loop = true, so no gap). Small UI sounds: a lamp click on the switch and a very quiet, throttled paper
+  // rustle when a taped item is hovered. Loops crossfade over 800ms when the mode changes.
+  // The audio files are supplied separately in public/audio/ (see README.txt there); nothing is synthesised.
+  // If a file is missing the system stays quiet and says so; if storage is blocked it just does not persist.
+  // Levels read the --snd-* CSS variables, like every other level in the lighting system.
+  // ================================================================
+  (function initRoomSound() {
+    const KEY = 'hn-sound';
+    const btn = document.getElementById('soundBtn');
+    if (!btn) return;
+    const root = document.documentElement;
+    const BASE = 'public/audio/';
+    const EXTS = ['webm', 'm4a', 'mp3', 'ogg'];                          // first one that exists wins
+    const FILES = { night: 'night-rain', day: 'day-birds', click: 'lamp-click', rustle: 'paper-rustle' };
+    const FADE = 0.8;                                                    // seconds
+    let ctx = null, master = null, on = false, armed = false, loop = null, loopMode = null;
+    const bufs = {}, missing = {};
+
+    const num = (name, fallback) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fallback : v; };
+    const mode = () => root.getAttribute('data-theme') === 'dark' ? 'night' : 'day';
+    const stored = () => { try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
+    const store = v => { try { sessionStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} };
+
+    function paint(note) {
+      const pressed = on || armed;
+      btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+      btn.setAttribute('aria-label', note ? 'Room sound (' + note + ')' : 'Room sound');
+      btn.title = note ? 'Room sound: ' + note : 'Room sound';
+      btn.classList.toggle('is-on', pressed);
+    }
+    function ensureCtx() {
+      if (ctx) return ctx;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 1; master.connect(ctx.destination);
+      return ctx;
+    }
+    async function load(key) {
+      if (bufs[key]) return bufs[key];
+      if (missing[key] || !ctx) return null;
+      for (const ext of EXTS) {
+        try {
+          const r = await fetch(BASE + FILES[key] + '.' + ext);
+          if (!r.ok) continue;
+          const ab = await r.arrayBuffer();
+          bufs[key] = await new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
+          return bufs[key];
+        } catch (e) { /* try the next format */ }
+      }
+      missing[key] = true;
+      return null;
+    }
+    function fadeOut(l) {
+      if (!l) return;
+      const t = ctx.currentTime;
+      l.g.gain.cancelScheduledValues(t); l.g.gain.setValueAtTime(l.g.gain.value, t); l.g.gain.linearRampToValueAtTime(0, t + FADE);
+      setTimeout(() => { try { l.src.stop(); } catch (e) {} l.src.disconnect(); l.g.disconnect(); }, FADE * 1000 + 100);
+    }
+    async function startLoop(m) {
+      if (!on || !ctx) return true;
+      const b = await load(m);
+      if (!on) return true;
+      if (!b) { fadeOut(loop); loop = null; loopMode = null; return false; }     // no file for this mode: stay quiet
+      if (loop && loopMode === m) return true;
+      fadeOut(loop);
+      const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
+      const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
+      g.gain.linearRampToValueAtTime(num('--snd-loop', .5), ctx.currentTime + FADE);
+      loop = { src, g }; loopMode = m;
+      return true;
+    }
+    async function turnOn() {
+      if (!ensureCtx()) { paint('not supported in this browser'); return; }
+      try { await ctx.resume(); } catch (e) {}
+      on = true; armed = false; store(true); paint();
+      const ok = await startLoop(mode());
+      if (!ok) {                                                                    // nothing to play yet: say so, stay off
+        on = false; store(false); paint('sound files have not been added yet');
+      }
+    }
+    function turnOff() {
+      on = false; armed = false; store(false); paint();
+      if (ctx) fadeOut(loop); loop = null; loopMode = null;
+    }
+    btn.addEventListener('click', () => { (on || armed) ? turnOff() : turnOn(); });
+
+    // A setting kept for the session does not autoplay after a reload: it waits for the first gesture.
+    if (stored()) {
+      armed = true; paint();
+      const wake = e => { if (e && e.target && btn.contains(e.target)) return; document.removeEventListener('pointerdown', wake, true); document.removeEventListener('keydown', wake, true); if (armed) turnOn(); };
+      document.addEventListener('pointerdown', wake, true); document.addEventListener('keydown', wake, true);
+    }
+
+    // the loop follows the mode (crossfade); day and night each have their own room
+    new MutationObserver(() => { if (on && ctx) startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else if (on) ctx.resume(); });
+
+    async function once(key, vol) {
+      if (!on || !ctx || ctx.state !== 'running') return;
+      const b = await load(key); if (!b) return;
+      const s = ctx.createBufferSource(); s.buffer = b;
+      const g = ctx.createGain(); g.gain.value = vol; s.connect(g); g.connect(master); s.start();
+    }
+    window.__hnLampClick = () => once('click', num('--snd-ui', .5));
+    // paper rustle: a taped item hovered by a mouse, at most once every 1.4s, very quiet
+    let lastRustle = 0;
+    document.querySelectorAll('#hero .reel-frame, #hero .metrics, #hero .hn-xsheet').forEach(el => {
+      el.addEventListener('pointerenter', e => {
+        if (e.pointerType !== 'mouse') return;
+        const now = performance.now(); if (now - lastRustle < 1400) return; lastRustle = now;
+        once('rustle', num('--snd-rustle', .07));
+      });
+    });
+  })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
   // Both icon states are static markup swapped by CSS off
