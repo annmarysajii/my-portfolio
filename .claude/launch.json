@@ -4,8 +4,15 @@
     {
       "name": "static-server",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8834"],
-      "port": 8834
+      "runtimeArgs": ["-c", "import os,http.server as h; h.test(HandlerClass=h.SimpleHTTPRequestHandler, port=int(os.environ['PORT']))"],
+      "port": 8834,
+      "autoPort": true
+    },
+    {
+      "name": "static-server-alt",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8835"],
+      "port": 8835
     }
   ]
 }
