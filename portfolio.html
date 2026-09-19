@@ -62,15 +62,6 @@
 </script>
 <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
 <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap"/></noscript>
-<!-- The hero wordmark's dark-theme variant (hero_name_dark.webp, ~240KB) was
-     only ever fetched at the moment toggleTheme() set img.src to it -- a cold
-     network fetch + decode on every first toggle, which on a phone read as
-     the name card taking a few seconds to switch. fetchpriority="low" so this
-     warms the browser cache in the background without competing with the
-     light-mode image already loading as the page's LCP candidate; by the
-     time someone actually clicks the toggle it's typically already cached,
-     so the src swap in updateHeroImage() is instant. -->
-<link rel="preload" as="image" href="assets/svg-opt/hero_name_dark.webp" fetchpriority="low"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
@@ -2515,22 +2506,11 @@ body::after {
     /* grid */
     repeating-linear-gradient(90deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
     repeating-linear-gradient(0deg, rgba(245,242,230,0.5) 0px, rgba(245,242,230,0.5) 1.5px, transparent 1.5px, transparent 60px),
-    /* Light, daylight through a window upper-left -- same corner the
-       hard shadows already point away from. --gold, not an invented
-       hue, same restraint as the rest of this mat. Sits on the grid
-       so the lines pick up warmth too, not just the flat colour
-       behind them. Paired with the mat's own vignette below, which
-       used to sit AFTER the opaque base colour in this same list --
-       CSS paints background layers first-listed-on-top, so it was
-       dead: fully hidden behind an opaque layer, doing nothing since
-       it was written. Moved forward so it actually renders, and
-       recentred on this same corner so the two read as one light
-       source instead of two unrelated effects. */
-    radial-gradient(ellipse 70% 60% at 12% 8%, rgba(232,175,48,0.4), transparent 60%),
-    radial-gradient(ellipse 92% 82% at 12% 8%, transparent 38%, rgba(5,15,35,0.4) 100%),
+    /* (The baked daylight glow and corner vignette that used to sit here are gone: light is the lighting
+       layers' job now, one system, see the hero light section at the end of this file.) */
     /* base -- deep navy, darker than the literal --blue token */
     linear-gradient(90deg, #2B4C7E 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #2B4C7E 100%);
-  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto, auto;
+  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto;
 }
 [data-theme="dark"] #hero {
   /* Same luminance-gap check the earlier wood/moss passes needed:
@@ -2547,18 +2527,10 @@ body::after {
     repeating-linear-gradient(35deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 165px),
     repeating-linear-gradient(90deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
     repeating-linear-gradient(0deg, rgba(242,192,48,0.3) 0px, rgba(242,192,48,0.3) 1.5px, transparent 1.5px, transparent 60px),
-    /* Desk lamp, not moonlight -- someone working at this desk at
-       night switched a lamp on, they didn't sit down to work by
-       moonlight. A lamp is a small hot source, so tighter and more
-       saturated than the daylight version, with a harder fall into
-       real dark around it (a lamp in a dark room reads as much
-       higher contrast than sun through a window). Same corner, same
-       fix -- the vignette used to sit behind the opaque base colour
-       and never rendered. */
-    radial-gradient(ellipse 46% 40% at 12% 8%, rgba(255,181,79,0.55), transparent 62%),
-    radial-gradient(ellipse 92% 82% at 12% 8%, transparent 30%, rgba(0,0,0,0.68) 100%),
+    /* (The baked lamp glow and vignette that used to sit here are gone: the lamp is the hero's lighting
+       layer now, so there is one lamp, not two.) */
     linear-gradient(90deg, #16305A 0%, #16305A 25%, #2B4C7E 50%, #16305A 75%, #16305A 100%);
-  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto, auto, auto;
+  background-size: 4px 4px, 9px 9px, auto, auto, auto, auto, auto, auto;
 }
 #animation { background-color: var(--sec-anim-bg); }
 #illustration { background-color: var(--sec-illus-bg); }
@@ -15218,12 +15190,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   --hn-ink:    #1B2430;
   --hn-ink-2:  #333E4E;
   --hn-red:    #7B1C15;   /* darker so the stamp text holds 4.5:1 on the dimmed paper, with the warm lamp pool over it */
-  --hn-paper-l:    #D6D0BF;   /* the same paper in dimmer light */
-  --hn-paper-r:    #D9D4C4;
-  --hn-paper-2:    #DEDACB;
-  --hn-paper-veil: rgba(214, 208, 191, .55);
-  --hn-dot:        rgba(50, 42, 26, .34);
-  --hn-tape-gold:  rgba(214, 186, 112, .88);
+  /* The paper is the SAME paper at night (it used to be baked ~13% dimmer, which double-dimmed it once the
+     lamp and grade arrived). Dimness now comes only from the light: see --gr / --vig below. */
   --hn-shadow-rgb: 0, 0, 0;
   --hn-sh-flat:   0 .5px 1px rgba(0, 0, 0, .40), 0 1px 2px rgba(0, 0, 0, .22);
   --hn-sh-raised: 0 1px 2px rgba(0, 0, 0, .40), 1px 3px 6px rgba(0, 0, 0, .30);
@@ -15884,7 +15852,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   --tr: 12;  --tg: 36;  --tb: 50;              /* teal in the long, faint layer */
   --sh-k: 1.25;
   --pool: 1; --key-day: 0; --key-night: 1;
-  --gr: 178; --gg: 196; --gb: 222; --vig: .5; --amb: .5;
+  --gr: 154; --gg: 170; --gb: 192; --vig: .5; --amb: .5;   /* was 178/196/222 when the paper itself was dimmer: same unlit look, brighter lit paper */
 }
 /* a mode switch interpolates the whole set over ~600ms */
 :root {
@@ -16130,6 +16098,41 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 #hero.hn-off .hn-amb { animation-play-state: paused; }
 :root:not([data-theme="dark"]) .hn-amb-night, [data-theme="dark"] .hn-amb-day { animation-play-state: paused; }   /* the other mode's layer is invisible, so it does not run */
 @media (prefers-reduced-motion: reduce), (max-width: 900px) { .hn-amb { display: none; animation: none; } }
+
+/* ---- the name: shadow from the light variables, not the old fixed dark-mode filter ---------------- */
+/* The cut-out used to carry a heavy black + white-glow filter at night (a leftover from the dark-paper
+   design). It is a flat cut-out pinned to the page: contact shadow, medium, faint wide, all placed by the
+   light like the other taped items. */
+#hero #heroTitleImg, #hero .hero-title img {
+  filter:
+    drop-shadow(calc(var(--sx) * .5px) calc(var(--sy) * 1px) 1px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3.5px) 5px rgba(var(--hn-shadow-rgb), calc(.20 * var(--sh-k))))
+    drop-shadow(calc(var(--sx) * 6px) calc(var(--sy) * 10px) 16px rgba(var(--hn-tint-rgb), calc(.14 * var(--sh-k))));
+}
+
+/* ---- the sitewide corner light and vignette hand over to the hero's own light while the hero is in view ---- */
+/* html::after (soft warm/cool wash from the upper left) and body::after (dark falloff at the lower right) are
+   fixed, viewport-wide layers that light every section. In the hero they were a second, differently coloured
+   key light and a second vignette on top of the hero's own. --hv (1 with the hero on screen, easing to 0 as
+   it scrolls away, set by the small script below) fades them out there, so sections below are unchanged. */
+html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
+
+/* ---- the same light lands on the mat ---------------------------------------------------------- */
+/* Removing the glow that was baked into the mat left it flat, because the key light only lifted the paper.
+   A real lamp or window lights the desk around the book too, so this is that: the key light's colour and
+   position, screened onto the mat only (z 1, under the notebook), soft and wide. Day: cool cream from the
+   window at the upper left. Night: the lamp's amber, tighter and stronger. No new variables: it reads the
+   same colour, position and mode switch as the lamp and the window. */
+.hn-mat-lit {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: calc(.22 + var(--key-night) * .14);
+  background: radial-gradient(ellipse calc(58% - var(--key-night) * 14%) calc(52% - var(--key-night) * 12%) at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgba(var(--lr), var(--lg), var(--lb), .95) 0%,
+    rgba(var(--lr), var(--lg), var(--lb), .55) 22%,
+    rgba(var(--lr), var(--lg), var(--lb), .2) 48%,
+    rgba(var(--lr), var(--lg), var(--lb), 0) 100%);
+}
 </style>
 </head>
 <body>
@@ -16607,6 +16610,7 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 
   <!-- Light and atmosphere: static layers, crossfaded by mode. See HERO LIGHT AND ATMOSPHERE in the stylesheet. -->
   <div class="hn-atm" aria-hidden="true">
+    <div class="hn-mat-lit"></div>
     <div class="hn-edge hn-edge-t"></div><div class="hn-edge hn-edge-b"></div><div class="hn-edge hn-edge-l"></div><div class="hn-edge hn-edge-r"></div>
     <div class="hn-amb hn-amb-day"></div>
     <div class="hn-amb hn-amb-night"></div>
@@ -18113,7 +18117,9 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   function updateHeroImage(theme) {
     const img = document.getElementById('heroTitleImg');
     if (img) {
-      img.src = theme === 'dark' ? 'assets/svg-opt/hero_name_dark.webp' : 'assets/svg-opt/hero_name.webp';
+      // One wordmark for both modes: the paper is the same paper at night, so the cut-out is too (the lamp
+      // and the grade do the dimming). hero_name_dark.webp is no longer used.
+      img.src = 'assets/svg-opt/hero_name.webp';
     }
   }
 
@@ -18305,6 +18311,18 @@ h1, h2, h3, h4, .sec-title, .hero-role {
     const hero = document.getElementById('hero');
     if (!hero || !('IntersectionObserver' in window)) return;
     new IntersectionObserver(es => hero.classList.toggle('hn-off', !es[es.length - 1].isIntersecting)).observe(hero);
+  })();
+
+
+  // --hv: how much the hero owns the light (1 at the top of the page, 0 once it has scrolled away). The sitewide
+  // corner wash and vignette fade by it (CSS above), so there is never a second key light over the hero.
+  (function initHeroOwnsLight() {
+    const root = document.documentElement;
+    let raf = 0;
+    const set = () => { raf = 0; root.style.setProperty('--hv', Math.max(0, Math.min(1, 1 - scrollY / (innerHeight * 0.9))).toFixed(3)); };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(set); }, { passive: true });
+    addEventListener('resize', set);
+    set();
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
