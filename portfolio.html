@@ -18207,7 +18207,6 @@ html.hn-lite .hn-grade-night {
   // Levels read the --snd-* CSS variables, like every other level in the lighting system.
   // ================================================================
   (function initRoomSound() {
-    const KEY = 'hn-sound';
     const btn = document.getElementById('soundBtn');
     if (!btn) return;
     const root = document.documentElement;
@@ -18221,8 +18220,6 @@ html.hn-lite .hn-grade-night {
 
     const num = (name, fallback) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fallback : v; };
     const mode = () => root.getAttribute('data-theme') === 'dark' ? 'night' : 'day';
-    const stored = () => { try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
-    const store = v => { try { sessionStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} };
 
     function paint(note) {
       const pressed = on || armed;
@@ -18277,24 +18274,21 @@ html.hn-lite .hn-grade-night {
     async function turnOn() {
       if (!ensureCtx()) { paint('not supported in this browser'); return; }
       try { await ctx.resume(); } catch (e) {}
-      on = true; armed = false; store(true); paint();
+      on = true; armed = false; paint();
       const ok = await startLoop(mode());
       if (!ok) {                                                                    // nothing to play yet: say so, stay off
-        on = false; store(false); paint('sound files have not been added yet');
+        on = false; paint('sound files have not been added yet');
       }
     }
     function turnOff() {
-      on = false; armed = false; store(false); paint();
+      on = false; armed = false; paint();
       if (ctx) fadeOut(loop); loop = null; loopMode = null;
     }
     btn.addEventListener('click', () => { (on || armed) ? turnOff() : turnOn(); });
 
-    // A setting kept for the session does not autoplay after a reload: it waits for the first gesture.
-    if (stored()) {
-      armed = true; paint();
-      const wake = e => { if (e && e.target && btn.contains(e.target)) return; document.removeEventListener('pointerdown', wake, true); document.removeEventListener('keydown', wake, true); if (armed) turnOn(); };
-      document.addEventListener('pointerdown', wake, true); document.addEventListener('keydown', wake, true);
-    }
+    // Sound is opt-in EVERY page load: nothing starts by itself, not even after a reload where it had been on.
+    // (It used to remember 'on' for the session and start on the first click anywhere after a reload, which
+    // read as sound appearing from nowhere.)
 
     // the loop follows the mode (crossfade); day and night each have their own room
     new MutationObserver(() => { if (on && ctx) startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
