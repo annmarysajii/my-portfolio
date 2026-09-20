@@ -17163,6 +17163,13 @@ footer.foot, [data-theme="dark"] footer.foot {
   #wrap #pg-animation-toy .playground-scrap-card.is-riffle, #wrap #pg-videography-toy .playground-scrap-card.is-clap, #wrap #pg-videography-toy .playground-scrap-card.is-clap::before { animation: none; }
 }
 
+/* ---- R. ABOUT: the badge stays with you while you read the tall notebook page beside it -------------------------- */
+@media (min-width: 861px) {
+  #about, #about .bp-stage { overflow: clip !important; }                   /* looks the same as hidden, but does not become a scroll container, so sticky can work */
+  #about .bp-col--badge:has(.bp-badge--toggle[aria-expanded="false"]) { position: sticky; top: 104px; align-self: start; }
+}
+body { overflow-x: clip !important; }                                          /* html already clips sideways; a body that is also overflow:hidden is a scroll container that never scrolls, which silently turns every position:sticky off */
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
