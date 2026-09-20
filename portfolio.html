@@ -17502,30 +17502,10 @@ body { overflow-x: clip !important; }                                          /
 #hn-share .sh-save:focus-visible, #hn-share .sh-share:focus-visible, #hn-share .sh-close:focus-visible { outline: 3px solid #F5DE4A; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { #hn-share, .hn-flash, #passport-dock.is-pulse { animation: none; } }
 
-/* ---- AH. THE DESK LAMP: an object on the hero desk. A transform moves it; nothing on the root changes, so the site's lighting is untouched ---- */
-#hero .hn-lamp {
-  --lamp-w: clamp(96px, 9.4vw, 140px);
-  position: absolute; z-index: 9; left: calc(100% - var(--lamp-w) - 1.2%); top: 12%; width: var(--lamp-w); aspect-ratio: 120 / 200; padding: 0; margin: 0;
-  appearance: none; border: 0; background: none; box-shadow: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; user-select: none;
-}
-#hero .hn-lamp.is-held { cursor: grabbing; z-index: 10; }
-#hero .hn-lamp:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 4px; border-radius: 8px; }
-#hero .hn-lamp .lp-svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 50% 92%; transition: scale 180ms var(--hn-ease, ease); }
-#hero .hn-lamp.is-held .lp-svg { scale: 1.05; }
-#hero .hn-lamp .lp-head { transform-origin: 47px 50px; transform: rotate(calc(28deg + var(--tilt, 0deg))); transition: transform 640ms cubic-bezier(.3, 1.55, .5, 1); }
-#hero .hn-lamp .lp-bulb { fill: #CFC7A8; transition: fill 300ms; }
-#hero .hn-lamp.is-on .lp-bulb { fill: #FFF3B0; }
-#hero .hn-lamp .lp-cone, #hero .hn-lamp .lp-glow { opacity: 0; transition: opacity 340ms; pointer-events: none; }
-#hero .hn-lamp.is-on .lp-cone, #hero .hn-lamp.is-on .lp-glow { opacity: 1; }
-#hero .hn-lamp .lp-pool {
-  position: absolute; z-index: -1; right: 50%; top: 36%; width: calc(var(--lamp-w) * 4.6); height: calc(var(--lamp-w) * 4); pointer-events: none; opacity: 0; transition: opacity 520ms;
-  background: radial-gradient(closest-side, rgba(255, 206, 120, .17), rgba(255, 206, 120, .09) 55%, rgba(255, 206, 120, 0) 100%);
-}
-#hero .hn-lamp.is-on .lp-pool { opacity: .6; }
-html[data-theme="dark"] #hero .hn-lamp.is-on .lp-pool { opacity: 1; }
-html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
-@media (max-width: 700px) { #hero .hn-lamp { display: none; } }
-@media (prefers-reduced-motion: reduce) { #hero .hn-lamp .lp-head, #hero .hn-lamp .lp-svg, #hero .hn-lamp .lp-pool, #hero .hn-lamp .lp-cone, #hero .hn-lamp .lp-glow, #hero .hn-lamp .lp-bulb { transition: none; } }
+/* ---- AH. A CARD PRESSES DOWN: the press has a small physical answer to go with its thump ---- */
+.desk .grid .card { transition: translate 90ms var(--hn-ease, ease); }
+.desk .grid .card:active { translate: 0 2px; }
+@media (prefers-reduced-motion: reduce) { .desk .grid .card { transition: none; } }
 
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
@@ -19877,20 +19857,25 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
     window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), rainGain: () => (rain && ctx ? +rain.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
-    window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
-    // Paper on hover is minimal on purpose: only a project card and the paper strips in the open drawer make a sound
-    // (both a soft thump, the drawerStrip slot), never the other sheets. It plays the instant the pointer enters (everything is
-    // already decoded), cutting whatever was still sounding, so moving straight from one card to the next is answered at once.
-    // Guards against noise instead of a delay: a hover sound at most every 200 ms, and a card stays quiet for 8 seconds
-    // after it has sounded. Mouse only.
+    window.__hnSfx = (name, k) => once(name, (/^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3)) * (k || 1));
+    // Project cards and the paper strips in the open drawer answer the hand: a soft thump every time the pointer comes onto one (not once
+    // per card: leave and come back and it sounds again, and sweeping across a row sounds each card in turn), and a heavier one the
+    // moment one is pressed, on any pointer, with a short buzz on phones that have it. Everything is already decoded, so it plays at
+    // once, cutting whatever was still sounding. The only guard is a 45 ms gap so one crossing cannot double-fire. Louder than the
+    // other foley on purpose (2x on hover, 3x on press), so it can be felt. Only these cards; the other sheets stay quiet.
     const HOVER = [['.desk .grid .card', 'drawerStrip'], ['#downloads .dl-btn', 'drawerStrip']];
-    const seenAt = new WeakMap(); let lastHover = 0;
+    let lastHover = 0;
     HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
       el.addEventListener('pointerenter', e => {
         if (e.pointerType !== 'mouse') return;
         const now = performance.now();
-        if (now - lastHover < 200 || now - (seenAt.get(el) || -1e9) < 8000) return;
-        lastHover = now; seenAt.set(el, now); window.__hnSfx(slot);
+        if (now - lastHover < 45) return;
+        lastHover = now; window.__hnSfx(slot, 2);
+      });
+      el.addEventListener('pointerdown', e => {
+        if (e.button > 0) return;
+        window.__hnSfx(slot, 3); lastHover = performance.now();
+        if (e.pointerType === 'touch' && navigator.vibrate) { try { navigator.vibrate(9); } catch (x) {} }
       });
     }));
     // the About drawer (the badge that opens "Studio Desk"): a drawer sound as it opens and closes
@@ -20111,7 +20096,7 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
     ];
     const CARD_OF = { kys: 'Keep Yourself Safe card', jas: 'Jasmine card', df: 'Dear Friend card' };
     // SECRETS: found by curiosity, not by looking for a doodle. The taped scraps on the desk can be peeled (each hides a line of
-    // hers, all taken from her own notes on the site) and the lamp in the nav can be dragged. Each is a small sticker, and they count
+    // hers, all taken from her own notes on the site). Each is a small sticker, and they count
     // towards the total. The tape sticks back down afterwards, so the desk is never stripped; the note can be read again.
     const SECRETS = [
       { id: 'secret-red',    sel: '.hero-tape-top',        col: '#C42D1C', name: 'Red tape',  how: 'Look at the top of my notebook',
@@ -20126,10 +20111,9 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
         text: 'Studio fuel: chocolate milk tea, my favourite drink during late-night animation sprints.' },
       { id: 'secret-runner', runner: true,                 col: '#1E4CC8', name: 'Runner',    how: 'Sometimes, when it goes quiet, something runs along under the top bar. Be quick.',
         text: 'You caught me! I only run when it goes quiet.' },
-      { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' },
-      { id: 'secret-lamp',   lamp: true,                   col: '#B5871C', name: 'Desk lamp',   how: 'A lamp stands at the edge of the desk at the top of the page. It is not nailed down.', text: '' }
+      { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' }
     ];
-    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : x.runner ? 'dd-runner' : x.tidy ? 'dd-pouch' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
+    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.runner ? 'dd-runner' : x.tidy ? 'dd-pouch' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
     const SECRET_IDS = SECRETS.map(x => x.id);
     DEFS.photo = { sym: 'dd-polaroid', col: '#1E7A4E', name: 'First photo sticker', how: 'Keep a photo of something you made in a toy' };
     const norm = id => id === 'design' ? 'graphic-design' : id;
@@ -20318,7 +20302,7 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
         '<li><b>Keep what you make.</b> Under every toy, &ldquo;Keep a photo in my book&rdquo; puts your creation on a polaroid in Creations.</li>' +
         '<li><b>Turn the page.</b> The notebook at the top has a page that&rsquo;s yours to stamp. Take it home.</li>' +
         '<li><b>Stick anything anywhere.</b> Pick a sticker, then click the desk.</li>' +
-        '<li><b>Poke around.</b> Some tape can be peeled, the lamp can be moved. And the desk is not always still.</li></ol>';
+        '<li><b>Poke around.</b> Some tape can be peeled. And the desk is not always still.</li></ol>';
       return d;
     }
     // ---- the book's summary card: where you are, at a glance ----
@@ -20347,7 +20331,7 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
         pane.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
       pane.appendChild(section('Along the way', EXTRA.filter(i => st.got.includes(i)).length + '/' + EXTRA.length, EXTRA, 'Take your passport, make a mark on the notebook&rsquo;s page (a stamp, a drawing or a few words), and keep a photo of something you made in a toy.'));
-      pane.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. The lamp goes where you drag it. And the desk is not always still.'));
+      pane.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. And the desk is not always still.'));
       pane.appendChild(guideBlock());
     }
     function creationsPane(pane) {
@@ -20755,7 +20739,6 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
       addSym('dd-washi', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 5.6a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8z');
       addSym('dd-fineliner', 'M4 20l1.2-4.4L16.4 4.4a1.7 1.7 0 0 1 2.4 0l.8.8a1.7 1.7 0 0 1 0 2.4L8.4 18.8zM6.6 17.4l.2.2 1-.3-.9-.9z');
       addSym('dd-polaroid', 'M5 3h14a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 19 21H5a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 5 3zM6.5 5.5v10h11v-10z');
-      addSym('dd-lamp', 'M8.2 3h7.6l3.4 8.5H4.8zM11 11.5h2V17h-2zM6.5 18.5h11a1 1 0 0 1 1 1V21h-13v-1.5a1 1 0 0 1 1-1z');
       if (st.got.length && !pp.claimed) { pp.claimed = true; savePP(); }                  // someone who already has stickers knows
       initSecrets();
       if (pp.claimed) grantArrival(false);
@@ -21498,91 +21481,6 @@ html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
       save: id => { const p = list.find(q => q.id === id); if (!p) return; const a = document.createElement('a'); a.href = p.d; a.download = 'annmarys-desk-' + clean(p.cap).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.jpg'; document.body.appendChild(a); a.click(); a.remove(); },
       keep: toy => { const row = document.querySelector(TOYS[toy].body + ' .hn-keep'); return row ? keep(toy, row.querySelector('button'), row.querySelector('.hn-keep-msg')) : null; }
     };
-  })();
-
-  // ================================================================
-  // THE DESK LAMP -- an object standing at the edge of the hero desk, to play with. Click it to switch it on or off; drag it anywhere
-  // on the hero and it goes with its pool of light; the head sways as it is carried and settles with a little overshoot. By default it
-  // follows the day and night switch (unlit by day, lit at night); switching it by hand overrides that until the next day/night switch.
-  // It is deliberately separate from the site's lighting: it sets no custom property on the root, moves only with a transform, and
-  // its light is a plain translucent gradient that lifts the paper without washing out the ink. Its pool is hidden in lite mode.
-  // The first time it is moved it earns a sticker (a secret). Keyboard: Space / Enter switches it, Shift + arrows move it.
-  // ================================================================
-  (function initDeskLamp() {
-    const hero = document.getElementById('hero'); if (!hero) return;
-    const root = document.documentElement;
-    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
-    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    const isNight = () => root.getAttribute('data-theme') === 'dark';
-    const INK = '#1E2733';
-    const el = document.createElement('button'); el.type = 'button'; el.className = 'hn-lamp'; el.setAttribute('role', 'switch');
-    el.title = 'The desk lamp. Click to switch it on or off. Drag it around the desk.';
-    el.innerHTML =
-      '<span class="lp-pool" aria-hidden="true"></span>' +
-      '<svg class="lp-svg" viewBox="0 0 120 200" aria-hidden="true" focusable="false">' +
-        '<defs><linearGradient id="lpCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7A6" stop-opacity=".62"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></linearGradient>' +
-        '<radialGradient id="lpGlow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFE08A" stop-opacity="0"/></radialGradient></defs>' +
-        '<ellipse cx="62" cy="191" rx="46" ry="6.5" fill="rgba(20,16,10,.3)"/>' +
-        '<path d="M27 187Q27 176 40 176H82Q95 176 95 187Z" fill="#C42D1C" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>' +
-        '<path d="M62 177L86 104" stroke="' + INK + '" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M62 177L86 104" stroke="#E8AF30" stroke-width="4.4" stroke-linecap="round" fill="none"/>' +
-        '<circle cx="86" cy="104" r="7.5" fill="#C42D1C" stroke="' + INK + '" stroke-width="3"/>' +
-        '<path d="M86 104L47 50" stroke="' + INK + '" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M86 104L47 50" stroke="#E8AF30" stroke-width="4.4" stroke-linecap="round" fill="none"/>' +
-        '<g class="lp-head">' +
-          '<path class="lp-cone" d="M20 91L74 91L118 236L-26 236Z" fill="url(#lpCone)"/>' +
-          '<path d="M36 46Q47 35 58 46L76 90H18Z" fill="#E8AF30" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>' +
-          '<path d="M41 54L31 84" stroke="rgba(255,255,255,.55)" stroke-width="3.4" stroke-linecap="round" fill="none"/>' +
-          '<ellipse cx="47" cy="90" rx="29" ry="5.4" fill="#7A4A1E" stroke="' + INK + '" stroke-width="2.4"/>' +
-          '<ellipse class="lp-bulb" cx="47" cy="90.6" rx="15" ry="3.4"/>' +
-          '<ellipse class="lp-glow" cx="47" cy="94" rx="30" ry="14" fill="url(#lpGlow)"/>' +
-        '</g>' +
-        '<circle cx="47" cy="50" r="6.8" fill="#C42D1C" stroke="' + INK + '" stroke-width="3"/>' +
-      '</svg>';
-    hero.appendChild(el);
-
-    let manual = null, dx = 0, dy = 0;
-    const on = () => manual !== null ? manual : isNight();
-    function paint() { const v = on(); el.classList.toggle('is-on', v); el.setAttribute('aria-checked', v ? 'true' : 'false'); el.setAttribute('aria-label', 'Desk lamp, ' + (v ? 'on' : 'off') + '. Press to switch it. Drag it to move it'); }
-    function toggle() { manual = !on(); paint(); sfx('toyClap'); }
-    new MutationObserver(() => { manual = null; paint(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    paint();
-
-    // where it may go: anywhere inside the hero, but not so low that its pool would be cut by the hero's bottom edge
-    function place(x, y) {
-      const hr = hero.getBoundingClientRect(), r = el.getBoundingClientRect(), bx = r.left - dx, by = r.top - dy;      // where it would sit with no offset
-      dx = clamp(x, hr.left - bx, hr.right - bx - r.width); dy = clamp(y, hr.top - by + 56, hr.bottom - by - r.height - Math.min(150, hr.height * 0.16));
-      el.style.translate = Math.round(dx) + 'px ' + Math.round(dy) + 'px';
-    }
-    let d = null, suppress = false;
-    el.addEventListener('pointerdown', e => {
-      if (e.button > 0) return; d = { id: e.pointerId, x: e.clientX, y: e.clientY, ox: dx, oy: dy, on: false, lx: e.clientX };
-      try { el.setPointerCapture(e.pointerId); } catch (x) {}
-    });
-    el.addEventListener('pointermove', e => {
-      if (!d || e.pointerId !== d.id) return;
-      if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 6) return; d.on = true; el.classList.add('is-held'); }
-      place(d.ox + e.clientX - d.x, d.oy + e.clientY - d.y);
-      if (!calm()) { el.style.setProperty('--tilt', clamp((d.lx - e.clientX) * 1.3, -18, 18).toFixed(1) + 'deg'); d.lx = e.clientX; }
-    });
-    const finish = (e, cancel) => {
-      if (!d || (e && e.pointerId !== d.id)) return; const was = d; d = null;
-      try { el.releasePointerCapture(was.id); } catch (x) {}
-      el.classList.remove('is-held'); el.style.removeProperty('--tilt');
-      setTimeout(() => { suppress = false; }, 60);                                   // the click that follows a press is ours already
-      if (!was.on) { if (!cancel) { suppress = true; toggle(); } return; }
-      suppress = true; sfx('stickerPlace');
-      if (Math.hypot(dx - was.ox, dy - was.oy) > 12) { try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {} }
-    };
-    el.addEventListener('pointerup', e => finish(e, false));
-    el.addEventListener('pointercancel', e => finish(e, true));
-    el.addEventListener('click', e => { if (suppress) { suppress = false; e.preventDefault(); return; } if (e.detail === 0) toggle(); });   // a keyboard press
-    el.addEventListener('keydown', e => {
-      const k = { ArrowLeft: [-24, 0], ArrowRight: [24, 0], ArrowUp: [0, -24], ArrowDown: [0, 24] }[e.key]; if (!k || !e.shiftKey) return;
-      e.preventDefault(); place(dx + k[0], dy + k[1]); try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {}
-    });
-    el.addEventListener('dblclick', e => { e.preventDefault(); dx = 0; dy = 0; el.style.translate = ''; });                    // a double click puts it home
-    addEventListener('resize', () => { if (dx || dy) place(dx, dy); });
-    window.hnDeskLamp = { toggle, on, place, home: () => { dx = 0; dy = 0; el.style.translate = ''; } };
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).

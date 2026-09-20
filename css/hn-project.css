@@ -1,0 +1,157 @@
+/* ================================================================
+   PROJECT PAGES IN THE DESK'S LANGUAGE.
+   Loaded by project.html for every project except the three that carry their own brand art direction
+   (gobunny, green-arrow, acorn-oak): a small script in <head> adds the class .hn-proj to <html> for all the others, and
+   everything here is scoped to it, so those three are untouched. Nothing about the structure or content changes. What
+   changes is the surface: the hand-lettered face for headings and labels (--fd is repointed, so every var(--fd) heading
+   follows), the boxwood ruler for the nav, paper cards with a strip of tape, yellow paper labels for buttons and badges,
+   prints with a white mat for the work, and the wood front edge for the footer. Each page keeps its own colour tokens
+   (--bg, --ink, --accent, --line): they are read here, never overridden. Light and dark are both handled.
+   ================================================================ */
+
+@font-face { font-family: 'Annmary Hand'; src: url('../assets/hand/annmary-hand.woff2?v=2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+
+html.hn-proj {
+  --fd: 'Annmary Hand', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  --hn-ink: #1E2733; --hn-ink-2: #3D4858; --hn-red: #A8281F; --hn-hi: #F5DE4A;
+  --hn-paper: #FBF8EE; --hn-tape-gold: rgba(233, 205, 128, .88); --hn-tape-pink: rgba(226, 150, 144, .86);
+  --hn-shadow-rgb: 46, 34, 20;
+  --hn-sh-flat: 0 .5px 1px rgba(46, 34, 20, .24), 0 1px 2px rgba(46, 34, 20, .10);
+  --hn-sh-raised: 0 1px 2px rgba(46, 34, 20, .22), 1px 3px 6px rgba(46, 34, 20, .16);
+  --hn-edge: inset 1.4px 1.6px 0 rgba(255, 255, 255, .72), inset -1px -1.2px 0 rgba(46, 34, 20, .11);
+  --hn-mark: rgba(245, 222, 74, .6);
+  font-synthesis: none;                                                  /* one weight only: never a faked bold */
+}
+html.hn-proj[data-theme="dark"] {
+  --hn-shadow-rgb: 0, 0, 0;
+  --hn-sh-flat: 0 .5px 1px rgba(0, 0, 0, .5), 0 1px 2px rgba(0, 0, 0, .3);
+  --hn-sh-raised: 0 1px 2px rgba(0, 0, 0, .5), 1px 3px 6px rgba(0, 0, 0, .4);
+  --hn-edge: inset 1.4px 1.6px 0 rgba(255, 255, 255, .12), inset -1px -1.2px 0 rgba(0, 0, 0, .3);
+  --hn-mark: rgba(245, 222, 74, .26);
+}
+
+/* ---- the nav is the boxwood ruler, as on the home page ------------------------------------------------------------ */
+html.hn-proj .nav, html.hn-proj .nav.sc, html.hn-proj[data-theme="dark"] .nav.sc {
+  padding: .8rem 0 1.05rem;
+  background-color: #EBD9A6 !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, 0) 45%, rgba(120, 88, 34, .14)), repeating-linear-gradient(90deg, rgba(150, 110, 40, .05) 0 3px, rgba(255, 255, 255, .04) 3px 7px) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 -1px 0 rgba(96, 66, 22, .5), var(--hn-edge), var(--hn-sh-raised) !important;
+}
+html.hn-proj .nav::after {                                              /* the graduations along the bottom edge */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 15px; pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .72) 0 1.4px, transparent 1.4px 100px) left bottom / 100% 15px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .66) 0 1.2px, transparent 1.2px 20px) left bottom / 100% 10px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .5) 0 1px, transparent 1px 4px) left bottom / 100% 5px no-repeat;
+}
+html.hn-proj .nav .nav-logo { font-family: var(--fd); font-size: 1.75rem; font-weight: 400; letter-spacing: 0; line-height: 1; color: #1E2733 !important; padding-bottom: 6px; }
+html.hn-proj .nav .nav-logo:hover { color: var(--hn-red) !important; }
+html.hn-proj .nav .theme-toggle {
+  background: #F7F0DC !important; border: 0 !important; border-radius: 999px !important; min-width: 34px; height: 34px; padding: 0 .55rem !important; color: #1E2733 !important;
+  box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; margin-bottom: 4px;
+}
+html.hn-proj .nav .theme-toggle:focus-visible, html.hn-proj .nav .nav-back:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 2px; }
+html.hn-proj .nav .nav-back {                                            /* a yellow paper label, slightly crooked */
+  font-family: var(--fd) !important; font-size: 1.2rem !important; font-weight: 400 !important; letter-spacing: 0 !important; padding: .28rem .9rem !important; border: 0 !important; border-radius: 2px !important;
+  background: #F2C030 !important; color: #14131A !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; rotate: -1.5deg; margin-bottom: 4px;
+  transition: rotate 200ms ease, translate 200ms ease;
+}
+html.hn-proj .nav .nav-back:hover { rotate: 0deg; translate: 0 -1px; color: #14131A !important; }
+@media (max-width: 640px) {
+  html.hn-proj .nav .nav-in { padding: 0 1rem; gap: .6rem; }
+  html.hn-proj .nav .nav-in > div { gap: .6rem !important; }
+  html.hn-proj .nav .nav-logo { font-size: 1.4rem; white-space: nowrap; }
+  html.hn-proj .nav .nav-back { font-size: 1rem !important; padding: .2rem .6rem !important; white-space: nowrap; gap: .25rem !important; }
+  html.hn-proj .nav .nav-back svg { width: 12px; height: 12px; }
+}
+
+/* ---- the header ---------------------------------------------------------------------------------------------------- */
+html.hn-proj .proj-header { border-bottom: 2px dashed var(--ink12); }
+html.hn-proj .proj-disc-tag { font-family: var(--fd); font-size: 1.35rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--accent, var(--blue)); }
+html.hn-proj .proj-title { font-family: var(--fd); font-weight: 400; letter-spacing: 0; line-height: 1.02; font-size: clamp(3rem, 7.6vw, 6.6rem); text-wrap: balance; }
+html.hn-proj .proj-title::after { content: ""; display: block; width: min(230px, 40%); height: 5px; margin-top: .55rem; border-radius: 3px; background: var(--accent, var(--hn-red)); rotate: -.8deg; opacity: .9; }
+html.hn-proj .proj-badge, html.hn-proj .proj-badges .badge {
+  display: inline-block; font-family: var(--fd); font-size: 1.2rem; font-weight: 400; letter-spacing: 0; padding: .1rem .75rem .15rem; border-radius: 2px;
+  background: #F2C030; color: #14131A; box-shadow: var(--hn-edge), var(--hn-sh-flat); rotate: -1.2deg; margin: 0 .5rem .4rem 0;
+}
+html.hn-proj .proj-meta-item { font-family: var(--fd); font-size: 1.2rem; }
+html.hn-proj .proj-meta-item strong { font-weight: 400; background: linear-gradient(transparent 58%, var(--hn-mark) 58%); }
+html.hn-proj .proj-meta-sep { background: var(--ink12); }
+
+/* ---- the intro is a sheet of paper laid on the desk, with a strip of tape ------------------------------------------ */
+html.hn-proj .proj-overview-box, html.hn-proj .proj-process, html.hn-proj .sidebar-block {
+  position: relative; padding: 1.4rem 1.6rem 1.5rem; border: 0; border-radius: 2px; background-color: var(--white);
+  background-image: url("../assets/svg-opt/paper-light-tile.webp"); background-size: 400px 400px; box-shadow: var(--hn-edge), var(--hn-sh-raised);
+}
+html.hn-proj[data-theme="dark"] .proj-overview-box, html.hn-proj[data-theme="dark"] .proj-process, html.hn-proj[data-theme="dark"] .sidebar-block { background-image: none; }
+html.hn-proj .proj-overview-box::before, html.hn-proj .proj-process::before {
+  content: ""; position: absolute; top: -9px; left: 34px; width: 56px; height: 18px; rotate: -4deg; background: var(--hn-tape-gold); box-shadow: var(--hn-sh-flat);
+}
+html.hn-proj .sidebar-block::before { background: var(--hn-tape-gold); box-shadow: var(--hn-sh-flat); opacity: 1; }
+html.hn-proj .sidebar-block:nth-child(even)::before { background: var(--hn-tape-pink); }
+html.hn-proj .sb-lbl, html.hn-proj .gallery-h, html.hn-proj .proc-h { font-family: var(--fd); font-size: 1.2rem; font-weight: 400; letter-spacing: 0; text-transform: none; }
+html.hn-proj .proc-h { color: var(--accent, var(--blue)); }
+
+/* ---- tools: highlighted words --------------------------------------------------------------------------------------- */
+html.hn-proj .proj-tools-wrap { gap: .5rem .7rem !important; }
+html.hn-proj .proj-tools-wrap > :first-child { font-family: var(--fd) !important; font-size: 1.2rem !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important; }
+html.hn-proj .tool, html.hn-proj .tool-tag { font-family: var(--fd) !important; font-size: 1.15rem !important; font-weight: 400 !important; padding: .02rem .5rem !important; border: 0; border-radius: 2px; background: var(--hn-mark); color: var(--ink); }
+html.hn-proj .tool:nth-child(even) { rotate: .8deg; }
+html.hn-proj .tool:nth-child(odd) { rotate: -.7deg; }
+
+/* ---- the binder tabs are index tabs -------------------------------------------------------------------------------- */
+html.hn-proj .binder-tabs-nav {
+  top: 68px; gap: 4px; padding: 6px 4px 0; background: var(--bg); border: 0; border-radius: 0; backdrop-filter: none; overflow-y: hidden; align-items: flex-end;
+  box-shadow: inset 0 -2px 0 var(--ink12), 0 8px 10px -9px rgba(var(--hn-shadow-rgb), .5);
+}
+html.hn-proj .binder-tab {
+  font-family: var(--fd); font-size: 1.2rem; font-weight: 400; padding: 3px 14px 4px; border: 1.5px solid var(--ink12); border-bottom: 0; border-radius: 6px 6px 0 0; background: var(--surf); color: var(--ink5); margin-bottom: 0;
+}
+html.hn-proj .binder-tab .tab-num { font-size: .7rem; }
+html.hn-proj .binder-tab:hover { color: var(--ink); background: var(--hn-mark); }
+html.hn-proj .binder-tab.active, html.hn-proj[data-theme="dark"] .binder-tab.active {
+  background: #F2C030; color: #14131A; border-color: rgba(30, 39, 51, .5); box-shadow: var(--hn-edge), var(--hn-sh-flat); padding-bottom: 6px;
+}
+
+/* ---- the work is mounted like prints ------------------------------------------------------------------------------- */
+html.hn-proj .media-el img, html.hn-proj .comic-item img, html.hn-proj .proj-hero-plate img {
+  border: 0 !important; border-radius: 2px !important; box-shadow: 0 0 0 8px #FFFEFA, 0 2px 4px rgba(var(--hn-shadow-rgb), .2), 0 9px 20px rgba(var(--hn-shadow-rgb), .16) !important;
+}
+html.hn-proj .masonry-container { column-gap: 2rem; }
+html.hn-proj .media-caption, html.hn-proj .proj-hero-plate figcaption { font-family: var(--fd); font-size: 1.1rem; font-weight: 400; letter-spacing: 0; text-transform: none; margin-top: 1rem; }
+html.hn-proj .cs-heading { font-weight: 400; letter-spacing: 0; font-size: clamp(2.1rem, 4vw, 2.9rem); border-bottom: 2px dashed var(--line); }
+html.hn-proj .sec-dl {
+  font-family: var(--fd) !important; font-size: 1.2rem !important; font-weight: 400 !important; background: #F2C030 !important; color: #14131A !important; border-radius: 2px !important;
+  box-shadow: var(--hn-edge), var(--hn-sh-flat); rotate: -1deg; padding: .3rem 1rem !important;
+}
+
+/* ---- production notes: the hand takes the titles (they already read --fd) ------------------------------------------ */
+html.hn-proj .prod-notes-hd { font-family: var(--fd); font-size: 1.35rem; letter-spacing: 0; text-transform: none; }
+html.hn-proj .prod-note-t { font-weight: 400; letter-spacing: 0; font-size: 1.5rem; }
+
+/* ---- the buttons at the bottom of a page are paper labels ---------------------------------------------------------- */
+html.hn-proj .proj-footer { border-top: 2px dashed var(--ink12); }
+html.hn-proj main .back-btn, html.hn-proj main .portfolio-btn, html.hn-proj main .nav-back {
+  font-family: var(--fd) !important; font-size: 1.3rem !important; font-weight: 400 !important; letter-spacing: 0 !important; padding: .35rem 1.1rem !important; border: 0 !important; border-radius: 2px !important;
+  background: #F2C030 !important; color: #14131A !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; rotate: -1deg; transition: rotate 200ms ease, translate 200ms ease;
+}
+html.hn-proj main .portfolio-btn { background: var(--hn-red) !important; color: #FFF8EC !important; rotate: 1deg; }
+html.hn-proj main .back-btn:hover, html.hn-proj main .nav-back:hover { rotate: 0deg; translate: -2px 0; }
+html.hn-proj main .portfolio-btn:hover { rotate: 0deg; translate: 2px 0; }
+
+/* ---- the footer is the desk's front edge --------------------------------------------------------------------------- */
+html.hn-proj footer.foot {
+  padding: 2.4rem 0 2.1rem; color: #F1E7CD;
+  background-color: #33210F;
+  background-image: linear-gradient(180deg, rgba(255, 236, 200, .30) 0 7px, rgba(0, 0, 0, .55) 7px 8px, rgba(0, 0, 0, 0) 8px), linear-gradient(180deg, rgba(8, 4, 2, .42), rgba(8, 4, 2, .62)), url("../assets/svg-opt/wood-tile.webp");
+  background-size: auto, auto, 512px 512px; box-shadow: 0 -6px 14px rgba(var(--hn-shadow-rgb), .3);
+}
+html.hn-proj .foot .foot-logo { font-family: var(--fd); font-size: 1.7rem; font-weight: 400; letter-spacing: 0; color: #FBF3DC; }
+html.hn-proj .foot .foot-copy { font-family: var(--fd); font-size: 1.15rem; color: #F1E7CD; }
+
+@media (prefers-reduced-motion: reduce) { html.hn-proj .nav .nav-back, html.hn-proj main .back-btn, html.hn-proj main .portfolio-btn, html.hn-proj main .nav-back { transition: none; } }
+
+/* a full-bleed band (100vw) must not add a horizontal scrollbar; clip creates no scroll container, so the sticky tabs still stick */
+html.hn-proj body { overflow-x: clip; }
+html.hn-proj[data-theme="dark"] .proj-title::after { background: var(--accent, #E8564A); }

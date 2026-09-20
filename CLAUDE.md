@@ -46,6 +46,9 @@ anything new belongs.
   implemented nine times before it was caught.
 - Don't commit or push unless asked — work is reviewed as a diff first.
 
+
+
+Update: every project page except `gobunny`, `green-arrow` and `acorn-oak` now also loads `css/hn-project.css` (scoped to `html.hn-proj`): the hand face for headings, the ruler nav, paper cards, label buttons, wood footer. See DESK_KIT.md ("Project pages in the desk's language"). Use `var(--fd)` for a heading font in project.html, never a hard-coded face, or it will not follow.
 ## Project pages (`project.html`)
 
 Three levels, cheapest first. Use the lowest one that does the job.
