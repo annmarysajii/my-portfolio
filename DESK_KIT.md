@@ -336,6 +336,13 @@ rack and its saved imprints are built the first time the page is turned to, beca
 optimised with svgo (1.3 MB to 251 KB and 2.1 MB to 794 KB, edge pixels only differ) and the six drawer objects are webp (925 KB to 507 KB); the
 original PNGs are still in `assets/portfolio-data/My profile/`.
 
+**The invitation (how a first-time visitor learns the passport exists).** Three quiet cues, all gone once the passport is taken
+(`hn-passport-v1`): the dock tab reads "Get your passport" and wobbles every few seconds; 3 seconds in, a boarding-pass ticket ("Stay a while.
+Stamps, doodles and stickers are hidden around this desk...", a red 0/30 stub, "Take my passport" / "not now") slides in above the tab and
+tucks itself away after 18 s (Esc closes it; it returns on the next visit, at most three times); and the first time the sticker book opens, its
+"How it works" folds open by itself (four lines: play, look closely, turn the page, stick anything anywhere), then stays folded. Opening the book
+by any route counts as taking the passport, and anyone who already has stickers is never nagged.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.

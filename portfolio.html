@@ -17213,6 +17213,51 @@ body { overflow-x: clip !important; }                                          /
 #downloads .dl-front { grid-template-columns: minmax(0, 1fr); }                /* the drawer's label used to size its own track (max-content) and ran past a 375px screen */
 #downloads .dl-front .dl-h { width: fit-content; }
 
+/* ---- V. THE STUDIO PASSPORT INVITATION: a boarding-pass ticket, a tab that wobbles, and a "how it works" in the book ---- */
+#hn-ticket {
+  position: fixed; right: 14px; bottom: 76px; z-index: 9199; width: min(392px, calc(100vw - 28px)); display: flex; rotate: -1.4deg; color: var(--hn-ink);
+  font-family: var(--hn-hand);
+  filter: drop-shadow(calc(var(--sx) * 1px) calc(var(--sy) * 2px) 1.5px rgba(var(--hn-shadow-rgb), calc(.34 * var(--sh-k)))) drop-shadow(calc(var(--sx) * 4px) calc(var(--sy) * 9px) 12px rgba(var(--hn-shadow-rgb), calc(.22 * var(--sh-k))));
+  animation: hnTicketIn 560ms var(--hn-ease, ease) 1;
+}
+#hn-ticket.is-out { opacity: 0; translate: 26px 0; transition: opacity 380ms ease, translate 380ms ease; pointer-events: none; }
+@keyframes hnTicketIn { from { opacity: 0; translate: 46px 0; rotate: 3deg; } to { opacity: 1; translate: 0 0; rotate: -1.4deg; } }
+#hn-ticket .tk-main, #hn-ticket .tk-stub {
+  background-color: #FBF8EE; background-image: linear-gradient(var(--hn-paper-veil), var(--hn-paper-veil)), url("assets/svg-opt/paper-light-tile.webp"); background-size: auto, 400px 400px;
+}
+#hn-ticket .tk-main { flex: 1; padding: .7rem .9rem .75rem 1.1rem; border-radius: 4px 0 0 4px; -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y; mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y; }
+#hn-ticket .tk-stub {
+  flex: 0 0 84px; display: grid; place-items: center; border-radius: 0 4px 4px 0; position: relative;
+  background-color: var(--hn-red); background-image: none; color: #FFF8EC;
+  -webkit-mask: radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y; mask: radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y;
+}
+#hn-ticket .tk-stub::before { content: ""; position: absolute; left: -1px; top: 8px; bottom: 8px; border-left: 2px dashed rgba(255, 248, 236, .55); }
+#hn-ticket .tk-stub span { font-size: 2.1rem; line-height: 1; rotate: 4deg; }
+#hn-ticket .tk-stub i { font-style: normal; opacity: .75; }
+#hn-ticket p { margin: 0; }
+#hn-ticket .tk-kicker { font-size: var(--hn-t4); color: var(--hn-ink-2); letter-spacing: .02em; }
+#hn-ticket .tk-kicker b { font-weight: 400; color: var(--hn-red); margin-left: .35rem; padding: 0 .3rem; border: 1.5px solid var(--hn-red); border-radius: 3px; rotate: -3deg; display: inline-block; }
+#hn-ticket .tk-h { font-size: var(--hn-t2); line-height: 1; margin-top: .1rem; }
+#hn-ticket .tk-t { font-size: var(--hn-t4); line-height: 1.2; color: var(--hn-ink-2); margin-top: .3rem; }
+#hn-ticket .tk-row { display: flex; align-items: center; gap: .9rem; margin-top: .55rem; }
+#hn-ticket button { appearance: none; border: 0; cursor: pointer; font: inherit; }
+#hn-ticket .tk-go { font-size: 1.2rem; padding: .25rem .8rem; border-radius: 2px; background: var(--hn-hi); color: var(--hn-ink); box-shadow: var(--hn-edge), var(--hn-sh-flat); transition: translate 200ms var(--hn-ease, ease); }
+#hn-ticket .tk-go:hover, #hn-ticket .tk-go:focus-visible { translate: 0 -1px; outline: 2px solid var(--hn-red); outline-offset: 2px; }
+#hn-ticket .tk-later { background: none; font-size: var(--hn-t4); color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; padding: .1rem .2rem; }
+#hn-ticket .tk-later:hover, #hn-ticket .tk-later:focus-visible { color: var(--hn-red); }
+/* the tab itself: a small wobble every few seconds until the passport is taken, like something waiting to be picked up */
+#passport-dock.is-inviting { animation: hnDockNudge 7s ease-in-out 2s infinite; }
+@keyframes hnDockNudge { 0%, 88%, 100% { rotate: 0deg; translate: 0 0; } 91% { rotate: -2.4deg; translate: 0 -3px; } 94% { rotate: 2deg; translate: 0 -1px; } 97% { rotate: -1deg; translate: 0 -2px; } }
+#hn-album .ab-guide { margin-top: .6rem; padding: .35rem .5rem .45rem; background: rgba(245, 222, 74, .28); border-radius: 2px; font-family: var(--hn-hand); }
+#hn-album .ab-guide summary { cursor: pointer; font-size: var(--hn-t3); color: var(--hn-ink); list-style: none; }
+#hn-album .ab-guide summary::-webkit-details-marker { display: none; }
+#hn-album .ab-guide summary::after { content: " +"; color: var(--hn-red); }
+#hn-album .ab-guide[open] summary::after { content: " \2212"; }
+#hn-album .ab-guide ol { margin: .35rem 0 0; padding-left: 1.3rem; display: grid; gap: .3rem; font-size: var(--hn-t4); line-height: 1.2; color: var(--hn-ink-2); }
+#hn-album .ab-guide b { font-weight: 400; color: var(--hn-ink); }
+@media (max-width: 600px) { #hn-ticket { right: 8px; bottom: 70px; width: calc(100vw - 16px); } #hn-ticket .tk-stub { flex-basis: 66px; } #hn-ticket .tk-stub span { font-size: 1.6rem; } #hn-ticket .tk-h { font-size: var(--hn-t3); } }
+@media (prefers-reduced-motion: reduce) { #hn-ticket { animation: none; } #passport-dock.is-inviting { animation: none; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19785,6 +19830,43 @@ body { overflow-x: clip !important; }                                          /
     const foundCount = () => st.got.filter(i => FIVE.includes(i) || EXTRA.includes(i) || isDoodle(i)).length;
     function updateCounter() { const c = document.getElementById('passport-counter'); if (c) c.textContent = foundCount() + ' / ' + TOTAL; }
 
+    // ---- THE INVITATION: how a first-time visitor finds out the passport exists ----
+    // Three quiet cues, all gone once the passport is taken: the tab says "Get your passport" and wobbles now and then; after a
+    // moment a boarding-pass ticket slides in above it (it tucks itself away if ignored, and comes back on the next visit, at most
+    // three times); and the first time the book opens it explains itself. A returning visitor who already has something is never nagged.
+    const TK = 'hn-passport-v1';
+    let pp = { claimed: false, guided: false, shown: 0 };
+    try { const r = JSON.parse(localStorage.getItem(TK) || 'null'); if (r) pp = Object.assign(pp, r); } catch (e) {}
+    const savePP = () => { try { localStorage.setItem(TK, JSON.stringify(pp)); } catch (e) {} };
+    let ticket = null, ticketT = 0;
+    const dockLabel = () => document.querySelector('#passport-dock .passport-dock-label');
+    function dockInvite(on) {
+      const d = dockEl(), l = dockLabel(); if (!d || !l) return;
+      d.classList.toggle('is-inviting', on);
+      l.textContent = on ? 'Get your passport' : 'Studio Passport';
+    }
+    function hideTicket() { clearTimeout(ticketT); if (!ticket) return; const t = ticket; ticket = null; t.classList.add('is-out'); setTimeout(() => t.remove(), calm() ? 0 : 420); }
+    function takePassport(quiet) {                    // the visitor has taken it (or simply opened the book): stop inviting
+      if (pp.claimed) return;
+      pp.claimed = true; savePP(); hideTicket(); dockInvite(false);
+      if (!quiet) sfx('stamp');
+    }
+    function showTicket() {
+      if (ticket || pp.claimed || st.got.length || pp.shown >= 3 || (album && !album.hidden)) return;
+      pp.shown++; savePP();
+      ticket = document.createElement('aside'); ticket.id = 'hn-ticket'; ticket.setAttribute('aria-label', 'Studio Passport: an invitation');
+      ticket.innerHTML =
+        '<div class="tk-main"><p class="tk-kicker">Studio Passport <b>admit one</b></p><p class="tk-h">Stay a while.</p>' +
+        '<p class="tk-t">Stamps, doodles and stickers are hidden around this desk. Collect them, and there are things to take home.</p>' +
+        '<div class="tk-row"><button type="button" class="tk-go">Take my passport</button><button type="button" class="tk-later">not now</button></div></div>' +
+        '<div class="tk-stub" aria-hidden="true"><span>0<i>/</i>' + TOTAL + '</span></div>';
+      document.body.appendChild(ticket);
+      ticket.querySelector('.tk-go').addEventListener('click', () => { takePassport(false); openAlbum(); });
+      ticket.querySelector('.tk-later').addEventListener('click', () => hideTicket());
+      ticketT = setTimeout(hideTicket, 18000);
+    }
+    addEventListener('keydown', e => { if (e.key === 'Escape' && ticket) hideTicket(); });
+
     // ---- one tiny notice above the tab; it fades by itself and never covers the work ----
     let bubble = null, bubbleT = 0;
     function note(html, ms) {
@@ -19885,12 +19967,25 @@ body { overflow-x: clip !important; }                                          /
       });
       return el;
     }
+    // "How it works", written once, opened by itself the first time the book is opened and folded away after that
+    function guideBlock() {
+      const first = !pp.guided;
+      if (first) { pp.guided = true; savePP(); }
+      const d = document.createElement('details'); d.className = 'ab-guide'; if (first) d.open = true;
+      d.innerHTML = '<summary>How it works</summary><ol>' +
+        '<li><b>Play.</b> Each section has a little toy. Try one and it stamps your passport. All five gives a gold star and my business card.</li>' +
+        '<li><b>Look closely.</b> Doodles from my projects peek over the edges of the work. Press one to keep it. Finish a project&rsquo;s set and its card is yours to keep.</li>' +
+        '<li><b>Turn the page.</b> The notebook at the top has a page that&rsquo;s yours to stamp. Take it home.</li>' +
+        '<li><b>Stick anything anywhere.</b> Pick a sticker, then click the desk.</li></ol>';
+      return d;
+    }
     function renderAlbum() {
       if (!album) return;
       const stamps = FIVE.filter(i => st.got.includes(i)).length;
       album.innerHTML = '<header class="ab-h"><h2>Studio Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
         '<p class="ab-n">' + foundCount() + ' of ' + TOTAL + ' found</p><p class="ab-help">Pick a sticker, then click anywhere on the desk to stick it there. Click it there to move it.</p>';
       album.querySelector('.ab-x').addEventListener('click', () => closeAlbum(true));
+      album.querySelector('.ab-help').after(guideBlock());
       album.appendChild(section('Stamps', stamps + '/' + FIVE.length, FIVE.concat(['master']), 'Earned by playing with the toy in each section. All five gives a gold star.'));
       ORDER.forEach(p => {
         const set = SETS[p], have = set.filter(i => st.got.includes(i)).length, t = TITLES[p];
@@ -19907,7 +20002,7 @@ body { overflow-x: clip !important; }                                          /
         album = document.createElement('aside'); album.id = 'hn-album'; album.setAttribute('aria-label', 'Sticker book: your stamps and doodles'); document.body.appendChild(album);
       }
       if (bubble) { bubble.remove(); bubble = null; }
-      renderAlbum(); album.hidden = false; setDockOpen(true);
+      takePassport(true); renderAlbum(); album.hidden = false; setDockOpen(true);
     }
     function closeAlbum(focusTab) { if (album) album.hidden = true; setDockOpen(false); if (focusTab && dockEl()) dockEl().focus({ preventScroll: true }); }
     function bindDock() {
@@ -20012,9 +20107,13 @@ body { overflow-x: clip !important; }                                          /
       find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
       findAll: () => Object.keys(PD).forEach((id, i) => setTimeout(() => api.find(id), i * 350)),
       open: openAlbum, cancel: () => drop(true), notebook: onNotebook,
-      reset: () => { drop(true); try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); }
+      reset: () => { drop(true); try { localStorage.removeItem(KEY); localStorage.removeItem(TK); } catch (e) {} location.reload(); }
     };
-    const boot = () => { bindDock(); hook(); restore(); initPeeks(); updateCounter(); };
+    const boot = () => {
+      bindDock(); hook(); restore(); initPeeks(); updateCounter();
+      if (st.got.length && !pp.claimed) { pp.claimed = true; savePP(); }                  // someone who already has stickers knows
+      if (!pp.claimed) { dockInvite(true); setTimeout(showTicket, 3200); }
+    };
     if (document.readyState === 'complete') setTimeout(boot, 0); else addEventListener('load', () => setTimeout(boot, 50));
   })();
 
