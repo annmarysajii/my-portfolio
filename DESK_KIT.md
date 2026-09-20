@@ -282,9 +282,12 @@ optionally a title lettering to `TITLES`. Testing: `hnRewards.find('pd-kys-phone
 `.grantAll()`, `.reset()` in the console.
 
 **The next page of the notebook (desktop).** The hero notebook's right page has a lifted corner, "turn the page". The next page
-is blank dotted paper, "Your page", with a rack of six rubber stamps (Hello, I was here, Heart, Nice, Looks good, 10/10, drawn in her
-handwriting) and three ink pads. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
+is blank dotted paper, "Your page", with a rack of eight rubber stamps and three ink pads. The stamps are built from her own doodles and true facts about her
+(NTU ADM class of 2026, Annecy 2025 with the Keep Yourself Safe head, Open for work, Stationery addict, A daily Milo, Jazzmine,
+Music District, Singapore), lettered in her handwriting. No generic phrases: if a stamp says something, it is something she said. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
 that page is hers: it is the visitor's page in her book. It uses the `stamp` sound slot.
+The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 30;
+more stamps earn nothing extra, so it cannot be farmed.
 
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.

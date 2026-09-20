@@ -17039,7 +17039,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
 .hn-sp-clear, .hn-sp-back { appearance: none; border: 0; background: none; cursor: pointer; padding: .1rem .2rem; font: inherit; color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; }
 .hn-sp-back { margin-left: auto; }
 .hn-sp-clear:hover, .hn-sp-back:hover, .hn-sp-clear:focus-visible, .hn-sp-back:focus-visible { color: var(--hn-red); }
-.hn-imp { position: absolute; width: 96px; height: 96px; translate: -50% -50%; rotate: var(--r, 0deg); opacity: var(--o, .85); mix-blend-mode: multiply; filter: url(#hn-stamp); pointer-events: none; }
+.hn-imp { position: absolute; width: 108px; height: 108px; translate: -50% -50%; rotate: var(--r, 0deg); opacity: var(--o, .85); mix-blend-mode: multiply; filter: url(#hn-stamp); pointer-events: none; }
 .hn-imp svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .hn-imp.is-new { animation: hnPress 380ms var(--hn-ease, ease) 1; }
 @keyframes hnPress { 0% { scale: 1.3; opacity: 0; } 55% { scale: .95; opacity: var(--o, .85); } 100% { scale: 1; } }
@@ -19455,6 +19455,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       videography:      { sym: 'dd-camera',     col: '#1E7A4E', name: 'Videography stamp',    how: 'Play with the Let’s Capture toy in Videography' },
       'graphic-design': { sym: 'dd-ruler',      col: '#A57508', name: 'Graphic design stamp', how: 'Play with the Let’s Play with Fonts toy in Graphic design' },
       music:            { sym: 'dd-headphones', col: '#6540CC', name: 'Music stamp',          how: 'Play with the Let’s Strum toy in Music' },
+      yourpage:         { sym: 'dd-heart-solid', col: '#D93A26', name: 'Your page sticker',    how: 'Press a stamp on the notebook’s next page' },
       master:           { sym: 'dd-star-solid', col: '#D9A21B', name: 'Gold star',            how: 'Collect all five stamps' }
     };
     const FIVE = ['animation', 'illustration', 'videography', 'graphic-design', 'music'];
@@ -19480,7 +19481,8 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
     Object.keys(TITLES).forEach(p => { const t = TITLES[p]; DEFS[t[0]] = { sym: t[0], ext: true, wide: t[1] === 'wide', tall: t[1] === 'tall', col: INK, name: PROJ[p] + ' title', how: 'Find every ' + PROJ[p] + ' doodle', title: true }; });
     const norm = id => id === 'design' ? 'graphic-design' : id;
     const isDoodle = id => !!PD[id];
-    const TOTAL = FIVE.length + Object.keys(PD).length;                      // what the counter counts: stamps + doodles
+    const EXTRA = ['yourpage'];                                              // earned outside the five toys: the first stamp on the notebook's next page
+    const TOTAL = FIVE.length + EXTRA.length + Object.keys(PD).length;       // what the counter counts: stamps + notebook sticker + doodles
 
     const HOSTS = {
       kys: ['#animation .lc--kys'], jasIll: ['#illustration .lc--jasmine'], jasAnim: ['#animation .card', 'Jasmine'],
@@ -19505,7 +19507,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
     const live = document.createElement('div'); live.setAttribute('aria-live', 'polite'); live.className = 'hn-sr'; document.body.appendChild(live);
     const say = t => { live.textContent = ''; setTimeout(() => { live.textContent = t; }, 30); };
     const dockEl = () => document.getElementById('passport-dock');
-    const foundCount = () => st.got.filter(i => FIVE.includes(i) || isDoodle(i)).length;
+    const foundCount = () => st.got.filter(i => FIVE.includes(i) || EXTRA.includes(i) || isDoodle(i)).length;
     function updateCounter() { const c = document.getElementById('passport-counter'); if (c) c.textContent = foundCount() + ' / ' + TOTAL; }
 
     // ---- one tiny notice above the tab; it fades by itself and never covers the work ----
@@ -19598,6 +19600,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
         const where = p === 'jas' ? 'Hiding in Illustration, Animation and Music.' : p === 'kys' ? 'Hiding around its sheet in Animation.' : 'Hiding around its card in Animation.';
         album.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
+      album.appendChild(section('Your page', (st.got.includes('yourpage') ? 1 : 0) + '/1', EXTRA, 'Turn the page of the notebook at the top and press a stamp on it.'));
       const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
       reset.addEventListener('click', () => api.reset()); album.appendChild(reset);
     }
@@ -19636,6 +19639,12 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       st.got.push('master'); save(); sfx('rewardFinal'); refresh();
       note('<b>You found every stamp!</b> Thank you for poking around my desk. A gold star is in your sticker book. <a href="#contact">Say hi</a>', 12000);
       say('You found every stamp. A gold star was added to your sticker book.');
+    }
+    // the first stamp pressed on the notebook's next page earns one sticker; more stamps earn nothing extra
+    function onNotebook() {
+      if (st.got.includes('yourpage')) return;
+      st.got.push('yourpage'); save(); updateCounter(); sfx('reward'); refresh();
+      say('Sticker earned: Your page. It is in your sticker book.'); note('<b>A sticker for your page.</b> It is in your sticker book.', 5200);
     }
     const refresh = () => { if (album && !album.hidden) renderAlbum(); };
 
@@ -19703,7 +19712,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       grantAll: () => FIVE.forEach((id, i) => setTimeout(() => api.grant(id), i * 2300)),
       find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
       findAll: () => Object.keys(PD).forEach((id, i) => setTimeout(() => api.find(id), i * 350)),
-      open: openAlbum, cancel: () => drop(true),
+      open: openAlbum, cancel: () => drop(true), notebook: onNotebook,
       reset: () => { drop(true); try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); }
     };
     const boot = () => { bindDock(); hook(); restore(); initPeeks(); updateCounter(); };
@@ -19722,15 +19731,28 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
     if (!page || !matchMedia('(min-width: 901px)').matches) return;
     const KEY = 'hn-stampage-v1', MAX = 60;
     let uid = 0;
+    const PDS = 'assets/hand/project-doodles-sprite.svg?v=4';
     const ring = (extra) => '<circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/>' + (extra || '');
-    const T = (x, y, size, txt, extra) => '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="' + size + '" fill="currentColor" style="font-family:var(--hn-hand)" ' + (extra || '') + '>' + txt + '</text>';
+    const hand = 'style="font-family:var(--hn-hand)"';
+    // her doodle, centred in a box (hero doodles live in this page's inline sprite; project doodles in the external one)
+    const doodle = (ref, x, y, w, h) => '<use href="' + ref + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '"/>';
+    // text bent round the ring: top arc reads left to right over the top, bottom arc left to right under the bottom
+    const arc = (txt, r, bottom) => {
+      if (!txt) return ''; const id = 'sa' + (++uid), len = Math.PI * r, size = Math.max(7.5, Math.min(15, len / (txt.length * 0.62)));
+      const d = bottom ? 'M' + (60 - r) + ' 60 A' + r + ' ' + r + ' 0 0 0 ' + (60 + r) + ' 60' : 'M' + (60 - r) + ' 60 A' + r + ' ' + r + ' 0 0 1 ' + (60 + r) + ' 60';
+      return '<defs><path id="' + id + '" d="' + d + '"/></defs><text font-size="' + size.toFixed(1) + '" letter-spacing="1" fill="currentColor" text-anchor="middle" ' + hand + '><textPath href="#' + id + '" startOffset="50%">' + txt + '</textPath></text>';
+    };
+    const round = (top, bottom, ref, dx) => ring(arc(top, 34, false) + arc(bottom, 44, true) + doodle(ref, 36 + (dx || 0), 38, 48, 44));
+    // Eight stamps, all made of things that are true of her: her school, her film, her work, her habits, her music.
     const DESIGNS = {
-      hello: { name: 'Hello', svg: () => ring(T(60, 68, 26, 'HELLO!') + '<path d="M60 84l3.4 7 7.6 1-5.5 5.3 1.3 7.6L60 101l-6.8 3.9 1.3-7.6-5.5-5.3 7.6-1z" fill="currentColor" transform="translate(0 -9) scale(1) "/>') },
-      here: { name: 'I was here', svg: () => { const id = 'sa' + (++uid); return '<defs><path id="' + id + '" d="M60 60 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>' + ring('<text font-size="15" letter-spacing="2.2" fill="currentColor" style="font-family:var(--hn-hand)"><textPath href="#' + id + '" startOffset="0">I WAS HERE · I WAS HERE ·</textPath></text>' + T(60, 71, 30, '★')); } },
-      heart: { name: 'Heart', svg: () => '<path d="M60 100C22 72 14 48 26 33c9-11 26-9 34 3 8-12 25-14 34-3 12 15 4 39-34 67z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M60 88C34 68 30 52 37 43c6-7 17-6 23 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
-      star: { name: 'Nice', svg: () => '<polygon points="60,6 71,34 101,28 82,52 108,70 77,74 76,106 60,82 44,106 43,74 12,70 38,52 19,28 49,34" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>' + T(60, 68, 22, 'NICE!') },
-      good: { name: 'Looks good', svg: () => '<rect x="6" y="28" width="108" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="4.5"/><rect x="13" y="35" width="94" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>' + T(60, 56, 20, 'LOOKS') + T(60, 79, 20, 'GOOD') },
-      ten: { name: '10 out of 10', svg: () => { const id = 'sa' + (++uid); return '<defs><path id="' + id + '" d="M20 68 a40 40 0 0 0 80 0"/></defs>' + ring(T(60, 58, 30, '10/10') + '<text font-size="10.5" letter-spacing="1.4" fill="currentColor" text-anchor="middle" style="font-family:var(--hn-hand)"><textPath href="#' + id + '" startOffset="50%">WOULD SCROLL AGAIN</textPath></text>'); } }
+      class:  { name: 'NTU ADM, class of 2026', svg: () => round('NTU ADM \u00b7 2026', 'ANIMATION', '#dd-runner') },
+      annecy: { name: 'Annecy 2025', svg: () => round('ANNECY 2025', 'PARIS \u00b7 LYON \u00b7 SG', PDS + '#pd-kys-head') },
+      open:   { name: 'Open for work', svg: () => '<rect x="5" y="30" width="110" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="4.5"/><rect x="12" y="37" width="96" height="46" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>' + doodle('#dd-camera', 16, 44, 36, 32) + '<text x="82" y="58" text-anchor="middle" font-size="15" fill="currentColor" ' + hand + '>OPEN FOR</text><text x="82" y="77" text-anchor="middle" font-size="19" fill="currentColor" ' + hand + '>WORK</text>' },
+      stationery: { name: 'Stationery addict', svg: () => round('STATIONERY', 'ADDICT', '#dd-pencil') },
+      milo:   { name: 'A daily Milo', svg: () => round('A DAILY MILO', '', '#dd-heart-solid', 0) },
+      jazz:   { name: 'Jazzmine', svg: () => round('JAZZMINE', 'INDO-JAZZ', PDS + '#pd-saxophone', 2) },
+      music:  { name: 'Music District, NTU ADM', svg: () => round('MUSIC DISTRICT', 'NTU ADM', '#dd-headphones') },
+      home:   { name: 'Singapore', svg: () => round('SINGAPORE', 'BFA ANIMATION', '#dd-star-solid') }
     };
     const INKS = [['Red', '#A8281F'], ['Blue', '#1E4CC8'], ['Black', '#1E2733']];
     let state = { stamps: [] };
@@ -19793,6 +19815,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
       const s = { k: held, x: +(((e.clientX - r.left) / r.width) * 100).toFixed(2), y: +(((e.clientY - r.top) / r.height) * 100).toFixed(2), r: Math.round(Math.random() * 20 - 10), o: +(0.78 + Math.random() * 0.16).toFixed(2), c: ink };
       state.stamps.push(s); if (state.stamps.length > MAX) { state.stamps.shift(); const f = canvas.firstElementChild; if (f) f.remove(); }
       save(); imprint(s, true); sfx();
+      try { if (window.hnRewards && window.hnRewards.notebook) window.hnRewards.notebook(); } catch (err) {}
     });
     sp.querySelector('.hn-sp-clear').addEventListener('click', () => { state.stamps = []; save(); canvas.innerHTML = ''; });
 
