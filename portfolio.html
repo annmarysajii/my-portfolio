@@ -17170,6 +17170,22 @@ footer.foot, [data-theme="dark"] footer.foot {
 }
 body { overflow-x: clip !important; }                                          /* html already clips sideways; a body that is also overflow:hidden is a scroll container that never scrolls, which silently turns every position:sticky off */
 
+/* ---- S. THE BOOKMARK IS A REAL RIBBON: it comes out of the head of the spine, lies down the gutter, and hangs out below ---- */
+#hero .hero-sketchbook .hero-bookmark-ribbon {
+  top: 0 !important; bottom: -40px !important; height: auto !important; left: 50% !important; width: 13px !important; transform: translateX(-50%) !important;
+  background: none !important; border-radius: 0 !important; clip-path: none !important; box-shadow: none !important; pointer-events: none !important;
+  filter: drop-shadow(calc(var(--sx) * 1px) calc(var(--sy) * 2px) 1.5px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))));
+}
+#hero .hero-sketchbook .hero-bookmark-ribbon::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 55px),                     /* it comes out from between the pages: darker at the head */
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 3px),    /* the weave */
+    linear-gradient(90deg, #1D3762, #35598F 30%, #4C74B0 50%, #35598F 70%, #1D3762);        /* satin: a sheen down the middle */
+  border-radius: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 9px), 0 100%);
+}
+@media (max-width: 900px) { #hero .hero-sketchbook .hero-bookmark-ribbon { display: none !important; } }   /* stacked pages and the phone flip pad have no gutter */
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }

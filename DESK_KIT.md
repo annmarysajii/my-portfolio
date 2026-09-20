@@ -312,6 +312,11 @@ section is never a blank stretch of wood while the credentials are read (open, t
 `body { overflow-x: clip }`: with `overflow-x: hidden` on both html and body, the body is a scroll container that never scrolls, and every
 `position: sticky` on the site is silently inert.
 
+**The bookmark is a ribbon.** The hero's blue tab is now a satin ribbon marker: it comes out from between the pages at the head of the
+spine (darker there), lies down the gutter, and hangs out below the book with a swallowtail. Its shadow is a `drop-shadow` on the light
+tokens (a box-shadow would ignore the swallowtail). It is hidden at 900px and below: there the pages stack (or the hero is the phone
+flip pad), so there is no gutter for it to lie in.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.
