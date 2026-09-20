@@ -20856,6 +20856,14 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   (function initGuestbook() {
     const NOTES_URL = 'assets/notes/notes.json';
     const ENDPOINT = 'https://formsubmit.co/ajax/annie10302004@gmail.com';       // the contact form's inbox
+    // SUPABASE: the notes live in a small hosted database (supabase/setup.sql). Both values below are PUBLIC by design (the "project URL" and
+    // the "anon"/"publishable" key): the database itself only lets a visitor add a note marked not-approved and read the approved ones, so
+    // nothing here can be used to read, change or delete anything else. Never put the service_role / secret key in this file. While either
+    // value is empty the guestbook works the old way (an email to her, and notes.json for the wall).
+    const SB = { url: '', key: '' };
+    const sbOn = () => !!(SB.url && SB.key);
+    const sbBase = () => SB.url.replace(/\/+$/, '') + '/rest/v1/guestbook_notes';
+    const sbHeaders = extra => Object.assign({ apikey: SB.key }, /^eyJ/.test(SB.key) ? { Authorization: 'Bearer ' + SB.key } : {}, extra || {});
     const KEY = 'hn-gb-v1', COLOURS = { yellow: '#FFE873', pink: '#FFC2D0', blue: '#B9D6FF', green: '#BFE8B8' };
     let mine = [], last = 0;
     try { const r = JSON.parse(localStorage.getItem(KEY) || 'null'); if (r) { mine = Array.isArray(r.mine) ? r.mine.slice(0, 5) : []; last = r.last || 0; } } catch (e) {}
@@ -20878,7 +20886,15 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     }
     async function loadNotes() {
       if (approved) return;
-      try { const r = await fetch(NOTES_URL, { cache: 'no-cache' }); approved = r.ok ? (await r.json()).filter(n => n && typeof n.text === 'string').slice(0, 60) : []; } catch (e) { approved = []; }
+      let pinned = [], fresh = [];
+      try { const r = await fetch(NOTES_URL, { cache: 'no-cache' }); if (r.ok) pinned = (await r.json()).filter(n => n && typeof n.text === 'string'); } catch (e) {}     // notes she pinned by hand come first
+      if (sbOn()) {
+        try {
+          const r = await fetch(sbBase() + '?select=name,text,colour,created_at&approved=eq.true&order=created_at.desc&limit=60', { headers: sbHeaders() });
+          if (r.ok) fresh = (await r.json()).filter(n => n && typeof n.text === 'string').map(n => ({ name: n.name, text: n.text, colour: n.colour, date: String(n.created_at || '').slice(0, 10) }));
+        } catch (e) {}
+      }
+      approved = pinned.concat(fresh).slice(0, 60);
       paintWall();
     }
     function build() {
@@ -20923,7 +20939,12 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
         if (!window.__hnGbDry) {                                                     // (the test switch keeps trials out of her inbox)
           const fd = new FormData(); fd.append('name', name || '(no name)'); fd.append('note', text); fd.append('colour', colour);
           fd.append('_subject', 'New guestbook note'); fd.append('_template', 'table'); fd.append('_captcha', 'false');
-          const r = await fetch(ENDPOINT, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }); ok = r.ok;
+          if (sbOn()) {                                                                // into the database, marked not-approved; the email is only her heads-up
+            const r = await fetch(sbBase(), { method: 'POST', headers: sbHeaders({ 'Content-Type': 'application/json', Prefer: 'return=minimal' }), body: JSON.stringify({ name, text, colour }) }); ok = r.ok;
+            if (ok) { try { fetch(ENDPOINT, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }).catch(() => {}); } catch (e) {} }
+          } else {
+            const r = await fetch(ENDPOINT, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }); ok = r.ok;
+          }
         }
         if (!ok) throw new Error('bad response');
         last = Date.now(); mine.unshift({ name, text, colour }); mine = mine.slice(0, 5); save(); paintWall();
@@ -20939,7 +20960,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       setTimeout(() => { try { panel.querySelector('#gb-text').focus({ preventScroll: true }); } catch (e) {} }, 60);
     }
     function close() { if (!panel || panel.hidden) return; panel.hidden = true; try { if (opener && opener.focus) opener.focus({ preventScroll: true }); } catch (e) {} }
-    window.hnGuestbook = { open, close };
+    window.hnGuestbook = { open, close, _configure: (u, k) => { SB.url = u; SB.key = k; approved = null; } };     // (_configure is for testing)
     document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('[data-gb]'); if (a) { e.preventDefault(); panel && !panel.hidden ? close() : open(a); } });
   })();
 
