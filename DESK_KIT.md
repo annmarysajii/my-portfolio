@@ -379,6 +379,13 @@ reduced motion it stands still under the bar for 9 s instead of running. `hnRewa
 **The toy sheets are paper in both modes.** Draw, Fonts and Strum used to turn their canvases dark at night (and quietly turned the black pen white), so a dark
 pen could not be seen. The sheets are now paper day and night like everything else on the desk, and the pen colours are what they say they are.
 
+**Memory: a rank, a welcome back, a gentle hint.** The passport has ranks (`RANKS` in `initRewards`: Visitor, Regular at 3, Studio Mate at 10, Desk Neighbour at 20,
+Insider at 32, Keeper of the Desk at everything): shown beside the count in the book and as the tab's tooltip, with one tiny notice when a new one is reached.
+A returning visitor (second visit or later, having found something besides Arrival) is greeted once, after ~4 s: "Welcome back. You have found 12 of 38 (Studio Mate).
+Psst: ..." with one hint and a link to the book. Someone who has taken the passport but found nothing for ~3 minutes gets a hint (at most two a visit); nobody who
+has not taken the passport is ever hinted at. A hint is one thing that is still hiding, chosen at random from stamps, doodles and secrets (`hintText`), never a list.
+`hnRewards.hint()` and `.rank()` are there for testing.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).

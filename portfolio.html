@@ -17342,6 +17342,9 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 @keyframes hnRun { from { translate: -60px 0; } to { translate: calc(100vw + 20px) 0; } }
 @keyframes hnBob { 0% { translate: 0 0; rotate: -2deg; } 100% { translate: 0 -4px; rotate: 2deg; } }
 
+/* ---- AA. RANK ------------------------------------------------------------------------------------------------------- */
+#hn-album .ab-rank { display: inline-block; margin-left: .4rem; padding: 0 .35rem; color: var(--hn-ink); border: 1.5px solid var(--hn-ink-2); border-radius: 3px; rotate: -2deg; font-size: var(--hn-t4); }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19973,7 +19976,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     const say = t => { live.textContent = ''; setTimeout(() => { live.textContent = t; }, 30); };
     const dockEl = () => document.getElementById('passport-dock');
     const foundCount = () => st.got.filter(i => FIVE.includes(i) || EXTRA.includes(i) || SECRET_IDS.includes(i) || isDoodle(i)).length;
-    function updateCounter() { const c = document.getElementById('passport-counter'); if (c) c.textContent = foundCount() + ' / ' + TOTAL; }
+    function updateCounter() { const c = document.getElementById('passport-counter'); if (c) c.textContent = foundCount() + ' / ' + TOTAL; checkRank(); lastFindAt = performance.now(); }
 
     // ---- THE INVITATION: how a first-time visitor finds out the passport exists ----
     // Three quiet cues, all gone once the passport is taken: the tab says "Get your passport" and wobbles now and then; after a
@@ -20136,7 +20139,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       if (!album) return;
       const stamps = FIVE.filter(i => st.got.includes(i)).length;
       album.innerHTML = '<header class="ab-h"><h2>Studio Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
-        '<p class="ab-n">' + foundCount() + ' of ' + TOTAL + ' found</p><p class="ab-help">Pick a sticker, then click anywhere on the desk to stick it there. Click it there to move it.</p>';
+        '<p class="ab-n">' + foundCount() + ' of ' + TOTAL + ' found <span class="ab-rank">' + RANKS[rankIndex()][1] + '</span></p><p class="ab-help">Pick a sticker, then click anywhere on the desk to stick it there. Click it there to move it.</p>';
       album.querySelector('.ab-x').addEventListener('click', () => closeAlbum(true));
       album.querySelector('.ab-help').after(guideBlock());
       const gbb = document.createElement('button'); gbb.type = 'button'; gbb.className = 'ab-gb'; gbb.textContent = 'Leave a note in the guestbook →'; gbb.setAttribute('data-gb', ''); album.querySelector('.ab-n').before(gbb);
@@ -20203,6 +20206,41 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); peel(el, sc); } });
       });
     }
+
+    // ---- memory: a rank that grows, a welcome back, and a gentle hint for anyone who is stuck ----
+    // Ranks are only names for how far along the passport is; a new one gets one tiny notice. A returning visitor who has found
+    // something is greeted once with where they are and one thing still hiding. Someone who has taken the passport but not found
+    // anything for a few minutes gets a hint (at most two a visit). Nobody who has not taken the passport is ever hinted at.
+    const RANKS = [[0, 'Visitor'], [3, 'Regular'], [10, 'Studio Mate'], [20, 'Desk Neighbour'], [32, 'Insider'], [TOTAL, 'Keeper of the Desk']];
+    const SECTION = { animation: 'Animation', illustration: 'Illustration', videography: 'Videography', 'graphic-design': 'Graphic design', music: 'Music' };
+    let rankNow = -1, lastFindAt = performance.now(), hints = 0;
+    const rankIndex = () => { let k = 0; RANKS.forEach((x, i) => { if (foundCount() >= x[0]) k = i; }); return k; };
+    function checkRank() {
+      const i = rankIndex(); const d = dockEl(); if (d) d.title = 'Studio Passport: ' + RANKS[i][1];
+      if (rankNow >= 0 && i > rankNow) setTimeout(() => note('<b>New rank: ' + RANKS[i][1] + '.</b>', 5200), 4300);
+      rankNow = i;
+    }
+    function hintText() {                              // one thing that is still hiding, worded as a hint, never as a list
+      const cats = [];
+      const stamps = FIVE.filter(i => !st.got.includes(i)); if (stamps.length) cats.push(() => 'the ' + SECTION[stamps[Math.floor(Math.random() * stamps.length)]] + ' toy has not stamped your passport yet.');
+      const doodles = Object.keys(PD).filter(i => !st.got.includes(i)); if (doodles.length) cats.push(() => 'a doodle is hiding in ' + WHERE[HOSTOF[doodles[Math.floor(Math.random() * doodles.length)]]] + '.');
+      const secrets = SECRET_IDS.filter(i => !st.got.includes(i)); if (secrets.length) cats.push(() => DEFS[secrets[Math.floor(Math.random() * secrets.length)]].how.replace(/^./, c => c.toLowerCase()).replace(/\.$/, '') + '.');
+      return cats.length ? cats[Math.floor(Math.random() * cats.length)]() : '';
+    }
+    function wireBookLink() { const a = document.querySelector('#hn-bubble a[data-book]'); if (a) a.addEventListener('click', e => { e.preventDefault(); openAlbum(); }); }
+    function welcomeBack() {
+      if (album && !album.hidden) return;
+      const n = foundCount(), done = n >= TOTAL, h = done ? '' : hintText();
+      note('<b>Welcome back.</b> ' + (done ? 'You have found everything, Keeper of the Desk.' : 'You have found ' + n + ' of ' + TOTAL + ' (' + RANKS[rankIndex()][1] + ').' + (h ? ' Psst: ' + h : '')) + ' <a href="#" data-book>Open my book</a>', 10000);
+      wireBookLink();
+    }
+    function stuckTick() {
+      if (document.hidden || !pp.claimed || hints >= 2 || foundCount() >= TOTAL || (album && !album.hidden)) return;
+      if (performance.now() - lastFindAt < 170000) return;
+      const h = hintText(); if (!h) return; hints++; lastFindAt = performance.now();
+      note('<b>Psst:</b> ' + h + ' <a href="#" data-book>Open my book</a>', 9000); wireBookLink();
+    }
+    setInterval(stuckTick, 15000);
 
     // ---- the desk is not always still: when it goes quiet, one of her doodles runs along under the top bar ----
     // It only comes when the visitor has been idle for a while (or, at most once every few minutes, whatever they are doing), never more
@@ -20330,7 +20368,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       grantAll: () => FIVE.forEach((id, i) => setTimeout(() => api.grant(id), i * 2300)),
       find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
       findAll: () => Object.keys(PD).forEach((id, i) => setTimeout(() => api.find(id), i * 350)),
-      open: openAlbum, cancel: () => drop(true), notebook: onNotebook, secret: id => { const n = findSecret(id); return n; }, runner: () => runNow(),
+      open: openAlbum, cancel: () => drop(true), notebook: onNotebook, secret: id => { const n = findSecret(id); return n; }, runner: () => runNow(), hint: () => hintText(), rank: () => RANKS[rankIndex()][1],
       reset: () => { drop(true); try { localStorage.removeItem(KEY); localStorage.removeItem(TK); } catch (e) {} location.reload(); }
     };
     const boot = () => {
@@ -20347,7 +20385,9 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       addSym('dd-lamp', 'M8.2 3h7.6l3.4 8.5H4.8zM11 11.5h2V17h-2zM6.5 18.5h11a1 1 0 0 1 1 1V21h-13v-1.5a1 1 0 0 1 1-1z');
       if (st.got.length && !pp.claimed) { pp.claimed = true; savePP(); }                  // someone who already has stickers knows
       initSecrets();
-      if (pp.claimed) grantArrival(false);                                                // (and gets the first stamp quietly)
+      if (pp.claimed) grantArrival(false);
+      try { if (!sessionStorage.getItem('hn-visit')) { sessionStorage.setItem('hn-visit', '1'); pp.visits = (pp.visits || 0) + 1; savePP(); } } catch (e) {}
+      if (pp.claimed && (pp.visits || 0) > 1 && foundCount() >= 2) setTimeout(welcomeBack, 3800);                                                // (and gets the first stamp quietly)
       if (!pp.claimed) { dockInvite(true); setTimeout(showTicket, 3200); }
     };
     if (document.readyState === 'complete') setTimeout(boot, 0); else addEventListener('load', () => setTimeout(boot, 50));
