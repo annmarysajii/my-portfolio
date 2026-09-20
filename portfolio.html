@@ -17409,6 +17409,9 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 #about .about-spec dd { margin: 0 !important; }
 @media (max-width: 480px) { .dt-pane .bp-pols .bp-pol { width: calc((100% - 1rem) / 2); } .dt-tab { padding: .4rem .7rem .35rem; font-size: 1.2rem; } }
 
+.tidy-pouch.is-ready { filter: drop-shadow(0 0 6px rgba(245, 222, 74, .9)) drop-shadow(0 0 2px rgba(245, 222, 74, 1)); scale: 1.06; transition: scale 160ms ease; }
+.tidy-item { min-width: 44px; min-height: 44px; }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -21045,9 +21048,10 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         play.appendChild(b); items.push(b);
       });
     }
-    function over(b) {                                     // is the piece's centre over the pouch?
-      const r = b.getBoundingClientRect(), q = pouch.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      return cx > q.left - 6 && cx < q.right + 6 && cy > q.top - 6 && cy < q.bottom + 6;
+    function over(b, ev) {                                 // will it go in? The piece's centre OR the pointer being over the pouch counts, with a generous margin
+      const r = b.getBoundingClientRect(), q = pouch.getBoundingClientRect(), m = 22;
+      const inside = (x, y) => x > q.left - m && x < q.right + m && y > q.top - m && y < q.bottom + m;
+      return inside(r.left + r.width / 2, r.top + r.height / 2) || (ev && inside(ev.clientX, ev.clientY));
     }
     function put(b) {
       if (b.classList.contains('is-in')) return;
@@ -21065,20 +21069,24 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     }
     function grab(b, e) {
       if (b.classList.contains('is-in') || e.button > 0) return; e.preventDefault();
-      const p = play.getBoundingClientRect(), r = b.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top, id = e.pointerId; let moved = false;
-      try { b.setPointerCapture(id); } catch (x) {}
-      b.classList.add('is-held'); play.appendChild(b);
+      // (The piece is never moved in the DOM while held: re-inserting an element drops the browser's pointer capture, which is what made
+      // dragging feel sticky. The move and release are listened for on the window, so they cannot be lost either.)
+      const r = b.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top, id = e.pointerId, x0 = e.clientX, y0 = e.clientY; let moved = false;
+      b.classList.add('is-held');
       const move = ev => {
-        if (ev.pointerId !== id) return; moved = true;
+        if (ev.pointerId !== id) return;
+        if (!moved && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 5) return; moved = true;             // a shaky press is still a press
         const pr = play.getBoundingClientRect();
         b.style.left = Math.max(0, Math.min(pr.width - b.offsetWidth, ev.clientX - pr.left - ox)) + 'px'; b.style.top = Math.max(0, Math.min(pr.height - b.offsetHeight, ev.clientY - pr.top - oy)) + 'px';
+        pouch.classList.toggle('is-ready', over(b, ev));                                                   // the pouch says "yes, here" when it will take it
       };
       const up = ev => {
-        if (ev.pointerId !== id) return; b.removeEventListener('pointermove', move); b.removeEventListener('pointerup', up); b.removeEventListener('pointercancel', up);
-        b.classList.remove('is-held'); try { b.releasePointerCapture(id); } catch (x) {}
-        if (moved && over(b)) put(b); else if (!moved) put(b);          // a plain press also puts it in
+        if (ev.pointerId !== id) return;
+        removeEventListener('pointermove', move); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+        b.classList.remove('is-held'); pouch.classList.remove('is-ready');
+        if (!moved || (ev.type === 'pointerup' && over(b, ev))) put(b);                                    // a press puts it in; a drop over the pouch puts it in
       };
-      b.addEventListener('pointermove', move); b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up);
+      addEventListener('pointermove', move); addEventListener('pointerup', up); addEventListener('pointercancel', up);
     }
     again.addEventListener('click', scatter);
     scatter();
