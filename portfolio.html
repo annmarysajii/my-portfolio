@@ -20860,7 +20860,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     // the "anon"/"publishable" key): the database itself only lets a visitor add a note marked not-approved and read the approved ones, so
     // nothing here can be used to read, change or delete anything else. Never put the service_role / secret key in this file. While either
     // value is empty the guestbook works the old way (an email to her, and notes.json for the wall).
-    const SB = { url: 'https://chgdpcugyghqnztszotm.supabase.co', key: '' };
+    const SB = { url: 'https://chgdpcugyghqnztszotm.supabase.co', key: 'sb_publishable_Gv8bq6bxWCrjej5vbDEkDg_vsyvISll' };
     const sbOn = () => !!(SB.url && SB.key);
     const sbBase = () => SB.url.replace(/\/+$/, '') + '/rest/v1/guestbook_notes';
     const sbHeaders = extra => Object.assign({ apikey: SB.key }, /^eyJ/.test(SB.key) ? { Authorization: 'Bearer ' + SB.key } : {}, extra || {});
