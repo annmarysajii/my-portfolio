@@ -5427,7 +5427,7 @@ body::before {
 .pg-reveal.pg-open .playground-scrap-card {
   opacity: 1;
   transform: translateY(0) scale(1);
-  z-index: 9995; /* sit above the fixed Studio Passport dock (z-index: 9990) while open */
+  z-index: 9995; /* sit above the fixed Desk Passport dock (z-index: 9990) while open */
 }
 
 .pg-close-btn {
@@ -15846,13 +15846,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 }
 [data-theme="dark"] {
   /* NIGHT: late night in an animator's studio, one lamp on, rain outside */
-  --light-x: 30; --light-y: 36;                /* the lamp: off-centre, left of the book */
+  --light-x: 48; --light-y: 42;                /* the lamp: near the middle of the screen, a touch left and high, so it is never a perfect circle */
   --lr: 255; --lg: 184; --lb: 104;             /* warm tungsten */
   --sr: 5;   --sg: 8;   --sb: 15;              /* near-black, blue */
   --tr: 12;  --tg: 36;  --tb: 50;              /* teal in the long, faint layer */
   --sh-k: 1.25;
   --pool: 1; --key-day: 0; --key-night: 1;
-  --gr: 154; --gg: 170; --gb: 192; --vig: .5; --amb: .5;   /* was 178/196/222 when the paper itself was dimmer: same unlit look, brighter lit paper */
+  --gr: 154; --gg: 170; --gb: 192; --vig: .42; --amb: .5;   /* was 178/196/222 when the paper itself was dimmer: same unlit look, brighter lit paper */
 }
 /* a mode switch interpolates the whole set over ~600ms. The transition lives on #hero, not :root: the variables
    still change on :root at once, but only the hero's own subtree is re-styled on every frame of the blend (on
@@ -15983,7 +15983,10 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 .hn-grade-night {
   opacity: var(--key-night);
   mix-blend-mode: multiply;
-  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+  /* the last stretch of the hero fades back to no grade at all (white multiplies as nothing), so the hero's dark edge does not end in a
+     hard line where the next section begins: the mat runs on, seamlessly */
+  background: linear-gradient(to top, rgb(255, 255, 255) 0, rgba(255, 255, 255, 0) 240px),
+    radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
     rgb(255, 247, 233) 0%,
     rgb(calc(var(--gr) + 34), calc(var(--gg) + 24), calc(var(--gb) + 6)) 30%,
     rgb(var(--gr), var(--gg), var(--gb)) 58%,
@@ -16016,13 +16019,13 @@ h1, h2, h3, h4, .sec-title, .hero-role {
   transform-origin: calc(var(--light-x) * 1%) calc(var(--light-y) * 1%);
   mix-blend-mode: soft-light;
   opacity: calc(var(--key-night) * var(--pool));
-  background: radial-gradient(ellipse 64% 50% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
-    rgba(var(--lr), var(--lg), var(--lb), .95) 0%,
-    rgba(var(--lr), var(--lg), var(--lb), .80) 6%,
-    rgba(var(--lr), var(--lg), var(--lb), .52) 14%,
-    rgba(var(--lr), var(--lg), var(--lb), .28) 26%,
-    rgba(var(--lr), var(--lg), var(--lb), .12) 42%,
-    rgba(var(--lr), var(--lg), var(--lb), .045) 65%,
+  background: radial-gradient(ellipse 90% 72% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    rgba(var(--lr), var(--lg), var(--lb), 1) 0%,
+    rgba(var(--lr), var(--lg), var(--lb), .88) 6%,
+    rgba(var(--lr), var(--lg), var(--lb), .62) 14%,
+    rgba(var(--lr), var(--lg), var(--lb), .36) 26%,
+    rgba(var(--lr), var(--lg), var(--lb), .18) 42%,
+    rgba(var(--lr), var(--lg), var(--lb), .07) 65%,
     rgba(var(--lr), var(--lg), var(--lb), 0) 100%);
 }
 
@@ -16130,8 +16133,8 @@ html::after, body::after { opacity: calc(1 - var(--hv, 0)); }
 .hn-mat-lit {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   mix-blend-mode: screen;
-  opacity: calc(.22 + var(--key-night) * .14);
-  background: radial-gradient(ellipse calc(58% - var(--key-night) * 14%) calc(52% - var(--key-night) * 12%) at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+  opacity: calc(.22 + var(--key-night) * .2);
+  background: radial-gradient(ellipse calc(62% - var(--key-night) * 4%) calc(56% - var(--key-night) * 4%) at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
     rgba(var(--lr), var(--lg), var(--lb), .95) 0%,
     rgba(var(--lr), var(--lg), var(--lb), .55) 22%,
     rgba(var(--lr), var(--lg), var(--lb), .2) 48%,
@@ -16702,10 +16705,10 @@ html::before {
 }
 html::after, [data-theme="dark"] html::after {
   background:
-    radial-gradient(ellipse 34% 30% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
-      rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .08)) 0%, transparent 100%),
-    radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
-      rgba(var(--lr), var(--lg), var(--lb), calc(.085 + var(--key-night) * .05)) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
+    radial-gradient(ellipse 44% 38% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .11)) 0%, transparent 100%),
+    radial-gradient(ellipse 88% 72% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.085 + var(--key-night) * .08)) 0%, rgba(var(--lr), var(--lg), var(--lb), .045) 45%, transparent 78%);
 }
 /* lite mode (see the frame monitor) also drops the fixed window layer */
 html.hn-lite::before { display: none; }
@@ -16846,12 +16849,12 @@ html.hn-lite::before { display: none; }
 #wrap::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 36% 32% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
-      rgba(var(--lr), var(--lg), var(--lb), calc(.16 + var(--key-night) * .30)) 0%, rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .10)) 55%, transparent 100%),
-    radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
-      transparent 0%, transparent 18%,
-      rgba(var(--sr), var(--sg), var(--sb), calc(.22 + var(--key-night) * .30)) 58%,
-      rgba(var(--sr), var(--sg), var(--sb), calc(.50 + var(--key-night) * .38)) 100%);
+    radial-gradient(ellipse 50% 42% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      rgba(var(--lr), var(--lg), var(--lb), calc(.16 + var(--key-night) * .38)) 0%, rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .15)) 58%, transparent 100%),
+    radial-gradient(ellipse 130% 116% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+      transparent 0%, transparent 26%,
+      rgba(var(--sr), var(--sg), var(--sb), calc(.22 + var(--key-night) * .24)) 62%,
+      rgba(var(--sr), var(--sg), var(--sb), calc(.50 + var(--key-night) * .30)) 100%);
 }
 html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
 
@@ -17506,6 +17509,52 @@ body { overflow-x: clip !important; }                                          /
 .desk .grid .card { transition: translate 90ms var(--hn-ease, ease); }
 .desk .grid .card:active { translate: 0 2px; }
 @media (prefers-reduced-motion: reduce) { .desk .grid .card { transition: none; } }
+
+/* ---- AI. THE FLOATING DOODLES: back in every section, drifting over the mat and the paper alike (never catching a click), lighting up in their own colour near the pointer ---- */
+#wrap .desk .sec-bg-canvas { z-index: 4 !important; opacity: 1 !important; }
+
+/* ---- AJ. THE DESK PASSPORT TAB: a paper label with a little passport booklet, the count stamped in red ------------------------ */
+/* (the older pill rules above are all !important, so this goes by id) */
+#passport-dock.passport-dock-btn {
+  background: #FBF8EE url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px !important; color: var(--hn-ink) !important; border: 0 !important; border-radius: 3px !important;
+  padding: .3rem .8rem .35rem .55rem !important; gap: .55rem !important; rotate: -1.2deg; transform: none !important;
+  font-family: var(--hn-hand) !important; font-size: 1.3rem !important; font-weight: 400 !important; letter-spacing: 0 !important; line-height: 1 !important;
+  box-shadow: var(--hn-edge), var(--hn-sh-raised) !important; transition: translate 200ms var(--hn-ease, ease), rotate 200ms var(--hn-ease, ease), box-shadow 200ms ease !important;
+}
+#passport-dock.passport-dock-btn::before {                     /* a strip of tape holding it to the desk */
+  content: ""; position: absolute; top: -8px; left: 50%; width: 44px; height: 15px; translate: -50% 0; rotate: -3deg; background: var(--hn-tape-gold); box-shadow: var(--hn-sh-flat); pointer-events: none;
+}
+#passport-dock.passport-dock-btn:hover { transform: none !important; translate: 0 -3px; rotate: 0deg; box-shadow: var(--hn-edge), var(--hn-sh-book) !important; }
+#passport-dock.passport-dock-btn:active { translate: 0 1px; }
+#passport-dock.passport-dock-btn:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
+#passport-dock .passport-dock-icon { display: inline-flex; align-items: center; rotate: -9deg; margin: -.35rem 0 -.3rem -.1rem; filter: drop-shadow(1px 2px 1.5px rgba(46, 34, 20, .35)); }
+#passport-dock .passport-dock-icon svg { width: 22px !important; height: 27px !important; }
+#passport-dock .passport-dock-label { font-family: var(--hn-hand) !important; font-size: 1.3rem !important; font-weight: 400 !important; letter-spacing: 0 !important; color: var(--hn-ink) !important; white-space: nowrap; }
+#passport-dock .passport-dock-counter {                        /* a rubber-stamped count */
+  background: transparent !important; color: var(--hn-red) !important; border: 2px solid var(--hn-red) !important; border-radius: 999px !important; padding: 0 .5rem .05rem !important;
+  font-family: var(--hn-hand) !important; font-size: 1.1rem !important; font-weight: 400 !important; line-height: 1.2 !important; rotate: 3deg; opacity: .95;
+}
+@media (max-width: 768px) {
+  #passport-dock.passport-dock-btn { width: 54px !important; height: 54px !important; padding: 0 !important; border-radius: 50% !important; justify-content: center !important; rotate: 0deg; }
+  #passport-dock.passport-dock-btn::before { display: none; }
+  #passport-dock .passport-dock-icon { margin: 0; rotate: -8deg; }
+  #passport-dock .passport-dock-icon svg { width: 24px !important; height: 30px !important; }
+  #passport-dock .passport-dock-counter { position: absolute !important; top: -8px !important; right: -8px !important; min-width: 22px; padding: 0 .3rem !important; background: #FBF8EE !important; font-size: .95rem !important; }
+}
+@media (prefers-reduced-motion: reduce) { #passport-dock.passport-dock-btn { transition: none !important; } }
+
+/* ---- AK. THE HERO RUNS INTO THE NEXT SECTION WITHOUT A LINE ---------------------------------------------------------------------- */
+/* The hero is opaque and a little darker than the mat under the next section, and the page-wide light is cut off by its bottom edge, so
+   there was a hard line where "Need a quick look?" begins. The last 90px of the hero now fade out to the mat under it (one mask on the
+   hero, checked against a scroll test: no measurable cost), and the footer line sits above the fade. Lite mode keeps the plain edge. */
+#hero { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 90px), rgba(0, 0, 0, 0) 100%); mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 90px), rgba(0, 0, 0, 0) 100%); }
+#hero .hero-foot { margin-bottom: 84px; }
+html.hn-lite #hero { -webkit-mask-image: none; mask-image: none; }
+html.hn-lite #hero .hero-foot { margin-bottom: 0; }
+
+/* ---- AL. THE MAT MEETS THE WOOD: the mat is a sheet lying on the desk, so where it ends the wood gets its soft shadow, not a cut ---- */
+#about { position: relative; }
+#about::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 70px; pointer-events: none; z-index: 0; background: linear-gradient(to bottom, rgba(14, 8, 2, .6), rgba(14, 8, 2, .26) 42%, rgba(14, 8, 2, 0)); }
 
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
@@ -19620,269 +19669,7 @@ body { overflow-x: clip !important; }                                          /
   };
 
 
-  // ================================================================
-  // ROOM SOUND -- opt-in, separate from everything else.
-  // Off by default. Never autoplays: nothing is even created until a user gesture. Night = quiet room tone with
-  // faint rain on glass; day = soft room tone with distant birds; both seamless loops (AudioBufferSource,
-  // loop = true, so no gap). Small UI sounds: a lamp click on the switch and a very quiet, throttled paper
-  // rustle when a taped item is hovered. Loops crossfade over 800ms when the mode changes.
-  // The audio files are supplied separately in public/audio/ (see README.txt there); nothing is synthesised.
-  // If a file is missing the system stays quiet and says so; if storage is blocked it just does not persist.
-  // Levels read the --snd-* CSS variables, like every other level in the lighting system.
-  // ================================================================
-  (function initRoomSound() {
-    const btn = document.getElementById('soundBtn');
-    if (!btn) return;
-    const root = document.documentElement;
-    const BASE = 'public/audio/';
-    const EXTS = ['mp3', 'ogg'];                                         // first one that exists wins
-    const say = (...a) => { try { console.info('[room sound]', ...a); } catch (e) {} };
-    const warn = (...a) => { try { console.warn('[room sound]', ...a); } catch (e) {} };
-    const FILES = { night: 'night-music', day: 'day-music', rain: 'rain-loop', click: 'lamp-click', drawerOpen: 'drawer-open', drawerClose: 'drawer-close' };
-    // SOUND SLOTS: one per kind of thing that can make a sound. A slot plays public/audio/<own>-1.mp3, -2, -3, -4
-    // (any that exist, random, never the same twice in a row). Until a slot has its own file it borrows the generic
-    // fallback recordings (paper-1/2/3 for the three paper slots), and a slot with neither stays silent. So
-    // adding a better sound for one kind is just dropping <own>-1.mp3 (and -2, -3 for variety) into public/audio/.
-    const GENERIC_PAPER = ['paper-1', 'paper-2', 'paper-3'];
-    const SLOTS = {
-      paperPrint:  { own: 'paper-print',  fall: GENERIC_PAPER },   // a photo print or a card
-      paperSheet:  { own: 'paper-sheet',  fall: GENERIC_PAPER },   // a big sheet or the notebook page
-      paperSlip:   { own: 'paper-slip',   fall: GENERIC_PAPER },   // a torn slip, a sticky note, a taped scrap
-      tape:        { own: 'tape',         fall: [] },              // tape peeled or pressed
-      stamp:       { own: 'stamp',        fall: [] },              // a rubber stamp landing (a reward)
-      stickerPeel: { own: 'sticker-peel', fall: [] },
-      stickerPlace:{ own: 'sticker-place', fall: [] },
-      reward:      { own: 'reward',       fall: [] },              // a small chime
-      rewardFinal: { own: 'reward-final', fall: [] },              // the last stamp
-      drawerOpen:  { own: 'drawer-open',  fall: [] },
-      drawerClose: { own: 'drawer-close', fall: [] },
-      pageTurn:    { own: 'page-turn',    fall: GENERIC_PAPER },   // turning the notebook's page
-      toyBounce:   { own: 'toy-bounce',   fall: [] },              // Animate: a principle played on the ball
-      toyClap:     { own: 'toy-clap',     fall: [] },              // Capture: the clapper
-      toyDraw:     { own: 'toy-draw',     fall: [] },              // Draw: the pen starting a stroke
-      drawerStrip: { own: 'drawer-strip', fall: [] }               // the paper strips in the open drawer: a soft thump
-    };
-    const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
-    const FADE = 0.8;                                                    // seconds
-    let ctx = null, master = null, an = null, on = false, armed = false, loop = null, rain = null, loopMode = null, meterT = 0, silent = 0, lastErr = '';
-    const bufs = {}, missing = {};
-
-    const num = (name, fallback) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fallback : v; };
-    const mode = () => root.getAttribute('data-theme') === 'dark' ? 'night' : 'day';
-
-    function paint(note) {
-      const pressed = on || armed;
-      btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-      const playing = on && loop ? 'now playing: ' + NOW_PLAYING[loopMode] : '';
-      const msg = note || playing;
-      btn.setAttribute('aria-label', msg ? 'Room sound (' + msg + ')' : 'Room sound');
-      btn.title = msg ? 'Room sound: ' + msg : 'Room sound';
-      btn.classList.toggle('is-on', pressed);
-    }
-    function ensureCtx() {
-      if (ctx) return ctx;
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      ctx = new AC(); master = ctx.createGain(); master.gain.value = 1;
-      const lim = ctx.createDynamicsCompressor();                          // a soft limiter: overlapping sounds never jump out
-      lim.threshold.value = -16; lim.knee.value = 14; lim.ratio.value = 6; lim.attack.value = 0.003; lim.release.value = 0.2;
-      master.connect(lim); lim.connect(ctx.destination);
-      an = ctx.createAnalyser(); an.fftSize = 1024; master.connect(an);     // only listens; feeds the little meter on the button
-      say('audio context created, state:', ctx.state, ', sample rate:', ctx.sampleRate);
-      return ctx;
-    }
-    async function load(key, quiet) {
-      if (bufs[key]) return bufs[key];
-      if (missing[key] || !ctx) return null;
-      const base = FILES[key] || key;
-      for (const ext of (quiet ? ['mp3'] : EXTS)) {
-        const url = BASE + base + '.' + ext;
-        try {
-          const r = await fetch(url);
-          if (!r.ok) { if (!quiet) { lastErr = base + ' returned ' + r.status; warn(url, 'returned HTTP', r.status, '(is the public/ folder being served?)'); } continue; }
-          const ab = await r.arrayBuffer();
-          bufs[key] = await new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
-          say('loaded', url, '-', Math.round(bufs[key].duration) + 's,', bufs[key].numberOfChannels + ' channels');
-          return bufs[key];
-        } catch (e) { if (!quiet) { lastErr = base + ' could not be loaded'; warn('could not load or decode', url, e && (e.message || e)); } }
-      }
-      missing[key] = true;
-      return null;
-    }
-    function fadeOut(l) {
-      if (!l) return;
-      const t = ctx.currentTime;
-      l.g.gain.cancelScheduledValues(t); l.g.gain.setValueAtTime(l.g.gain.value, t); l.g.gain.linearRampToValueAtTime(0, t + FADE);
-      setTimeout(() => { try { l.src.stop(); } catch (e) {} l.src.disconnect(); l.g.disconnect(); }, FADE * 1000 + 100);
-    }
-    async function startLoop(m) {
-      if (!on || !ctx) return true;
-      const b = await load(m);
-      if (!on) return true;
-      if (!b) { fadeOut(loop); loop = null; loopMode = null; return false; }     // no file for this mode: stay quiet
-      if (loop && loopMode === m) return true;
-      fadeOut(loop);
-      const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
-      const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
-      ducked = anyAudible();                                             // a video with sound is playing: come in silent
-      const target = ducked ? 0 : num('--snd-loop', .6);
-      g.gain.linearRampToValueAtTime(target, ctx.currentTime + FADE);
-      say('playing', m, 'loop at gain', target, ', context state:', ctx.state);
-      silent = 0; loop = { src, g }; loopMode = m; paint();
-      return true;
-    }
-    // ---- rain on the window: a second, quiet loop under the music (a little at day, more at night). It follows the same rules as the
-    // music: opt-in, fades in and out, and steps aside while a video with sound plays. If the file is missing it is simply absent.
-    const rainLevel = () => ducked ? 0 : num('--snd-rain', .1);
-    async function startRain() {
-      if (!on || !ctx) return;
-      const b = await load('rain', true); if (!b || !on) return;
-      const t = ctx.currentTime;
-      if (rain) { rain.g.gain.cancelScheduledValues(t); rain.g.gain.setValueAtTime(rain.g.gain.value, t); rain.g.gain.linearRampToValueAtTime(rainLevel(), t + FADE * 1.5); return; }
-      const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
-      const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
-      g.gain.linearRampToValueAtTime(rainLevel(), t + FADE * 2); rain = { src, g };
-    }
-    async function turnOn() {
-      if (!ensureCtx()) { paint('not supported in this browser'); return; }
-      try { await ctx.resume(); } catch (e) { warn('resume() failed', e && e.message); }
-      on = true; armed = false; paint(); startMeter();
-      const ok = await startLoop(mode());
-      if (ok) startRain();
-      preloadAll();
-      if (!ok) {                                                                    // nothing to play: say why, stay off
-        on = false; stopMeter(); paint(lastErr ? "couldn't start: " + lastErr : 'sound files have not been added yet');
-      }
-    }
-    function turnOff() {
-      on = false; armed = false; stopMeter(); paint();
-      if (ctx) { fadeOut(loop); fadeOut(rain); } loop = null; rain = null; loopMode = null;
-    }
-    // The meter: three bars on the button that move with the REAL signal at the output stage. If they move but you
-    // hear nothing, the page is playing and the problem is outside it (tab or window muted, wrong output device,
-    // system volume). If they stay flat while it claims to play, the page says so in the console and the tooltip.
-    const mbuf = new Float32Array(1024);
-    function meter() {
-      if (!on || !ctx || !an || document.hidden) return;
-      an.getFloatTimeDomainData(mbuf);
-      let sum = 0; for (let i = 0; i < mbuf.length; i++) sum += mbuf[i] * mbuf[i];
-      const rms = Math.sqrt(sum / mbuf.length), db = rms > 1e-7 ? 20 * Math.log10(rms) : -100;
-      btn.style.setProperty('--lvl', Math.max(0, Math.min(1, (db + 55) / 43)).toFixed(2));
-      if (loop && ctx.state === 'running' && db < -80) {
-        if (++silent === 40) { warn('the music is "playing" but the output is silent; context state:', ctx.state); paint('playing, but no signal reaches the output'); }
-      } else silent = 0;
-    }
-    function startMeter() { if (!meterT) meterT = setInterval(meter, 100); }
-    function stopMeter() { clearInterval(meterT); meterT = 0; btn.style.setProperty('--lvl', '0'); }
-    btn.addEventListener('click', () => { (on || armed) ? turnOff() : turnOn(); });
-    // safety net: some browsers and embedded panes suspend audio behind our back; any touch of the page brings it back
-    document.addEventListener('pointerdown', () => { if (on && ctx && ctx.state !== 'running') { say('context was', ctx.state, '- resuming'); ctx.resume().catch(() => {}); } }, true);
-
-    // Sound is opt-in EVERY page load: nothing starts by itself, not even after a reload where it had been on.
-    // (It used to remember 'on' for the session and start on the first click anywhere after a reload, which
-    // read as sound appearing from nowhere.)
-
-    // the loop follows the mode (crossfade); day and night each have their own room
-    new MutationObserver(() => { if (on && ctx) { startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); startRain(); } }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    let hideT = 0;
-    document.addEventListener('visibilitychange', () => {
-      if (!ctx) return;
-      clearTimeout(hideT);
-      if (document.hidden) hideT = setTimeout(() => { if (document.hidden && on) ctx.suspend(); }, 5000);   // a tab left alone for 5s stops playing
-      else if (on) ctx.resume();
-    });
-
-    const slotFiles = {};
-    let lastPick = '';
-    // ---- effects: everything is decoded ahead of time (as soon as sound is on), so a press plays at once, never after a
-    // fetch. Each kind has its own trim so nothing jumps out over the music, and a fast second press cuts the first
-    // one short instead of stacking on it.
-    const SLOT_VOL = { paperPrint: .6, paperSheet: .6, paperSlip: .6, pageTurn: .8, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
-      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, drawerStrip: .7, click: .8 };
-    const voices = {};
-    async function discover(name) {                                       // find and decode every file of one slot
-      const sl = SLOTS[name];
-      if (!sl) { await load(name, true); return; }
-      if (slotFiles[name]) return;
-      const found = [];
-      for (let i = 1; i <= 4; i++) { const k = sl.own + '-' + i; if (await load(k, true)) found.push(k); else break; }
-      if (!found.length && await load(sl.own, true)) found.push(sl.own);
-      const list = found.length ? found : sl.fall.slice();
-      for (const k of list) await load(k, true);
-      slotFiles[name] = list;
-    }
-    let preloading = false;
-    async function preloadAll() {
-      if (preloading) return; preloading = true;
-      for (const n of Object.keys(SLOTS).concat('click')) { if (!on) break; try { await discover(n); } catch (e) {} }
-    }
-    function pickSync(name) {                                             // a buffer key, null (nothing to play) or undefined (not decoded yet)
-      if (!SLOTS[name]) return bufs[name] ? name : undefined;
-      const list = slotFiles[name]; if (!list) return undefined;
-      if (!list.length) return null;
-      const pool = list.filter(k => k !== lastPick);
-      const k = (pool.length ? pool : list)[Math.floor(Math.random() * (pool.length || list.length))];
-      return bufs[k] ? k : undefined;
-    }
-    function play(key, name, vol) {
-      lastPick = key;
-      const t = ctx.currentTime, s = ctx.createBufferSource(); s.buffer = bufs[key];
-      s.playbackRate.value = 0.96 + Math.random() * 0.08;                 // a hair of variation, so repeats do not sound like one sample
-      const g = ctx.createGain(); g.gain.value = vol * (SLOT_VOL[name] || 1) * (0.9 + Math.random() * 0.2);
-      s.connect(g); g.connect(master);
-      const prev = voices[name];
-      if (prev) { try { prev.g.gain.cancelScheduledValues(t); prev.g.gain.setValueAtTime(prev.g.gain.value, t); prev.g.gain.linearRampToValueAtTime(0, t + 0.04); prev.s.stop(t + 0.05); } catch (e) {} }
-      voices[name] = { s, g };
-      s.onended = () => { if (voices[name] && voices[name].s === s) delete voices[name]; try { g.disconnect(); } catch (e) {} };
-      s.start(t);
-    }
-    async function once(name, vol) {
-      if (!on || !ctx || ctx.state !== 'running' || ducked) return;
-      let key = pickSync(name);
-      if (key === undefined) { await discover(name); if (!on || !ctx) return; key = pickSync(name); }   // only if a press beats the preload
-      if (key) play(key, name, vol);
-    }
-    // ---- a video with sound wins: while any video or audio element on the page is playing with its sound on (the reel, once its
-    // Sound button is pressed), the room music fades out and the little effects stay quiet. When it is muted, paused or ends, the
-    // music fades back in. The autoplaying background loops are muted, so they never trigger it.
-    let ducked = false;
-    const anyAudible = () => [...document.querySelectorAll('video, audio')].some(m => !m.paused && !m.ended && !m.muted && m.volume > 0);
-    function syncDuck() {
-      const want = anyAudible(); if (want === ducked) return; ducked = want;
-      if (loop && ctx) { const t = ctx.currentTime; loop.g.gain.cancelScheduledValues(t); loop.g.gain.setValueAtTime(loop.g.gain.value, t); loop.g.gain.linearRampToValueAtTime(ducked ? 0 : num('--snd-loop', .6), t + 0.5); }
-      if (rain && ctx) { const t = ctx.currentTime; rain.g.gain.cancelScheduledValues(t); rain.g.gain.setValueAtTime(rain.g.gain.value, t); rain.g.gain.linearRampToValueAtTime(rainLevel(), t + 0.5); }
-      paint(ducked ? 'paused while a video with sound plays' : '');
-    }
-    ['play', 'playing', 'pause', 'ended', 'volumechange', 'emptied'].forEach(ev => document.addEventListener(ev, syncDuck, true));   // media events do not bubble, but they can be caught on the way down
-    window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), rainGain: () => (rain && ctx ? +rain.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
-    window.__hnLampClick = () => once('click', num('--snd-ui', .3));
-    // the page's foley, for anything else to call by slot name (silent unless room sound is on)
-    window.__hnSfx = (name, k) => once(name, (/^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3)) * (k || 1));
-    // Project cards and the paper strips in the open drawer answer the hand: a soft thump every time the pointer comes onto one (not once
-    // per card: leave and come back and it sounds again, and sweeping across a row sounds each card in turn), and a heavier one the
-    // moment one is pressed, on any pointer, with a short buzz on phones that have it. Everything is already decoded, so it plays at
-    // once, cutting whatever was still sounding. The only guard is a 45 ms gap so one crossing cannot double-fire. Louder than the
-    // other foley on purpose (2x on hover, 3x on press), so it can be felt. Only these cards; the other sheets stay quiet.
-    const HOVER = [['.desk .grid .card', 'drawerStrip'], ['#downloads .dl-btn', 'drawerStrip']];
-    let lastHover = 0;
-    HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
-      el.addEventListener('pointerenter', e => {
-        if (e.pointerType !== 'mouse') return;
-        const now = performance.now();
-        if (now - lastHover < 45) return;
-        lastHover = now; window.__hnSfx(slot, 2);
-      });
-      el.addEventListener('pointerdown', e => {
-        if (e.button > 0) return;
-        window.__hnSfx(slot, 3); lastHover = performance.now();
-        if (e.pointerType === 'touch' && navigator.vibrate) { try { navigator.vibrate(9); } catch (x) {} }
-      });
-    }));
-    // the About drawer (the badge that opens "Studio Desk"): a drawer sound as it opens and closes
-    const bp = document.querySelector('.bp-badge--toggle');
-    if (bp) bp.addEventListener('click', () => setTimeout(() => window.__hnSfx(bp.getAttribute('aria-expanded') === 'true' ? 'drawerOpen' : 'drawerClose'), 0));
-  })();
-
+  // (ROOM SOUND now lives in js/room-sound.js, shared with project.html.)
 
   // ================================================================
   // HERO DEPTH -- mouse parallax. One listener, one requestAnimationFrame loop that only runs while the
@@ -20029,14 +19816,14 @@ body { overflow-x: clip !important; }                                          /
   // REWARDS -- a planned system, not a gimmick. (Written up in DESK_KIT.md, section 9.)
   //
   //   TWO WAYS TO EARN, each tied to how people already browse the work:
-  //   1. STAMPS (discipline level). The Studio Passport counts the stamps earned by playing with each section's toy
+  //   1. STAMPS (discipline level). The Desk Passport counts the stamps earned by playing with each section's toy
   //      (five sections). A new stamp lands as a rubber stamp and gives a die-cut sticker of the section's doodle.
   //   2. DOODLES (project level). Her project doodles (assets/hand/project-doodles-sprite.svg) live on the work
   //      itself: characters and props peek over the edge of that project's sheet or print, drawn as paper cut-outs. A
   //      visitor who looks closely at a project finds them and clicks one to keep it. Jasmine's band is spread across
   //      three sections, so finishing her set means exploring the whole desk. A finished set gives that project's
   //      hand-lettered title as a big sticker.
-  //   ONE PLACE TO KEEP IT ALL: the Studio Passport tab (bottom right, where the passport dock already was) opens a
+  //   ONE PLACE TO KEEP IT ALL: the Desk Passport tab (bottom right, where the passport dock already was) opens a
   //   sticker book: stamps and every project's doodles, found ones in colour, missing ones as outlines with a hint
   //   about where to look. It is a small panel, not a dialog: no dimming, the page stays usable behind it, and it
   //   closes with its x, Esc, or the tab. Anything in it can be picked up and stuck ANYWHERE on the page (it stays
@@ -20160,7 +19947,7 @@ body { overflow-x: clip !important; }                                          /
     function dockInvite(on) {
       const d = dockEl(), l = dockLabel(); if (!d || !l) return;
       d.classList.toggle('is-inviting', on);
-      l.textContent = on ? 'Get your passport' : 'Studio Passport';
+      l.textContent = on ? 'Get your passport' : 'Desk Passport';
     }
     function hideTicket() { clearTimeout(ticketT); if (!ticket) return; const t = ticket; ticket = null; t.classList.add('is-out'); setTimeout(() => t.remove(), calm() ? 0 : 420); }
     // the first stamp is free: taking the passport stamps it "Arrival", so the book starts at 1 and the first press feels like a reward
@@ -20178,9 +19965,9 @@ body { overflow-x: clip !important; }                                          /
     function showTicket() {
       if (ticket || pp.claimed || st.got.length || pp.shown >= 3 || (album && !album.hidden)) return;
       pp.shown++; savePP();
-      ticket = document.createElement('aside'); ticket.id = 'hn-ticket'; ticket.setAttribute('aria-label', 'Studio Passport: an invitation');
+      ticket = document.createElement('aside'); ticket.id = 'hn-ticket'; ticket.setAttribute('aria-label', 'Desk Passport: an invitation');
       ticket.innerHTML =
-        '<div class="tk-main"><p class="tk-kicker">Studio Passport <b>admit one</b></p><p class="tk-h">Stay a while.</p>' +
+        '<div class="tk-main"><p class="tk-kicker">Desk Passport <b>admit one</b></p><p class="tk-h">Stay a while.</p>' +
         '<p class="tk-t">Stamps, doodles and stickers are hidden around this desk. Collect them, and there are things to take home.</p>' +
         '<div class="tk-row"><button type="button" class="tk-go">Take my passport</button><button type="button" class="tk-later">not now</button></div></div>' +
         '<div class="tk-stub" aria-hidden="true"><span>0<i>/</i>' + TOTAL + '</span></div>';
@@ -20356,7 +20143,7 @@ body { overflow-x: clip !important; }                                          /
     function renderAlbum() {
       if (!album) return;
       const keep = album.scrollTop, n = foundCount(), C = 2 * Math.PI * 42, nr = nextRank(), ri = rankIndex(), fresh = albumFresh; albumFresh = false;   // the ring fills only when the book is opened
-      album.innerHTML = '<header class="ab-h"><h2>Studio Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
+      album.innerHTML = '<header class="ab-h"><h2>Desk Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
         '<section class="ab-card" aria-label="Your progress">' +
           '<div class="ab-ring" role="img" aria-label="' + n + ' of ' + TOTAL + ' found"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="rg-bg" cx="50" cy="50" r="42"/>' +
             '<circle class="rg-fg' + (fresh ? ' is-anim' : '') + '" cx="50" cy="50" r="42" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - n / TOTAL)).toFixed(1) + '" transform="rotate(-90 50 50)"/></svg><span class="rg-n">' + n + '<i>/' + TOTAL + '</i></span></div>' +
@@ -20458,7 +20245,7 @@ body { overflow-x: clip !important; }                                          /
         '<rect x="26" y="26" width="' + (W - 52) + '" height="' + (H - 52) + '" rx="14" fill="none" stroke="' + INKC + '" stroke-opacity=".5" stroke-width="3"/>' +
         '<rect x="40" y="40" width="' + (W - 80) + '" height="' + (H - 80) + '" rx="8" fill="none" stroke="' + INKC + '" stroke-opacity=".22" stroke-width="1.5" stroke-dasharray="3 7"/>' +
         tape(74, 8, -4, '#F5DE4A') + tape(W - 264, 8, 3, '#E86B58') +
-        '<text x="' + M + '" y="172" font-size="104" fill="' + INKC + '">Studio Passport</text>' +
+        '<text x="' + M + '" y="172" font-size="104" fill="' + INKC + '">Desk Passport</text>' +
         '<text x="' + M + '" y="226" font-size="36" fill="' + DIM + '">a visitor&#8217;s book from Annmary Saji&#8217;s desk</text>' +
         stamp + star +
         '<text x="' + M + '" y="448" font-size="196" fill="' + RED + '">' + n + '</text>' +
@@ -20486,12 +20273,12 @@ body { overflow-x: clip !important; }                                          /
         window.__hnLastPassport = blob;                                             // (handy for testing)
         closeShare(); shareFrom = btn; shareUrl = URL.createObjectURL(blob);
         shareEl = document.createElement('div'); shareEl.id = 'hn-share'; shareEl.setAttribute('role', 'dialog'); shareEl.setAttribute('aria-modal', 'true'); shareEl.setAttribute('aria-label', 'Your passport, as a picture');
-        shareEl.innerHTML = '<div class="sh-in"><img alt="Your Studio Passport: ' + foundCount() + ' of ' + TOTAL + ' found, rank ' + RANKS[rankIndex()][1] + '" src="' + shareUrl + '">' +
+        shareEl.innerHTML = '<div class="sh-in"><img alt="Your Desk Passport: ' + foundCount() + ' of ' + TOTAL + ' found, rank ' + RANKS[rankIndex()][1] + '" src="' + shareUrl + '">' +
           '<div class="sh-row"><a class="sh-save" download="my-studio-passport.png" href="' + shareUrl + '">Save picture</a>' + (navigator.canShare && navigator.canShare({ files: [new File([blob], 'my-studio-passport.png', { type: 'image/png' })] }) ? '<button type="button" class="sh-share">Share</button>' : '') + '<button type="button" class="sh-close">Close</button></div></div>';
         document.body.appendChild(shareEl);
         shareEl.addEventListener('click', e => { if (e.target === shareEl) closeShare(); });
         shareEl.querySelector('.sh-close').addEventListener('click', closeShare);
-        const sb = shareEl.querySelector('.sh-share'); if (sb) sb.addEventListener('click', () => { try { navigator.share({ files: [new File([blob], 'my-studio-passport.png', { type: 'image/png' })], title: 'My Studio Passport' }); } catch (e) {} });
+        const sb = shareEl.querySelector('.sh-share'); if (sb) sb.addEventListener('click', () => { try { navigator.share({ files: [new File([blob], 'my-studio-passport.png', { type: 'image/png' })], title: 'My Desk Passport' }); } catch (e) {} });
         shareEl.querySelector('.sh-save').focus({ preventScroll: true }); sfx('paperSheet');
       } catch (e) { try { console.warn('[passport picture]', e && e.message || e); } catch (x) {} btn.textContent = 'could not make it'; setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 2200); return; }
       btn.textContent = label; btn.disabled = false;
@@ -20509,7 +20296,7 @@ body { overflow-x: clip !important; }                                          /
     function closeAlbum(focusTab) { if (album) album.hidden = true; setDockOpen(false); if (focusTab && dockEl()) dockEl().focus({ preventScroll: true }); }
     function bindDock() {
       const d = dockEl(); if (!d) return;
-      d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0'); d.setAttribute('aria-expanded', 'false'); d.setAttribute('aria-label', 'Studio Passport: your sticker book');
+      d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0'); d.setAttribute('aria-expanded', 'false'); d.setAttribute('aria-label', 'Desk Passport: your sticker book');
       const toggle = e => { e.preventDefault(); e.stopImmediatePropagation(); if (held) { drop(); return; } (album && !album.hidden) ? closeAlbum() : openAlbum(); };
       d.addEventListener('click', toggle, true);
       d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(e); }, true);
@@ -20559,7 +20346,7 @@ body { overflow-x: clip !important; }                                          /
     let rankNow = -1, lastFindAt = performance.now(), hints = 0;
     const rankIndex = () => { let k = 0; RANKS.forEach((x, i) => { if (foundCount() >= x[0]) k = i; }); return k; };
     function checkRank() {
-      const i = rankIndex(); const d = dockEl(); if (d) d.title = 'Studio Passport: ' + RANKS[i][1];
+      const i = rankIndex(); const d = dockEl(); if (d) d.title = 'Desk Passport: ' + RANKS[i][1];
       if (rankNow >= 0 && i > rankNow) setTimeout(() => note('<b>New rank: ' + RANKS[i][1] + '.</b>', 5200), 4300);
       rankNow = i;
     }
@@ -21333,7 +21120,7 @@ body { overflow-x: clip !important; }                                          /
   // ================================================================
   // KEEP A PHOTO -- every toy in the playground gets a "Keep a photo in my book" button. It takes a picture of what the visitor
   // just made (the drawing, the warped type, the still, the strings, and for the bouncing ball an onion-skin of its last move),
-  // sets it on a little polaroid card with a hand-lettered caption, and files it in the Studio Passport under "My creations". The
+  // sets it on a little polaroid card with a hand-lettered caption, and files it in the Desk Passport under "My creations". The
   // picture flies to the passport tab. Photos live only in this browser (localStorage, 12 at most, about 50 KB each); each can be
   // saved as a picture or removed. Nothing is uploaded. The first one earns a sticker.
   // ================================================================
@@ -21853,31 +21640,31 @@ body { overflow-x: clip !important; }                                          /
         id: 'animation',
         canvasId: 'canvas-animation',
         types: ['pegHole', 'squashBall', 'celFrame', 'timingChart', 'dot'],
-        palette: ['#3B72B9', '#60A5FA']
+        palette: ['#60A5FA', '#93C5FD']
       },
       {
         id: 'illustration',
         canvasId: 'canvas-illustration',
         types: ['penNib', 'speechBubble', 'actionSpeed', 'dot'],
-        palette: ['#D94638', '#FB7185']
+        palette: ['#FF6B5B', '#FB7185']
       },
       {
         id: 'videography',
         canvasId: 'canvas-videography',
         types: ['sprocketHole', 'viewfinder', 'recCircle', 'soundWave', 'dot'],
-        palette: ['#EF4444', '#438A5E']
+        palette: ['#F87171', '#4ADE80']
       },
       {
         id: 'graphic-design',
         canvasId: 'canvas-graphic-design',
         types: ['cmykCrosshair', 'bezierHandle', 'swatchChip', 'dot'],
-        palette: ['#00AEEF', '#E2559C']
+        palette: ['#22C7F5', '#F472B6']
       },
       {
         id: 'music',
         canvasId: 'canvas-music',
         types: ['musicNote', 'trebleClef', 'soundWave', 'dot'],
-        palette: ['#7B5EB6', '#6366F1']
+        palette: ['#B49BFF', '#818CF8']
       },
 
     ];
@@ -22288,14 +22075,14 @@ body { overflow-x: clip !important; }                                          /
       const typeColor = {};
       cfg.types.forEach((t, i) => { typeColor[t] = cfg.palette[i % cfg.palette.length]; });
 
-      const count = Math.max(18, Math.min(28, Math.round((width * height) / 42000)));
+      const count = Math.max(26, Math.min(40, Math.round((width * height) / 30000)));
 
       const particles = Array.from({ length: count }, () => {
         const type = cfg.types[Math.floor(Math.random() * cfg.types.length)];
         return {
           x: Math.random() * (width || 1200),
           y: Math.random() * (height || 800),
-          r: 4.8 + Math.random() * 7.5,
+          r: 6 + Math.random() * 8.5,
           type,
           color: typeColor[type],
           vy: 0.1 + Math.random() * 0.14, // gentle downward fall
@@ -22303,7 +22090,7 @@ body { overflow-x: clip !important; }                                          /
           vRot: (Math.random() - 0.5) * 0.006,
           sway: Math.random() * Math.PI * 2,
           swaySpeed: 0.007 + Math.random() * 0.007,
-          baseAlpha: 0.14 + Math.random() * 0.13,
+          baseAlpha: 0.2 + Math.random() * 0.14,
           hoverFactor: 0
         };
       });
@@ -22378,14 +22165,9 @@ body { overflow-x: clip !important; }                                          /
             ctx.shadowColor = p.color;
             ctx.shadowBlur = p.hoverFactor * 12;
           } else {
-            if (isDark) {
-              ctx.strokeStyle = `rgba(240, 238, 245, ${alpha * 1.1})`;
-              ctx.fillStyle = `rgba(240, 238, 245, ${alpha * 0.25})`;
-            } else {
-              ctx.strokeStyle = `rgba(24, 23, 21, ${alpha})`;
-              ctx.fillStyle = `rgba(24, 23, 21, ${alpha * 0.2})`;
-            }
-            ctx.lineWidth = 1.1;
+            ctx.strokeStyle = `rgba(150, 165, 205, ${alpha * 1.6})`;      // a slate that reads on the navy mat and on paper alike
+            ctx.fillStyle = `rgba(150, 165, 205, ${alpha * 0.25})`;
+            ctx.lineWidth = 1.5;
             ctx.shadowBlur = 0;
           }
 
@@ -22611,7 +22393,7 @@ body { overflow-x: clip !important; }                                          /
         btn.setAttribute('aria-expanded', String(nowOpen));
         btn.setAttribute('aria-label', nowOpen ? 'Hide note' : 'Show note');
         note.classList.toggle('note-open', nowOpen);
-        // PART 3.4 -- wires this drawer into the existing Studio Passport
+        // PART 3.4 -- wires this drawer into the existing Desk Passport
         // progress (same window.unlockStamp the playground toys already
         // call, not a second tracker). Only on open, matching how the
         // toys only stamp on their own "open" click. Each of these 3
@@ -24167,8 +23949,8 @@ window.addEventListener('load', () => {
 </script>
 <!-- STUDIO PASSPORT DOCK & MODAL -->
 <div class="passport-dock-btn" id="passport-dock" onclick="togglePassportModal()">
-  <span class="passport-dock-icon"><i data-lucide="book-open" style="width:18px;height:18px;color:#FFCC00;"></i></span>
-  <span class="passport-dock-label">Studio Passport</span>
+  <span class="passport-dock-icon" aria-hidden="true"><svg viewBox="0 0 28 34" width="24" height="30" focusable="false"><rect x="2.5" y="2" width="21" height="30" rx="2.5" fill="#A8281F" stroke="#1E2733" stroke-width="1.6"/><path d="M7 2.4v29.2" stroke="#7A1B14" stroke-width="1.6"/><path d="M15.5 8.2l1.9 3.9 4.3.6-3.1 3 .8 4.3-3.9-2.1-3.9 2.1.8-4.3-3.1-3 4.3-.6z" fill="#E8AF30" stroke="#1E2733" stroke-width=".9" stroke-linejoin="round"/><path d="M10.5 25h10M12 28h7" stroke="#E8AF30" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+  <span class="passport-dock-label">Desk Passport</span>
   <span class="passport-dock-counter" id="passport-counter">0 / 6</span>
 </div>
 <script>
@@ -24359,5 +24141,6 @@ window.addEventListener('load', () => {
   </div>
 </div>
 
+<script src="js/room-sound.js?v=1" defer></script>
 </body>
 </html>

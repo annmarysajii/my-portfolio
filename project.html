@@ -1015,7 +1015,22 @@ html.has-custom-cursor #star-cursor {
 
 <!-- The desk's language for every project page except the three with their own brand direction. -->
 <script>(function(){var id='';try{id=new URLSearchParams(location.search).get('id')||'';}catch(e){}if(['gobunny','green-arrow','acorn-oak'].indexOf(id)<0)document.documentElement.classList.add('hn-proj');})();</script>
+<style>
+/* the room-sound button (js/room-sound.js): speaker icons, and the little level meter that appears while it plays */
+#soundBtn .snd-on { display: none; }
+#soundBtn[aria-pressed="true"] .snd-off { display: none; }
+#soundBtn[aria-pressed="true"] .snd-on { display: block; }
+#soundBtn .snd-meter { display: none; align-items: flex-end; gap: 2px; height: 14px; margin-left: 7px; }
+#soundBtn[aria-pressed="true"] .snd-meter { display: inline-flex; }
+#soundBtn .snd-meter i { display: block; width: 3px; border-radius: 1px; background: currentColor; height: calc(3px + var(--lvl, 0) * 11px); transition: height 110ms linear; }
+#soundBtn .snd-meter i:nth-child(1) { height: calc(3px + var(--lvl, 0) * 8px); }
+#soundBtn .snd-meter i:nth-child(3) { height: calc(3px + var(--lvl, 0) * 9.5px); }
+#soundBtn:focus-visible { outline: 2px solid var(--yel, #F2C030); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #soundBtn .snd-meter i { transition: none; } }
+</style>
 <link rel="stylesheet" href="css/hn-project.css?v=1"/>
+<script src="js/room-sound.js?v=1" defer></script>
+
 </head>
 
 <body>
@@ -1059,6 +1074,7 @@ html.has-custom-cursor #star-cursor {
   <div class="nav-in">
     <a href="portfolio.html" class="nav-logo">Annmary Saji</a>
     <div style="display:flex; align-items:center; gap:1.25rem;">
+      <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="snd-meter" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" style="background:none; border:1.5px solid var(--ink12); border-radius:4px; padding:.35rem .65rem; color:var(--ink5); cursor:pointer; font-size:.9rem; display:inline-flex; align-items:center; justify-content:center;">
         <i data-lucide="moon" id="themeIcon" style="width:16px; height:16px;"></i>
       </button>
