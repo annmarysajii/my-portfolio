@@ -20977,7 +20977,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
   // 7. Smooth Scroll for in-page anchors
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
+    if (!a || a.getAttribute('href') === '#') return;                  // a bare # is a button in disguise (the guestbook link, "Open my book"): not a target
     const target = document.querySelector(a.getAttribute('href'));
     if (target) {
       e.preventDefault();
