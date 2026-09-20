@@ -17282,7 +17282,7 @@ body { overflow-x: clip !important; }                                          /
 .gb-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .gb-row { display: flex; justify-content: space-between; align-items: center; }
 .gb-dots { display: flex; gap: .4rem; } .gb-count { font-size: var(--hn-t4); color: var(--hn-ink-2); }
-.gb-dot { appearance: none; border: 1.5px solid rgba(30, 39, 51, .4); padding: 0; cursor: pointer; width: 26px; height: 26px; border-radius: 2px; background: var(--gb); box-shadow: var(--hn-edge), var(--hn-sh-flat); }
+.gb-dot { appearance: none; border: 1.5px solid rgba(30, 39, 51, .4); padding: 0; cursor: pointer; width: 26px; height: 26px; border-radius: 2px; background: var(--gbc); box-shadow: var(--hn-edge), var(--hn-sh-flat); }
 .gb-dot.is-on { box-shadow: 0 0 0 2px #FBF8EE, 0 0 0 4px var(--hn-ink); }
 .gb-dot:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
 .gb-go { justify-self: start; appearance: none; border: 0; cursor: pointer; font: 400 1.3rem/1 var(--hn-hand); padding: .4rem .9rem; margin-top: .2rem; border-radius: 2px; background: var(--hn-hi); color: var(--hn-ink); box-shadow: var(--hn-edge), var(--hn-sh-flat); }
@@ -17291,7 +17291,7 @@ body { overflow-x: clip !important; }                                          /
 .gb-msg { min-height: 1.3em; color: var(--hn-ink); } .gb-msg.is-bad { color: var(--hn-red); }
 .gb-wh { margin: .9rem 0 .4rem; padding-top: .6rem; border-top: 1.5px dashed rgba(30, 39, 51, .22); font-weight: 400; font-size: var(--hn-t3); }
 .gb-wall { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem .8rem; align-items: start; }
-.gb-note { margin: 0; padding: .55rem .6rem .5rem; background: var(--gb); box-shadow: var(--hn-edge), var(--hn-sh-raised); rotate: -1.2deg; }
+.gb-note { margin: 0; padding: .55rem .6rem .5rem; background: var(--gbc); box-shadow: var(--hn-edge), var(--hn-sh-raised); rotate: -1.2deg; }
 .gb-note:nth-child(even) { rotate: 1.1deg; } .gb-note:nth-child(3n) { rotate: -.4deg; }
 .gb-note blockquote { margin: 0; font-size: 1.15rem; line-height: 1.2; color: var(--hn-ink); overflow-wrap: anywhere; }
 .gb-note figcaption { margin-top: .35rem; font-size: 1rem; line-height: 1.1; color: var(--hn-ink-2); }
@@ -20504,7 +20504,7 @@ body { overflow-x: clip !important; }                                          /
     let panel = null, approved = null, opener = null, colour = 'yellow';
 
     function note(n, pending) {
-      const f = document.createElement('figure'); f.className = 'gb-note' + (pending ? ' is-pending' : ''); f.style.setProperty('--gb', COLOURS[n.colour] || COLOURS.yellow);
+      const f = document.createElement('figure'); f.className = 'gb-note' + (pending ? ' is-pending' : ''); f.style.setProperty('--gbc', COLOURS[n.colour] || COLOURS.yellow);
       const q = document.createElement('blockquote'); q.textContent = n.text; f.appendChild(q);
       const c = document.createElement('figcaption'); c.textContent = (n.name || 'a visitor') + (pending ? ' · sent, waiting for me to read it' : n.date ? ' · ' + n.date : ''); f.appendChild(c);
       return f;
@@ -20536,7 +20536,7 @@ body { overflow-x: clip !important; }                                          /
       document.body.appendChild(panel);
       const dots = panel.querySelector('.gb-dots');
       Object.keys(COLOURS).forEach((k, i) => {
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'gb-dot' + (i === 0 ? ' is-on' : ''); b.style.setProperty('--gb', COLOURS[k]); b.setAttribute('aria-label', k + ' note'); b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'gb-dot' + (i === 0 ? ' is-on' : ''); b.style.setProperty('--gbc', COLOURS[k]); b.setAttribute('aria-label', k + ' note'); b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
         b.addEventListener('click', () => { colour = k; dots.querySelectorAll('.gb-dot').forEach(x => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); });
         dots.appendChild(b);
       });
