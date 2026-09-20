@@ -325,6 +325,11 @@ only email and Instagram) and `annmary-saji.vcf` (adds her contact in one tap). 
 `initRewards`), so only "which have been shown" is stored (`seen`); the first time one appears it slides in once. Locked ones are pencil
 envelopes with the hint. Nothing here blocks the page: it sits in the sticker book and a tiny notice says one has arrived.
 
+**"Take my page".** The notebook's stamp page has a "take my page" button (enabled after the first stamp) that saves the visitor's stamped page
+as a PNG at 2x, with "My page", "in Annmary Saji's notebook", the date and the site address. It is built as a standalone SVG (stamps redrawn from
+their designs with their symbols, the handwriting and the ink-roughness filter embedded), painted to a canvas and saved: no library, nothing
+uploaded. The image has the page's own proportions (tall on desktop).
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.

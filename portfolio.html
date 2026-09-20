@@ -17258,9 +17258,11 @@ body { overflow-x: clip !important; }                                          /
 .hn-sp-ink { appearance: none; border: 0; padding: 0; cursor: pointer; width: 22px; height: 22px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .35), var(--hn-sh-flat); }
 .hn-sp-ink.is-on { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5), 0 0 0 2px #fbf8ef, 0 0 0 4px var(--c); }
 .hn-sp-ink:focus-visible { outline: 2px solid #f5de4a; outline-offset: 4px; }
-.hn-sp-clear, .hn-sp-back { appearance: none; border: 0; background: none; cursor: pointer; padding: .1rem .2rem; font: inherit; color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; }
+.hn-sp-clear, .hn-sp-back, .hn-sp-take { appearance: none; border: 0; background: none; cursor: pointer; padding: .1rem .2rem; font: inherit; color: var(--hn-ink-2); text-decoration: underline; text-underline-offset: .2em; }
 .hn-sp-back { margin-left: auto; }
-.hn-sp-clear:hover, .hn-sp-back:hover, .hn-sp-clear:focus-visible, .hn-sp-back:focus-visible { color: var(--hn-red); }
+.hn-sp-clear:hover, .hn-sp-back:hover, .hn-sp-take:hover, .hn-sp-clear:focus-visible, .hn-sp-back:focus-visible, .hn-sp-take:focus-visible { color: var(--hn-red); }
+.hn-sp-take:disabled { opacity: .45; cursor: default; text-decoration: none; }
+.hn-sp-take:disabled:hover { color: var(--hn-ink-2); }
 .hn-imp { position: absolute; width: 108px; height: 108px; translate: -50% -50%; rotate: var(--r, 0deg); opacity: var(--o, .85); mix-blend-mode: multiply; filter: url(#hn-stamp); pointer-events: none; }
 .hn-imp svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .hn-imp.is-new { animation: hnPress 380ms var(--hn-ease, ease) 1; }
@@ -20024,6 +20026,7 @@ body { overflow-x: clip !important; }                                          /
     if (!page) return;                                   // hidden by CSS on a phone (<= 640px), where the hero is a flip pad of its own
     const KEY = 'hn-stampage-v1', MAX = 60;
     let uid = 0;
+    const PDS_URL = 'assets/hand/project-doodles-sprite.svg?v=4';
     const PDS = 'assets/hand/project-doodles-sprite.svg?v=4';
     const ring = (extra) => '<circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/>' + (extra || '');
     const hand = 'style="font-family:var(--hn-hand)"';
@@ -20062,9 +20065,11 @@ body { overflow-x: clip !important; }                                          /
       '<div class="hn-sp-canvas" aria-label="A blank page: press a stamp anywhere on it"></div>' +
       '<div class="hn-sp-top"><p class="hn-sp-h">Your page</p><p class="hn-sp-t">Leave a mark. Pick a stamp, then press it anywhere.</p></div>' +
       '<div class="hn-sp-rack" role="group" aria-label="Rubber stamps"></div>' +
-      '<div class="hn-sp-foot"><span class="hn-sp-inks" role="group" aria-label="Ink pad"></span><button type="button" class="hn-sp-clear">clear the page</button><button type="button" class="hn-sp-back">← back to the front</button></div>';
+      '<div class="hn-sp-foot"><span class="hn-sp-inks" role="group" aria-label="Ink pad"></span><button type="button" class="hn-sp-clear">clear the page</button><button type="button" class="hn-sp-take" disabled>take my page</button><button type="button" class="hn-sp-back">← back to the front</button></div>';
     page.appendChild(sp);
     const canvas = sp.querySelector('.hn-sp-canvas'), rack = sp.querySelector('.hn-sp-rack'), inks = sp.querySelector('.hn-sp-inks');
+    const take = sp.querySelector('.hn-sp-take');
+    const syncTake = () => { take.disabled = !state.stamps.length; };
     let held = null, ink = INKS[0][1], ghost = null;
 
     Object.keys(DESIGNS).forEach(k => {
@@ -20086,6 +20091,7 @@ body { overflow-x: clip !important; }                                          /
       el.setAttribute('aria-hidden', 'true'); el.innerHTML = svgOf(s.k); canvas.appendChild(el);
     }
     state.stamps.forEach(s => { if (DESIGNS[s.k]) imprint(s, false); });
+    syncTake();
 
     function pickStamp(k) {
       dropStamp(true);
@@ -20108,14 +20114,60 @@ body { overflow-x: clip !important; }                                          /
       const r = canvas.getBoundingClientRect();
       const s = { k: held, x: +(((e.clientX - r.left) / r.width) * 100).toFixed(2), y: +(((e.clientY - r.top) / r.height) * 100).toFixed(2), r: Math.round(Math.random() * 20 - 10), o: +(0.78 + Math.random() * 0.16).toFixed(2), c: ink };
       state.stamps.push(s); if (state.stamps.length > MAX) { state.stamps.shift(); const f = canvas.firstElementChild; if (f) f.remove(); }
-      save(); imprint(s, true); sfx();
+      save(); imprint(s, true); sfx(); syncTake();
       try { if (window.hnRewards && window.hnRewards.notebook) window.hnRewards.notebook(); } catch (err) {}
     }
     // a mouse stamps the moment the button goes down (the click arrives after the button comes back up, which feels late);
     // touch, pen and keyboard still use the click
     canvas.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button === 0 && held) { pressedAt = performance.now(); place(e); } });
     canvas.addEventListener('click', e => { if (performance.now() - pressedAt < 600) return; place(e); });
-    sp.querySelector('.hn-sp-clear').addEventListener('click', () => { state.stamps = []; save(); canvas.innerHTML = ''; });
+    sp.querySelector('.hn-sp-clear').addEventListener('click', () => { state.stamps = []; save(); canvas.innerHTML = ''; syncTake(); });
+    take.addEventListener('click', () => takePage(take));
+
+    // ---- taking the page home: the stamped page as a PNG (2x), with the date, built as a standalone SVG so it needs no library ----
+    // The stamps are drawn again from their designs, with the symbols they use, the handwriting and the ink-roughness filter
+    // embedded, then the SVG is painted to a canvas and saved. Nothing leaves the browser.
+    let symCache = null;
+    async function symbolFor(id) {
+      const local = document.getElementById(id); if (local) return local.outerHTML;
+      if (!symCache) { const t = await (await fetch(PDS_URL)).text(); symCache = new DOMParser().parseFromString(t, 'image/svg+xml'); }
+      const n = symCache.getElementById(id); return n ? new XMLSerializer().serializeToString(n) : '';
+    }
+    const b64 = buf => { let s = '', a = new Uint8Array(buf); for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000)); return btoa(s); };
+    async function takePage(btn) {
+      if (!state.stamps.length) return;
+      const label = btn.textContent; btn.disabled = true; btn.textContent = 'one moment...';
+      try {
+        const r = canvas.getBoundingClientRect(), K = 2, W = Math.round(r.width * K), H = Math.round(r.height * K);
+        const ids = new Set(), items = state.stamps.filter(s => DESIGNS[s.k]).map(s => {
+          const inner = svgOf(s.k).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '').replace(/var\(--hn-hand\)/g, "'Annmary Hand'")
+            .replace(/href="[^"#]*#([a-z0-9-]+)"/g, (m, id) => { if (!/^sa\d+$/.test(id)) ids.add(id); return 'href="#' + id + '"'; });
+          return { s, inner };
+        });
+        const syms = (await Promise.all([...ids].map(symbolFor))).join('');
+        const font = b64(await (await fetch('assets/hand/annmary-hand.woff2?v=2')).arrayBuffer());
+        const filt = (document.getElementById('hn-stamp') || {}).outerHTML || '';
+        const d = new Date(), when = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        const g = items.map(({ s, inner }) => '<g transform="translate(' + (s.x / 100 * W).toFixed(1) + ' ' + (s.y / 100 * H).toFixed(1) + ') rotate(' + s.r + ') scale(' + (54 * K / 60 * 1.0).toFixed(3) + ') translate(-60 -60)" opacity="' + s.o + '" style="color:' + s.c + ';mix-blend-mode:multiply" filter="url(#hn-stamp)">' + inner + '</g>').join('');
+        const svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' +
+          '<defs><style>@font-face{font-family:"Annmary Hand";src:url(data:font/woff2;base64,' + font + ') format("woff2")} text{font-family:"Annmary Hand"}</style>' +
+          '<pattern id="dots" width="' + 28 * K + '" height="' + 28 * K + '" patternUnits="userSpaceOnUse"><circle cx="' + 14 * K + '" cy="' + 14 * K + '" r="' + 1.2 * K + '" fill="rgba(72,60,38,.32)"/></pattern>' + filt + syms + '</defs>' +
+          '<rect width="100%" height="100%" fill="#FAF8F1"/><rect width="100%" height="100%" fill="url(#dots)"/>' +
+          g +
+          '<text x="' + 22 * K + '" y="' + 44 * K + '" font-size="' + 24 * K + '" fill="#1E2733">My page</text>' +
+          '<text x="' + 22 * K + '" y="' + (H - 40 * K) + '" font-size="' + 15 * K + '" fill="#3D4858">in Annmary Saji\'s notebook</text>' +
+          '<text x="' + 22 * K + '" y="' + (H - 18 * K) + '" font-size="' + 15 * K + '" fill="#3D4858">' + when + ' \u00b7 annmarysajii.github.io/my-portfolio</text></svg>';
+        const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+        const img = new Image(); await new Promise((ok, no) => { img.onload = ok; img.onerror = no; img.src = url; });
+        const cv = document.createElement('canvas'); cv.width = W; cv.height = H; cv.getContext('2d').drawImage(img, 0, 0); URL.revokeObjectURL(url);
+        const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'my-page-in-annmarys-notebook.png'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        window.__hnLastPage = blob;                       // (handy for testing)
+        btn.textContent = 'saved, thank you';
+      } catch (e) { btn.textContent = 'could not save it'; try { console.warn('[take my page]', e && e.message || e); } catch (x) {} }
+      setTimeout(() => { btn.textContent = label; syncTake(); }, 2200);
+    }
 
     // ---- turning the page ----
     const turn = document.createElement('button'); turn.type = 'button'; turn.className = 'hn-turn'; turn.setAttribute('aria-label', 'Turn the page: a blank page where you can stamp'); turn.setAttribute('aria-expanded', 'false');
