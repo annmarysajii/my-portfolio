@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Studio Passport card (source for the PNGs in assets/rewards)</title>
+<!-- Render with: chrome --headless=new --hide-scrollbars --force-device-scale-factor=2 --window-size=750,1050
+     --default-background-color=00000000 --screenshot=out.png "http://localhost:PORT/assets/rewards/src/card.html#kys"
+     (#kys, #jasmine or #dearfriend). 750 x 1050 CSS px at 2x = 1500 x 2100 px = 2.5 x 3.5 in at 600 dpi. -->
+<style>
+@font-face { font-family: 'Annmary Hand'; src: url('../../hand/annmary-hand.woff2?v=2') format('woff2'); }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 750px; height: 1050px; background: transparent; }
+body { font-family: 'Annmary Hand', 'Segoe Print', cursive; color: #1E2733; }
+.card { position: relative; width: 750px; height: 1050px; border-radius: 44px; overflow: hidden; background: var(--bg); padding: 26px; }
+.card::before { content: ""; position: absolute; inset: 0; background: url('../../svg-opt/paper-light-tile.webp') 0 0 / 300px 300px; mix-blend-mode: multiply; opacity: .35; }
+.panel { position: relative; height: 100%; border-radius: 24px; background: #FAF6EA url('../../svg-opt/paper-light-tile.webp') 0 0 / 360px 360px; box-shadow: 0 2px 0 rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.8); padding: 30px 34px 26px; display: flex; flex-direction: column; }
+.top { display: flex; justify-content: space-between; align-items: baseline; font-size: 30px; color: #4A5566; }
+.top b { font-weight: 400; color: var(--acc); }
+.art { position: relative; margin: 34px 0 0; height: 336px; background: #fff; padding: 12px; box-shadow: 0 2px 2px rgba(60,40,20,.28), 4px 10px 18px rgba(60,40,20,.22); transform: rotate(-.6deg); }
+.art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+.tape { position: absolute; top: -20px; left: 50%; width: 150px; height: 42px; margin-left: -75px; rotate: 2deg; background: var(--tape); opacity: .9; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.mid { display: flex; gap: 22px; align-items: center; margin-top: 26px; flex: 1; min-height: 0; }
+.title { flex: 0 0 236px; height: 100%; display: grid; place-items: center; color: var(--ink, #1E2733); }
+.title svg { width: 100%; height: 100%; }
+.info { flex: 1; display: grid; gap: 14px; }
+.info h2 { font-size: 52px; font-weight: 400; line-height: .9; color: var(--acc); }
+.info p { font-size: 31px; line-height: 1.1; }
+.spec { display: grid; gap: 9px; margin-top: 4px; }
+.spec div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: baseline; border-top: 2px dotted rgba(30,39,51,.35); padding-top: 7px; font-size: 25px; line-height: 1.1; }
+.spec dt { color: var(--acc); font-size: 23px; }
+.spec dd { margin: 0; }
+.foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; padding-top: 12px; border-top: 3px solid var(--bg); }
+.who b { display: block; font-size: 46px; font-weight: 400; line-height: 1; }
+.who span { font-size: 27px; color: #4A5566; }
+.who small { display: block; font-size: 22px; color: #6B7686; margin-top: 4px; }
+.stamp { position: relative; width: 132px; height: 132px; color: var(--acc); rotate: -8deg; }
+.stamp svg.ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stamp svg.doodle { position: absolute; left: 24px; top: 24px; width: 84px; height: 84px; }
+</style></head>
+<body><div class="card" id="card"><div class="panel" id="panel"></div></div>
+<script>
+const SPRITE = '/assets/hand/project-doodles-sprite.svg?v=4';
+const SET = {
+  kys: { n: 1, bg: '#E0559B', acc: '#B23478', tape: 'rgba(80, 200, 190, .85)', ink: '#1E2733', img: '../../projects/keep-yourself-safe/kys-cover.webp', pos: '96% 50%',
+    title: ['pd-kys-title', 348, 465], head: ['pd-kys-head', 200, 173], year: '2025',
+    blurb: 'A hand-drawn short about how casually the internet tells a teenage girl to hurt herself.',
+    spec: [['Runs', '1 min 30 s, 2D animation'], ['Made', 'Written, sound-designed and produced solo'], ['Shown', 'Annecy 2025, Paris Lyon Singapore programme']] },
+  jasmine: { n: 2, bg: '#E8432E', acc: '#B12A17', tape: 'rgba(245, 197, 24, .88)', ink: '#1E2733', img: '../../projects/jasmine/jas-cover.webp', pos: '40% 50%',
+    name: 'Jasmine', title: ['pd-jasmine', 301, 227], head: ['pd-jas-head-1', 170, 146], year: '2026',
+    blurb: 'Indo-jazz fusion told in two media: a comic and an original album.',
+    spec: [['Comic', '70+ pages'], ['Album', '6 original tracks'], ['Made as', 'My final year project']] },
+  dearfriend: { n: 3, bg: '#5B2333', acc: '#7B2A40', tape: 'rgba(201, 162, 75, .9)', ink: '#3A1622', img: '../../projects/dear-friend/bg-desk-night.webp', pos: '50% 60%',
+    name: 'Dear Friend', title: ['pd-dear-friend', 267, 179], head: ['pd-df-head-1', 159, 126], year: '2024',
+    blurb: 'A period gothic short, from rough sketches to finished rooms.',
+    spec: [['Format', '2D animated short'], ['Pipeline', 'Sketches to sets'], ['Made as', 'A self-produced film']] }
+};
+const key = (location.hash || '#kys').slice(1), d = SET[key];
+const card = document.getElementById('card'); card.style.setProperty('--bg', d.bg); card.style.setProperty('--acc', d.acc); card.style.setProperty('--tape', d.tape); card.style.setProperty('--ink', d.ink);
+const use = (id, w, h, cls) => '<svg class="' + (cls || '') + '" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true"><use href="' + SPRITE + '#' + id + '"/></svg>';
+document.getElementById('panel').innerHTML =
+  '<div class="top"><span>Studio Passport card <b>' + d.n + ' / 3</b></span><span>' + d.year + '</span></div>' +
+  '<div class="art"><i class="tape"></i><img src="' + d.img + '" alt="" style="--pos:' + d.pos + '"></div>' +
+  '<div class="mid"><div class="title">' + use(d.title[0], d.title[1], d.title[2]) + '</div><div class="info">' + (d.name ? '<h2>' + d.name + '</h2>' : '') + '<p>' + d.blurb + '</p><dl class="spec">' +
+  d.spec.map(s => '<div><dt>' + s[0] + '</dt><dd>' + s[1] + '</dd></div>').join('') + '</dl></div></div>' +
+  '<div class="foot"><div class="who"><b>Annmary Saji</b><span>BFA Animation, NTU ADM, 2026</span><small>annmarysajii.github.io/my-portfolio</small></div>' +
+  '<div class="stamp"><svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>' + use(d.head[0], d.head[1], d.head[2], 'doodle') + '</div></div>';
+</script></body></html>

@@ -17186,6 +17186,29 @@ body { overflow-x: clip !important; }                                          /
 }
 @media (max-width: 900px) { #hero .hero-sketchbook .hero-bookmark-ribbon { display: none !important; } }   /* stacked pages and the phone flip pad have no gutter */
 
+/* ---- T. THE STICKER BOOK'S "FOR YOU": fixed take-away rewards (a card per finished project, her business card at the gold star) ---- */
+.ab-gifts { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: .9rem .7rem; align-items: start; }
+.ab-gift { margin: 0; display: grid; gap: .35rem; align-content: start; }
+.ab-gift--wide { grid-column: 1 / -1; max-width: 230px; }
+.ab-gift img, .ab-env { display: block; width: 100%; aspect-ratio: var(--ar); object-fit: cover; border-radius: 3px; }
+.ab-gift img { box-shadow: var(--hn-sh-raised); rotate: -.8deg; }
+.ab-gift:nth-child(even) img { rotate: .9deg; }
+.ab-env {                                                        /* a sealed envelope, drawn in pencil: not yet */
+  border: 1.5px dashed rgba(30, 39, 51, .32);
+  background:
+    linear-gradient(to bottom right, transparent calc(50% - .75px), rgba(30, 39, 51, .26) 50%, transparent calc(50% + .75px)) top / 100% 52% no-repeat,
+    linear-gradient(to bottom left, transparent calc(50% - .75px), rgba(30, 39, 51, .26) 50%, transparent calc(50% + .75px)) top / 100% 52% no-repeat;
+}
+.ab-gift figcaption { font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.15; color: var(--hn-ink-2); }
+.ab-gift figcaption b { display: block; font-weight: 400; color: var(--hn-ink); }
+.ab-gl { display: grid; gap: .1rem; margin-top: .2rem; }
+.ab-gl a { color: var(--hn-red); text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1.5px; justify-self: start; }
+.ab-gl a:hover, .ab-gl a:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); outline: none; }
+.ab-gift.is-new img { animation: abGift 720ms var(--hn-ease, ease) 1; }
+@keyframes abGift { from { translate: 0 16px; rotate: -6deg; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ab-gift.is-new img { animation: none; } }
+.ab-gift.is-locked .ab-env { aspect-ratio: 3 / 2; }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19713,6 +19736,18 @@ body { overflow-x: clip !important; }                                          /
     Object.keys(PD).forEach(id => { (SETS[PD[id][2]] = SETS[PD[id][2]] || []).push(id); });
     Object.keys(PD).forEach(id => { DEFS[id] = { sym: id, ext: true, col: INK, name: PROJ[PD[id][2]] + ' doodle' }; });
     Object.keys(TITLES).forEach(p => { const t = TITLES[p]; DEFS[t[0]] = { sym: t[0], ext: true, wide: t[1] === 'wide', tall: t[1] === 'tall', col: INK, name: PROJ[p] + ' title', how: 'Find every ' + PROJ[p] + ' doodle', title: true }; });
+    // TAKE-AWAY REWARDS: fixed, not the visitor's choice, like being handed something. Finishing a project's doodles gives that
+    // project's card (a print-ready PNG, 2.5 x 3.5 in at 600 dpi); all five stamps give her business card (PDF + a .vcf that saves
+    // her contact in one tap). They unlock from what is already collected (need), so nothing extra is stored except which ones
+    // have been shown. Files live in assets/rewards/ (sources in assets/rewards/src/).
+    const GIFTS = [
+      { id: 'card-kys',      need: 'pd-kys-title',   name: 'Keep Yourself Safe card', how: 'Find every Keep Yourself Safe doodle', thumb: 'assets/rewards/thumbs/card-kys.webp',        ar: '5 / 7', files: [['Save the card', 'assets/rewards/card-kys.png']] },
+      { id: 'card-jasmine',  need: 'pd-jasmine',     name: 'Jasmine card',            how: 'Find every Jasmine doodle',            thumb: 'assets/rewards/thumbs/card-jasmine.webp',    ar: '5 / 7', files: [['Save the card', 'assets/rewards/card-jasmine.png']] },
+      { id: 'card-dearfriend', need: 'pd-dear-friend', name: 'Dear Friend card',      how: 'Find every Dear Friend doodle',        thumb: 'assets/rewards/thumbs/card-dearfriend.webp', ar: '5 / 7', files: [['Save the card', 'assets/rewards/card-dearfriend.png']] },
+      { id: 'card-business', need: 'master',         name: 'My business card',        how: 'Collect all five stamps',              thumb: 'assets/rewards/thumbs/business-card.webp',   ar: '7 / 4', wide: true,
+        files: [['Save as PDF', 'assets/rewards/annmary-saji-business-card.pdf'], ['Add to contacts', 'assets/rewards/annmary-saji.vcf']] }
+    ];
+    const CARD_OF = { kys: 'Keep Yourself Safe card', jas: 'Jasmine card', df: 'Dear Friend card' };
     const norm = id => id === 'design' ? 'graphic-design' : id;
     const isDoodle = id => !!PD[id];
     const EXTRA = ['yourpage'];                                              // earned outside the five toys: the first stamp on the notebook's next page
@@ -19733,8 +19768,8 @@ body { overflow-x: clip !important; }                                          /
     ];
     PEEK.forEach(s => { HOSTOF[s[1]] = s[0]; });
 
-    let st = { got: [], placed: {} };
-    try { const r = JSON.parse(localStorage.getItem(KEY) || 'null'); if (r && Array.isArray(r.got)) st = { got: r.got.filter(i => DEFS[i]), placed: r.placed || {} }; } catch (e) {}
+    let st = { got: [], placed: {}, seen: [] };
+    try { const r = JSON.parse(localStorage.getItem(KEY) || 'null'); if (r && Array.isArray(r.got)) st = { got: r.got.filter(i => DEFS[i]), placed: r.placed || {}, seen: Array.isArray(r.seen) ? r.seen : [] }; } catch (e) {}
     const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
     const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
     const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19822,6 +19857,28 @@ body { overflow-x: clip !important; }                                          /
       el.innerHTML = '<h3>' + title + '<span>' + count + '</span></h3><div class="ab-row"></div><p class="ab-hint">' + hint + '</p>';
       const row = el.querySelector('.ab-row'); ids.forEach(id => row.appendChild(tile(id))); return el;
     }
+    function giftSection() {
+      const el = document.createElement('section'); el.className = 'ab-sec';
+      const have = GIFTS.filter(g => st.got.includes(g.need)).length;
+      el.innerHTML = '<h3>For you<span>' + have + '/' + GIFTS.length + '</span></h3><div class="ab-gifts"></div>' +
+        '<p class="ab-hint">Things to keep. Finish a project&rsquo;s doodles for its card; find all five stamps for my business card.</p>';
+      const box = el.querySelector('.ab-gifts');
+      GIFTS.forEach(g => {
+        const f = document.createElement('figure'), open = st.got.includes(g.need), fresh = open && !st.seen.includes(g.id);
+        f.className = 'ab-gift' + (g.wide ? ' ab-gift--wide' : '') + (open ? ' is-open' : ' is-locked') + (fresh && !calm() ? ' is-new' : '');
+        f.style.setProperty('--ar', g.ar);
+        if (open) {
+          f.innerHTML = '<img src="' + g.thumb + '" alt="' + g.name + '" loading="lazy"><figcaption><b>' + g.name + '</b><span class="ab-gl">' +
+            g.files.map(x => '<a href="' + x[1] + '" download>' + x[0] + '</a>').join('') + '</span></figcaption>';
+          if (fresh) { st.seen.push(g.id); save(); }
+        } else {
+          f.title = g.how;
+          f.innerHTML = '<div class="ab-env" role="img" aria-label="' + g.name + ' not unlocked yet. ' + g.how + '"></div><figcaption><b>' + g.name + '</b><span>' + g.how + '</span></figcaption>';
+        }
+        box.appendChild(f);
+      });
+      return el;
+    }
     function renderAlbum() {
       if (!album) return;
       const stamps = FIVE.filter(i => st.got.includes(i)).length;
@@ -19835,6 +19892,7 @@ body { overflow-x: clip !important; }                                          /
         album.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
       album.appendChild(section('Your page', (st.got.includes('yourpage') ? 1 : 0) + '/1', EXTRA, 'Turn the page of the notebook at the top and press a stamp on it.'));
+      album.appendChild(giftSection());
       const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
       reset.addEventListener('click', () => api.reset()); album.appendChild(reset);
     }
@@ -19871,8 +19929,8 @@ body { overflow-x: clip !important; }                                          /
     function final() {
       if (st.got.includes('master')) return;
       st.got.push('master'); save(); sfx('rewardFinal'); refresh();
-      note('<b>You found every stamp!</b> Thank you for poking around my desk. A gold star is in your sticker book. <a href="#contact">Say hi</a>', 12000);
-      say('You found every stamp. A gold star was added to your sticker book.');
+      note('<b>You found every stamp!</b> Thank you for poking around my desk. A gold star is in your sticker book, and so is my business card to keep. <a href="#contact">Say hi</a>', 12000);
+      say('You found every stamp. A gold star and a business card were added to your sticker book.');
     }
     // the first stamp pressed on the notebook's next page earns one sticker; more stamps earn nothing extra
     function onNotebook() {
@@ -19891,7 +19949,8 @@ body { overflow-x: clip !important; }                                          /
       say('Doodle found: ' + PROJ[p] + ', ' + have + ' of ' + set.length + '.');
       if (have === set.length) {
         const t = TITLES[p]; if (t && !st.got.includes(t[0])) { st.got.push(t[0]); save(); }
-        note('<b>' + PROJ[p] + ': the whole set.</b>' + (t ? ' Its lettered title is in your sticker book.' : ''), 7000);
+        note('<b>' + PROJ[p] + ': the whole set.</b>' + (t ? ' Its lettered title is in your sticker book' + (CARD_OF[p] ? ', and so is a card to keep.' : '.') : ''), 7000);
+        if (CARD_OF[p]) say('The ' + CARD_OF[p] + ' is in your sticker book, under For you.');
       } else note('<b>Found: ' + PROJ[p] + '</b> · ' + have + ' of ' + set.length, 3600);
       refresh();
     }

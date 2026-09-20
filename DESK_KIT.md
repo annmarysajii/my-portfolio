@@ -317,6 +317,14 @@ spine (darker there), lies down the gutter, and hangs out below the book with a 
 tokens (a box-shadow would ignore the swallowtail). It is hidden at 900px and below: there the pages stack (or the hero is the phone
 flip pad), so there is no gutter for it to lie in.
 
+**Take-away rewards ("For you" in the sticker book).** Fixed, not the visitor's choice, so it feels like being handed something. Finishing a
+project's doodle set gives that project's card (Keep Yourself Safe, Jasmine, Dear Friend; Chase has none): a print-ready PNG, 2.5 x 3.5 in at
+600 dpi, built from `assets/rewards/src/card.html` (`#kys`, `#jasmine`, `#dearfriend`; rendered with headless Chrome at 2x). All five stamps
+give her business card: `assets/rewards/annmary-saji-business-card.pdf` (her own two-page card, phone number and LinkedIn left off the back,
+only email and Instagram) and `annmary-saji.vcf` (adds her contact in one tap). Unlock is derived from what is already collected (`GIFTS` in
+`initRewards`), so only "which have been shown" is stored (`seen`); the first time one appears it slides in once. Locked ones are pencil
+envelopes with the hint. Nothing here blocks the page: it sits in the sticker book and a tiny notice says one has arrived.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.
