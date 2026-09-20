@@ -19423,7 +19423,7 @@ footer.foot, [data-theme="dark"] footer.foot {
     // ---- effects: everything is decoded ahead of time (as soon as sound is on), so a press plays at once, never after a
     // fetch. Each kind has its own trim so nothing jumps out over the music, and a fast second press cuts the first
     // one short instead of stacking on it.
-    const SLOT_VOL = { paperPrint: 1, paperSheet: 1, paperSlip: 1, pageTurn: 1, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
+    const SLOT_VOL = { paperPrint: .6, paperSheet: .6, paperSlip: .6, pageTurn: .8, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
       reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, click: .8 };
     const voices = {};
     async function discover(name) {                                       // find and decode every file of one slot
@@ -19471,22 +19471,24 @@ footer.foot, [data-theme="dark"] footer.foot {
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
-    // Paper on hover was too much (every card, all the time). Now: mouse only, once per object per 20 seconds, and
-    // never more than one paper sound every 3.5 seconds anywhere. Each kind of paper has its own slot.
-    const HOVER = [
-      ['#hero .reel-frame, #hero .metrics, #hero .hn-xsheet, #about .bp-inv-col, #about .about-spec', 'paperSlip'],
-      ['.desk .grid .card, #downloads .dl-btn', 'paperPrint'],
-      ['.desk .lc, #about .bp-intro-block', 'paperSheet']
-    ];
-    const seenAt = new WeakMap(); let lastHover = 0;
+    // Paper on hover is minimal on purpose: only a project card makes a sound (the print sliding out), never the other
+    // sheets. It plays once the pointer has rested on the card for a moment (so sweeping across the grid stays silent, and
+    // moving straight to the next card still gets its own sound, cutting the last), and a card stays quiet for 8 seconds
+    // after it has sounded. Mouse only.
+    const HOVER = [['.desk .grid .card', 'paperPrint']];
+    const seenAt = new WeakMap();
     HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
+      let t = 0;
       el.addEventListener('pointerenter', e => {
         if (e.pointerType !== 'mouse') return;
-        const now = performance.now();
-        if (now - lastHover < 3500 || now - (seenAt.get(el) || -1e9) < 20000) return;
-        seenAt.set(el, now); lastHover = now;
-        window.__hnSfx(slot);
+        clearTimeout(t);
+        t = setTimeout(() => {
+          const now = performance.now();
+          if (now - (seenAt.get(el) || -1e9) < 8000) return;
+          seenAt.set(el, now); window.__hnSfx(slot);
+        }, 140);
       });
+      el.addEventListener('pointerleave', () => clearTimeout(t));
     }));
     // the About drawer (the badge that opens "Studio Desk"): a drawer sound as it opens and closes
     const bp = document.querySelector('.bp-badge--toggle');

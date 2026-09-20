@@ -42,8 +42,10 @@ recordings in assets/sound/, which are the untouched originals: polaroid printin
 duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,
 cartoon_boing, clack and pencil. To use a different section of one, re-cut it from assets/sound/.
 
-Paper hover is deliberately rare now: a mouse only, once per object per 20 seconds, and never more than one paper
-sound every 3.5 seconds anywhere.
+Paper hover is minimal on purpose: only a project card sounds (paperPrint), mouse only, after the pointer has rested on it
+for 140 ms (so sweeping across the grid is silent, but moving straight to the next card still gets its own sound), and a card
+stays quiet for 8 seconds after it has sounded. No other sheet, slip or photo makes a hover sound (paperSheet and paperSlip
+are unused for now).
 
 The generic files (paper-1/2/3, drawer-open, drawer-close) were made from makigai_maimai-paper-245786.mp3 and
 freesound_community-drawer-41055.mp3. Check each file's licence before the site goes public.
