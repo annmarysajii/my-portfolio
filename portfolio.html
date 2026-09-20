@@ -17065,6 +17065,39 @@ footer.foot, [data-theme="dark"] footer.foot {
 @media (max-width: 640px) { .foot .foot-logo { font-size: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { #nav .nav-r .theme-toggle, #nav .nav-cta { transition: none !important; } }
 
+/* ---- Q. THE FIVE TOYS ARE OBJECTS ON THE DESK, NOT POPUPS: a paper card, hand-lettered, with a "put it back" ------- */
+#wrap .pg-toy .playground-scrap-card {
+  background: #FBF8EE url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px !important;
+  border: 0 !important; border-radius: 2px !important; padding: 1.2rem 1.1rem 2.3rem !important; gap: .65rem !important;
+  box-shadow: var(--hn-edge), var(--hn-sh-raised) !important; color: var(--hn-ink) !important;
+}
+#wrap .pg-toy .pg-reveal .pg-header { padding-right: 0 !important; }
+#wrap .pg-toy .pg-badge-icon { border: 0 !important; border-radius: 50% !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; }
+#wrap .pg-toy .pg-tag { font-family: var(--hn-hand) !important; font-size: 1.05rem !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important; opacity: 1 !important; color: var(--acc-ink, var(--hn-ink-2)) !important; }
+#wrap .pg-toy .pg-title { font-family: var(--hn-hand) !important; font-size: 1.35rem !important; font-weight: 400 !important; letter-spacing: .02em !important; line-height: 1.15 !important; color: var(--hn-ink) !important; }
+#wrap .pg-toy .pg-hint, #wrap .pg-toy .vector-bottom-hint { font-family: var(--hn-hand) !important; font-size: 1.05rem !important; font-style: normal !important; color: var(--hn-ink-2) !important; }
+#wrap .pg-toy .pg-close-btn {                                   /* "put it back", in pencil, at the foot of the card */
+  top: auto !important; bottom: .65rem !important; right: 1rem !important; width: auto !important; height: auto !important; padding: 0 .1rem !important;
+  border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; font-size: 0 !important; color: var(--hn-ink-2) !important;
+}
+#wrap .pg-toy .pg-close-btn::after { content: "put it back"; font-family: var(--hn-hand); font-size: 1.1rem; text-decoration: underline; text-underline-offset: .2em; }
+#wrap .pg-toy .pg-close-btn:hover, #wrap .pg-toy .pg-close-btn:focus-visible { transform: none !important; color: var(--hn-red) !important; }
+#wrap .pg-toy .pg-close-btn:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
+#wrap .pg-toy .pg-body canvas { border: 0 !important; border-radius: 2px !important; box-shadow: 0 0 0 1px rgba(var(--hn-shadow-rgb), .28), var(--hn-sh-flat) !important; }
+/* the buttons are little paper tabs; the chosen one is highlighted, not filled */
+#wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn) {
+  font-family: var(--hn-hand) !important; font-size: 1.05rem !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important;
+  border: 0 !important; border-radius: 2px !important; background: #F1E9D8 !important; color: var(--hn-ink) !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important;
+  transition: translate 200ms var(--hn-ease), box-shadow 200ms var(--hn-ease);
+}
+#wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn):hover { translate: 0 -1px; }
+#wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn):active { translate: 0 1px; box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .5) !important; }
+#wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn).active { background: var(--hn-hi) !important; color: var(--hn-ink) !important; box-shadow: inset 0 1px 3px rgba(var(--hn-shadow-rgb), .45) !important; }
+#wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn):focus-visible { outline: 2px solid var(--hn-red); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #wrap .pg-toy :is(.pg-btn, .rubber-stamp-btn, .lut-btn, .chord-pad-btn) { transition: none; } }
+#wrap .pg-toy .motion-lab-stage { border: 0 !important; border-radius: 2px !important; box-shadow: 0 0 0 1px rgba(var(--hn-shadow-rgb), .28), var(--hn-sh-flat) !important; }
+#wrap .pg-toy .shutter-btn { font-family: var(--hn-hand) !important; font-size: 1.15rem !important; font-weight: 400 !important; letter-spacing: .02em !important; border-radius: 2px !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }

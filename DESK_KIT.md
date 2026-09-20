@@ -296,6 +296,12 @@ little pressed-in paper pills, Resume is a slightly crooked yellow label. No blu
 light tokens. The footer is the dark front face of the desk with a lit chamfer on its top edge, cream handwriting on wood
 (contrast 6.9:1 worst case), the visitor counter as a stuck label. Footer links carry `data-dock-avoid` so the Passport yields.
 
+**The five toys are objects, not popups.** Each open toy (`#wrap .pg-toy .playground-scrap-card`) is a paper card lying on the desk:
+no border, 2px corners, the light-token edge and shadow, hand-lettered tag/title/hint, buttons as small paper tabs with the chosen
+one highlighted (yellow) rather than filled, canvases with a hairline instead of a heavy ink border, and "put it back" in pencil at
+the foot instead of a circled x. One shared rule set covers all five (`.pg-btn`, `.rubber-stamp-btn`, `.lut-btn`, `.chord-pad-btn`);
+the toy-specific objects (a flipbook for Animate, a clapper for Capture, and so on) are the next step and would go on top of it.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.
