@@ -17353,6 +17353,13 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 @keyframes hnDevA { 0% { opacity: 1; } 25% { opacity: .96; } 100% { opacity: 0; } }
 @keyframes hnDevB { 0% { opacity: 0; } 30% { opacity: .9; } 100% { opacity: 0; } }
 
+/* ---- AC. THE DRAWER YOU ACTUALLY PULL ----------------------------------------------------------------------------- */
+#downloads .dl-pull { touch-action: none; }
+#downloads.is-dragging .dl-tray { grid-template-rows: 1fr; visibility: visible; transition: none; }          /* while held, the tray's height is the pointer's, not a class's */
+#downloads.is-dragging .dl-tray-clip { transition: none; }
+#downloads.is-dragging.is-settling .dl-tray-clip { transition: max-height 300ms var(--dl-ease); }
+@media (prefers-reduced-motion: reduce) { #downloads.is-dragging.is-settling .dl-tray-clip { transition: none; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -20894,6 +20901,52 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       const img = c.querySelector('.card-img'); if (!img || c.getBoundingClientRect().top < vh * 0.9) return;       // already on screen: no flash
       const d = document.createElement('i'); d.className = 'hn-dev'; d.setAttribute('aria-hidden', 'true'); c.appendChild(d); lay(d, img); io.observe(c);
     });
+  })();
+
+  // ================================================================
+  // THE DRAWER YOU ACTUALLY PULL -- the quick-look drawer's handle can be held and dragged: the tray grows (or shrinks) exactly as far
+  // as the pointer travels, the front follows under the hand, and on letting go it settles open or shut depending on how far it got (a
+  // little more is needed to close an open drawer than to open a shut one, so it does not flutter). A plain click still toggles it, and
+  // so does the keyboard. Only the drawer's own box is restyled while it moves, so it stays smooth.
+  // ================================================================
+  (function initDrawerPull() {
+    const box = document.getElementById('downloads'), btn = document.getElementById('dl-pull');
+    const clip = box && box.querySelector('.dl-tray-clip'), well = box && box.querySelector('.dl-well');
+    if (!box || !btn || !clip || !well) return;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
+    let d = null, moved = false;
+    const full = () => well.offsetHeight + 0;
+    btn.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      const startOpen = box.classList.contains('is-open'), F = full();
+      d = { id: e.pointerId, y0: e.clientY, F, startOpen, h0: startOpen ? F : 0, h: startOpen ? F : 0, on: false };
+      moved = false; try { btn.setPointerCapture(e.pointerId); } catch (x) {}
+    });
+    btn.addEventListener('pointermove', e => {
+      if (!d || e.pointerId !== d.id) return;
+      const dy = e.clientY - d.y0;
+      if (!d.on) {
+        if (Math.abs(dy) < 7) return; d.on = true; moved = true;
+        box.classList.add('is-dragging'); clip.style.transition = 'none'; clip.style.maxHeight = d.h0 + 'px';
+      }
+      d.h = clamp(d.h0 + dy, 0, d.F); clip.style.maxHeight = d.h + 'px';
+    });
+    const settle = () => {
+      if (!d) return; const s = d; d = null; try { btn.releasePointerCapture(s.id); } catch (x) {}
+      if (!s.on) return;
+      const open = s.startOpen ? s.h > s.F * 0.62 : s.h > s.F * 0.32;
+      box.classList.add('is-settling'); clip.style.transition = ''; clip.style.maxHeight = (open ? s.F : 0) + 'px';
+      const done = () => {
+        box.classList.remove('is-dragging', 'is-settling'); clip.style.maxHeight = '';
+        const was = box.classList.contains('is-open'); box.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open !== was) sfx(open ? 'drawerOpen' : 'drawerClose');
+      };
+      matchMedia('(prefers-reduced-motion: reduce)').matches ? done() : setTimeout(done, 320);
+    };
+    btn.addEventListener('pointerup', settle); btn.addEventListener('pointercancel', settle);
+    // a drag is not a click: swallow the click that follows so the drawer is not flipped a second time
+    btn.addEventListener('click', e => { if (moved) { e.stopImmediatePropagation(); e.preventDefault(); moved = false; } }, true);
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).

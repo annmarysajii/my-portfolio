@@ -393,6 +393,11 @@ picture, because the card loader rewrites the picture's contents; it removes its
 before and after on a 9000 px scroll through all 24 cards: median 16.7 ms, p95 16.8 ms, max 17 ms, none over 33 ms both times (the same as with it switched off).
 A flip-to-a-back-side was deliberately left out: it would only repeat the text already on the card. It would earn its place once there are credits to put on the back.
 
+**The drawer you actually pull (`initDrawerPull`).** The quick-look drawer's handle can be held and dragged: the tray's height is the pointer's travel (1:1, so the front and the
+handle stay under the hand, because the tray grows above the front), and on letting go it settles open or shut (over ~32% of the way opens a shut drawer, an open one needs to be
+pushed below ~62% to close, so it does not flutter). A plain click and the keyboard still toggle it, a drag is not also a click, and it makes its sound once, when it settles. Only
+the drawer's own box restyles while it moves. Touch: the handle has `touch-action: none`.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).
