@@ -19854,7 +19854,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   // ================================================================
   (function initRewards() {
     const KEY = 'hn-rewards-v1';
-    const SPRITE = 'assets/hand/project-doodles-sprite.svg?v=4';
+    const SPRITE = 'assets/hand/project-doodles-sprite.svg?v=5';
     const FILL = 'assets/hand/project-doodles-fill.svg?v=3';         // solid silhouettes of the doodles (line drawings are see-through)
     const INK = '#1E2733';
     const DEFS = {
@@ -20473,7 +20473,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       const b = document.createElement('button'); b.type = 'button'; b.className = 'pd-peek pd-' + side; b.dataset.id = id;
       b.setAttribute('aria-label', 'A doodle from ' + PROJ[size[2]] + ' is hiding here. Press to keep it');
       b.style.setProperty('--w', w + 'px'); b.style.setProperty('--h', h + 'px'); b.style.setProperty('--at', at + '%'); b.style.setProperty('--rot', rot + 'deg');
-      b.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 ' + size[0] + ' ' + size[1] + '"><use href="' + FILL + '#' + id + '" style="color:var(--hn-paper-r)"/><use href="' + SPRITE + '#' + id + '"/></svg>';
+      b.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 ' + size[0] + ' ' + size[1] + '"><use href="' + SPRITE + '#' + id + '"/></svg>';        // the sprite carries its own solid body under the ink (class pdf)
       b.addEventListener('click', e => { e.stopPropagation(); keepDoodle(id, b); });
       host.appendChild(b);
     }
@@ -20567,8 +20567,8 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     if (!page) return;                                   // hidden by CSS on a phone (<= 640px), where the hero is a flip pad of its own
     const KEY = 'hn-stampage-v1', MAX = 120;
     let uid = 0;
-    const PDS_URL = 'assets/hand/project-doodles-sprite.svg?v=4';
-    const PDS = 'assets/hand/project-doodles-sprite.svg?v=4';
+    const PDS_URL = 'assets/hand/project-doodles-sprite.svg?v=5';
+    const PDS = 'assets/hand/project-doodles-sprite.svg?v=5';
     const ring = (extra) => '<circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/>' + (extra || '');
     const hand = 'style="font-family:var(--hn-hand)"';
     // her doodle, centred in a box (hero doodles live in this page's inline sprite; project doodles in the external one)
