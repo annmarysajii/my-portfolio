@@ -16943,7 +16943,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
 .pd-peek {
   position: absolute; z-index: 8; width: var(--w); height: var(--h); padding: 0; border: 0; background: none; cursor: pointer; color: var(--hn-ink);
   rotate: var(--rot); transition: translate 260ms var(--hn-ease, ease), clip-path 260ms var(--hn-ease, ease);
-  filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)
+  filter: drop-shadow(2px 0 0 var(--hn-paper-r)) drop-shadow(-2px 0 0 var(--hn-paper-r)) drop-shadow(0 2px 0 var(--hn-paper-r)) drop-shadow(0 -2px 0 var(--hn-paper-r))
     drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3px) 2px rgba(var(--hn-shadow-rgb), calc(.45 * var(--sh-k))));
 }
 .pd-peek svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -20473,7 +20473,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       const b = document.createElement('button'); b.type = 'button'; b.className = 'pd-peek pd-' + side; b.dataset.id = id;
       b.setAttribute('aria-label', 'A doodle from ' + PROJ[size[2]] + ' is hiding here. Press to keep it');
       b.style.setProperty('--w', w + 'px'); b.style.setProperty('--h', h + 'px'); b.style.setProperty('--at', at + '%'); b.style.setProperty('--rot', rot + 'deg');
-      b.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 ' + size[0] + ' ' + size[1] + '"><use href="' + FILL + '#' + id + '" style="color:#fff"/><use href="' + SPRITE + '#' + id + '"/></svg>';
+      b.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 ' + size[0] + ' ' + size[1] + '"><use href="' + FILL + '#' + id + '" style="color:var(--hn-paper-r)"/><use href="' + SPRITE + '#' + id + '"/></svg>';
       b.addEventListener('click', e => { e.stopPropagation(); keepDoodle(id, b); });
       host.appendChild(b);
     }
