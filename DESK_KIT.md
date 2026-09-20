@@ -423,7 +423,7 @@ while the hero, which scrolls, reads the same point as a % of itself (`--light-x
 rest: changing ANY custom property on the root or body restyles the whole page (~20-25 ms, even an unused one), changing one on `#hero` only the hero (<1 ms). So the hero follows the pointer live, the
 page-wide light follows at a slower step (every 300 ms) while dragging and settles on release, and scrolling only touches the hero. The lamp's range is limited (x 6-94 %, y 6-62 % of the screen) so its pool
 does not meet the hero's bottom edge. A soft mask on the hero's light pools was tried to hide that edge and made night scrolling drop frames, so it is not used. The nav button is drawn as a lamp
-(`.lamp-ico`, unlit by day, glowing at night) instead of a sun/moon; a click still switches day and night. At day the lamp does nothing to the light (the light is the window); picking it up switches night on.
+(`.lamp-ico`, unlit by day, glowing at night) instead of a sun/moon; a click still switches day and night. The lamp can be dragged by day too (then it is the window light that moves, defaults day 12/8 and night 30/36); picking it up no longer switches night on, and the light keeps its place when the mode is switched.
 
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in

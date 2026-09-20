@@ -17425,7 +17425,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 /* One position for two frames used to drive both: the hero's layers (measured in the hero) and the page-wide layers (measured in the screen). Dragging the lamp moved both,
    so they disagreed at the hero's bottom edge and the glow was cut there. Now the page-wide layers and shadows read their own fixed position (--pl-*, the mode's default), and only the
    hero's subtree follows the lamp (--light-* on #hero), which also makes dragging cheaper: only the hero restyles. */
-:root { --pl-x: 12; --pl-y: 8; --sx: calc((50 - var(--pl-x)) / 50); --sy: calc((50 - var(--pl-y)) / 50); }
+:root { --pl-x: var(--lamp-vx, 12); --pl-y: var(--lamp-vy, 8); --sx: calc((50 - var(--pl-x)) / 50); --sy: calc((50 - var(--pl-y)) / 50); }     /* by day the light is the window, and it can be moved too */
 [data-theme="dark"] { --pl-x: var(--lamp-vx, 30); --pl-y: var(--lamp-vy, 36); }          /* the page-wide light is wherever the lamp was last put (a % of the screen) */
 /* the button IS a lamp: an unlit lamp by day, lit at night */
 #themeBtn #themeIcon { display: none !important; }
@@ -20879,13 +20879,13 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
   })();
 
   // ================================================================
-  // THE LAMP -- the nav button is drawn as a lamp (unlit by day, glowing at night). Click it and the night lamp switches. Press and DRAG it
-  // onto the page and the whole site re-lights around where it is put: the pool of light, the shadows and the edges of every sheet. The lamp is a
-  // point on the SCREEN (like a lamp hanging over your view of the desk): the page-wide light and shadows read it as a % of the screen, and the hero,
-  // which scrolls, reads the same point as a % of itself, recomputed as the page scrolls so the two always agree. Two costs shaped this: changing a
-  // custom property on the root restyles the whole page (~25 ms), changing one on #hero only the hero (<1 ms). So the hero follows the pointer live,
-  // and the page-wide light follows at a slower step while dragging and settles on release. By day, picking the lamp up switches it on first. Esc puts
-  // it back mid-drag, a double click resets it, Shift + arrow keys nudge it. The first time it is moved it earns a sticker (a secret).
+  // THE LAMP -- the nav button is drawn as a lamp (unlit by day, glowing at night). Click it and day and night switch. Press and DRAG it onto the
+  // page and the whole site re-lights around where it is put, by day (the window light) and at night (the lamp) alike: the pool of light, the
+  // shadows and the edges of every sheet. The light stays where it was put when the mode is switched. It is a point on the SCREEN (like a lamp hanging over
+  // your view of the desk): the page-wide light and shadows read it as a % of the screen, and the hero, which scrolls, reads the same point as a % of itself,
+  // recomputed as the page scrolls so the two always agree. Two costs shaped this: changing a custom property on the root restyles the whole page
+  // (~25 ms), changing one on #hero only the hero (<1 ms). So the hero follows the pointer live, and the page-wide light follows at a slower step
+  // while dragging and settles on release. Esc puts it back mid-drag, a double click resets it, Shift + arrow keys nudge it. The first time it is moved it earns a sticker.
   // ================================================================
   (function initLamp() {
     const btn = document.getElementById('themeBtn'), hero = document.getElementById('hero');
@@ -20898,7 +20898,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     const VX = [6, 94], VY = [6, 62];                                // and where it may be: lower than this its pool would meet the hero's bottom edge
     const pageApply = () => { if (!L) { root.style.removeProperty('--lamp-vx'); root.style.removeProperty('--lamp-vy'); } else { root.style.setProperty('--lamp-vx', L[0].toFixed(1)); root.style.setProperty('--lamp-vy', L[1].toFixed(1)); } };
     const heroApply = () => {                                        // the same point, as a % of the hero as it is now scrolled
-      if (!L || !isNight()) { hero.style.removeProperty('--light-x'); hero.style.removeProperty('--light-y'); return; }
+      if (!L) { hero.style.removeProperty('--light-x'); hero.style.removeProperty('--light-y'); return; }
       const r = hero.getBoundingClientRect();
       hero.style.setProperty('--light-x', (((L[0] / 100 * innerWidth) - r.left) / r.width * 100).toFixed(1)); hero.style.setProperty('--light-y', (((L[1] / 100 * innerHeight) - r.top) / r.height * 100).toFixed(1));
     };
@@ -20907,7 +20907,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     const home = () => { L = null; heroApply(); pageApply(); };
     const at = (cx, cy) => [cx / innerWidth * 100, cy / innerHeight * 100];
     const toggle = () => { try { if (typeof window.toggleTheme === 'function') window.toggleTheme(); else btn.click(); } catch (e) {} };
-    btn.title = 'Night lamp. Click to switch it. Drag it onto the page to aim the light.';
+    btn.title = 'The desk lamp. Click to switch between day and night. Drag it onto the page to aim the light.';
     btn.style.touchAction = 'none';
 
     let orb = null, d = null, moved = false, lastApply = 0, tip = null;
@@ -20915,7 +20915,6 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     function hideTip() { if (!tip) return; const t = tip; tip = null; t.classList.add('is-out'); setTimeout(() => t.remove(), 300); }
     function begin(e) {
       moved = true; hideTip(); try { localStorage.setItem(TIPK, '1'); } catch (x) {}
-      if (!isNight()) toggle();                                      // pick the lamp up: it comes on
       d.from = cur(); d.homed = !L; root.classList.add('hn-lamp-drag');
       orb = document.createElement('div'); orb.id = 'hn-lamp-orb'; orb.setAttribute('aria-hidden', 'true');
       orb.innerHTML = '<svg viewBox="0 0 24 24"><use href="#dd-lamp"/></svg>'; document.body.appendChild(orb); orbAt(e.clientX, e.clientY);
@@ -20948,7 +20947,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     btn.addEventListener('dblclick', () => { home(); });
     btn.addEventListener('keydown', e => {
       const k = { ArrowLeft: [-4, 0], ArrowRight: [4, 0], ArrowUp: [0, -4], ArrowDown: [0, 4] }[e.key];
-      if (!k || !e.shiftKey) return; e.preventDefault(); if (!isNight()) toggle();
+      if (!k || !e.shiftKey) return; e.preventDefault();
       const c = cur(); set(c[0] + k[0], c[1] + k[1]); pageApply();
       try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {}
     });
@@ -20956,13 +20955,13 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     // the first time the lamp is on, a small slip says it can be moved
     function maybeTip() {
       let seen = false; try { seen = !!localStorage.getItem(TIPK); } catch (x) {}
-      if (seen || tip || !isNight()) return;
-      tip = document.createElement('div'); tip.id = 'hn-lamp-tip'; tip.setAttribute('role', 'status'); tip.textContent = 'Drag the lamp onto the page to aim the light.';
+      if (seen || tip) return;
+      tip = document.createElement('div'); tip.id = 'hn-lamp-tip'; tip.setAttribute('role', 'status'); tip.textContent = 'Drag the lamp onto the page to aim the light. It works by day too.';
       document.body.appendChild(tip); const r = btn.getBoundingClientRect(); tip.style.top = (r.bottom + 12) + 'px'; tip.style.right = Math.max(8, innerWidth - r.right - 4) + 'px';
       setTimeout(hideTip, 7500);
     }
     new MutationObserver(() => { if (isNight()) setTimeout(maybeTip, 1400); else hideTip(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    if (isNight()) setTimeout(maybeTip, 2600);
+    setTimeout(maybeTip, 4500);
     // the hero scrolls, the lamp does not: keep the hero's copy of the point in step (cheap: only #hero restyles), and follow the lamp on and off with the mode
     let sT = 0; addEventListener('scroll', () => { if (!L || sT) return; sT = setTimeout(() => { sT = 0; heroApply(); }, 110); }, { passive: true });
     addEventListener('resize', () => { if (L) heroApply(); });
