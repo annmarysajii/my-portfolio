@@ -409,6 +409,14 @@ pouch; a red dot until it has been opened). One shows at a time: the drawer is 4
 Text in About was small: handwriting needs to be larger than print to read as easily, and the small caps labels were 11 px. Now the intro is 21 px, the credentials 21 px with the
 label above the value (so the value gets the whole card width instead of a narrow column), the drawer text 20 px, the labels 13 px and the chips 13.4 px.
 
+**About: the inventory in two columns.** The three inventory cards were 353 / 234 / 522 px tall side by side, a ragged row. From 821 px up it is two columns: Toolkit and Words &
+Languages stacked on the left, Awards & Recognition on the right, so both sides end at about the same height (row 753 to 680 px) and the awards titles fit on one line each. Below
+821 px it is the single column it always was.
+
+**Tidy the pouch: dragging.** A piece is never re-inserted into the page while it is held (doing that drops the browser's pointer capture, which made dragging feel sticky); move and release
+are listened for on the window; a drop counts if the piece's centre or the pointer is within ~22 px of the pouch, which glows to say "here"; a press with under 5 px of movement is a
+press and puts the piece in. Verified with real mouse drags.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).
