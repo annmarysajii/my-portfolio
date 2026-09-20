@@ -16240,12 +16240,12 @@ html[data-theme="dark"] body {
    reading, so text is always lit; the hero fades these two out (--hv) and uses its richer layers instead. */
 html::after, [data-theme="dark"] html::after {
   mix-blend-mode: normal;
-  background: radial-gradient(ellipse 72% 60% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+  background: radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
     rgba(var(--lr), var(--lg), var(--lb), .085) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
 }
 body::after, [data-theme="dark"] body::after {
   mix-blend-mode: normal;
-  background: radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
     transparent 0%, transparent 26%,
     rgba(var(--sr), var(--sg), var(--sb), calc(.08 + var(--key-night) * .2)) 58%,
     rgba(var(--sr), var(--sg), var(--sb), calc(.18 + var(--key-night) * .3)) 100%);
@@ -16702,9 +16702,9 @@ html::before {
 }
 html::after, [data-theme="dark"] html::after {
   background:
-    radial-gradient(ellipse 34% 30% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+    radial-gradient(ellipse 34% 30% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .08)) 0%, transparent 100%),
-    radial-gradient(ellipse 72% 60% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+    radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.085 + var(--key-night) * .05)) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
 }
 /* lite mode (see the frame monitor) also drops the fixed window layer */
@@ -16846,14 +16846,14 @@ html.hn-lite::before { display: none; }
 #wrap::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 36% 32% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+    radial-gradient(ellipse 36% 32% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.16 + var(--key-night) * .30)) 0%, rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .10)) 55%, transparent 100%),
-    radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
+    radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
       transparent 0%, transparent 18%,
       rgba(var(--sr), var(--sg), var(--sb), calc(.22 + var(--key-night) * .30)) 58%,
       rgba(var(--sr), var(--sg), var(--sb), calc(.50 + var(--key-night) * .38)) 100%);
 }
-html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
+html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
 
 /* ---- M. REWARDS: one sticker book, die-cut stickers, doodles that peek over the work ---------------------------- */
 .hn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -17301,17 +17301,7 @@ body { overflow-x: clip !important; }                                          /
 @media (max-width: 600px) { #hn-gb { right: 8px; bottom: 70px; } .gb-wall { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { #hn-gb { animation: none; } }
 
-/* ---- X. SECRETS (peelable tape, a slip with what was under it) AND THE LAMP YOU CAN AIM ------------------------------ */
-/* (the night lamp: see the lighting-frames section below; the hero is moved with inline variables on #hero, the page with --lamp-vx/--lamp-vy) */
-html.hn-lamp-drag { --hn-mode-t: 150ms; }                                                /* the hero follows the lamp closely while it is held */
-html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: grabbing; }
-#hn-lamp-orb { position: fixed; left: 0; top: 0; z-index: 9990; width: 68px; height: 68px; pointer-events: none; display: grid; place-items: center; color: #7A4A08;
-  background: radial-gradient(circle, rgba(255, 226, 160, .95) 0 16%, rgba(255, 190, 110, .5) 38%, rgba(255, 170, 90, 0) 70%); transition: opacity 380ms ease; }
-#hn-lamp-orb svg { width: 24px; height: 24px; }
-#hn-lamp-orb.is-out { opacity: 0; }
-#hn-lamp-tip { position: fixed; z-index: 9200; max-width: 220px; padding: .45rem .7rem; font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.2; color: var(--hn-ink); rotate: 1.2deg;
-  background: #FBF8EE url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px; box-shadow: var(--hn-edge), var(--hn-sh-raised); animation: hnAlbumIn 380ms var(--hn-ease, ease) 1; transition: opacity 300ms ease; }
-#hn-lamp-tip.is-out { opacity: 0; }
+/* ---- X. SECRETS (peelable tape, a slip with what was under it) ------------------------------ */
 .hn-peelable { pointer-events: auto !important; cursor: pointer; }
 .hn-peelable:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; }
 .hn-peelable.is-peeling { transform-origin: 6% 50%; animation: hnPeel 1500ms cubic-bezier(.3, .7, .3, 1) 1; }
@@ -17325,7 +17315,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 .hn-slip small { display: block; margin-top: .4rem; font-size: var(--hn-t4); line-height: 1.15; color: var(--hn-ink-2); }
 .hn-slip.is-out { opacity: 0; translate: 0 6px; }
 @keyframes hnSlip { from { opacity: 0; translate: 0 -10px; rotate: 2deg; } to { opacity: 1; translate: 0 0; rotate: -1.2deg; } }
-@media (prefers-reduced-motion: reduce) { .hn-peelable.is-peeling, .hn-slip, #hn-lamp-tip { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .hn-peelable.is-peeling, .hn-slip { animation: none; } }
 
 /* ---- Y. THE TOY SHEETS ARE PAPER IN BOTH MODES (a dark pen has to show; the paper does not change at night either) ------ */
 [data-theme="dark"] #pg-illustration-toy .pg-body canvas, [data-theme="dark"] #pg-graphic-design-toy .pg-body canvas, [data-theme="dark"] #pg-music-toy .pg-body canvas {
@@ -17420,26 +17410,6 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
   #about .bp-inv-col:nth-child(2) { grid-column: 1; grid-row: 2; }
   #about .bp-inv-col:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
 }
-
-/* ---- AF. THE LAMP LIGHTS THE HERO SCENE; THE REST OF THE PAGE KEEPS ITS OWN LIGHT ------------------------------------------ */
-/* One position for two frames used to drive both: the hero's layers (measured in the hero) and the page-wide layers (measured in the screen). Dragging the lamp moved both,
-   so they disagreed at the hero's bottom edge and the glow was cut there. Now the page-wide layers and shadows read their own fixed position (--pl-*, the mode's default), and only the
-   hero's subtree follows the lamp (--light-* on #hero), which also makes dragging cheaper: only the hero restyles. */
-:root { --pl-x: var(--lamp-vx, 12); --pl-y: var(--lamp-vy, 8); --sx: calc((50 - var(--pl-x)) / 50); --sy: calc((50 - var(--pl-y)) / 50); }     /* by day the light is the window, and it can be moved too */
-[data-theme="dark"] { --pl-x: var(--lamp-vx, 30); --pl-y: var(--lamp-vy, 36); }          /* the page-wide light is wherever the lamp was last put (a % of the screen) */
-/* the button IS a lamp: an unlit lamp by day, lit at night */
-#themeBtn #themeIcon { display: none !important; }
-#themeBtn .lamp-ico { display: block; width: 22px; height: 22px; color: var(--hn-ink); transition: color 300ms ease, filter 300ms ease; }
-[data-theme="dark"] #nav .nav-r #themeBtn { background: #FFE9B8 !important; box-shadow: var(--hn-edge), 0 0 12px rgba(255, 184, 96, .75) !important; }
-[data-theme="dark"] #themeBtn .lamp-ico { color: #8A4B00; filter: drop-shadow(0 0 4px rgba(255, 178, 80, .95)); }
-#themeBtn { cursor: grab; }
-/* (A soft mask on the hero's light pools was tried to hide the hero's bottom edge: it made scrolling at night drop below 60 fps, so it is not used. The lamp's range is limited instead.) */
-
-/* ---- AG. BY DAY, THE WINDOW'S SHADOW FOLLOWS THE LIGHT ----------------------------------------------------------------
-   By day nearly nothing in the lighting depended on where the light is (the day pool is off), so dragging the lamp did next to nothing. The window-frame shadow is the day's
-   main light feature, so it now slides with the light: 0.085 % of its own size per % the light is moved from its home (12, 8), inside 10 % of slack around the hero / the screen. */
-.hn-key.hn-key-window { inset: -10%; translate: calc((var(--light-x) - 12) * .085%) calc((var(--light-y) - 8) * .085%); }
-html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((var(--pl-y) - 8) * .085%); }
 
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
@@ -17723,7 +17693,7 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i><svg class="lamp-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#dd-lamp"/></svg></button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
       <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="snd-meter" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
       <!-- Mobile hamburger -- user feedback (2026-09-02): "spacing btw
@@ -19883,7 +19853,8 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
     if (!hero) return;
     if (/[?&]lite=1\b/.test(location.search)) { root.classList.add('hn-lite'); return; }
     if (/[?&]lite=0\b/.test(location.search)) return;
-    try { if (sessionStorage.getItem('hn-lite') === '1') { root.classList.add('hn-lite'); return; } } catch (e) {}
+    // (An earlier version remembered "lite" for the whole browser session, so one slow moment at start-up switched the lighting off until the tab was closed. It no longer remembers, and clears any old flag.)
+    try { sessionStorage.removeItem('hn-lite'); } catch (e) {}
     let inView = true;
     if ('IntersectionObserver' in window) new IntersectionObserver(es => { inView = es[es.length - 1].isIntersecting; }).observe(hero);
     let last = 0, n = 0, sum = 0, bad = 0, windows = 0;
@@ -19892,14 +19863,14 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
       if (last) { const d = t - last; if (d < 250) { sum += d; n++; } }
       last = t;
       if (n >= 120) {
-        bad = (sum / n > 30) ? bad + 1 : 0;
-        if (bad >= 2) { root.classList.add('hn-lite'); try { sessionStorage.setItem('hn-lite', '1'); } catch (e) {} return; }
+        bad = (sum / n > 46) ? bad + 1 : 0;                  // slower than ~22 fps on average (a laptop held at 30 fps is 33 ms, and is fine)
+        if (bad >= 3) { root.classList.add('hn-lite'); return; }        // three slow stretches in a row, and only then
         sum = 0; n = 0;
         if (++windows >= 8) return;                          // watched long enough, it is fine
       }
       requestAnimationFrame(frame);
     }
-    setTimeout(() => requestAnimationFrame(frame), 3500);
+    setTimeout(() => requestAnimationFrame(frame), 7000);      // after start-up (images, the reel, sounds) has settled
   })();
 
 
@@ -20037,7 +20008,6 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
         text: 'Classic HB graphite. I&rsquo;ll always pick these over mechanical pencils.' },
       { id: 'secret-milk',   sel: '#contact .letter-tape', col: '#B8862A', name: 'Letter tape', how: 'The letter at the bottom is taped down too',
         text: 'Studio fuel: chocolate milk tea, my favourite drink during late-night animation sprints.' },
-      { id: 'secret-lamp',   lamp: true,                   col: '#E8A317', name: 'Lamp',      how: 'The lamp in the nav goes where you drag it' },
       { id: 'secret-runner', runner: true,                 col: '#1E4CC8', name: 'Runner',    how: 'Sometimes, when it goes quiet, something runs along under the top bar. Be quick.',
         text: 'You caught me! I only run when it goes quiet.' },
       { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' }
@@ -20229,7 +20199,7 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
         '<li><b>Look closely.</b> Doodles from my projects peek over the edges of the work. Press one to keep it. Finish a project&rsquo;s set and its card is yours to keep.</li>' +
         '<li><b>Turn the page.</b> The notebook at the top has a page that&rsquo;s yours to stamp. Take it home.</li>' +
         '<li><b>Stick anything anywhere.</b> Pick a sticker, then click the desk.</li>' +
-        '<li><b>Poke around.</b> Some tape can be peeled. The lamp in the top bar can be dragged.</li></ol>';
+        '<li><b>Poke around.</b> Some tape can be peeled. And the desk is not always still.</li></ol>';
       return d;
     }
     function renderAlbum() {
@@ -20247,7 +20217,7 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
         album.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
       album.appendChild(section('Along the way', EXTRA.filter(i => st.got.includes(i)).length + '/' + EXTRA.length, EXTRA, 'Take your passport, then make a mark on the notebook&rsquo;s page: a stamp, a drawing or a few words.'));
-      album.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. The lamp goes where you drag it. And the desk is not always still.'));
+      album.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. And the desk is not always still.'));
       album.appendChild(giftSection());
       const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
       reset.addEventListener('click', () => api.reset()); album.appendChild(reset);
@@ -20882,97 +20852,6 @@ html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((va
     function close() { if (!panel || panel.hidden) return; panel.hidden = true; try { if (opener && opener.focus) opener.focus({ preventScroll: true }); } catch (e) {} }
     window.hnGuestbook = { open, close };
     document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('[data-gb]'); if (a) { e.preventDefault(); panel && !panel.hidden ? close() : open(a); } });
-  })();
-
-  // ================================================================
-  // THE LAMP -- the nav button is drawn as a lamp (unlit by day, glowing at night). Click it and day and night switch. Press and DRAG it onto the
-  // page and the whole site re-lights around where it is put, by day (the window light) and at night (the lamp) alike: the pool of light, the
-  // shadows and the edges of every sheet. The light stays where it was put when the mode is switched. It is a point on the SCREEN (like a lamp hanging over
-  // your view of the desk): the page-wide light and shadows read it as a % of the screen, and the hero, which scrolls, reads the same point as a % of itself,
-  // recomputed as the page scrolls so the two always agree. Two costs shaped this: changing a custom property on the root restyles the whole page
-  // (~25 ms), changing one on #hero only the hero (<1 ms). So the hero follows the pointer live, and the page-wide light follows at a slower step
-  // while dragging and settles on release. Esc puts it back mid-drag, a double click resets it, Shift + arrow keys nudge it. The first time it is moved it earns a sticker.
-  // ================================================================
-  (function initLamp() {
-    const btn = document.getElementById('themeBtn'), hero = document.getElementById('hero');
-    if (!btn || !hero) return;
-    const root = document.documentElement, TIPK = 'hn-lamp-tip-v1', HOME = [30, 36];
-    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    const isNight = () => root.getAttribute('data-theme') === 'dark';
-    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let L = null;                                                  // the lamp's position as % of the screen, or null = where it belongs
-    const VX = [6, 94], VY = [6, 62];                                // and where it may be: lower than this its pool would meet the hero's bottom edge
-    const pageApply = () => { if (!L) { root.style.removeProperty('--lamp-vx'); root.style.removeProperty('--lamp-vy'); } else { root.style.setProperty('--lamp-vx', L[0].toFixed(1)); root.style.setProperty('--lamp-vy', L[1].toFixed(1)); } };
-    const heroApply = () => {                                        // the same point, as a % of the hero as it is now scrolled
-      if (!L) { hero.style.removeProperty('--light-x'); hero.style.removeProperty('--light-y'); return; }
-      const r = hero.getBoundingClientRect();
-      hero.style.setProperty('--light-x', (((L[0] / 100 * innerWidth) - r.left) / r.width * 100).toFixed(1)); hero.style.setProperty('--light-y', (((L[1] / 100 * innerHeight) - r.top) / r.height * 100).toFixed(1));
-    };
-    const cur = () => L ? L.slice() : HOME.slice();
-    const set = (x, y) => { L = [clamp(x, VX[0], VX[1]), clamp(y, VY[0], VY[1])]; heroApply(); };
-    const home = () => { L = null; heroApply(); pageApply(); };
-    const at = (cx, cy) => [cx / innerWidth * 100, cy / innerHeight * 100];
-    const toggle = () => { try { if (typeof window.toggleTheme === 'function') window.toggleTheme(); else btn.click(); } catch (e) {} };
-    btn.title = 'The desk lamp. Click to switch between day and night. Drag it onto the page to aim the light.';
-    btn.style.touchAction = 'none';
-
-    let orb = null, d = null, moved = false, lastApply = 0, tip = null;
-    function orbAt(cx, cy) { if (orb) orb.style.transform = 'translate(' + (cx - 34) + 'px,' + (cy - 34) + 'px)'; }
-    function hideTip() { if (!tip) return; const t = tip; tip = null; t.classList.add('is-out'); setTimeout(() => t.remove(), 300); }
-    function begin(e) {
-      moved = true; hideTip(); try { localStorage.setItem(TIPK, '1'); } catch (x) {}
-      d.from = cur(); d.homed = !L; root.classList.add('hn-lamp-drag');
-      orb = document.createElement('div'); orb.id = 'hn-lamp-orb'; orb.setAttribute('aria-hidden', 'true');
-      orb.innerHTML = '<svg viewBox="0 0 24 24"><use href="#dd-lamp"/></svg>'; document.body.appendChild(orb); orbAt(e.clientX, e.clientY);
-    }
-    btn.addEventListener('pointerdown', e => {
-      if (e.button !== 0) return; d = { id: e.pointerId, x: e.clientX, y: e.clientY, on: false, from: null }; moved = false;
-      try { btn.setPointerCapture(e.pointerId); } catch (x) {}
-    });
-    btn.addEventListener('pointermove', e => {
-      if (!d || e.pointerId !== d.id) return;
-      if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 9) return; d.on = true; begin(e); }
-      orbAt(e.clientX, e.clientY);
-      const p = at(e.clientX, e.clientY); set(p[0], p[1]);                  // the hero follows every move
-      const now = performance.now(); if (now - lastApply > 300) { lastApply = now; pageApply(); }   // the whole page at a slower step
-    });
-    const finish = (e, cancel) => {
-      if (!d || (e && e.pointerId !== d.id)) return; const was = d; d = null;
-      try { btn.releasePointerCapture(was.id); } catch (x) {}
-      if (!was.on) return;
-      if (cancel) { if (was.from) { was.homed ? home() : (set(was.from[0], was.from[1]), pageApply()); } } else if (e) { const p = at(e.clientX, e.clientY); set(p[0], p[1]); pageApply(); }
-      if (orb) { const o = orb; orb = null; o.classList.add('is-out'); setTimeout(() => o.remove(), calm() ? 0 : 400); }
-      setTimeout(() => root.classList.remove('hn-lamp-drag'), 700);
-      if (!cancel) { try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {} }
-    };
-    btn.addEventListener('pointerup', e => finish(e, false));
-    btn.addEventListener('pointercancel', e => finish(e, true));
-    addEventListener('keydown', e => { if (e.key === 'Escape' && d && d.on) finish(null, true); });
-    // a drag is not a click: swallow the click that follows so it does not also flip the lamp back
-    btn.addEventListener('click', e => { if (moved) { e.stopImmediatePropagation(); e.preventDefault(); moved = false; } }, true);
-    btn.addEventListener('dblclick', () => { home(); });
-    btn.addEventListener('keydown', e => {
-      const k = { ArrowLeft: [-4, 0], ArrowRight: [4, 0], ArrowUp: [0, -4], ArrowDown: [0, 4] }[e.key];
-      if (!k || !e.shiftKey) return; e.preventDefault();
-      const c = cur(); set(c[0] + k[0], c[1] + k[1]); pageApply();
-      try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {}
-    });
-
-    // the first time the lamp is on, a small slip says it can be moved
-    function maybeTip() {
-      let seen = false; try { seen = !!localStorage.getItem(TIPK); } catch (x) {}
-      if (seen || tip) return;
-      tip = document.createElement('div'); tip.id = 'hn-lamp-tip'; tip.setAttribute('role', 'status'); tip.textContent = 'Drag the lamp onto the page to aim the light. It works by day too.';
-      document.body.appendChild(tip); const r = btn.getBoundingClientRect(); tip.style.top = (r.bottom + 12) + 'px'; tip.style.right = Math.max(8, innerWidth - r.right - 4) + 'px';
-      setTimeout(hideTip, 7500);
-    }
-    new MutationObserver(() => { if (isNight()) setTimeout(maybeTip, 1400); else hideTip(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    setTimeout(maybeTip, 4500);
-    // the hero scrolls, the lamp does not: keep the hero's copy of the point in step (cheap: only #hero restyles), and follow the lamp on and off with the mode
-    let sT = 0; addEventListener('scroll', () => { if (!L || sT) return; sT = setTimeout(() => { sT = 0; heroApply(); }, 110); }, { passive: true });
-    addEventListener('resize', () => { if (L) heroApply(); });
-    new MutationObserver(() => heroApply()).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    window.hnLamp = { set: (x, y) => { set(x, y); pageApply(); }, home };
   })();
 
   // ================================================================

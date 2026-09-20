@@ -286,7 +286,7 @@ is blank dotted paper, "Your page", with a rack of eight rubber stamps and three
 (NTU ADM class of 2026, Annecy 2025 with the Keep Yourself Safe head, Open for work, Stationery addict, A daily Milo, Jazzmine,
 Music District, Singapore), lettered in her handwriting. No generic phrases: if a stamp says something, it is something she said. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
 that page is hers: it is the visitor's page in her book. It uses the `stamp` sound slot.
-The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 39;
+The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 38;
 more stamps earn nothing extra, so it cannot be farmed.
 
 **The nav is a ruler; the footer is the desk's front edge.** `#nav` is a boxwood ruler laid across the top of the desk: flat
@@ -361,7 +361,7 @@ honeypot field, no links, 3 to 240 characters, one note per 45 seconds. `window.
 **Rain on the window.** With room sound on, a quiet rain loop (`public/audio/rain-loop.mp3`, a seamless 40 s cut of her rain-on-window recording) plays under
 the music: `--snd-rain` is .10 by day and .32 at night, it re-levels when the lamp is switched, and it ducks with the music while a video plays.
 
-**Secrets: peelable tape, and a lamp you can aim (eight stickers, counted in the total, now n / 39).** Five taped scraps can be peeled (`SECRETS` in `initRewards`:
+**Secrets: peelable tape, and a lamp you can aim (seven stickers, counted in the total, now n / 38).** Five taped scraps can be peeled (`SECRETS` in `initRewards`:
 the notebook's red and gold tapes, the reel's two corners, the letter's tape). Peeling lifts the tape (the `tape` sound slot), drops a paper slip with a line
 of hers taken verbatim from her own notes on the site (the fake IKEA plant, the HB pencil, the stationery, the chocolate milk tea), gives a sticker the first
 time, and the tape presses back down so the desk is never stripped. To change what a tape says, edit its `text` in `SECRETS`. The sixth secret is the lamp:
@@ -417,17 +417,13 @@ Languages stacked on the left, Awards & Recognition on the right, so both sides 
 are listened for on the window; a drop counts if the piece's centre or the pointer is within ~22 px of the pouch, which glows to say "here"; a press with under 5 px of movement is a
 press and puts the piece in. Verified with real mouse drags.
 
-**The lamp lights the whole site (`initLamp`), and why it is built this way.** The lamp is a point on the SCREEN (a lamp hanging over your view of the desk). Two frames are involved: the page-wide
-layers and shadows (`html::after`, `body::after`, `#wrap::before`, and `--sx/--sy` on the root) read it as a % of the screen (`--pl-x/--pl-y`, default day 12/8 and night 30/36, moved by `--lamp-vx/--lamp-vy`),
-while the hero, which scrolls, reads the same point as a % of itself (`--light-x/--light-y`, set inline on `#hero` and recomputed as the page scrolls so the two always agree). Measured costs decided the
-rest: changing ANY custom property on the root or body restyles the whole page (~20-25 ms, even an unused one), changing one on `#hero` only the hero (<1 ms). So the hero follows the pointer live, the
-page-wide light follows at a slower step (every 300 ms) while dragging and settles on release, and scrolling only touches the hero. The lamp's range is limited (x 6-94 %, y 6-62 % of the screen) so its pool
-does not meet the hero's bottom edge. A soft mask on the hero's light pools was tried to hide that edge and made night scrolling drop frames, so it is not used. The nav button is drawn as a lamp
-(`.lamp-ico`, unlit by day, glowing at night) instead of a sun/moon; a click still switches day and night. The lamp can be dragged by day too (then it is the window light that moves, defaults day 12/8 and night 30/36); picking it up no longer switches night on, and the light keeps its place when the mode is switched.
-
-**By day, the window's shadow follows the light.** By day nearly nothing in the lighting depended on where the light is (the day pool is off), so dragging the lamp did next to nothing. The window-frame
-shadow is the day's main light feature, so it now slides with the light (`.hn-key.hn-key-window` in the hero and `html::before` below it: `translate` of 0.085 % of their own size per % the light is moved from home
-(12, 8), inside 10 % of slack). Only the window layer moves, not `.hn-key-lamp`, which shares the `.hn-key` class and already centres on the light itself.
+**The movable lamp was removed, and why (Sept 2026).** A draggable lamp was built (nav button drawn as a lamp, drag it to aim the light, a page-wide light split from the hero's) and it went wrong: the
+lighting the site had before (window-pane shadow by day, warm lamp pool at night) disappeared on her machine and the site looked flat. Two causes were found. (1) The page's adaptive "lite" mode
+(`initFrameMonitor`) hides the window shadow, the lamp pool and the warm glow when frames average slower than 30 ms, and it remembered that in `sessionStorage` for the whole tab session: a laptop capped at 30 fps
+(33 ms) tripped it at once, and it stayed off even after reloading. It now needs an average slower than 46 ms (about 22 fps) for three stretches in a row, starts watching after 7 s, and never remembers (it also
+clears any old flag). (2) The lamp itself changed how the lighting was wired, and by day moved the window shadow, which must stay put. All of that was taken out: the page-wide layers read `--light-x/--light-y` again
+exactly as before, the window shadow is fixed, the nav button is the plain day/night toggle, and the lamp sticker is gone (seven secrets, counter n / 38). If a lamp is ever tried again it should touch nothing
+that the day/night lighting reads (a separate overlay that is moved with `transform`, which costs nothing), and it should be tested on a slower machine first.
 
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
