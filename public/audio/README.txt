@@ -24,6 +24,7 @@ file it uses the fallback below; a slot with neither stays silent. No code chang
   rewardFinal     reward-final-N      the last stamp                                               reward-final-1
   drawerOpen      drawer-open-N       the quick-look drawer and the About Studio Desk drawer      drawer-open.mp3
   drawerClose     drawer-close-N      the same, closing                                            drawer-close.mp3
+  drawerStrip     drawer-strip-N      hovering a paper strip in the open drawer: a soft thump      drawer-strip-1, -2 (thump)
   toyBounce       toy-bounce-N        Animate: pressing a principle                                toy-bounce-1..3 (cartoon boing)
   toyClap         toy-clap-N          Capture: the clapper                                         toy-clap-1 (clack)
   toyDraw         toy-draw-N          Draw: the pen starting a stroke                              toy-draw-1..3 (pencil)
@@ -42,7 +43,7 @@ recordings in assets/sound/, which are the untouched originals: polaroid printin
 duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,
 cartoon_boing, clack and pencil. To use a different section of one, re-cut it from assets/sound/.
 
-Paper hover is minimal on purpose: only a project card sounds (paperPrint), mouse only, after the pointer has rested on it
+Paper hover is minimal on purpose: only a project card sounds (paperPrint) and a strip in the open drawer (drawerStrip, a soft thump), mouse only, after the pointer has rested on it
 for 140 ms (so sweeping across the grid is silent, but moving straight to the next card still gets its own sound), and a card
 stays quiet for 8 seconds after it has sounded. No other sheet, slip or photo makes a hover sound (paperSheet and paperSlip
 are unused for now).

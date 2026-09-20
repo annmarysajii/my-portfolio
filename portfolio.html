@@ -19300,7 +19300,8 @@ footer.foot, [data-theme="dark"] footer.foot {
       pageTurn:    { own: 'page-turn',    fall: GENERIC_PAPER },   // turning the notebook's page
       toyBounce:   { own: 'toy-bounce',   fall: [] },              // Animate: a principle played on the ball
       toyClap:     { own: 'toy-clap',     fall: [] },              // Capture: the clapper
-      toyDraw:     { own: 'toy-draw',     fall: [] }               // Draw: the pen starting a stroke
+      toyDraw:     { own: 'toy-draw',     fall: [] },              // Draw: the pen starting a stroke
+      drawerStrip: { own: 'drawer-strip', fall: [] }               // the paper strips in the open drawer: a soft thump
     };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
@@ -19424,7 +19425,7 @@ footer.foot, [data-theme="dark"] footer.foot {
     // fetch. Each kind has its own trim so nothing jumps out over the music, and a fast second press cuts the first
     // one short instead of stacking on it.
     const SLOT_VOL = { paperPrint: .6, paperSheet: .6, paperSlip: .6, pageTurn: .8, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
-      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, click: .8 };
+      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, drawerStrip: .7, click: .8 };
     const voices = {};
     async function discover(name) {                                       // find and decode every file of one slot
       const sl = SLOTS[name];
@@ -19471,11 +19472,11 @@ footer.foot, [data-theme="dark"] footer.foot {
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
-    // Paper on hover is minimal on purpose: only a project card makes a sound (the print sliding out), never the other
-    // sheets. It plays once the pointer has rested on the card for a moment (so sweeping across the grid stays silent, and
+    // Paper on hover is minimal on purpose: only a project card makes a sound (the print sliding out) and the paper strips
+    // in the open drawer (a soft thump), never the other sheets. It plays once the pointer has rested on the card for a moment (so sweeping across the grid stays silent, and
     // moving straight to the next card still gets its own sound, cutting the last), and a card stays quiet for 8 seconds
     // after it has sounded. Mouse only.
-    const HOVER = [['.desk .grid .card', 'paperPrint']];
+    const HOVER = [['.desk .grid .card', 'paperPrint'], ['#downloads .dl-btn', 'drawerStrip']];
     const seenAt = new WeakMap();
     HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
       let t = 0;
