@@ -49,3 +49,7 @@ are unused for now; paper-print-1 is the polaroid print, kept in case it is want
 
 The generic files (paper-1/2/3, drawer-open, drawer-close) were made from makigai_maimai-paper-245786.mp3 and
 freesound_community-drawer-41055.mp3. Check each file's licence before the site goes public.
+
+VIDEOS WIN: while any video or audio element on the page is playing with its sound on (the reel, once its Sound button is pressed, or the
+expanded reel), the room music fades out over half a second and the little effects stay quiet. When it is muted, paused or ends, the music fades
+back in. The autoplaying background loops are muted, so they never trigger it. The speaker button's tooltip says why while it is paused.

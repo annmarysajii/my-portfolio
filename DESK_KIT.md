@@ -358,6 +358,10 @@ and moderates every one. Approved notes are listed in `assets/notes/notes.json` 
 coloured sticky notes. The sender sees their own note at once, marked "sent, waiting for me to read it" (kept in their browser, `hn-gb-v1`). Guards:
 honeypot field, no links, 3 to 240 characters, one note per 45 seconds. `window.__hnGbDry = true` in the console stops it sending (for testing).
 
+**A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
+lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
+`initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.

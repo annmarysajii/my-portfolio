@@ -19518,7 +19518,8 @@ body { overflow-x: clip !important; }                                          /
       fadeOut(loop);
       const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
       const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
-      const target = num('--snd-loop', .6);
+      ducked = anyAudible();                                             // a video with sound is playing: come in silent
+      const target = ducked ? 0 : num('--snd-loop', .6);
       g.gain.linearRampToValueAtTime(target, ctx.currentTime + FADE);
       say('playing', m, 'loop at gain', target, ', context state:', ctx.state);
       silent = 0; loop = { src, g }; loopMode = m; paint();
@@ -19617,11 +19618,23 @@ body { overflow-x: clip !important; }                                          /
       s.start(t);
     }
     async function once(name, vol) {
-      if (!on || !ctx || ctx.state !== 'running') return;
+      if (!on || !ctx || ctx.state !== 'running' || ducked) return;
       let key = pickSync(name);
       if (key === undefined) { await discover(name); if (!on || !ctx) return; key = pickSync(name); }   // only if a press beats the preload
       if (key) play(key, name, vol);
     }
+    // ---- a video with sound wins: while any video or audio element on the page is playing with its sound on (the reel, once its
+    // Sound button is pressed), the room music fades out and the little effects stay quiet. When it is muted, paused or ends, the
+    // music fades back in. The autoplaying background loops are muted, so they never trigger it.
+    let ducked = false;
+    const anyAudible = () => [...document.querySelectorAll('video, audio')].some(m => !m.paused && !m.ended && !m.muted && m.volume > 0);
+    function syncDuck() {
+      const want = anyAudible(); if (want === ducked) return; ducked = want;
+      if (loop && ctx) { const t = ctx.currentTime; loop.g.gain.cancelScheduledValues(t); loop.g.gain.setValueAtTime(loop.g.gain.value, t); loop.g.gain.linearRampToValueAtTime(ducked ? 0 : num('--snd-loop', .6), t + 0.5); }
+      paint(ducked ? 'paused while a video with sound plays' : '');
+    }
+    ['play', 'playing', 'pause', 'ended', 'volumechange', 'emptied'].forEach(ev => document.addEventListener(ev, syncDuck, true));   // media events do not bubble, but they can be caught on the way down
+    window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
