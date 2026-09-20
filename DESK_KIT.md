@@ -386,6 +386,13 @@ Psst: ..." with one hint and a link to the book. Someone who has taken the passp
 has not taken the passport is ever hinted at. A hint is one thing that is still hiding, chosen at random from stamps, doodles and secrets (`hintText`), never a list.
 `hnRewards.hint()` and `.rank()` are there for testing.
 
+**Developing prints (project cards).** The first time a card scrolls into view its picture comes up out of cream with a warm tint at the middle, like a print in the tray
+(`initDevelop`). Built to cost nothing: only opacity animates (the veil is a compositor layer, nothing repaints), it plays once per card, only for cards that were below
+the fold at load, only two or three run at once, and it is off for reduced motion, phones (<= 640px) and the adaptive `hn-lite` mode. The veil sits on the card, not in the
+picture, because the card loader rewrites the picture's contents; it removes itself when it ends and after 3 s regardless, so a card can never stay covered. Measured
+before and after on a 9000 px scroll through all 24 cards: median 16.7 ms, p95 16.8 ms, max 17 ms, none over 33 ms both times (the same as with it switched off).
+A flip-to-a-back-side was deliberately left out: it would only repeat the text already on the card. It would earn its place once there are credits to put on the back.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).

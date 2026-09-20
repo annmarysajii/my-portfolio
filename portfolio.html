@@ -17345,6 +17345,14 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 /* ---- AA. RANK ------------------------------------------------------------------------------------------------------- */
 #hn-album .ab-rank { display: inline-block; margin-left: .4rem; padding: 0 .35rem; color: var(--hn-ink); border: 1.5px solid var(--hn-ink-2); border-radius: 3px; rotate: -2deg; font-size: var(--hn-t4); }
 
+/* ---- AB. DEVELOPING PRINTS: opacity only, once per card ------------------------------------------------------------- */
+.card > .hn-dev { position: absolute; z-index: 4; pointer-events: none; background: #F4EDDA; opacity: 1; overflow: hidden; }
+.card > .hn-dev::after { content: ""; position: absolute; inset: 0; background: rgba(150, 110, 60, .55); opacity: 0; }
+.card > .hn-dev.is-go { animation: hnDevA 1500ms cubic-bezier(.3, .6, .2, 1) 1 forwards; will-change: opacity; }
+.card > .hn-dev.is-go::after { animation: hnDevB 1500ms ease-out 1 forwards; will-change: opacity; }
+@keyframes hnDevA { 0% { opacity: 1; } 25% { opacity: .96; } 100% { opacity: 0; } }
+@keyframes hnDevB { 0% { opacity: 0; } 30% { opacity: .9; } 100% { opacity: 0; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -20859,6 +20867,33 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     new MutationObserver(() => { if (isNight()) setTimeout(maybeTip, 1400); else hideTip(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     if (isNight()) setTimeout(maybeTip, 2600);
     window.hnLamp = { set: apply, home: () => apply(HOME[0], HOME[1]) };
+  })();
+
+  // ================================================================
+  // DEVELOPING PRINTS -- each project card's picture comes up out of cream the first time the card scrolls into view, like a print in the
+  // tray. It is built to cost nothing while scrolling: only OPACITY is animated (so the browser does it on the graphics card and repaints
+  // nothing), it plays once per card, only for cards that were below the fold at load, only two or three are ever running at once, and it is
+  // off for reduced motion, on phones, and as soon as the page's adaptive "lite" mode is on. A card can never stay covered: the veil removes
+  // itself when it ends, and after 3 s whatever happens.
+  // ================================================================
+  (function initDevelop() {
+    if (!('IntersectionObserver' in window)) return;
+    const root = document.documentElement;
+    const ok = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && !matchMedia('(max-width: 640px)').matches && !root.classList.contains('hn-lite');
+    if (!ok()) return;
+    const vh = innerHeight;
+    // the veil lives on the card, laid over the picture's box (the card's loader rewrites the picture's own contents, which would remove it)
+    const lay = (d, img) => { d.style.cssText = 'left:' + img.offsetLeft + 'px;top:' + img.offsetTop + 'px;width:' + img.offsetWidth + 'px;height:' + img.offsetHeight + 'px;border-radius:' + getComputedStyle(img).borderRadius; };
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; io.unobserve(e.target);
+      const d = e.target.querySelector(':scope > .hn-dev'); if (!d) return;
+      if (!ok()) { d.remove(); return; }
+      lay(d, e.target.querySelector('.card-img')); d.classList.add('is-go'); d.addEventListener('animationend', () => d.remove(), { once: true }); setTimeout(() => d.remove(), 3000);
+    }), { threshold: 0.3 });
+    document.querySelectorAll('#wrap .grid .card').forEach(c => {
+      const img = c.querySelector('.card-img'); if (!img || c.getBoundingClientRect().top < vh * 0.9) return;       // already on screen: no flash
+      const d = document.createElement('i'); d.className = 'hn-dev'; d.setAttribute('aria-hidden', 'true'); c.appendChild(d); lay(d, img); io.observe(c);
+    });
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
