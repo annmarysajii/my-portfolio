@@ -16943,8 +16943,7 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
 .pd-peek {
   position: absolute; z-index: 8; width: var(--w); height: var(--h); padding: 0; border: 0; background: none; cursor: pointer; color: var(--hn-ink);
   rotate: var(--rot); transition: translate 260ms var(--hn-ease, ease), clip-path 260ms var(--hn-ease, ease);
-  filter: drop-shadow(2px 0 0 var(--hn-paper-r)) drop-shadow(-2px 0 0 var(--hn-paper-r)) drop-shadow(0 2px 0 var(--hn-paper-r)) drop-shadow(0 -2px 0 var(--hn-paper-r))
-    drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3px) 2px rgba(var(--hn-shadow-rgb), calc(.45 * var(--sh-k))));
+  filter: drop-shadow(calc(var(--sx) * 2px) calc(var(--sy) * 3px) 2px rgba(var(--hn-shadow-rgb), calc(.45 * var(--sh-k))));
 }
 .pd-peek svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .pd-top    { left: calc(var(--at) - var(--w) / 2); top: calc(var(--h) * -.54);   clip-path: inset(0 0 46% 0); }
@@ -17573,16 +17572,6 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
 #contact .letter .flbl { font-family: var(--hn-hand) !important; font-size: 1.25rem !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important; }
 @media (prefers-reduced-motion: reduce) { #contact .letter #fsb.fsub { transition: none !important; } }
 
-/* ---- AN. PHONES: LIGHTER TO PAINT ------------------------------------------------------------------------------------------------- */
-/* A phone (touch, no hover) starts in lite mode (see the frame monitor). On top of that: the two full-screen blended layers (a soft-light wash and a multiply
-   falloff) are not drawn, and the peeking doodles use one soft shadow instead of five stacked filters (their solid body is part of the sprite now). */
-@media (hover: none) and (pointer: coarse) {
-  html::after, body::after { display: none !important; }
-  .pd-peek { filter: drop-shadow(0 1px 2px rgba(var(--hn-shadow-rgb), .5)); }
-  #hero { -webkit-mask-image: none; mask-image: none; }
-  #hero .hero-foot { margin-bottom: 0; }
-}
-
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -17643,7 +17632,20 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
 @keyframes hnPress { 0% { scale: 1.3; opacity: 0; } 55% { scale: .95; opacity: var(--o, .85); } 100% { scale: 1; } }
 .hn-sp-ghost { position: fixed; left: 0; top: 0; z-index: 9993; width: 80px; height: 80px; pointer-events: none; opacity: .5; }
 .hn-sp-ghost svg { width: 100%; height: 100%; }
-@media (max-width: 640px) { #hero .hn-turn, .hn-sp { display: none !important; } }
+/* phones: the turn-the-page corner stays, and the page opens as a full screen sheet (see go() in the script) */
+.hn-sp.is-fs { position: fixed; inset: 0; z-index: 9300; touch-action: none; overscroll-behavior: contain; }
+.hn-sp.is-fs .hn-sp-canvas { touch-action: none; }
+html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
+@media (max-width: 640px) {
+  .hn-sp-top { padding: 1.1rem 1.1rem 0; }
+  .hn-sp-h { font-size: 1.9rem; }
+  .hn-sp.is-fs .hn-sp-rack { left: .5rem; right: .5rem; bottom: 9.4rem; gap: .5rem .4rem; }
+  .hn-sp-face { width: 52px; height: 52px; }
+  .hn-sp-foot { left: .8rem; right: .8rem; bottom: max(.8rem, env(safe-area-inset-bottom, 0px)); gap: .5rem .9rem; }
+  .hn-sp-ink { width: 26px; height: 26px; }
+  .hn-imp { width: 86px; height: 86px; }
+  .hn-sp-clear, .hn-sp-back, .hn-sp-take, .hn-sp-undo { padding: .35rem .3rem; }
+}
 @media (max-width: 900px) { .hn-sp { min-height: 380px; } .hn-sp-rack { bottom: 3.4rem; } }
 @media (prefers-reduced-motion: reduce) { .hn-sp.is-in, .hn-sp.is-out, .hn-sp-shade, .hn-imp.is-new { animation: none !important; } .hn-sp-stamp, #hero .hn-turn-c { transition: none; } }
 /* pen, marker and words */
@@ -19768,8 +19770,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     if (!hero) return;
     if (/[?&]lite=1\b/.test(location.search)) { root.classList.add('hn-lite'); return; }
     if (/[?&]lite=0\b/.test(location.search)) return;
-    // a phone (touch, no hover) starts in lite mode: the blended light layers cost too much on a phone's GPU. ?lite=0 turns that off.
-    if (matchMedia('(hover: none) and (pointer: coarse)').matches) { root.classList.add('hn-lite'); return; }
+    const SLOW = matchMedia('(hover: none) and (pointer: coarse)').matches ? 34 : 46;      // a phone is judged sooner (under ~29 fps); a laptop held at 30 fps is fine
     // (An earlier version remembered "lite" for the whole browser session, so one slow moment at start-up switched the lighting off until the tab was closed. It no longer remembers, and clears any old flag.)
     try { sessionStorage.removeItem('hn-lite'); } catch (e) {}
     let inView = true;
@@ -19780,7 +19781,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       if (last) { const d = t - last; if (d < 250) { sum += d; n++; } }
       last = t;
       if (n >= 120) {
-        bad = (sum / n > 46) ? bad + 1 : 0;                  // slower than ~22 fps on average (a laptop held at 30 fps is 33 ms, and is fine)
+        bad = (sum / n > SLOW) ? bad + 1 : 0;                // slower than that on average, three stretches in a row
         if (bad >= 3) { root.classList.add('hn-lite'); return; }        // three slow stretches in a row, and only then
         sum = 0; n = 0;
         if (++windows >= 8) return;                          // watched long enough, it is fine
@@ -19865,7 +19866,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   // ================================================================
   (function initRewards() {
     const KEY = 'hn-rewards-v1';
-    const SPRITE = 'assets/hand/project-doodles-sprite.svg?v=6';
+    const SPRITE = 'assets/hand/project-doodles-sprite.svg?v=7';
     const FILL = 'assets/hand/project-doodles-fill.svg?v=3';         // solid silhouettes of the doodles (line drawings are see-through)
     const INK = '#1E2733';
     const DEFS = {
@@ -20578,8 +20579,8 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     if (!page) return;                                   // hidden by CSS on a phone (<= 640px), where the hero is a flip pad of its own
     const KEY = 'hn-stampage-v1', MAX = 120;
     let uid = 0;
-    const PDS_URL = 'assets/hand/project-doodles-sprite.svg?v=6';
-    const PDS = 'assets/hand/project-doodles-sprite.svg?v=6';
+    const PDS_URL = 'assets/hand/project-doodles-sprite.svg?v=7';
+    const PDS = 'assets/hand/project-doodles-sprite.svg?v=7';
     const ring = (extra) => '<circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/>' + (extra || '');
     const hand = 'style="font-family:var(--hn-hand)"';
     // her doodle, centred in a box (hero doodles live in this page's inline sprite; project doodles in the external one)
@@ -20821,11 +20822,16 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     turn.innerHTML = '<span class="hn-turn-t">turn the page</span><span class="hn-turn-c" aria-hidden="true"></span>';
     page.appendChild(turn);
     let turned = false, busy = false;
+    // On a phone the right-hand page is only a small panel, too small to stamp and draw on. There the page opens as a full screen sheet of the same
+    // notebook paper (moved to <body> while it is open, and put back when it is closed), the page behind is locked, and drawing takes touch.
+    const phone = () => matchMedia('(max-width: 640px)').matches;
+    const rootEl = document.documentElement;
     function go(to) {
       if (busy || to === turned) return; busy = true; turned = to; if (to) build(); turn.setAttribute('aria-expanded', to ? 'true' : 'false');
+      if (to && phone()) { document.body.appendChild(sp); sp.classList.add('is-fs'); rootEl.classList.add('hn-sp-open'); }
       if (to) sp.hidden = false; else { dropStamp(true); closeWordInput(false); if (tool) setTool(tool); page.classList.remove('is-turned'); }
       sp.classList.remove('is-in', 'is-out'); void sp.offsetWidth; sp.classList.add(to ? 'is-in' : 'is-out');
-      const done = () => { if (to) page.classList.add('is-turned'); else sp.hidden = true; busy = false; if (to) sp.querySelector('.hn-sp-stamp').focus({ preventScroll: true }); else turn.focus({ preventScroll: true }); };
+      const done = () => { if (to) page.classList.add('is-turned'); else { sp.hidden = true; if (sp.classList.contains('is-fs')) { page.appendChild(sp); sp.classList.remove('is-fs'); rootEl.classList.remove('hn-sp-open'); } } busy = false; if (to) sp.querySelector('.hn-sp-stamp').focus({ preventScroll: true }); else turn.focus({ preventScroll: true }); };
       calm() ? done() : setTimeout(done, 720);
       try { if (window.__hnSfx) window.__hnSfx('pageTurn'); } catch (e) {}
     }
@@ -21658,7 +21664,8 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   // ================================================================
   (function initTailoredSketchbookDoodles() {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReduced || matchMedia('(hover: none)').matches) return;     // (no mouse, no hover colour: a phone skips these)
+    if (isReduced) return;
+    const isTouch = matchMedia('(hover: none)').matches;                // a phone: a finger lights them, they are drawn at half rate, and there are fewer
 
     // PART 3 -- canvas fillStyle/strokeStyle can't take a literal
     // var(--token) string, so the two new hand-drawn hero doodle colors
@@ -21726,6 +21733,10 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       globalMouseX = e.clientX;
       globalMouseY = e.clientY;
     }, { passive: true });
+    let touchOff = 0;
+    const touchAt = e => { const t = e.touches && e.touches[0]; if (!t) return; clearTimeout(touchOff); globalMouseX = t.clientX; globalMouseY = t.clientY; };
+    window.addEventListener('touchstart', touchAt, { passive: true }); window.addEventListener('touchmove', touchAt, { passive: true });
+    window.addEventListener('touchend', () => { touchOff = setTimeout(() => { globalMouseX = -9999; globalMouseY = -9999; }, 700); }, { passive: true });
 
     document.addEventListener('mouseleave', () => {
       globalMouseX = -9999;
@@ -22125,7 +22136,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
       const typeColor = {};
       cfg.types.forEach((t, i) => { typeColor[t] = cfg.palette[i % cfg.palette.length]; });
 
-      const count = Math.max(26, Math.min(40, Math.round((width * height) / 30000)));
+      const count = isTouch ? Math.max(16, Math.min(24, Math.round((width * height) / 60000))) : Math.max(26, Math.min(40, Math.round((width * height) / 30000)));
 
       const particles = Array.from({ length: count }, () => {
         const type = cfg.types[Math.floor(Math.random() * cfg.types.length)];
@@ -22166,7 +22177,9 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
 
     const HOVER_RADIUS = 120;
 
+    let skipTick = 0;
     function renderAllCanvases() {
+      if (isTouch && (skipTick++ & 1)) { requestAnimationFrame(renderAllCanvases); return; }
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
       activeCanvases.forEach(s => {
