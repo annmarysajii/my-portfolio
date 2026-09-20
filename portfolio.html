@@ -17360,6 +17360,26 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 #downloads.is-dragging.is-settling .dl-tray-clip { transition: max-height 300ms var(--dl-ease); }
 @media (prefers-reduced-motion: reduce) { #downloads.is-dragging.is-settling .dl-tray-clip { transition: none; } }
 
+/* ---- AD. TIDY THE POUCH ------------------------------------------------------------------------------------------- */
+.bp-tidy { margin: .9rem 0 .2rem; padding: .7rem .9rem .8rem; background: rgba(255, 255, 255, .5); border: 1.5px dashed rgba(30, 39, 51, .3); border-radius: 3px; font-family: var(--hn-hand); }
+.bp-tidy p { margin: 0; } .tidy-h { font-size: var(--hn-t3); line-height: 1; color: var(--hn-ink); } .tidy-t { font-size: var(--hn-t4); color: var(--hn-ink-2); margin-top: .2rem; }
+.tidy-play { position: relative; height: 210px; margin-top: .4rem; touch-action: none; user-select: none; -webkit-user-select: none; }
+.tidy-pouch { position: absolute; right: 2%; top: 30px; width: 38%; max-width: 150px; height: auto; pointer-events: none; }
+.tidy-pouch.is-shake { animation: tidyShake 420ms var(--hn-ease, ease) 1; }
+.bp-tidy.is-tidy .tidy-pouch { animation: tidyDone 700ms var(--hn-ease, ease) 1; }
+.tidy-count { position: absolute; right: 4%; bottom: 4px; font-size: var(--hn-t3); color: var(--hn-ink-2); }
+.tidy-item { position: absolute; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; transition: left 260ms var(--hn-ease, ease), top 260ms var(--hn-ease, ease), scale 260ms var(--hn-ease, ease), opacity 260ms ease; filter: drop-shadow(1px 2px 1.5px rgba(30, 20, 8, .35)); }
+.tidy-item svg { display: block; width: 100%; height: 100%; }
+.tidy-item.is-held { cursor: grabbing; transition: none; scale: 1.12; z-index: 3; filter: drop-shadow(3px 6px 4px rgba(30, 20, 8, .35)); }
+.tidy-item.is-in { opacity: 0; scale: .35; pointer-events: none; }
+.tidy-item:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; border-radius: 4px; }
+.tidy-msg { min-height: 1.3em; margin-top: .3rem; font-size: var(--hn-t4); color: var(--hn-ink); }
+.tidy-again { appearance: none; border: 0; background: none; cursor: pointer; padding: .1rem 0; font: 400 var(--hn-t4)/1.2 var(--hn-hand); color: var(--hn-red); text-decoration: underline; text-underline-offset: .2em; }
+.tidy-again:hover, .tidy-again:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); outline: none; }
+@keyframes tidyShake { 0%, 100% { rotate: 0deg; translate: 0 0; } 20% { rotate: -4deg; translate: 0 -3px; } 45% { rotate: 3.4deg; } 70% { rotate: -1.6deg; } }
+@keyframes tidyDone { 0% { scale: 1; } 30% { scale: 1.12; rotate: -5deg; } 60% { scale: .96; rotate: 3deg; } 100% { scale: 1; rotate: 0deg; } }
+@media (prefers-reduced-motion: reduce) { .tidy-pouch.is-shake, .bp-tidy.is-tidy .tidy-pouch { animation: none; } .tidy-item { transition: none; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19958,9 +19978,10 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         text: 'Studio fuel: chocolate milk tea, my favourite drink during late-night animation sprints.' },
       { id: 'secret-lamp',   lamp: true,                   col: '#E8A317', name: 'Lamp',      how: 'The lamp in the nav goes where you drag it' },
       { id: 'secret-runner', runner: true,                 col: '#1E4CC8', name: 'Runner',    how: 'Sometimes, when it goes quiet, something runs along under the top bar. Be quick.',
-        text: 'You caught me! I only run when it goes quiet.' }
+        text: 'You caught me! I only run when it goes quiet.' },
+      { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' }
     ];
-    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : x.runner ? 'dd-runner' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
+    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : x.runner ? 'dd-runner' : x.tidy ? 'dd-pouch' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
     const SECRET_IDS = SECRETS.map(x => x.id);
     const norm = id => id === 'design' ? 'graphic-design' : id;
     const isDoodle = id => !!PD[id];
@@ -20397,6 +20418,10 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       };
       addSym('dd-ticket', 'M2 6.5A1.5 1.5 0 0 1 3.5 5h17A1.5 1.5 0 0 1 22 6.5V10a2 2 0 0 0 0 4v3.5a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 17.5V14a2 2 0 0 0 0-4zM10 8.6l.95 2 2.15.25-1.6 1.45.45 2.15L10 13.4l-1.95 1.05.45-2.15-1.6-1.45 2.15-.25z');
       addSym('dd-tape', 'M2.5 6.5H21.5L20 8.6 21.5 10.7 20 12.8 21.5 14.9 20 17 21.5 17.5H2.5L4 15.4 2.5 13.3 4 11.2 2.5 9.1 4 7zM7 9.5h10v5H7z');
+      addSym('dd-pouch', 'M4 8.5A3.5 3.5 0 0 1 7.5 5h9A3.5 3.5 0 0 1 20 8.5V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM6 11.4h12v1.2H6z');
+      addSym('dd-eraser', 'M5.4 14.6l8.8-8.8a2 2 0 0 1 2.8 0l1.6 1.6a2 2 0 0 1 0 2.8l-8.8 8.8H7a2 2 0 0 1-1.4-.6l-1.2-1.2a2 2 0 0 1 0-2.8zM9.4 10.6l4 4 1-1-4-4z');
+      addSym('dd-washi', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 5.6a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8z');
+      addSym('dd-fineliner', 'M4 20l1.2-4.4L16.4 4.4a1.7 1.7 0 0 1 2.4 0l.8.8a1.7 1.7 0 0 1 0 2.4L8.4 18.8zM6.6 17.4l.2.2 1-.3-.9-.9z');
       addSym('dd-lamp', 'M8.2 3h7.6l3.4 8.5H4.8zM11 11.5h2V17h-2zM6.5 18.5h11a1 1 0 0 1 1 1V21h-13v-1.5a1 1 0 0 1 1-1z');
       if (st.got.length && !pp.claimed) { pp.claimed = true; savePP(); }                  // someone who already has stickers knows
       initSecrets();
@@ -20947,6 +20972,87 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     btn.addEventListener('pointerup', settle); btn.addEventListener('pointercancel', settle);
     // a drag is not a click: swallow the click that follows so the drawer is not flipped a second time
     btn.addEventListener('click', e => { if (moved) { e.stopImmediatePropagation(); e.preventDefault(); moved = false; } }, true);
+  })();
+
+  // ================================================================
+  // TIDY THE POUCH -- in the About "Studio Desk" drawer, her stationery is all over the place. Drag each piece back into the pouch:
+  // each one lands with a clack (the clapper's clack), the pouch gives a little shake, and when the last one is in the pouch does a
+  // flourish and the visitor gets a sticker (the eighth secret). It can be messed up again and tidied again. Keyboard: press a piece
+  // and it goes in. Six pieces, six solid little glyphs (her pencil and ruler doodles, and four drawn for this).
+  // ================================================================
+  (function initTidy() {
+    const inner = document.querySelector('.bp-facts-inner'), desk = inner && inner.querySelector('.bp-desk');
+    if (!inner || !desk) return;
+    const PIECES = [
+      { sym: 'dd-pencil', name: 'red pencil', col: '#C4321F', w: 52 },
+      { sym: 'dd-ruler', name: 'ruler', col: '#B5871C', w: 70 },
+      { sym: 'dd-fineliner', name: 'fineliner', col: '#1E4CC8', w: 54 },
+      { sym: 'dd-eraser', name: 'eraser', col: '#D9708F', w: 52 },
+      { sym: 'dd-washi', name: 'washi tape', col: '#2F9E8F', w: 56 },
+      { sym: 'dd-fineliner', name: 'highlighter', col: '#E0B814', w: 58 }
+    ];
+    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
+    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = document.createElement('div'); el.className = 'bp-tidy'; el.setAttribute('role', 'group'); el.setAttribute('aria-label', 'Tidy the pouch');
+    el.innerHTML =
+      '<p class="tidy-h">The pouch is a mess.</p><p class="tidy-t">Drag everything back in.</p>' +
+      '<div class="tidy-play"><img class="tidy-pouch" src="assets/portfolio-data/My profile/pouch_tight.webp" alt="" draggable="false"><span class="tidy-count" aria-live="polite">0 / ' + PIECES.length + '</span></div>' +
+      '<p class="tidy-msg" role="status"></p><button type="button" class="tidy-again" hidden>mess it up again</button>';
+    desk.after(el);
+    const play = el.querySelector('.tidy-play'), pouch = el.querySelector('.tidy-pouch'), count = el.querySelector('.tidy-count'), msg = el.querySelector('.tidy-msg'), again = el.querySelector('.tidy-again');
+    let items = [], inCount = 0;
+
+    function scatter() {                                  // a loose 3 x 2 spread with jitter, in the left two thirds, never overlapping the pouch
+      inCount = 0; count.textContent = '0 / ' + PIECES.length; msg.textContent = ''; again.hidden = true; el.classList.remove('is-tidy');
+      items.forEach(b => b.remove()); items = [];
+      PIECES.forEach((p, i) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'tidy-item'; b.dataset.i = i;
+        b.setAttribute('aria-label', p.name + '. Press to put it in the pouch, or drag it there');
+        b.style.color = p.col; b.style.width = p.w + 'px'; b.style.height = p.w + 'px';
+        b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#' + p.sym + '"/></svg>';
+        const cx = (i % 3) * 17 + 2 + Math.random() * 3, cy = Math.floor(i / 3) * 44 + 12 + Math.random() * 14;     // percent of the play area
+        b.style.left = cx + '%'; b.style.top = cy + '%'; b.style.rotate = Math.round(Math.random() * 120 - 60) + 'deg';
+        b.addEventListener('pointerdown', e => grab(b, e)); b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); put(b); } });
+        play.appendChild(b); items.push(b);
+      });
+    }
+    function over(b) {                                     // is the piece's centre over the pouch?
+      const r = b.getBoundingClientRect(), q = pouch.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      return cx > q.left - 6 && cx < q.right + 6 && cy > q.top - 6 && cy < q.bottom + 6;
+    }
+    function put(b) {
+      if (b.classList.contains('is-in')) return;
+      const q = pouch.getBoundingClientRect(), p = play.getBoundingClientRect();
+      b.classList.add('is-in'); b.style.left = (q.left - p.left + q.width / 2 - b.offsetWidth / 2) + 'px'; b.style.top = (q.top - p.top + q.height * 0.35 - b.offsetHeight / 2) + 'px';
+      sfx('toyClap'); inCount++; count.textContent = inCount + ' / ' + PIECES.length;
+      pouch.classList.remove('is-shake'); void pouch.offsetWidth; pouch.classList.add('is-shake');
+      if (inCount === PIECES.length) done();
+    }
+    function done() {
+      el.classList.add('is-tidy'); again.hidden = false;
+      let fresh = false; try { fresh = !!(window.hnRewards && window.hnRewards.secret && window.hnRewards.secret('secret-tidy')); } catch (e) {}
+      msg.textContent = fresh ? 'All tidy. (It will not last.) A sticker is in your book.' : 'All tidy again. (It will not last.)';
+      setTimeout(() => sfx('reward'), 260);
+    }
+    function grab(b, e) {
+      if (b.classList.contains('is-in') || e.button > 0) return; e.preventDefault();
+      const p = play.getBoundingClientRect(), r = b.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top, id = e.pointerId; let moved = false;
+      try { b.setPointerCapture(id); } catch (x) {}
+      b.classList.add('is-held'); play.appendChild(b);
+      const move = ev => {
+        if (ev.pointerId !== id) return; moved = true;
+        const pr = play.getBoundingClientRect();
+        b.style.left = Math.max(0, Math.min(pr.width - b.offsetWidth, ev.clientX - pr.left - ox)) + 'px'; b.style.top = Math.max(0, Math.min(pr.height - b.offsetHeight, ev.clientY - pr.top - oy)) + 'px';
+      };
+      const up = ev => {
+        if (ev.pointerId !== id) return; b.removeEventListener('pointermove', move); b.removeEventListener('pointerup', up); b.removeEventListener('pointercancel', up);
+        b.classList.remove('is-held'); try { b.releasePointerCapture(id); } catch (x) {}
+        if (moved && over(b)) put(b); else if (!moved) put(b);          // a plain press also puts it in
+      };
+      b.addEventListener('pointermove', move); b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up);
+    }
+    again.addEventListener('click', scatter);
+    scatter();
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).

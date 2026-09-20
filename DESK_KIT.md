@@ -286,7 +286,7 @@ is blank dotted paper, "Your page", with a rack of eight rubber stamps and three
 (NTU ADM class of 2026, Annecy 2025 with the Keep Yourself Safe head, Open for work, Stationery addict, A daily Milo, Jazzmine,
 Music District, Singapore), lettered in her handwriting. No generic phrases: if a stamp says something, it is something she said. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
 that page is hers: it is the visitor's page in her book. It uses the `stamp` sound slot.
-The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 38;
+The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 39;
 more stamps earn nothing extra, so it cannot be farmed.
 
 **The nav is a ruler; the footer is the desk's front edge.** `#nav` is a boxwood ruler laid across the top of the desk: flat
@@ -361,7 +361,7 @@ honeypot field, no links, 3 to 240 characters, one note per 45 seconds. `window.
 **Rain on the window.** With room sound on, a quiet rain loop (`public/audio/rain-loop.mp3`, a seamless 40 s cut of her rain-on-window recording) plays under
 the music: `--snd-rain` is .10 by day and .32 at night, it re-levels when the lamp is switched, and it ducks with the music while a video plays.
 
-**Secrets: peelable tape, and a lamp you can aim (seven stickers, counted in the total, now n / 38).** Five taped scraps can be peeled (`SECRETS` in `initRewards`:
+**Secrets: peelable tape, and a lamp you can aim (eight stickers, counted in the total, now n / 39).** Five taped scraps can be peeled (`SECRETS` in `initRewards`:
 the notebook's red and gold tapes, the reel's two corners, the letter's tape). Peeling lifts the tape (the `tape` sound slot), drops a paper slip with a line
 of hers taken verbatim from her own notes on the site (the fake IKEA plant, the HB pencil, the stationery, the chocolate milk tea), gives a sticker the first
 time, and the tape presses back down so the desk is never stripped. To change what a tape says, edit its `text` in `SECRETS`. The sixth secret is the lamp:
@@ -397,6 +397,11 @@ A flip-to-a-back-side was deliberately left out: it would only repeat the text a
 handle stay under the hand, because the tray grows above the front), and on letting go it settles open or shut (over ~32% of the way opens a shut drawer, an open one needs to be
 pushed below ~62% to close, so it does not flutter). A plain click and the keyboard still toggle it, a drag is not also a click, and it makes its sound once, when it settles. Only
 the drawer's own box restyles while it moves. Touch: the handle has `touch-action: none`.
+
+**Tidy the pouch (the eighth secret).** In the About "Studio Desk" drawer, below her desk objects, the pouch is a mess: six pieces of stationery (her pencil and ruler doodles, and four
+glyphs drawn for it: fineliner, eraser, washi roll, highlighter) are scattered in a loose spread and can be dragged into the pouch, each with the clapper's clack and a shake of the
+pouch (`initTidy`). The last one gives the pouch a flourish, a line ("All tidy. (It will not last.)") and the "Pencil case" sticker; "mess it up again" reshuffles it. Keyboard: pressing a
+piece puts it in. A plain press also puts a piece in, so a slow or shaky hand is never blocked.
 
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
