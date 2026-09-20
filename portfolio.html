@@ -16035,8 +16035,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 @media (prefers-reduced-motion: reduce) { #themeBtn { transition: none; } }
 
 /* ---- sound: levels live with the rest of the variables (JS reads them), and the toggle mirrors the lamp switch ---- */
-:root { --snd-loop: .70; --snd-ui: .30; --snd-rustle: .13; }                 /* day: a soft room */
-[data-theme="dark"] { --snd-loop: .80; --snd-ui: .34; --snd-rustle: .15; }   /* night: a little closer, a little louder */
+:root { --snd-loop: .70; --snd-ui: .30; --snd-rustle: .13; --snd-rain: .10; }                 /* day: a soft room */
+[data-theme="dark"] { --snd-loop: .80; --snd-ui: .34; --snd-rustle: .15; --snd-rain: .32; }   /* night: a little closer, a little louder */
 #soundBtn .snd-on { display: none; }
 #soundBtn[aria-pressed="true"] .snd-off { display: none; }
 #soundBtn[aria-pressed="true"] .snd-on { display: block; }
@@ -19432,7 +19432,7 @@ body { overflow-x: clip !important; }                                          /
     const EXTS = ['mp3', 'ogg'];                                         // first one that exists wins
     const say = (...a) => { try { console.info('[room sound]', ...a); } catch (e) {} };
     const warn = (...a) => { try { console.warn('[room sound]', ...a); } catch (e) {} };
-    const FILES = { night: 'night-music', day: 'day-music', click: 'lamp-click', drawerOpen: 'drawer-open', drawerClose: 'drawer-close' };
+    const FILES = { night: 'night-music', day: 'day-music', rain: 'rain-loop', click: 'lamp-click', drawerOpen: 'drawer-open', drawerClose: 'drawer-close' };
     // SOUND SLOTS: one per kind of thing that can make a sound. A slot plays public/audio/<own>-1.mp3, -2, -3, -4
     // (any that exist, random, never the same twice in a row). Until a slot has its own file it borrows the generic
     // fallback recordings (paper-1/2/3 for the three paper slots), and a slot with neither stays silent. So
@@ -19458,7 +19458,7 @@ body { overflow-x: clip !important; }                                          /
     };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
-    let ctx = null, master = null, an = null, on = false, armed = false, loop = null, loopMode = null, meterT = 0, silent = 0, lastErr = '';
+    let ctx = null, master = null, an = null, on = false, armed = false, loop = null, rain = null, loopMode = null, meterT = 0, silent = 0, lastErr = '';
     const bufs = {}, missing = {};
 
     const num = (name, fallback) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fallback : v; };
@@ -19525,11 +19525,24 @@ body { overflow-x: clip !important; }                                          /
       silent = 0; loop = { src, g }; loopMode = m; paint();
       return true;
     }
+    // ---- rain on the window: a second, quiet loop under the music (a little at day, more at night). It follows the same rules as the
+    // music: opt-in, fades in and out, and steps aside while a video with sound plays. If the file is missing it is simply absent.
+    const rainLevel = () => ducked ? 0 : num('--snd-rain', .1);
+    async function startRain() {
+      if (!on || !ctx) return;
+      const b = await load('rain', true); if (!b || !on) return;
+      const t = ctx.currentTime;
+      if (rain) { rain.g.gain.cancelScheduledValues(t); rain.g.gain.setValueAtTime(rain.g.gain.value, t); rain.g.gain.linearRampToValueAtTime(rainLevel(), t + FADE * 1.5); return; }
+      const src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
+      const g = ctx.createGain(); g.gain.value = 0; src.connect(g); g.connect(master); src.start(0);
+      g.gain.linearRampToValueAtTime(rainLevel(), t + FADE * 2); rain = { src, g };
+    }
     async function turnOn() {
       if (!ensureCtx()) { paint('not supported in this browser'); return; }
       try { await ctx.resume(); } catch (e) { warn('resume() failed', e && e.message); }
       on = true; armed = false; paint(); startMeter();
       const ok = await startLoop(mode());
+      if (ok) startRain();
       preloadAll();
       if (!ok) {                                                                    // nothing to play: say why, stay off
         on = false; stopMeter(); paint(lastErr ? "couldn't start: " + lastErr : 'sound files have not been added yet');
@@ -19537,7 +19550,7 @@ body { overflow-x: clip !important; }                                          /
     }
     function turnOff() {
       on = false; armed = false; stopMeter(); paint();
-      if (ctx) fadeOut(loop); loop = null; loopMode = null;
+      if (ctx) { fadeOut(loop); fadeOut(rain); } loop = null; rain = null; loopMode = null;
     }
     // The meter: three bars on the button that move with the REAL signal at the output stage. If they move but you
     // hear nothing, the page is playing and the problem is outside it (tab or window muted, wrong output device,
@@ -19564,7 +19577,7 @@ body { overflow-x: clip !important; }                                          /
     // read as sound appearing from nowhere.)
 
     // the loop follows the mode (crossfade); day and night each have their own room
-    new MutationObserver(() => { if (on && ctx) startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    new MutationObserver(() => { if (on && ctx) { startLoop(mode()).then(ok => paint(ok ? '' : 'no sound file for this mode yet')); startRain(); } }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     let hideT = 0;
     document.addEventListener('visibilitychange', () => {
       if (!ctx) return;
@@ -19631,10 +19644,11 @@ body { overflow-x: clip !important; }                                          /
     function syncDuck() {
       const want = anyAudible(); if (want === ducked) return; ducked = want;
       if (loop && ctx) { const t = ctx.currentTime; loop.g.gain.cancelScheduledValues(t); loop.g.gain.setValueAtTime(loop.g.gain.value, t); loop.g.gain.linearRampToValueAtTime(ducked ? 0 : num('--snd-loop', .6), t + 0.5); }
+      if (rain && ctx) { const t = ctx.currentTime; rain.g.gain.cancelScheduledValues(t); rain.g.gain.setValueAtTime(rain.g.gain.value, t); rain.g.gain.linearRampToValueAtTime(rainLevel(), t + 0.5); }
       paint(ducked ? 'paused while a video with sound plays' : '');
     }
     ['play', 'playing', 'pause', 'ended', 'volumechange', 'emptied'].forEach(ev => document.addEventListener(ev, syncDuck, true));   // media events do not bubble, but they can be caught on the way down
-    window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
+    window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), rainGain: () => (rain && ctx ? +rain.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));

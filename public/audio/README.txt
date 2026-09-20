@@ -5,6 +5,9 @@ MUSIC (loops, about -18 LUFS, last 3s crossfaded into the first 3s so the loop h
   day-music.mp3     Jazz Rainy Lounge, Alex Morgan
   night-music.mp3   2 AM Lofi Chill Ambient, Music For Videos
 
+RAIN (a second loop under the music, from freesound_community-rain-on-window-29606, cut into a seamless 40 s loop with a 3 s crossfade)
+  rain-loop.mp3     rain on the window; level --snd-rain is .10 by day and .32 at night, and it ducks with the music while a video plays
+
 EFFECT SLOTS: one per KIND of thing. To give a kind its own sound, drop  <name>-1.mp3  (and -2, -3, -4 for variety)
 into this folder. The page plays any that exist, at random, never the same twice in a row. Until a slot has its own
 file it uses the fallback below; a slot with neither stays silent. No code change is needed. Short, mono, peak about
