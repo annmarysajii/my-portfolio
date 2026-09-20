@@ -304,6 +304,8 @@ on top of it, each toy's whole card is its own object: Animate a flipbook (cloth
 sketchbook, Capture a clapper board (striped clap-stick, chalk lettering), Fonts a printer's specimen card (double printed rule), Strum a
 walnut guitar top with a maple-edged soundhole. Room for the object's thickness comes from padding on the open `.pg-reveal-inner`
 (the reveal wrapper clips overflow, so shadows outside the card would otherwise be cut off).
+The objects also move when used (CSS Q3 + `initToyMotion`): pressing a principle thumbs the flipbook, Capture snaps the clap-stick
+and flashes the slate. Both switch off under reduced motion.
 
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.

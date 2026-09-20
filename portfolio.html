@@ -17148,6 +17148,21 @@ footer.foot, [data-theme="dark"] footer.foot {
 #wrap #pg-videography-toy .pg-hint, #wrap #pg-music-toy .pg-hint, #wrap #pg-videography-toy .pg-close-btn, #wrap #pg-music-toy .pg-close-btn { color: #F1E7CD !important; }
 #wrap #pg-videography-toy .pg-close-btn:hover, #wrap #pg-music-toy .pg-close-btn:hover, #wrap #pg-videography-toy .pg-close-btn:focus-visible, #wrap #pg-music-toy .pg-close-btn:focus-visible { color: #F5DE4A !important; }
 
+/* ---- Q3. THE OBJECTS MOVE WHEN YOU USE THEM ---------------------------------------------------------------------- */
+/* Animate: pressing a principle thumbs the flipbook, a small hand-held wobble */
+#wrap #pg-animation-toy .playground-scrap-card.is-riffle { animation: hnRiffle 520ms var(--hn-ease, ease-out) 1; }
+@keyframes hnRiffle {
+  0% { translate: 0 0; rotate: 0deg; } 18% { translate: 3px -2px; rotate: .9deg; } 40% { translate: -1px 1px; rotate: -.6deg; } 65% { translate: 1px 0; rotate: .25deg; } 100% { translate: 0 0; rotate: 0deg; }
+}
+/* Capture: the clap-stick comes down and the slate flashes */
+#wrap #pg-videography-toy .playground-scrap-card.is-clap { animation: hnFlash 420ms ease-out 1; }
+#wrap #pg-videography-toy .playground-scrap-card.is-clap::before { transform-origin: 50% 0; animation: hnClap 420ms cubic-bezier(.2, 1.4, .4, 1) 1; }
+@keyframes hnClap { 0% { scale: 1 1; translate: 0 0; } 22% { scale: 1 .55; translate: 0 5px; } 100% { scale: 1 1; translate: 0 0; } }
+@keyframes hnFlash { 0% { filter: brightness(1.7); } 100% { filter: brightness(1); } }
+@media (prefers-reduced-motion: reduce) {
+  #wrap #pg-animation-toy .playground-scrap-card.is-riffle, #wrap #pg-videography-toy .playground-scrap-card.is-clap, #wrap #pg-videography-toy .playground-scrap-card.is-clap::before { animation: none; }
+}
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19996,6 +20011,18 @@ footer.foot, [data-theme="dark"] footer.foot {
     }
     turn.addEventListener('click', () => go(true));
     sp.querySelector('.hn-sp-back').addEventListener('click', () => go(false));
+  })();
+
+  // The toy objects move when used: the flipbook is thumbed when a principle is pressed, the clapper snaps on Capture.
+  // (CSS does the moving; this only toggles a class for the length of the animation.)
+  (function initToyMotion() {
+    const pulse = (card, cls, ms) => { if (!card) return; card.classList.remove(cls); void card.offsetWidth; card.classList.add(cls); setTimeout(() => card.classList.remove(cls), ms); };
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('#pg-animation-toy .motion-preset-btn');
+      if (a) { pulse(a.closest('.playground-scrap-card'), 'is-riffle', 540); return; }
+      const c = e.target.closest && e.target.closest('#pg-videography-toy #btn-cam-capture');
+      if (c) pulse(c.closest('.playground-scrap-card'), 'is-clap', 440);
+    }, true);
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
