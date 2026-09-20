@@ -286,7 +286,7 @@ is blank dotted paper, "Your page", with a rack of eight rubber stamps and three
 (NTU ADM class of 2026, Annecy 2025 with the Keep Yourself Safe head, Open for work, Stationery addict, A daily Milo, Jazzmine,
 Music District, Singapore), lettered in her handwriting. No generic phrases: if a stamp says something, it is something she said. A visitor picks a stamp and presses it anywhere; it stays (localStorage `hn-stampage-v1`). Nothing on
 that page is hers: it is the visitor's page in her book. It uses the `stamp` sound slot.
-The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 30;
+The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 31;
 more stamps earn nothing extra, so it cannot be farmed.
 
 **The nav is a ruler; the footer is the desk's front edge.** `#nav` is a boxwood ruler laid across the top of the desk: flat
@@ -342,6 +342,21 @@ Stamps, doodles and stickers are hidden around this desk...", a red 0/30 stub, "
 tucks itself away after 18 s (Esc closes it; it returns on the next visit, at most three times); and the first time the sticker book opens, its
 "How it works" folds open by itself (four lines: play, look closely, turn the page, stick anything anywhere), then stays folded. Opening the book
 by any route counts as taking the passport, and anyone who already has stickers is never nagged.
+
+**The notebook page takes a pen, a marker and words.** Besides the eight stamps, the visitor's page (`hn-stampage-v1`) has Pen, Marker (a highlighter:
+wide, half-opaque, multiplied) and Words (click, type, Enter; the size is fitted so a line never runs off the page and is stored, so the page and the
+saved image agree), eight inks (red, orange, green, teal, blue, purple, pink, black) and Undo. Everything is one ordered list (capped at 120 items and
+6000 stroke points). A stroke is stored as points in permille of the page, drawn as a `non-scaling-stroke` SVG path, so it survives the page changing
+size. "Take my page" saves all of it. The first mark of any kind still earns the "Your page" sticker.
+
+**Arrival.** Taking the passport (the ticket, or just opening the book) stamps it "Arrival", a ticket-shaped sticker (`dd-ticket`, added to the
+inline doodle sprite at boot), so the counter starts at 1 / 31 and the first press feels like a reward. Anyone who had already claimed gets it quietly.
+
+**The guestbook (`#hn-gb`).** A panel like the sticker book (so it works on a phone), opened from the footer link "Leave a note in the guestbook" or
+from the sticker book. There is no server: a note is POSTed to the same FormSubmit address as the contact form ("New guestbook note"), so she reads
+and moderates every one. Approved notes are listed in `assets/notes/notes.json` (format and steps in `assets/notes/README.txt`) and appear on the wall as
+coloured sticky notes. The sender sees their own note at once, marked "sent, waiting for me to read it" (kept in their browser, `hn-gb-v1`). Guards:
+honeypot field, no links, 3 to 240 characters, one note per 45 seconds. `window.__hnGbDry = true` in the console stops it sending (for testing).
 
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
