@@ -17098,6 +17098,21 @@ footer.foot, [data-theme="dark"] footer.foot {
 #wrap .pg-toy .motion-lab-stage { border: 0 !important; border-radius: 2px !important; box-shadow: 0 0 0 1px rgba(var(--hn-shadow-rgb), .28), var(--hn-sh-flat) !important; }
 #wrap .pg-toy .shutter-btn { font-family: var(--hn-hand) !important; font-size: 1.15rem !important; font-weight: 400 !important; letter-spacing: .02em !important; border-radius: 2px !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; }
 
+/* Animate: the stage is a flipbook, a block of pages with the drawing on the top one and the other pages showing along the edges */
+#wrap .pg-toy .motion-lab-stage {
+  margin: 0 7px 7px 0; overflow: visible !important;
+  background-color: #FDFBF3 !important;
+  background-image: repeating-linear-gradient(180deg, transparent 0 15px, rgba(90, 130, 190, .16) 15px 16px) !important;
+  box-shadow: 1px 1px 0 #EDE7D6, 2px 2px 0 #CFC8B4, 3px 3px 0 #F3EEDF, 4px 4px 0 #CFC8B4, 5px 5px 0 #F3EEDF, 6px 6px 0 #BFB8A3, 7px 9px 9px rgba(var(--hn-shadow-rgb), .28) !important;
+}
+#wrap .pg-toy .motion-lab-stage::after { content: "page 1"; position: absolute; right: 8px; top: 3px; font-family: var(--hn-hand); font-size: .95rem; color: var(--hn-ink-2); pointer-events: none; }
+
+/* Strum: the soundhole sits in a wooden frame, like the top of an acoustic guitar */
+#wrap .pg-toy .guitar-soundhole-stage { margin: 9px; }
+#wrap .pg-toy #cvs-guitar-pg {
+  box-shadow: 0 0 0 1px rgba(20, 10, 2, .55), 0 0 0 8px #7A4F2C, inset 0 0 0 1px rgba(255, 236, 200, .0), 0 0 0 9px rgba(20, 10, 2, .5), 0 3px 10px 9px rgba(var(--hn-shadow-rgb), .3) !important;
+}
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
