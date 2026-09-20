@@ -636,9 +636,42 @@ window.go=function(filter){
   dest='portfolio.html?f='+filter;
   if(pref){location.href=dest;return;}
   try{ if(window.__hnSfx) window.__hnSfx('stamp'); }catch(e){}
+  // Safety net: guarantee navigation even if the canvas animation below stalls (backgrounded tab, throttled rAF, slow device).
+  let navigated = false;
+  const forceNav = () => { if(!navigated){ navigated = true; location.href = dest; } };
+  const navTimeout = setTimeout(forceNav, 4600);
+  // the slip and the cards lift away, one line of welcome, then the warp: cream streaks rushing out of the mat's navy, ending on the
+  // same navy the portfolio opens on, so the next page is already there when the streaks stop
   document.getElementById('gw').classList.add('leaving');
   setTimeout(()=>document.getElementById('affirm').classList.add('show'),260);
-  setTimeout(()=>{ location.href = dest; },1250);
+  setTimeout(()=>{
+    document.getElementById('affirm').style.opacity='0';
+    wc.classList.add('on');
+    const BG='22,48,90';
+    ctx.fillStyle='rgb('+BG+')';ctx.fillRect(0,0,W,H);
+    wStars=Array.from({length:380},()=>({
+      x:(Math.random()-.5)*W,y:(Math.random()-.5)*H,z:Math.random()*W,pz:0
+    }));
+    wStars.forEach(s=>s.pz=s.z);prog=0;
+    (function frame(){
+      const spd=10+prog*180;
+      ctx.fillStyle='rgba('+BG+','+(.2+prog*.22)+')';
+      ctx.fillRect(0,0,W,H);
+      wStars.forEach(s=>{
+        s.pz=s.z;s.z-=spd;
+        if(s.z<=0){s.x=(Math.random()-.5)*W;s.y=(Math.random()-.5)*H;s.z=W;s.pz=s.z;}
+        const sx=(s.x/s.z)*W+W/2,sy=(s.y/s.z)*H+H/2;
+        const px=(s.x/s.pz)*W+W/2,py=(s.y/s.pz)*H+H/2;
+        const br=1-s.z/W;
+        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);
+        ctx.strokeStyle='rgba(244,238,222,'+(.1+br*.9)+')';
+        ctx.lineWidth=Math.max(.3,br*2.4);ctx.stroke();
+      });
+      prog+=.009+prog*.018; // ease-in acceleration (cubic feel)
+      if(prog<1)requestAnimationFrame(frame);
+      else{ctx.fillStyle='rgb('+BG+')';ctx.fillRect(0,0,W,H);clearTimeout(navTimeout);setTimeout(forceNav,40);}
+    })();
+  },1500);
 };
 </script>
 
