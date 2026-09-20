@@ -361,15 +361,9 @@ honeypot field, no links, 3 to 240 characters, one note per 45 seconds. `window.
 **Rain on the window.** With room sound on, a quiet rain loop (`public/audio/rain-loop.mp3`, a seamless 40 s cut of her rain-on-window recording) plays under
 the music: `--snd-rain` is .10 by day and .32 at night, it re-levels when the lamp is switched, and it ducks with the music while a video plays.
 
-**Secrets: peelable tape, and a lamp you can aim (seven stickers, counted in the total, now n / 38).** Five taped scraps can be peeled (`SECRETS` in `initRewards`:
-the notebook's red and gold tapes, the reel's two corners, the letter's tape). Peeling lifts the tape (the `tape` sound slot), drops a paper slip with a line
-of hers taken verbatim from her own notes on the site (the fake IKEA plant, the HB pencil, the stationery, the chocolate milk tea), gives a sticker the first
-time, and the tape presses back down so the desk is never stripped. To change what a tape says, edit its `text` in `SECRETS`. The sixth secret is the lamp:
-the nav's lamp button still switches day and night on a click, but pressed and dragged it becomes the light (`initLamp`): the glowing orb follows the pointer,
-and the night lamp position (`--lamp-x/--lamp-y`, as a percentage of the hero) is written about 15 times a second so the whole desk re-lights around it
-(the hero eases between steps; a whole-page restyle costs ~30 ms, which is why it is throttled). By day, picking the lamp up switches it on. Esc puts it back
-mid-drag, a double click resets it, Shift + arrow keys nudge it, and a small slip explains it the first time the lamp is on. Not persisted: every visit starts
-with the lamp where it belongs.
+**Secrets: peelable tape (seven stickers with the runner, counted in the total, now n / 38).** Five taped scraps can be peeled (`SECRETS` in `initRewards`: the notebook's red and gold tapes, the reel's two corners, the
+letter's tape). Peeling lifts the tape (the `tape` sound slot), drops a paper slip with a line of hers taken verbatim from her own notes on the site (the fake IKEA plant, the HB pencil, the stationery, the chocolate
+milk tea), gives a sticker the first time, and the tape presses back down so the desk is never stripped. To change what a tape says, edit its `text` in `SECRETS`. (A draggable lamp was the sixth secret; it was removed, see below.)
 
 **The desk is not always still (the seventh secret).** When the page goes quiet, one of her doodles (the runner) runs along under the top bar. The first run comes
 after ~35 s of the visit once the visitor has been idle for 9 s; later ones need 75 s since the last and a 20 s pause (or 3.5 minutes regardless); never more than
