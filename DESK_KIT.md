@@ -289,6 +289,13 @@ that page is hers: it is the visitor's page in her book. It uses the `stamp` sou
 The first stamp pressed there earns one sticker, "Your page" (`hnRewards.notebook()`), and the book's counter becomes n / 30;
 more stamps earn nothing extra, so it cannot be farmed.
 
+**The nav is a ruler; the footer is the desk's front edge.** `#nav` is a boxwood ruler laid across the top of the desk: flat
+boxwood colour, graduations (1/5/10 mm ticks) along its bottom edge, links in her handwriting with a highlighter swipe on hover
+(no colour change), the Work dropdown and the mobile flyout are index cards (tape on the dropdown), the lamp and sound buttons are
+little pressed-in paper pills, Resume is a slightly crooked yellow label. No blur, no hairline border: the shadow comes from the
+light tokens. The footer is the dark front face of the desk with a lit chamfer on its top edge, cream handwriting on wood
+(contrast 6.9:1 worst case), the visitor counter as a stuck label. Footer links carry `data-dock-avoid` so the Passport yields.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.

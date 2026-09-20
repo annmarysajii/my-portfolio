@@ -16987,6 +16987,84 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
 .bp-pol:hover { translate: 0 -3px; scale: 1.03; z-index: 3; }
 @media (prefers-reduced-motion: reduce) { .bp-pol { transition: none; } }
 
+/* ---- P. THE NAV IS A RULER LAID ACROSS THE TOP OF THE DESK; THE FOOTER IS THE DESK'S FRONT EDGE ------------------ */
+#nav.nav {
+  background-color: #EBD9A6;                                    /* boxwood ruler: ink on it is ~10:1 */
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, 0) 45%, rgba(120, 88, 34, .14)), repeating-linear-gradient(90deg, rgba(150, 110, 40, .05) 0 3px, rgba(255, 255, 255, .04) 3px 7px);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 rgba(96, 66, 22, .5), var(--hn-edge), var(--hn-sh-raised);
+}
+#nav.nav::after {                                               /* the graduations: 1 mm, 5 mm and 10 mm ticks along the bottom edge */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 15px; pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .72) 0 1.4px, transparent 1.4px 100px) left bottom / 100% 15px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .66) 0 1.2px, transparent 1.2px 20px) left bottom / 100% 10px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .5) 0 1px, transparent 1px 4px) left bottom / 100% 5px no-repeat;
+}
+#nav .nav-logo { font-family: var(--hn-hand); font-size: 1.75rem; font-weight: 400; letter-spacing: 0; line-height: 1; color: var(--hn-ink); padding-bottom: 8px; }
+#nav .nav-logo:hover { opacity: 1; color: var(--hn-red); }
+#nav .nav-links a { font-family: var(--hn-hand); font-size: 1.25rem; font-weight: 400; opacity: 1; color: var(--hn-ink); padding: 0 .15rem 8px; }
+#nav .nav-links a:hover, #nav .nav-links a:focus-visible {     /* a highlighter swipe, not a colour change */
+  color: var(--hn-ink); background: linear-gradient(transparent 52%, var(--hn-hi) 52% 90%, transparent 90%); outline: 0;
+}
+#nav .nav-links a:focus-visible { box-shadow: 0 2px 0 var(--hn-red); }
+#nav .nav-item-work::after { content: ""; position: absolute; left: -12px; right: -12px; top: 100%; height: 1.3rem; }   /* keeps the card open while the pointer crosses the gap */
+#nav .nav-work-dropdown {                                       /* an index card taped under the ruler */
+  background: #FBF8EE url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px; border: 0; border-radius: 2px; padding: .7rem .45rem .45rem;
+  box-shadow: var(--hn-edge), var(--hn-sh-raised);
+}
+#nav .nav-work-dropdown::before { content: ""; position: absolute; top: -9px; left: 10px; width: 46px; height: 16px; rotate: -6deg; background: var(--hn-tape-gold); box-shadow: var(--hn-sh-flat); }
+#nav .nav-work-dropdown a { font-size: 1.15rem; padding: .22rem .55rem; border-radius: 2px; color: var(--hn-ink); background-image: none; }
+#nav .nav-work-dropdown a:hover, #nav .nav-work-dropdown a:focus-visible { background: var(--hn-hi); }
+#nav .nav-work-featured { font-family: var(--hn-hand); font-size: .95rem; font-weight: 400; padding: .05rem .4rem; border-radius: 2px; background: var(--hn-red); color: #FFF8EC; }
+#nav .nav-r { gap: .6rem; padding-bottom: 6px; }
+#nav .nav-r .theme-toggle {
+  background: #F7F0DC !important; border: 0 !important; border-radius: 999px !important; min-width: 34px; height: 34px; padding: 0 .55rem !important; color: var(--hn-ink) !important;
+  box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; transition: box-shadow 300ms var(--hn-ease), translate 300ms var(--hn-ease);
+}
+#nav .nav-r .theme-toggle:hover { translate: 0 -1px; }
+#nav .nav-r .theme-toggle:active { translate: 0 1px; box-shadow: inset 0 2px 4px rgba(var(--hn-shadow-rgb), .5) !important; }
+#nav .nav-r .theme-toggle:focus-visible, #nav .nav-toggle:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 2px; }
+#nav .nav-r #soundBtn[aria-pressed="true"] { box-shadow: inset 0 1px 3px rgba(var(--hn-shadow-rgb), .5) !important; }
+#nav .nav-cta, #nav .nav-links a.nav-cta {                      /* a yellow paper label, slightly crooked */
+  font-family: var(--hn-hand) !important; font-size: 1.2rem !important; font-weight: 400 !important; letter-spacing: 0 !important; padding: .28rem .9rem !important; border: 0 !important; border-radius: 2px !important;
+  background: #F2C030 !important; color: #14131A !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; rotate: -1.5deg; transition: rotate 200ms var(--hn-ease), translate 200ms var(--hn-ease) !important;
+}
+#nav .nav-cta:hover, #nav .nav-links a.nav-cta:hover { transform: none !important; rotate: 0deg; translate: 0 -1px; background-image: none !important; }
+#nav .nav-toggle { background: #F7F0DC; border: 0; border-radius: 999px; box-shadow: var(--hn-edge), var(--hn-sh-flat); color: var(--hn-ink); }
+@media (max-width: 640px) {
+  #nav .nav-logo { font-size: 1.5rem; }
+  #nav .nav-links {                                            /* the flyout is an index card too */
+    background: #FBF8EE url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px; border: 0; border-radius: 2px; box-shadow: var(--hn-edge), var(--hn-sh-raised);
+  }
+  #nav .nav-links a { font-size: 1.3rem; padding: .35rem .6rem; border-radius: 2px; }
+  #nav .nav-work-dropdown, #nav .nav-item-work:hover .nav-work-dropdown, #nav .nav-item-work:focus-within .nav-work-dropdown { background: none; box-shadow: none; padding: 0 0 .2rem .9rem; }
+  #nav .nav-work-dropdown::before, #nav .nav-item-work::after { display: none; }
+  #nav .nav-work-dropdown a { font-size: 1.1rem; padding: .25rem .6rem; opacity: 1; }
+  #nav .nav-cta, #nav .nav-links a.nav-cta { font-size: 1.1rem !important; padding: .22rem .6rem !important; }
+}
+
+/* the desk's front edge: a lit chamfer on top, the dark front face of the wood below, the light falling off toward the floor */
+footer.foot, [data-theme="dark"] footer.foot {
+  border-top: 0; padding: 2.4rem 0 2.1rem; color: #F1E7CD;
+  background-color: #33210F;
+  background-image:
+    linear-gradient(180deg, rgba(255, 236, 200, .30) 0 7px, rgba(0, 0, 0, .55) 7px 8px, rgba(0, 0, 0, 0) 8px),
+    linear-gradient(180deg, rgba(8, 4, 2, .42), rgba(8, 4, 2, .62)),
+    url("assets/svg-opt/wood-tile.webp");
+  background-size: auto, auto, 512px 512px;
+  box-shadow: 0 -6px 14px rgba(var(--hn-shadow-rgb), .3);
+}
+.foot .foot-in { font-family: var(--hn-hand); }
+.foot .foot-logo { font-family: var(--hn-hand); font-size: 1.7rem; font-weight: 400; color: #FBF3DC; }
+.foot .foot-copy { font-size: 1.15rem; color: #F1E7CD; }
+.foot .foot-egg, .foot .foot-back { font-size: 1.15rem; font-weight: 400; color: #F1E7CD; text-decoration: underline dotted; text-underline-offset: .22em; }
+.foot .foot-egg:hover, .foot .foot-back:hover, .foot .foot-egg:focus-visible, .foot .foot-back:focus-visible { color: #F5DE4A; }
+.foot .foot-visits { background: #F1E9D8; padding: 3px 5px; border-radius: 2px; rotate: -1.5deg; opacity: 1; box-shadow: var(--hn-sh-flat); }
+@media (max-width: 640px) { .foot .foot-logo { font-size: 1.5rem; } }
+@media (prefers-reduced-motion: reduce) { #nav .nav-r .theme-toggle, #nav .nav-cta { transition: none !important; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -18941,9 +19019,9 @@ html.hn-placing, html.hn-placing body { cursor: copy; }
    <img src="https://visitor-badge.laobi.icu/badge?page_id=annmarysajii.my-portfolio&left_color=%23111009&right_color=%23111009&left_text=visits" alt="Visitor count" loading="lazy" referrerpolicy="no-referrer" width="55" height="20">
   </span>
 
-  <a href="game.html" class="foot-egg">Curious what happens when you go offline?</a>
+  <a href="game.html" class="foot-egg" data-dock-avoid>Curious what happens when you go offline?</a>
 
-  <a href="index.html" class="foot-back">Back to start</a>
+  <a href="index.html" class="foot-back" data-dock-avoid>Back to start</a>
 
  </div>
 
