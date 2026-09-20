@@ -300,8 +300,10 @@ light tokens. The footer is the dark front face of the desk with a lit chamfer o
 no border, 2px corners, the light-token edge and shadow, hand-lettered tag/title/hint, buttons as small paper tabs with the chosen
 one highlighted (yellow) rather than filled, canvases with a hairline instead of a heavy ink border, and "put it back" in pencil at
 the foot instead of a circled x. One shared rule set covers all five (`.pg-btn`, `.rubber-stamp-btn`, `.lut-btn`, `.chord-pad-btn`);
-on top of it, Animate's stage is a flipbook (ruled page, stacked page edges, "page 1") and Strum's soundhole sits in a wooden
-frame. Draw, Capture and Fonts still use the plain card; a clapper for Capture and a type specimen card for Fonts are next.
+on top of it, each toy's whole card is its own object: Animate a flipbook (cloth binding, stacked page edges), Draw a spiral
+sketchbook, Capture a clapper board (striped clap-stick, chalk lettering), Fonts a printer's specimen card (double printed rule), Strum a
+walnut guitar top with a maple-edged soundhole. Room for the object's thickness comes from padding on the open `.pg-reveal-inner`
+(the reveal wrapper clips overflow, so shadows outside the card would otherwise be cut off).
 
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.

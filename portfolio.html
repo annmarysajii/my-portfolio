@@ -17098,20 +17098,55 @@ footer.foot, [data-theme="dark"] footer.foot {
 #wrap .pg-toy .motion-lab-stage { border: 0 !important; border-radius: 2px !important; box-shadow: 0 0 0 1px rgba(var(--hn-shadow-rgb), .28), var(--hn-sh-flat) !important; }
 #wrap .pg-toy .shutter-btn { font-family: var(--hn-hand) !important; font-size: 1.15rem !important; font-weight: 400 !important; letter-spacing: .02em !important; border-radius: 2px !important; box-shadow: var(--hn-edge), var(--hn-sh-flat) !important; }
 
-/* Animate: the stage is a flipbook, a block of pages with the drawing on the top one and the other pages showing along the edges */
-#wrap .pg-toy .motion-lab-stage {
-  margin: 0 7px 7px 0; overflow: visible !important;
-  background-color: #FDFBF3 !important;
-  background-image: repeating-linear-gradient(180deg, transparent 0 15px, rgba(90, 130, 190, .16) 15px 16px) !important;
-  box-shadow: 1px 1px 0 #EDE7D6, 2px 2px 0 #CFC8B4, 3px 3px 0 #F3EEDF, 4px 4px 0 #CFC8B4, 5px 5px 0 #F3EEDF, 6px 6px 0 #BFB8A3, 7px 9px 9px rgba(var(--hn-shadow-rgb), .28) !important;
-}
+/* room around an open toy for the thickness/shadow of the object (the reveal wrapper clips overflow) */
+#wrap .pg-toy .pg-reveal.pg-open .pg-reveal-inner { padding: 0 14px 16px 0; }
+#wrap .pg-toy .motion-lab-stage { margin: 0; background-color: #FDFBF3 !important; background-image: repeating-linear-gradient(180deg, transparent 0 15px, rgba(90, 130, 190, .16) 15px 16px) !important; }
 #wrap .pg-toy .motion-lab-stage::after { content: "page 1"; position: absolute; right: 8px; top: 3px; font-family: var(--hn-hand); font-size: .95rem; color: var(--hn-ink-2); pointer-events: none; }
 
 /* Strum: the soundhole sits in a wooden frame, like the top of an acoustic guitar */
-#wrap .pg-toy .guitar-soundhole-stage { margin: 9px; }
+
 #wrap .pg-toy #cvs-guitar-pg {
   box-shadow: 0 0 0 1px rgba(20, 10, 2, .55), 0 0 0 8px #7A4F2C, inset 0 0 0 1px rgba(255, 236, 200, .0), 0 0 0 9px rgba(20, 10, 2, .5), 0 3px 10px 9px rgba(var(--hn-shadow-rgb), .3) !important;
 }
+
+/* ---- Q2. EACH TOY'S WHOLE CARD IS THE OBJECT -------------------------------------------------------------------- */
+/* Animate = a flipbook: a cloth binding on the left, the other pages showing along the right and bottom edges */
+#wrap #pg-animation-toy .playground-scrap-card {
+  padding-left: 1.7rem !important;
+  background-image: linear-gradient(90deg, #A8281F 0 13px, rgba(0, 0, 0, .3) 13px 14px, rgba(255, 255, 255, .25) 14px 15px, transparent 15px), url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: auto, 400px 400px !important; background-repeat: no-repeat, repeat !important; background-position: 0 0, 0 0 !important;
+  box-shadow: var(--hn-edge), 1px 1px 0 #EDE7D6, 2px 2px 0 #CFC8B4, 3px 3px 0 #F3EEDF, 4px 4px 0 #CFC8B4, 5px 5px 0 #F3EEDF, 6px 6px 0 #BFB8A3, 7px 9px 9px rgba(var(--hn-shadow-rgb), .3) !important;
+}
+/* Draw = a spiral sketchbook: coils and punched holes along the top */
+#wrap #pg-illustration-toy .playground-scrap-card {
+  padding-top: 2.1rem !important;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 5px, #7B8490 5px 9px, transparent 9px 16px),
+    radial-gradient(circle, rgba(30, 39, 51, .6) 2.6px, transparent 3.2px),
+    url("assets/svg-opt/paper-light-tile.webp") !important;
+  background-size: 100% 12px, 16px 24px, 400px 400px !important; background-repeat: no-repeat, repeat-x, repeat !important; background-position: 0 4px, 3px 9px, 0 0 !important;
+}
+/* Capture = a clapper board: the striped clap-stick across the top, a chalkboard slate below */
+#wrap #pg-videography-toy .playground-scrap-card {
+  padding-top: 3.1rem !important; background: #24292F url("assets/svg-opt/paper-light-tile.webp") 0 0 / 400px 400px !important; background-blend-mode: multiply !important;
+}
+#wrap #pg-videography-toy .playground-scrap-card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 26px; pointer-events: none;
+  background: repeating-linear-gradient(-55deg, #F4F0E6 0 14px, #1B1F24 14px 28px); box-shadow: 0 2px 0 rgba(0, 0, 0, .55), 0 3px 4px rgba(0, 0, 0, .3);
+}
+/* Fonts = a printer's specimen card: a double printed rule inside the edge, registration crosses at the corners */
+#wrap #pg-graphic-design-toy .playground-scrap-card { padding: 1.7rem 1.6rem 2.6rem !important; }
+#wrap #pg-graphic-design-toy .playground-scrap-card::before { content: ""; position: absolute; inset: 7px; border: 1.5px solid #A8281F; pointer-events: none; }
+#wrap #pg-graphic-design-toy .playground-scrap-card::after { content: ""; position: absolute; inset: 11px; border: .5px solid #A8281F; pointer-events: none; }
+/* Strum = the guitar's own top: walnut with a maple-edged soundhole */
+#wrap #pg-music-toy .playground-scrap-card { background-image: linear-gradient(180deg, rgba(8, 4, 2, .30), rgba(8, 4, 2, .40)), url("assets/svg-opt/wood-tile.webp") !important; background-size: auto, 512px 512px !important; background-color: #6B4526 !important; background-repeat: no-repeat, repeat !important; }
+#wrap #pg-music-toy #cvs-guitar-pg { box-shadow: 0 0 0 1px rgba(20, 10, 2, .6), 0 0 0 8px #C08A4A, 0 0 0 9px rgba(20, 10, 2, .55), 0 3px 10px 9px rgba(0, 0, 0, .35) !important; }
+#wrap #pg-music-toy .guitar-soundhole-stage { margin: 9px; }
+/* the two dark objects need light writing */
+#wrap #pg-videography-toy .pg-tag, #wrap #pg-music-toy .pg-tag { color: #F5DE4A !important; }
+#wrap #pg-videography-toy .pg-title, #wrap #pg-music-toy .pg-title { color: #FBF3DC !important; }
+#wrap #pg-videography-toy .pg-hint, #wrap #pg-music-toy .pg-hint, #wrap #pg-videography-toy .pg-close-btn, #wrap #pg-music-toy .pg-close-btn { color: #F1E7CD !important; }
+#wrap #pg-videography-toy .pg-close-btn:hover, #wrap #pg-music-toy .pg-close-btn:hover, #wrap #pg-videography-toy .pg-close-btn:focus-visible, #wrap #pg-music-toy .pg-close-btn:focus-visible { color: #F5DE4A !important; }
 
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
