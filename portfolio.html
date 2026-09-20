@@ -17327,6 +17327,21 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 @keyframes hnSlip { from { opacity: 0; translate: 0 -10px; rotate: 2deg; } to { opacity: 1; translate: 0 0; rotate: -1.2deg; } }
 @media (prefers-reduced-motion: reduce) { .hn-peelable.is-peeling, .hn-slip, #hn-lamp-tip { animation: none; } }
 
+/* ---- Y. THE TOY SHEETS ARE PAPER IN BOTH MODES (a dark pen has to show; the paper does not change at night either) ------ */
+[data-theme="dark"] #pg-illustration-toy .pg-body canvas, [data-theme="dark"] #pg-graphic-design-toy .pg-body canvas, [data-theme="dark"] #pg-music-toy .pg-body canvas {
+  background: #F2EFEB !important; border-color: transparent !important;
+}
+
+/* ---- Z. THE DESK IS NOT ALWAYS STILL: a doodle runs along under the top bar when it goes quiet ------------------------ */
+#hn-runner { position: fixed; top: calc(var(--nav-h, 64px) - 4px); left: 0; z-index: 9100; width: 42px; height: 42px; padding: 0; border: 0; background: none; cursor: pointer; color: #1E2733;
+  animation: hnRun 9s linear 1 forwards; will-change: translate; }
+#hn-runner svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 1px #FFF7DD) drop-shadow(0 0 2px #FFF7DD) drop-shadow(0 1px 1px rgba(0, 0, 0, .35)); animation: hnBob .36s steps(2, jump-none) infinite; }
+#hn-runner:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 3px; border-radius: 4px; }
+#hn-runner.is-still { animation: none; } #hn-runner.is-still svg { animation: none; }
+#hn-runner.is-caught { animation: none; transition: transform 500ms var(--hn-ease, ease), opacity 500ms ease; transform: translateY(-14px) scale(1.6) rotate(-12deg); opacity: 0; pointer-events: none; }
+@keyframes hnRun { from { translate: -60px 0; } to { translate: calc(100vw + 20px) 0; } }
+@keyframes hnBob { 0% { translate: 0 0; rotate: -2deg; } 100% { translate: 0 -4px; rotate: 2deg; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19923,9 +19938,11 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         text: 'Classic HB graphite. I&rsquo;ll always pick these over mechanical pencils.' },
       { id: 'secret-milk',   sel: '#contact .letter-tape', col: '#B8862A', name: 'Letter tape', how: 'The letter at the bottom is taped down too',
         text: 'Studio fuel: chocolate milk tea, my favourite drink during late-night animation sprints.' },
-      { id: 'secret-lamp',   lamp: true,                   col: '#E8A317', name: 'Lamp',      how: 'The lamp in the nav goes where you drag it' }
+      { id: 'secret-lamp',   lamp: true,                   col: '#E8A317', name: 'Lamp',      how: 'The lamp in the nav goes where you drag it' },
+      { id: 'secret-runner', runner: true,                 col: '#1E4CC8', name: 'Runner',    how: 'Sometimes, when it goes quiet, something runs along under the top bar. Be quick.',
+        text: 'You caught me! I only run when it goes quiet.' }
     ];
-    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
+    SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : x.runner ? 'dd-runner' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
     const SECRET_IDS = SECRETS.map(x => x.id);
     const norm = id => id === 'design' ? 'graphic-design' : id;
     const isDoodle = id => !!PD[id];
@@ -20130,7 +20147,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         album.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
       album.appendChild(section('Along the way', EXTRA.filter(i => st.got.includes(i)).length + '/' + EXTRA.length, EXTRA, 'Take your passport, then make a mark on the notebook&rsquo;s page: a stamp, a drawing or a few words.'));
-      album.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. And the lamp goes where you drag it.'));
+      album.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. The lamp goes where you drag it. And the desk is not always still.'));
       album.appendChild(giftSection());
       const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
       reset.addEventListener('click', () => api.reset()); album.appendChild(reset);
@@ -20186,6 +20203,39 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
         el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); peel(el, sc); } });
       });
     }
+
+    // ---- the desk is not always still: when it goes quiet, one of her doodles runs along under the top bar ----
+    // It only comes when the visitor has been idle for a while (or, at most once every few minutes, whatever they are doing), never more
+    // than five times a visit, never while a panel is open or the tab is hidden. Pressing it catches it: a secret sticker the first time.
+    // With reduced motion it does not run: it stands still under the bar for a few seconds instead.
+    let lastMove = performance.now(), lastRun = performance.now(), runs = 0, runner = null;
+    ['pointermove', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(ev => addEventListener(ev, () => { lastMove = performance.now(); }, { passive: true }));
+    function endRun() { if (!runner) return; const r = runner; runner = null; r.remove(); }
+    function runNow() {
+      if (runner) return; runs++; lastRun = performance.now();
+      const b = document.createElement('button'); b.type = 'button'; b.id = 'hn-runner'; b.setAttribute('aria-label', 'A little runner. Press to catch it.');
+      b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#dd-runner"/></svg>';
+      const still = calm(); if (still) { b.classList.add('is-still'); b.style.left = (12 + Math.random() * 60) + '%'; }
+      document.body.appendChild(b); runner = b;
+      b.addEventListener('animationend', e => { if (e.animationName === 'hnRun') endRun(); });
+      if (still) setTimeout(endRun, 9000);
+      b.addEventListener('click', () => {
+        const fresh = findSecret('secret-runner'); sfx('reward'); b.style.translate = getComputedStyle(b).translate; b.classList.add('is-caught');
+        const sc = SECRETS.find(x => x.id === 'secret-runner'), r = b.getBoundingClientRect();
+        showSlip(b, fresh ? sc : Object.assign({}, sc, { text: 'Caught me again! Nice reflexes.' }), fresh);
+        setTimeout(() => { if (runner === b) endRun(); }, calm() ? 0 : 500);
+      });
+    }
+    function aliveTick() {
+      if (document.hidden || runner || runs >= 5) return;
+      if (album && !album.hidden) return; if (document.getElementById('hn-gb') && !document.getElementById('hn-gb').hidden) return;
+      const now = performance.now(), idle = now - lastMove, since = now - lastRun;
+      const first = runs === 0 && now > 35000 && idle > 9000;                       // the first one comes early, once things go quiet
+      const quiet = since > 75000 && idle > 20000;                                  // later ones need a real pause
+      const anyway = since > 210000;                                                 // and once in a long while regardless
+      if (first || quiet || anyway) runNow();
+    }
+    setInterval(aliveTick, 4000);
 
     // ---- stamps ----
     function stampFx(id) {
@@ -20280,7 +20330,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       grantAll: () => FIVE.forEach((id, i) => setTimeout(() => api.grant(id), i * 2300)),
       find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
       findAll: () => Object.keys(PD).forEach((id, i) => setTimeout(() => api.find(id), i * 350)),
-      open: openAlbum, cancel: () => drop(true), notebook: onNotebook, secret: id => { const n = findSecret(id); return n; },
+      open: openAlbum, cancel: () => drop(true), notebook: onNotebook, secret: id => { const n = findSecret(id); return n; }, runner: () => runNow(),
       reset: () => { drop(true); try { localStorage.removeItem(KEY); localStorage.removeItem(TK); } catch (e) {} location.reload(); }
     };
     const boot = () => {
@@ -22170,9 +22220,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       });
 
       function getEffectiveColor() {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (activeColor === '#1E1C22' && isDark) return '#FFFDF8';
-        return activeColor;
+        return activeColor;                            // the sheet is paper in both modes now, so the black pen stays black
       }
 
       function getPos(e) {
@@ -22623,7 +22671,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 
       function renderBezier() {
         ctx.clearRect(0, 0, c.width, c.height);
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const isDark = false;                          // the artboard is paper in both modes, so it always draws its day colours
 
         // 1. Draw Tangent Construction Handle Lines
         ctx.beginPath();
