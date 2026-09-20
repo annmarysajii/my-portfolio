@@ -51,6 +51,7 @@
     // the music was. It is remembered for this tab only (sessionStorage), so a fresh visit is still opt-in. Browsers only allow sound after a
     // touch on the site; when the new page cannot start it by itself, the button shows as pressed and the next touch starts it.
     const SK = 'hn-snd';
+    { const st = document.createElement('style'); st.textContent = '#soundBtn.is-armed{animation:hnSndWait 1.6s ease-in-out infinite}@keyframes hnSndWait{50%{scale:1.16}}@media (prefers-reduced-motion:reduce){#soundBtn.is-armed{animation:none}}'; document.head.appendChild(st); }
     let resumePos = 0, loopT0 = 0, loopOff = 0, loopDur = 0;
     const remember = v => { try { if (v) sessionStorage.setItem(SK, JSON.stringify({ m: mode() })); else sessionStorage.removeItem(SK); } catch (e) {} };
     function savePos() {
@@ -68,6 +69,7 @@
       btn.setAttribute('aria-label', msg ? 'Room sound (' + msg + ')' : 'Room sound');
       btn.title = msg ? 'Room sound: ' + msg : 'Room sound';
       btn.classList.toggle('is-on', pressed);
+      btn.classList.toggle('is-armed', armed && !on);                      // waiting for the first tap (a phone will not start sound by itself)
     }
     function ensureCtx() {
       if (ctx) return ctx;
@@ -168,7 +170,7 @@
     function stopMeter() { clearInterval(meterT); meterT = 0; btn.style.setProperty('--lvl', '0'); }
     btn.addEventListener('click', () => { (on || armed) ? turnOff() : turnOn(); });
     // safety net: some browsers and embedded panes suspend audio behind our back; any touch of the page brings it back
-    document.addEventListener('pointerdown', () => { if (on && ctx && ctx.state !== 'running') { say('context was', ctx.state, '- resuming'); ctx.resume().catch(() => {}); } }, true);
+    ['pointerdown', 'touchend', 'click'].forEach(ev => document.addEventListener(ev, () => { if (on && ctx && ctx.state !== 'running') { say('context was', ctx.state, '- resuming'); ctx.resume().catch(() => {}); } }, true));
 
     // Sound is opt-in for every VISIT: a new tab or a new day starts silent. Within one tab, if it was on, it carries over to the next page
     // (portfolio to a project and back), see resumeFromSession below. A plain reload of the same page does the same, on purpose.
@@ -281,8 +283,15 @@
       await new Promise(r => setTimeout(r, 250));
       if (ctx.state === 'running') { turnOn(); return; }
       armed = true; paint('on: it starts with your next touch');
-      const evs = ['pointerdown', 'keydown', 'touchend'];
-      const go = e => { if (btn.contains(e.target)) return; evs.forEach(x => document.removeEventListener(x, go, true)); if (armed) turnOn(); };
+      // Only a real tap or key press counts as permission to make sound (on an iPhone a mere pointerdown does not), so wait for those, and
+      // only stop waiting once the audio really is running. A scroll is not a tap: the button pulses until the first one.
+      const evs = ['touchend', 'pointerup', 'click', 'keydown'];
+      const stop = () => evs.forEach(x => document.removeEventListener(x, go, true));
+      const go = e => {
+        if (!armed) { stop(); return; }
+        if (btn.contains(e.target)) return;                                  // the button itself turns it off
+        ctx.resume().then(() => { if (armed && ctx.state === 'running') { stop(); turnOn(); } }).catch(() => {});
+      };
       evs.forEach(x => document.addEventListener(x, go, true));
     }
     resumeFromSession();

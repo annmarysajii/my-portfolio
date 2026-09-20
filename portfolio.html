@@ -17573,6 +17573,16 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
 #contact .letter .flbl { font-family: var(--hn-hand) !important; font-size: 1.25rem !important; font-weight: 400 !important; letter-spacing: 0 !important; text-transform: none !important; }
 @media (prefers-reduced-motion: reduce) { #contact .letter #fsb.fsub { transition: none !important; } }
 
+/* ---- AN. PHONES: LIGHTER TO PAINT ------------------------------------------------------------------------------------------------- */
+/* A phone (touch, no hover) starts in lite mode (see the frame monitor). On top of that: the two full-screen blended layers (a soft-light wash and a multiply
+   falloff) are not drawn, and the peeking doodles use one soft shadow instead of five stacked filters (their solid body is part of the sprite now). */
+@media (hover: none) and (pointer: coarse) {
+  html::after, body::after { display: none !important; }
+  .pd-peek { filter: drop-shadow(0 1px 2px rgba(var(--hn-shadow-rgb), .5)); }
+  #hero { -webkit-mask-image: none; mask-image: none; }
+  #hero .hero-foot { margin-bottom: 0; }
+}
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -19758,6 +19768,8 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
     if (!hero) return;
     if (/[?&]lite=1\b/.test(location.search)) { root.classList.add('hn-lite'); return; }
     if (/[?&]lite=0\b/.test(location.search)) return;
+    // a phone (touch, no hover) starts in lite mode: the blended light layers cost too much on a phone's GPU. ?lite=0 turns that off.
+    if (matchMedia('(hover: none) and (pointer: coarse)').matches) { root.classList.add('hn-lite'); return; }
     // (An earlier version remembered "lite" for the whole browser session, so one slow moment at start-up switched the lighting off until the tab was closed. It no longer remembers, and clears any old flag.)
     try { sessionStorage.removeItem('hn-lite'); } catch (e) {}
     let inView = true;
@@ -21646,7 +21658,7 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   // ================================================================
   (function initTailoredSketchbookDoodles() {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReduced) return;
+    if (isReduced || matchMedia('(hover: none)').matches) return;     // (no mouse, no hover colour: a phone skips these)
 
     // PART 3 -- canvas fillStyle/strokeStyle can't take a literal
     // var(--token) string, so the two new hand-drawn hero doodle colors
@@ -24179,6 +24191,6 @@ window.addEventListener('load', () => {
   </div>
 </div>
 
-<script src="js/room-sound.js?v=1" defer></script>
+<script src="js/room-sound.js?v=2" defer></script>
 </body>
 </html>
