@@ -19479,12 +19479,12 @@ body { overflow-x: clip !important; }                                          /
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
-    // Paper on hover is minimal on purpose: only a project card makes a sound (the print sliding out) and the paper strips
-    // in the open drawer (a soft thump), never the other sheets. It plays the instant the pointer enters (everything is
+    // Paper on hover is minimal on purpose: only a project card and the paper strips in the open drawer make a sound
+    // (both a soft thump, the drawerStrip slot), never the other sheets. It plays the instant the pointer enters (everything is
     // already decoded), cutting whatever was still sounding, so moving straight from one card to the next is answered at once.
     // Guards against noise instead of a delay: a hover sound at most every 200 ms, and a card stays quiet for 8 seconds
     // after it has sounded. Mouse only.
-    const HOVER = [['.desk .grid .card', 'paperPrint'], ['#downloads .dl-btn', 'drawerStrip']];
+    const HOVER = [['.desk .grid .card', 'drawerStrip'], ['#downloads .dl-btn', 'drawerStrip']];
     const seenAt = new WeakMap(); let lastHover = 0;
     HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
       el.addEventListener('pointerenter', e => {

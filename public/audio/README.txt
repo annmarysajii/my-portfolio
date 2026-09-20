@@ -11,7 +11,7 @@ file it uses the fallback below; a slot with neither stays silent. No code chang
 -3 dBFS, no reverb, 0.2 to 1 second.
 
   slot            file name           where it plays                                              files now
-  paperPrint      paper-print-N       hovering a photo print or a work card, a download card      paper-print-1 (polaroid printing)
+  paperPrint      paper-print-N       (unused: was the project-card hover)                         paper-print-1 (polaroid printing)
   paperSheet      paper-sheet-N       hovering the big lead sheet, the About notebook page        (none: uses paper-1/2/3)
   paperSlip       paper-slip-N        hovering a taped scrap, sticky note, the ID card             paper-slip-1 (paper slide)
   pageTurn        page-turn-N         turning the hero notebook's page                             page-turn-1
@@ -24,7 +24,7 @@ file it uses the fallback below; a slot with neither stays silent. No code chang
   rewardFinal     reward-final-N      the last stamp                                               reward-final-1
   drawerOpen      drawer-open-N       the quick-look drawer and the About Studio Desk drawer      drawer-open.mp3
   drawerClose     drawer-close-N      the same, closing                                            drawer-close.mp3
-  drawerStrip     drawer-strip-N      hovering a paper strip in the open drawer: a soft thump      drawer-strip-1, -2 (thump)
+  drawerStrip     drawer-strip-N      hovering a project card or a paper strip in the drawer: thump drawer-strip-1, -2 (thump)
   toyBounce       toy-bounce-N        Animate: pressing a principle                                toy-bounce-1..3 (cartoon boing)
   toyClap         toy-clap-N          Capture: the clapper                                         toy-clap-1 (clack)
   toyDraw         toy-draw-N          Draw: the pen starting a stroke                              toy-draw-1..3 (pencil)
@@ -43,9 +43,9 @@ recordings in assets/sound/, which are the untouched originals: polaroid printin
 duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,
 cartoon_boing, clack and pencil. To use a different section of one, re-cut it from assets/sound/.
 
-Paper hover is minimal on purpose: only a project card sounds (paperPrint) and a strip in the open drawer (drawerStrip, a soft thump), mouse only, the instant the pointer enters (never a delay; at most one hover sound per 200 ms, and a card stays quiet for 8 seconds
-after it has sounded). No other sheet, slip or photo makes a hover sound (paperSheet and paperSlip
-are unused for now).
+Paper hover is minimal on purpose: only a project card and a strip in the open drawer sound, both with drawerStrip (a soft thump), mouse only, the instant the pointer enters (never a delay; at most one hover sound per 200 ms, and a card stays quiet for 8 seconds
+after it has sounded). No other sheet, slip or photo makes a hover sound (paperPrint, paperSheet and paperSlip
+are unused for now; paper-print-1 is the polaroid print, kept in case it is wanted back).
 
 The generic files (paper-1/2/3, drawer-open, drawer-close) were made from makigai_maimai-paper-245786.mp3 and
 freesound_community-drawer-41055.mp3. Check each file's licence before the site goes public.
