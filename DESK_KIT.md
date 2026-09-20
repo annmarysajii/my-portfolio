@@ -330,6 +330,12 @@ as a PNG at 2x, with "My page", "in Annmary Saji's notebook", the date and the s
 their designs with their symbols, the handwriting and the ink-roughness filter embedded), painted to a canvas and saved: no library, nothing
 uploaded. The image has the page's own proportions (tall on desktop).
 
+**Load weight (checked Sept 2026).** Fresh load is about 3.6 MB of images with nothing downloaded that was not needed: the reward cards, thumbnails and
+audio only load when used (the sound effects decode once room sound is switched on; the card PNGs are only fetched on Save). The notebook stamp
+rack and its saved imprints are built the first time the page is turned to, because they draw with the 470 KB doodle sprite. The About badge SVGs were
+optimised with svgo (1.3 MB to 251 KB and 2.1 MB to 794 KB, edge pixels only differ) and the six drawer objects are webp (925 KB to 507 KB); the
+original PNGs are still in `assets/portfolio-data/My profile/`.
+
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.

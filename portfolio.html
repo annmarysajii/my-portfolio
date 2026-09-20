@@ -17209,6 +17209,10 @@ body { overflow-x: clip !important; }                                          /
 @media (prefers-reduced-motion: reduce) { .ab-gift.is-new img { animation: none; } }
 .ab-gift.is-locked .ab-env { aspect-ratio: 3 / 2; }
 
+/* ---- U. FOUND IN THE PHONE PASS ---------------------------------------------------------------------------------- */
+#downloads .dl-front { grid-template-columns: minmax(0, 1fr); }                /* the drawer's label used to size its own track (max-content) and ran past a 375px screen */
+#downloads .dl-front .dl-h { width: fit-content; }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -18955,27 +18959,27 @@ body { overflow-x: clip !important; }                                          /
         <p class="bp-facts-text"><strong>Off the clock:</strong> stationery-obsessed (yes, that's why this whole site looks like this), Saizeriya, mala, a daily Milo, anime &amp; Japanese shows, rhythm games, making playlists, dressing up.</p>
         <div class="bp-desk" aria-label="Studio desk items">
     <button type="button" class="bp-float bp-float--plant" aria-expanded="false" aria-controls="bp-note-plant">
-     <img src="assets/portfolio-data/My profile/plant_tight.png" alt="Fake IKEA plant on Annmary's desk" loading="lazy">
+     <img src="assets/portfolio-data/My profile/plant_tight.webp" alt="Fake IKEA plant on Annmary's desk" loading="lazy">
      <span class="bp-note" id="bp-note-plant" hidden>I have a fake IKEA plant on my desk because real ones die out here. 🌱</span>
     </button>
     <button type="button" class="bp-float bp-float--boba" aria-expanded="false" aria-controls="bp-note-boba">
-     <img src="assets/portfolio-data/My profile/bubbletea_tight.png" alt="Chocolate milk tea, Annmary's studio fuel" loading="lazy">
+     <img src="assets/portfolio-data/My profile/bubbletea_tight.webp" alt="Chocolate milk tea, Annmary's studio fuel" loading="lazy">
      <span class="bp-note" id="bp-note-boba" hidden>Studio fuel! My absolute favourite drink during late-night animation sprints. 🧋</span>
     </button>
     <button type="button" class="bp-float bp-float--headphones" aria-expanded="false" aria-controls="bp-note-headphones">
-     <img src="assets/portfolio-data/My profile/headphones_tight.png" alt="Annmary's decorated headphones" loading="lazy">
+     <img src="assets/portfolio-data/My profile/headphones_tight.webp" alt="Annmary's decorated headphones" loading="lazy">
      <span class="bp-note" id="bp-note-headphones" hidden>Decorated with stickers and charms, always on while I work. 🎧</span>
     </button>
     <button type="button" class="bp-float bp-float--journal" aria-expanded="false" aria-controls="bp-note-journal">
-     <img src="assets/portfolio-data/My profile/sketchbook_tight.png" alt="Annmary's idea sketchbook" loading="lazy">
+     <img src="assets/portfolio-data/My profile/sketchbook_tight.webp" alt="Annmary's idea sketchbook" loading="lazy">
      <span class="bp-note" id="bp-note-journal" hidden>Full of character sketches, colour keys, and storyboards — I have way too many. 📓</span>
     </button>
     <button type="button" class="bp-float bp-float--pouch" aria-expanded="false" aria-controls="bp-note-pouch">
-     <img src="assets/portfolio-data/My profile/pouch_tight.png" alt="Annmary's stationery pouch" loading="lazy">
+     <img src="assets/portfolio-data/My profile/pouch_tight.webp" alt="Annmary's stationery pouch" loading="lazy">
      <span class="bp-note" id="bp-note-pouch" hidden>Nibs, fineliners, washi tape — I collect way more stationery than I use. ✏️</span>
     </button>
     <button type="button" class="bp-float bp-float--pencil" aria-expanded="false" aria-controls="bp-note-pencil">
-     <img src="assets/portfolio-data/My profile/pencil_tight.png" alt="Annmary's wooden pencil" loading="lazy">
+     <img src="assets/portfolio-data/My profile/pencil_tight.webp" alt="Annmary's wooden pencil" loading="lazy">
      <span class="bp-note" id="bp-note-pencil" hidden>Classic HB graphite. I'll always pick these over mechanical pencils. ✏️</span>
     </button>
    </div>
@@ -20072,12 +20076,19 @@ body { overflow-x: clip !important; }                                          /
     const syncTake = () => { take.disabled = !state.stamps.length; };
     let held = null, ink = INKS[0][1], ghost = null;
 
+    // The rack and the saved imprints draw with the doodle sprite (~470 KB), so they are built the first time the page is
+    // turned to, not at page load: a visitor who never turns the page never downloads it.
+    let built = false;
+    function build() {
+      if (built) return; built = true;
     Object.keys(DESIGNS).forEach(k => {
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'hn-sp-stamp'; b.dataset.k = k; b.setAttribute('aria-pressed', 'false');
-      b.setAttribute('aria-label', DESIGNS[k].name + ' stamp. Pick it up, then press it anywhere on the page');
-      b.innerHTML = '<span class="hn-sp-face">' + svgOf(k) + '</span><span class="hn-sp-handle" aria-hidden="true"></span>';
-      b.addEventListener('click', () => pickStamp(k)); rack.appendChild(b);
-    });
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'hn-sp-stamp'; b.dataset.k = k; b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', DESIGNS[k].name + ' stamp. Pick it up, then press it anywhere on the page');
+        b.innerHTML = '<span class="hn-sp-face">' + svgOf(k) + '</span><span class="hn-sp-handle" aria-hidden="true"></span>';
+        b.addEventListener('click', () => pickStamp(k)); rack.appendChild(b);
+      });
+      state.stamps.forEach(s => { if (DESIGNS[s.k]) imprint(s, false); });
+    }
     INKS.forEach(([n, c], i) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'hn-sp-ink' + (i === 0 ? ' is-on' : ''); b.style.setProperty('--c', c);
       b.setAttribute('aria-label', n + ' ink'); b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
@@ -20090,7 +20101,6 @@ body { overflow-x: clip !important; }                                          /
       el.style.left = s.x + '%'; el.style.top = s.y + '%'; el.style.setProperty('--r', s.r + 'deg'); el.style.setProperty('--o', s.o); el.style.color = s.c;
       el.setAttribute('aria-hidden', 'true'); el.innerHTML = svgOf(s.k); canvas.appendChild(el);
     }
-    state.stamps.forEach(s => { if (DESIGNS[s.k]) imprint(s, false); });
     syncTake();
 
     function pickStamp(k) {
@@ -20175,7 +20185,7 @@ body { overflow-x: clip !important; }                                          /
     page.appendChild(turn);
     let turned = false, busy = false;
     function go(to) {
-      if (busy || to === turned) return; busy = true; turned = to; turn.setAttribute('aria-expanded', to ? 'true' : 'false');
+      if (busy || to === turned) return; busy = true; turned = to; if (to) build(); turn.setAttribute('aria-expanded', to ? 'true' : 'false');
       if (to) sp.hidden = false; else { dropStamp(true); page.classList.remove('is-turned'); }
       sp.classList.remove('is-in', 'is-out'); void sp.offsetWidth; sp.classList.add(to ? 'is-in' : 'is-out');
       const done = () => { if (to) page.classList.add('is-turned'); else sp.hidden = true; busy = false; if (to) sp.querySelector('.hn-sp-stamp').focus({ preventScroll: true }); else turn.focus({ preventScroll: true }); };
