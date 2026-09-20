@@ -19473,23 +19473,19 @@ footer.foot, [data-theme="dark"] footer.foot {
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
     // Paper on hover is minimal on purpose: only a project card makes a sound (the print sliding out) and the paper strips
-    // in the open drawer (a soft thump), never the other sheets. It plays once the pointer has rested on the card for a moment (so sweeping across the grid stays silent, and
-    // moving straight to the next card still gets its own sound, cutting the last), and a card stays quiet for 8 seconds
+    // in the open drawer (a soft thump), never the other sheets. It plays the instant the pointer enters (everything is
+    // already decoded), cutting whatever was still sounding, so moving straight from one card to the next is answered at once.
+    // Guards against noise instead of a delay: a hover sound at most every 200 ms, and a card stays quiet for 8 seconds
     // after it has sounded. Mouse only.
     const HOVER = [['.desk .grid .card', 'paperPrint'], ['#downloads .dl-btn', 'drawerStrip']];
-    const seenAt = new WeakMap();
+    const seenAt = new WeakMap(); let lastHover = 0;
     HOVER.forEach(([sel, slot]) => document.querySelectorAll(sel).forEach(el => {
-      let t = 0;
       el.addEventListener('pointerenter', e => {
         if (e.pointerType !== 'mouse') return;
-        clearTimeout(t);
-        t = setTimeout(() => {
-          const now = performance.now();
-          if (now - (seenAt.get(el) || -1e9) < 8000) return;
-          seenAt.set(el, now); window.__hnSfx(slot);
-        }, 140);
+        const now = performance.now();
+        if (now - lastHover < 200 || now - (seenAt.get(el) || -1e9) < 8000) return;
+        lastHover = now; seenAt.set(el, now); window.__hnSfx(slot);
       });
-      el.addEventListener('pointerleave', () => clearTimeout(t));
     }));
     // the About drawer (the badge that opens "Studio Desk"): a drawer sound as it opens and closes
     const bp = document.querySelector('.bp-badge--toggle');

@@ -43,9 +43,8 @@ recordings in assets/sound/, which are the untouched originals: polaroid printin
 duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,
 cartoon_boing, clack and pencil. To use a different section of one, re-cut it from assets/sound/.
 
-Paper hover is minimal on purpose: only a project card sounds (paperPrint) and a strip in the open drawer (drawerStrip, a soft thump), mouse only, after the pointer has rested on it
-for 140 ms (so sweeping across the grid is silent, but moving straight to the next card still gets its own sound), and a card
-stays quiet for 8 seconds after it has sounded. No other sheet, slip or photo makes a hover sound (paperSheet and paperSlip
+Paper hover is minimal on purpose: only a project card sounds (paperPrint) and a strip in the open drawer (drawerStrip, a soft thump), mouse only, the instant the pointer enters (never a delay; at most one hover sound per 200 ms, and a card stays quiet for 8 seconds
+after it has sounded). No other sheet, slip or photo makes a hover sound (paperSheet and paperSlip
 are unused for now).
 
 The generic files (paper-1/2/3, drawer-open, drawer-close) were made from makigai_maimai-paper-245786.mp3 and
