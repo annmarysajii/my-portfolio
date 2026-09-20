@@ -16240,12 +16240,12 @@ html[data-theme="dark"] body {
    reading, so text is always lit; the hero fades these two out (--hv) and uses its richer layers instead. */
 html::after, [data-theme="dark"] html::after {
   mix-blend-mode: normal;
-  background: radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+  background: radial-gradient(ellipse 72% 60% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
     rgba(var(--lr), var(--lg), var(--lb), .085) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
 }
 body::after, [data-theme="dark"] body::after {
   mix-blend-mode: normal;
-  background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+  background: radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
     transparent 0%, transparent 26%,
     rgba(var(--sr), var(--sg), var(--sb), calc(.08 + var(--key-night) * .2)) 58%,
     rgba(var(--sr), var(--sg), var(--sb), calc(.18 + var(--key-night) * .3)) 100%);
@@ -16702,9 +16702,9 @@ html::before {
 }
 html::after, [data-theme="dark"] html::after {
   background:
-    radial-gradient(ellipse 34% 30% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    radial-gradient(ellipse 34% 30% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .08)) 0%, transparent 100%),
-    radial-gradient(ellipse 72% 60% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    radial-gradient(ellipse 72% 60% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.085 + var(--key-night) * .05)) 0%, rgba(var(--lr), var(--lg), var(--lb), .035) 45%, transparent 75%);
 }
 /* lite mode (see the frame monitor) also drops the fixed window layer */
@@ -16846,14 +16846,14 @@ html.hn-lite::before { display: none; }
 #wrap::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 36% 32% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    radial-gradient(ellipse 36% 32% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
       rgba(var(--lr), var(--lg), var(--lb), calc(.16 + var(--key-night) * .30)) 0%, rgba(var(--lr), var(--lg), var(--lb), calc(.05 + var(--key-night) * .10)) 55%, transparent 100%),
-    radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%),
+    radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%),
       transparent 0%, transparent 18%,
       rgba(var(--sr), var(--sg), var(--sb), calc(.22 + var(--key-night) * .30)) 58%,
       rgba(var(--sr), var(--sg), var(--sb), calc(.50 + var(--key-night) * .38)) 100%);
 }
-html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--light-x) * 1%) calc(var(--light-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
+html.hn-lite #wrap::before { background: radial-gradient(ellipse 125% 112% at calc(var(--pl-x) * 1%) calc(var(--pl-y) * 1%), transparent 20%, rgba(var(--sr), var(--sg), var(--sb), .45) 100%); }
 
 /* ---- M. REWARDS: one sticker book, die-cut stickers, doodles that peek over the work ---------------------------- */
 .hn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -17421,6 +17421,19 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
   #about .bp-inv-col:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
 }
 
+/* ---- AF. THE LAMP LIGHTS THE HERO SCENE; THE REST OF THE PAGE KEEPS ITS OWN LIGHT ------------------------------------------ */
+/* One position for two frames used to drive both: the hero's layers (measured in the hero) and the page-wide layers (measured in the screen). Dragging the lamp moved both,
+   so they disagreed at the hero's bottom edge and the glow was cut there. Now the page-wide layers and shadows read their own fixed position (--pl-*, the mode's default), and only the
+   hero's subtree follows the lamp (--light-* on #hero), which also makes dragging cheaper: only the hero restyles. */
+:root { --pl-x: 12; --pl-y: 8; --sx: calc((50 - var(--pl-x)) / 50); --sy: calc((50 - var(--pl-y)) / 50); }
+[data-theme="dark"] { --pl-x: 30; --pl-y: 36; }
+/* the button IS a lamp: an unlit lamp by day, lit at night */
+#themeBtn #themeIcon { display: none !important; }
+#themeBtn .lamp-ico { display: block; width: 22px; height: 22px; color: var(--hn-ink); transition: color 300ms ease, filter 300ms ease; }
+[data-theme="dark"] #nav .nav-r #themeBtn { background: #FFE9B8 !important; box-shadow: var(--hn-edge), 0 0 12px rgba(255, 184, 96, .75) !important; }
+[data-theme="dark"] #themeBtn .lamp-ico { color: #8A4B00; filter: drop-shadow(0 0 4px rgba(255, 178, 80, .95)); }
+#themeBtn { cursor: grab; }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -17703,7 +17716,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i></button>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Night lamp" aria-pressed="false" title="Night lamp" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i data-lucide="moon" id="themeIcon" style="width:16px;height:16px;"></i><svg class="lamp-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#dd-lamp"/></svg></button>
       <button class="theme-toggle" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound" style="background:none;border:1.5px solid var(--ink12);border-radius:4px;padding:.35rem .65rem;color:var(--ink5);font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="snd-meter" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <a href="assets/portfolio-data/RESUMES/Annmary_Resume_2026.pdf" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
       <!-- Mobile hamburger -- user feedback (2026-09-02): "spacing btw
@@ -20865,12 +20878,12 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
   })();
 
   // ================================================================
-  // THE LAMP -- the lamp button in the nav is also the lamp. Click it and the night lamp switches (as before). Press and DRAG it
-  // onto the page and the light follows: the pool of light, the shadows, the edges of every sheet all read one light position, so
-  // the whole desk re-lights around wherever you put it. (By day, picking the lamp up switches it on first.) Dragging costs a
-  // whole-page restyle, so the scene follows at ~15 fps (the hero eases between steps) while a glowing orb tracks the pointer
-  // smoothly. Esc puts it back mid-drag, a double click resets it, Shift + arrow keys nudge it. The first time it is moved it
-  // earns a sticker (a secret).
+  // THE LAMP -- the nav button is drawn as a lamp (unlit by day, glowing at night). Click it and the night lamp switches. Press and DRAG it
+  // onto the page and the light follows: the pool of light, the shadows and the edges of the notebook and everything on it re-light around wherever
+  // it is put. The lamp lights the HERO scene only (the page-wide layers keep their own light, see --pl-x in the CSS), and its range is limited so its
+  // pool always fits inside the hero instead of being cut off at the hero's bottom edge. The scene follows at ~15 fps (the hero eases between steps)
+  // while a glowing orb tracks the pointer smoothly. By day, picking the lamp up switches it on first. Esc puts it back mid-drag, a double click
+  // resets it, Shift + arrow keys nudge it. The first time it is moved it earns a sticker (a secret).
   // ================================================================
   (function initLamp() {
     const btn = document.getElementById('themeBtn'), hero = document.getElementById('hero');
@@ -20881,7 +20894,8 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
     const cur = () => [parseFloat(root.style.getPropertyValue('--lamp-x')) || HOME[0], parseFloat(root.style.getPropertyValue('--lamp-y')) || HOME[1]];
     const apply = (x, y) => { root.style.setProperty('--lamp-x', x.toFixed(1)); root.style.setProperty('--lamp-y', y.toFixed(1)); };
-    const at = (cx, cy) => { const r = hero.getBoundingClientRect(); return [clamp((cx - r.left) / r.width * 100, 4, 96), clamp((cy - r.top) / r.height * 100, 4, 96)]; };
+    const XR = [6, 94], YR = [6, 52];                          // the light stays where its pool fits inside the hero: lower than this it would be cut off at the hero's bottom edge
+    const at = (cx, cy) => { const r = hero.getBoundingClientRect(); return [clamp((cx - r.left) / r.width * 100, XR[0], XR[1]), clamp((cy - r.top) / r.height * 100, YR[0], YR[1])]; };
     const toggle = () => { try { if (typeof window.toggleTheme === 'function') window.toggleTheme(); else btn.click(); } catch (e) {} };
     btn.title = 'Night lamp. Click to switch it. Drag it onto the page to aim the light.';
     btn.style.touchAction = 'none';
@@ -20925,7 +20939,7 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     btn.addEventListener('keydown', e => {
       const k = { ArrowLeft: [-4, 0], ArrowRight: [4, 0], ArrowUp: [0, -4], ArrowDown: [0, 4] }[e.key];
       if (!k || !e.shiftKey) return; e.preventDefault(); if (!isNight()) toggle();
-      const c = cur(); apply(clamp(c[0] + k[0], 4, 96), clamp(c[1] + k[1], 4, 96));
+      const c = cur(); apply(clamp(c[0] + k[0], XR[0], XR[1]), clamp(c[1] + k[1], YR[0], YR[1]));
       try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {}
     });
 

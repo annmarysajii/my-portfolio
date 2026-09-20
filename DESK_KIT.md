@@ -417,6 +417,12 @@ Languages stacked on the left, Awards & Recognition on the right, so both sides 
 are listened for on the window; a drop counts if the piece's centre or the pointer is within ~22 px of the pouch, which glows to say "here"; a press with under 5 px of movement is a
 press and puts the piece in. Verified with real mouse drags.
 
+**Lighting frames (fixing the cut-off glow), and the lamp as a lamp.** One light position used to drive two things measured in different frames: the hero's own layers (a % of the hero) and
+the page-wide layers (a % of the screen: `html::after`, `body::after`, `#wrap::before`, and the page's shadows). Dragging the lamp moved both, so they disagreed at the hero's bottom edge and the glow was cut
+there. Now the page-wide layers and shadows read `--pl-x/--pl-y` (the mode's default: day 12/8, night 30/36) and only the hero's subtree reads `--light-x/y` (the lamp). The lamp's range is
+limited (x 6-94, y 6-52 % of the hero) so its pool always fits inside the hero. The nav button is now drawn as a lamp (`.lamp-ico`, unlit by day, glowing at night) instead of a sun/moon, so
+"drag the lamp" is obvious; a click still switches day and night.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).
