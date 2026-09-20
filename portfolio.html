@@ -17411,6 +17411,122 @@ body { overflow-x: clip !important; }                                          /
   #about .bp-inv-col:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
 }
 
+/* ---- AF. THE PASSPORT BOOK: a summary card with the rank and the counts, three tabs, and the visitor's own creations ---------- */
+#hn-album { width: min(420px, calc(100vw - 28px)); max-height: min(80vh, 740px); }
+#hn-album .ab-card {
+  position: relative; margin-top: .7rem; padding: .8rem .85rem .75rem; display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: .55rem .95rem; align-items: center;
+  background: rgba(255, 255, 255, .55); border: 1.5px solid rgba(30, 39, 51, .3); border-radius: 3px; box-shadow: var(--hn-sh-raised);
+}
+#hn-album .ab-ring { position: relative; width: 92px; height: 92px; }
+#hn-album .ab-ring svg { display: block; width: 100%; height: 100%; }
+#hn-album .rg-bg, #hn-album .rg-fg { fill: none; stroke-width: 9; }
+#hn-album .rg-bg { stroke: rgba(30, 39, 51, .14); }
+#hn-album .rg-fg { stroke: var(--hn-red); stroke-linecap: round; }
+#hn-album .rg-fg.is-anim { animation: hnRing 900ms var(--hn-ease, ease) 1; }
+@keyframes hnRing { from { stroke-dashoffset: 264; } }
+#hn-album .rg-n { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font: 400 1.9rem/1 var(--hn-hand); color: var(--hn-ink); }
+#hn-album .rg-n i { display: block; font-style: normal; font-size: .95rem; color: var(--hn-ink-2); }
+#hn-album .ab-who { min-width: 0; }
+#hn-album .ab-who p { margin: 0; font-family: var(--hn-hand); }
+#hn-album .ab-kick { font-size: var(--hn-t4); color: var(--hn-ink-2); }
+#hn-album .ab-rk { font-size: var(--hn-t2); line-height: 1; color: var(--hn-red); rotate: -1.5deg; transform-origin: left center; }
+#hn-album .ab-next { margin-top: .25rem !important; font-size: var(--hn-t4); line-height: 1.2; color: var(--hn-ink); }
+#hn-album .ab-ladder { display: flex; gap: 6px; margin: .45rem 0 0; padding: 0; list-style: none; }
+#hn-album .ab-ladder li { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(30, 39, 51, .38); }
+#hn-album .ab-ladder li.is-on { background: var(--hn-red); border-color: var(--hn-red); }
+#hn-album .ab-bars { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1.1rem; margin: .2rem 0 0; padding: 0; list-style: none; }
+#hn-album .ab-bars li { display: grid; grid-template-columns: 1fr auto; row-gap: .15rem; font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.1; color: var(--hn-ink); }
+#hn-album .ab-bars b { font-weight: 400; color: var(--hn-ink-2); }
+#hn-album .ab-bars i { grid-column: 1 / -1; position: relative; height: 8px; border-radius: 4px; overflow: hidden; background: rgba(30, 39, 51, .14); }
+#hn-album .ab-bars i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--p); background: var(--bc); border-radius: 4px; }
+#hn-album .ab-acts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-top: .25rem; }
+#hn-album .ab-save {
+  appearance: none; border: 0; cursor: pointer; padding: .35rem .85rem .42rem; font: 400 var(--hn-t3)/1 var(--hn-hand); color: #FBF8EF; background: var(--hn-red);
+  border-radius: 3px; box-shadow: var(--hn-sh-raised); rotate: -1deg;
+}
+#hn-album .ab-save:hover { filter: brightness(1.12); }
+#hn-album .ab-save:disabled { opacity: .7; cursor: progress; }
+#hn-album .ab-save:focus-visible, #hn-album .ab-gb:focus-visible, .ab-tabs button:focus-visible { outline: 2px solid var(--hn-ink); outline-offset: 2px; }
+#hn-album .ab-gb { padding: .3rem .65rem .35rem; border: 1.5px solid var(--hn-ink-2); border-radius: 3px; font: 400 var(--hn-t4)/1.1 var(--hn-hand); color: var(--hn-ink); background: none; }
+#hn-album .ab-gb:hover { background: rgba(245, 222, 74, .6); }
+#hn-album .ab-tabs { display: flex; gap: 3px; margin-top: 1rem; border-bottom: 2px solid rgba(30, 39, 51, .32); }
+.ab-tabs button {
+  flex: 1; appearance: none; cursor: pointer; margin-bottom: -2px; padding: .32rem .2rem .28rem; font: 400 var(--hn-t4)/1.1 var(--hn-hand); color: var(--hn-ink-2);
+  background: rgba(30, 39, 51, .06); border: 2px solid rgba(30, 39, 51, .3); border-bottom-color: transparent; border-radius: 5px 5px 0 0;
+}
+.ab-tabs button small { margin-left: .3rem; font-size: .82em; opacity: .9; }
+.ab-tabs button[aria-selected="true"] { color: var(--hn-ink); background: var(--hn-paper-r); border-color: rgba(30, 39, 51, .55); border-bottom-color: var(--hn-paper-r); padding-bottom: .42rem; }
+.ab-tabs button:not([aria-selected="true"]):hover { background: rgba(245, 222, 74, .4); }
+#hn-album .ab-pane { padding-top: .1rem; }
+#hn-album .ab-pane > .ab-sec:first-child { border-top: 0; margin-top: .5rem; padding-top: 0; }
+#hn-album .ab-empty { padding: .8rem .3rem .3rem; text-align: center; font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.3; color: var(--hn-ink-2); }
+#hn-album .ab-empty p { margin: .25rem 0 0; }
+#hn-album .ab-empty b { font-weight: 400; font-size: var(--hn-t3); color: var(--hn-ink); }
+#hn-album .ab-empty em { font-style: normal; color: var(--hn-ink); background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); }
+#hn-album .ab-blank { position: relative; display: block; width: 92px; height: 108px; margin: 0 auto .5rem; rotate: -4deg; background: #FBF9F2; border: 1.5px dashed rgba(30, 39, 51, .4); box-shadow: var(--hn-sh-raised); }
+#hn-album .ab-blank::after { content: ""; position: absolute; inset: 9px 9px 34px; border: 1.5px dashed rgba(30, 39, 51, .28); }
+#hn-album .ab-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.3rem .9rem; padding: .5rem .25rem .2rem; }
+#hn-album .ab-photo { position: relative; margin: 0; rotate: var(--rot, 0deg); }
+#hn-album .ab-photo::before { content: ""; position: absolute; z-index: 1; top: -8px; left: 50%; width: 46px; height: 15px; translate: -50% 0; rotate: -3deg; background: rgba(245, 222, 74, .82); box-shadow: 0 1px 2px rgba(0, 0, 0, .18); }
+#hn-album .ab-photo img { display: block; width: 100%; height: auto; box-shadow: var(--hn-sh-raised); background: #FBF9F2; }
+#hn-album .ab-photo figcaption { display: flex; justify-content: space-between; align-items: center; gap: .4rem; margin-top: .4rem; font-family: var(--hn-hand); font-size: var(--hn-t4); line-height: 1.1; color: var(--hn-ink-2); }
+#hn-album .ab-pa { display: flex; gap: .6rem; }
+#hn-album .ab-pa button { appearance: none; border: 0; background: none; padding: 0; cursor: pointer; font: inherit; color: var(--hn-red); text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1.5px; }
+#hn-album .ab-pa button:hover, #hn-album .ab-pa button:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); outline: none; }
+@media (prefers-reduced-motion: reduce) { #hn-album .rg-fg { animation: none; } }
+
+/* ---- AG. KEEP A PHOTO: the button under each toy, the flash, the photo's flight to the passport tab, and the picture of the passport ---- */
+.hn-keep { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .7rem; margin-top: .6rem; }
+.hn-keep-btn {
+  appearance: none; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; padding: .28rem .7rem .32rem .55rem; font: 400 var(--hn-t4)/1.1 var(--hn-hand); color: var(--hn-ink);
+  background: rgba(245, 222, 74, .55); border: 1.5px solid rgba(30, 39, 51, .55); border-radius: 3px; box-shadow: var(--hn-sh-raised); rotate: -.8deg;
+}
+.hn-keep-btn svg { width: 1.05em; height: 1.05em; flex: none; }
+.hn-keep-btn:hover { background: rgba(245, 222, 74, .9); }
+.hn-keep-btn:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 2px; }
+.hn-keep-btn:disabled { opacity: .65; cursor: progress; }
+.hn-keep-msg { font: 400 var(--hn-t4)/1.15 var(--hn-hand); color: var(--hn-ink-2); }
+.hn-fly { position: fixed; left: 0; top: 0; z-index: 9400; pointer-events: none; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); will-change: transform; }
+.hn-flash { position: fixed; z-index: 9390; pointer-events: none; background: #fff; animation: hnFlash 320ms ease-out 1 forwards; }
+@keyframes hnFlash { from { opacity: .95; } to { opacity: 0; } }
+#passport-dock.is-pulse { animation: hnDockPulse 600ms var(--hn-ease, ease) 1; }
+@keyframes hnDockPulse { 40% { scale: 1.12; } }
+#hn-share { position: fixed; inset: 0; z-index: 9500; display: grid; place-items: center; padding: 16px; overflow: auto; background: rgba(20, 16, 10, .66); animation: hnShareIn 240ms var(--hn-ease, ease) 1; }
+@keyframes hnShareIn { from { opacity: 0; } }
+#hn-share .sh-in { display: grid; gap: .85rem; justify-items: center; max-width: min(560px, 100%); }
+#hn-share img { display: block; width: auto; max-width: 100%; max-height: calc(100vh - 112px); height: auto; border-radius: 3px; box-shadow: 0 12px 44px rgba(0, 0, 0, .55); }
+#hn-share .sh-row { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
+#hn-share .sh-save, #hn-share .sh-share, #hn-share .sh-close { appearance: none; cursor: pointer; text-decoration: none; padding: .38rem .95rem .45rem; font: 400 1.35rem/1 var(--hn-hand); border-radius: 3px; box-shadow: var(--hn-sh-raised); }
+#hn-share .sh-save { color: #FBF8EF; background: var(--hn-red); border: 0; }
+#hn-share .sh-share, #hn-share .sh-close { color: #1E2733; background: #FAF8F1; border: 1.5px solid rgba(30, 39, 51, .5); }
+#hn-share .sh-save:focus-visible, #hn-share .sh-share:focus-visible, #hn-share .sh-close:focus-visible { outline: 3px solid #F5DE4A; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #hn-share, .hn-flash, #passport-dock.is-pulse { animation: none; } }
+
+/* ---- AH. THE DESK LAMP: an object on the hero desk. A transform moves it; nothing on the root changes, so the site's lighting is untouched ---- */
+#hero .hn-lamp {
+  --lamp-w: clamp(96px, 9.4vw, 140px);
+  position: absolute; z-index: 9; left: calc(100% - var(--lamp-w) - 1.2%); top: 12%; width: var(--lamp-w); aspect-ratio: 120 / 200; padding: 0; margin: 0;
+  appearance: none; border: 0; background: none; box-shadow: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; user-select: none;
+}
+#hero .hn-lamp.is-held { cursor: grabbing; z-index: 10; }
+#hero .hn-lamp:focus-visible { outline: 2px solid var(--hn-red); outline-offset: 4px; border-radius: 8px; }
+#hero .hn-lamp .lp-svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 50% 92%; transition: scale 180ms var(--hn-ease, ease); }
+#hero .hn-lamp.is-held .lp-svg { scale: 1.05; }
+#hero .hn-lamp .lp-head { transform-origin: 47px 50px; transform: rotate(calc(28deg + var(--tilt, 0deg))); transition: transform 640ms cubic-bezier(.3, 1.55, .5, 1); }
+#hero .hn-lamp .lp-bulb { fill: #CFC7A8; transition: fill 300ms; }
+#hero .hn-lamp.is-on .lp-bulb { fill: #FFF3B0; }
+#hero .hn-lamp .lp-cone, #hero .hn-lamp .lp-glow { opacity: 0; transition: opacity 340ms; pointer-events: none; }
+#hero .hn-lamp.is-on .lp-cone, #hero .hn-lamp.is-on .lp-glow { opacity: 1; }
+#hero .hn-lamp .lp-pool {
+  position: absolute; z-index: -1; right: 50%; top: 36%; width: calc(var(--lamp-w) * 4.6); height: calc(var(--lamp-w) * 4); pointer-events: none; opacity: 0; transition: opacity 520ms;
+  background: radial-gradient(closest-side, rgba(255, 206, 120, .17), rgba(255, 206, 120, .09) 55%, rgba(255, 206, 120, 0) 100%);
+}
+#hero .hn-lamp.is-on .lp-pool { opacity: .6; }
+html[data-theme="dark"] #hero .hn-lamp.is-on .lp-pool { opacity: 1; }
+html.hn-lite #hero .hn-lamp .lp-pool { display: none; }
+@media (max-width: 700px) { #hero .hn-lamp { display: none; } }
+@media (prefers-reduced-motion: reduce) { #hero .hn-lamp .lp-head, #hero .hn-lamp .lp-svg, #hero .hn-lamp .lp-pool, #hero .hn-lamp .lp-cone, #hero .hn-lamp .lp-glow, #hero .hn-lamp .lp-bulb { transition: none; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -20010,13 +20126,15 @@ body { overflow-x: clip !important; }                                          /
         text: 'Studio fuel: chocolate milk tea, my favourite drink during late-night animation sprints.' },
       { id: 'secret-runner', runner: true,                 col: '#1E4CC8', name: 'Runner',    how: 'Sometimes, when it goes quiet, something runs along under the top bar. Be quick.',
         text: 'You caught me! I only run when it goes quiet.' },
-      { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' }
+      { id: 'secret-tidy',   tidy: true,                   col: '#8A5A2B', name: 'Pencil case', how: 'The pouch on my desk could do with tidying', text: '' },
+      { id: 'secret-lamp',   lamp: true,                   col: '#B5871C', name: 'Desk lamp',   how: 'A lamp stands at the edge of the desk at the top of the page. It is not nailed down.', text: '' }
     ];
     SECRETS.forEach(x => { DEFS[x.id] = { sym: x.lamp ? 'dd-lamp' : x.runner ? 'dd-runner' : x.tidy ? 'dd-pouch' : 'dd-tape', col: x.col, name: x.name + ' sticker', how: x.how }; });
     const SECRET_IDS = SECRETS.map(x => x.id);
+    DEFS.photo = { sym: 'dd-polaroid', col: '#1E7A4E', name: 'First photo sticker', how: 'Keep a photo of something you made in a toy' };
     const norm = id => id === 'design' ? 'graphic-design' : id;
     const isDoodle = id => !!PD[id];
-    const EXTRA = ['arrival', 'yourpage'];                                              // earned outside the five toys: the first stamp on the notebook's next page
+    const EXTRA = ['arrival', 'yourpage', 'photo'];                                              // earned outside the five toys: the first stamp on the notebook's next page
     const TOTAL = FIVE.length + EXTRA.length + SECRETS.length + Object.keys(PD).length;   // what the counter counts: stamps, the two easy ones, secrets, doodles
 
     const HOSTS = {
@@ -20197,38 +20315,212 @@ body { overflow-x: clip !important; }                                          /
       d.innerHTML = '<summary>How it works</summary><ol>' +
         '<li><b>Play.</b> Each section has a little toy. Try one and it stamps your passport. All five gives a gold star and my business card.</li>' +
         '<li><b>Look closely.</b> Doodles from my projects peek over the edges of the work. Press one to keep it. Finish a project&rsquo;s set and its card is yours to keep.</li>' +
+        '<li><b>Keep what you make.</b> Under every toy, &ldquo;Keep a photo in my book&rdquo; puts your creation on a polaroid in Creations.</li>' +
         '<li><b>Turn the page.</b> The notebook at the top has a page that&rsquo;s yours to stamp. Take it home.</li>' +
         '<li><b>Stick anything anywhere.</b> Pick a sticker, then click the desk.</li>' +
-        '<li><b>Poke around.</b> Some tape can be peeled. And the desk is not always still.</li></ol>';
+        '<li><b>Poke around.</b> Some tape can be peeled, the lamp can be moved. And the desk is not always still.</li></ol>';
       return d;
     }
-    function renderAlbum() {
-      if (!album) return;
+    // ---- the book's summary card: where you are, at a glance ----
+    let albumTab = 'stickers', albumFresh = false;
+    const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+    function progress() {
+      const g = i => st.got.includes(i), pdIds = Object.keys(PD);
+      return [
+        { k: 'Stamps', n: FIVE.filter(g).length, of: FIVE.length, col: '#1E4CC8' },
+        { k: 'Doodles', n: pdIds.filter(g).length, of: pdIds.length, col: '#D93A26' },
+        { k: 'Secrets', n: SECRET_IDS.filter(g).length, of: SECRET_IDS.length, col: '#1E7A4E' },
+        { k: 'Extras', n: EXTRA.filter(g).length, of: EXTRA.length, col: '#A57508' }
+      ];
+    }
+    function nextRank() { const i = rankIndex(); return i < RANKS.length - 1 ? { name: RANKS[i + 1][1], need: RANKS[i + 1][0] - foundCount() } : null; }
+    const photoCount = () => window.hnPhotos ? window.hnPhotos.count() : 0;
+    const fmtDate = t => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+    function stickersPane(pane) {
       const stamps = FIVE.filter(i => st.got.includes(i)).length;
-      album.innerHTML = '<header class="ab-h"><h2>Studio Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
-        '<p class="ab-n">' + foundCount() + ' of ' + TOTAL + ' found <span class="ab-rank">' + RANKS[rankIndex()][1] + '</span></p><p class="ab-help">Pick a sticker, then click anywhere on the desk to stick it there. Click it there to move it.</p>';
-      album.querySelector('.ab-x').addEventListener('click', () => closeAlbum(true));
-      album.querySelector('.ab-help').after(guideBlock());
-      const gbb = document.createElement('button'); gbb.type = 'button'; gbb.className = 'ab-gb'; gbb.textContent = 'Leave a note in the guestbook →'; gbb.setAttribute('data-gb', ''); album.querySelector('.ab-n').before(gbb);
-      album.appendChild(section('Stamps', stamps + '/' + FIVE.length, FIVE.concat(['master']), 'Earned by playing with the toy in each section. All five gives a gold star.'));
+      pane.innerHTML = '<p class="ab-help">Pick a sticker, then click anywhere on the desk to stick it there. Click it there to move it.</p>';
+      pane.appendChild(section('Stamps', stamps + '/' + FIVE.length, FIVE.concat(['master']), 'Earned by playing with the toy in each section. All five gives a gold star.'));
       ORDER.forEach(p => {
         const set = SETS[p], have = set.filter(i => st.got.includes(i)).length, t = TITLES[p];
         const where = p === 'jas' ? 'Hiding in Illustration, Animation and Music.' : p === 'kys' ? 'Hiding around its sheet in Animation.' : 'Hiding around its card in Animation.';
-        album.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
+        pane.appendChild(section(PROJ[p], have + '/' + set.length, t ? set.concat([t[0]]) : set, where + (t ? ' A finished set gives its lettered title.' : '')));
       });
-      album.appendChild(section('Along the way', EXTRA.filter(i => st.got.includes(i)).length + '/' + EXTRA.length, EXTRA, 'Take your passport, then make a mark on the notebook&rsquo;s page: a stamp, a drawing or a few words.'));
-      album.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. And the desk is not always still.'));
-      album.appendChild(giftSection());
-      const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
-      reset.addEventListener('click', () => api.reset()); album.appendChild(reset);
+      pane.appendChild(section('Along the way', EXTRA.filter(i => st.got.includes(i)).length + '/' + EXTRA.length, EXTRA, 'Take your passport, make a mark on the notebook&rsquo;s page (a stamp, a drawing or a few words), and keep a photo of something you made in a toy.'));
+      pane.appendChild(section('Secrets', SECRET_IDS.filter(i => st.got.includes(i)).length + '/' + SECRETS.length, SECRET_IDS, 'Some tape is holding more than paper down. Try peeling it. The lamp goes where you drag it. And the desk is not always still.'));
+      pane.appendChild(guideBlock());
     }
-    function openAlbum() {
+    function creationsPane(pane) {
+      const P = window.hnPhotos, items = P ? P.list().reverse() : [];
+      const el = document.createElement('section'); el.className = 'ab-sec ab-cre';
+      if (!items.length) {
+        el.innerHTML = '<div class="ab-empty"><span class="ab-blank" aria-hidden="true"></span><p><b>Nothing here yet.</b></p><p>Open one of the five toys on the page and press <em>Keep a photo in my book</em> underneath it. Your drawing, your strings, your warped type, your still or the bouncing ball will land here on a little polaroid.</p></div>';
+      } else {
+        el.innerHTML = '<div class="ab-photos"></div><p class="ab-hint">' + items.length + ' of ' + P.MAX + ' kept. They live only in this browser; nothing is uploaded.</p>';
+        const box = el.querySelector('.ab-photos');
+        items.forEach((p, i) => {
+          const f = document.createElement('figure'); f.className = 'ab-photo'; f.style.setProperty('--rot', ((i % 3) - 1) * 1.6 + 'deg');
+          f.innerHTML = '<img alt="' + p.cap.replace(/"/g, '') + ', a photo you kept" loading="lazy"><figcaption><span class="ab-pd">' + fmtDate(p.t) + '</span><span class="ab-pa"><button type="button" data-act="save">Save</button><button type="button" data-act="del">Remove</button></span></figcaption>';
+          f.querySelector('img').src = p.d;
+          f.querySelector('[data-act="save"]').addEventListener('click', () => P.save(p.id));
+          f.querySelector('[data-act="del"]').addEventListener('click', () => P.remove(p.id));
+          box.appendChild(f);
+        });
+      }
+      pane.appendChild(el);
+    }
+    function renderAlbum() {
+      if (!album) return;
+      const keep = album.scrollTop, n = foundCount(), C = 2 * Math.PI * 42, nr = nextRank(), ri = rankIndex(), fresh = albumFresh; albumFresh = false;   // the ring fills only when the book is opened
+      album.innerHTML = '<header class="ab-h"><h2>Studio Passport</h2><button type="button" class="ab-x" aria-label="Close the sticker book">×</button></header>' +
+        '<section class="ab-card" aria-label="Your progress">' +
+          '<div class="ab-ring" role="img" aria-label="' + n + ' of ' + TOTAL + ' found"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="rg-bg" cx="50" cy="50" r="42"/>' +
+            '<circle class="rg-fg' + (fresh ? ' is-anim' : '') + '" cx="50" cy="50" r="42" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - n / TOTAL)).toFixed(1) + '" transform="rotate(-90 50 50)"/></svg><span class="rg-n">' + n + '<i>/' + TOTAL + '</i></span></div>' +
+          '<div class="ab-who"><p class="ab-kick">Your rank</p><p class="ab-rk">' + RANKS[ri][1] + '</p>' +
+            '<p class="ab-next">' + (nr ? nr.need + ' more to be ' + nr.name : 'You found everything.') + '</p>' +
+            '<ol class="ab-ladder" aria-hidden="true">' + RANKS.map((r, i) => '<li class="' + (i <= ri ? 'is-on' : '') + '" title="' + r[1] + '"></li>').join('') + '</ol></div>' +
+          '<ul class="ab-bars">' + progress().map(p => '<li style="--bc:' + p.col + ';--p:' + pct(p.n, p.of) + '%"><span>' + p.k + '</span><b>' + p.n + '/' + p.of + '</b><i></i></li>').join('') + '</ul>' +
+          '<div class="ab-acts"><button type="button" class="ab-save">Save my passport</button><button type="button" class="ab-gb" data-gb>Guestbook</button></div>' +
+        '</section>' +
+        '<div class="ab-tabs" role="tablist" aria-label="Book sections"></div><div class="ab-pane" id="ab-pane" role="tabpanel"></div>';
+      album.querySelector('.ab-x').addEventListener('click', () => closeAlbum(true));
+      album.querySelector('.ab-save').addEventListener('click', e => sharePassport(e.currentTarget));
+      const tabs = album.querySelector('.ab-tabs'), pane = album.querySelector('.ab-pane');
+      const gifts = GIFTS.filter(g => st.got.includes(g.need)).length;
+      [['stickers', 'Stickers', n + '/' + TOTAL], ['creations', 'Creations', String(photoCount())], ['gifts', 'For you', gifts + '/' + GIFTS.length]].forEach(t => {
+        const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'ab-t-' + t[0]; b.dataset.tab = t[0];
+        b.setAttribute('aria-selected', albumTab === t[0] ? 'true' : 'false'); b.tabIndex = albumTab === t[0] ? 0 : -1; b.setAttribute('aria-controls', 'ab-pane');
+        b.innerHTML = t[1] + '<small>' + t[2] + '</small>';
+        b.addEventListener('click', () => { albumTab = t[0]; album.scrollTop = Math.min(album.scrollTop, tabs.offsetTop); renderAlbum(); const nb = album.querySelector('#ab-t-' + t[0]); if (nb) nb.focus({ preventScroll: true }); });
+        b.addEventListener('keydown', e => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; e.preventDefault(); const bs = [...tabs.children], nx = bs[(bs.indexOf(b) + k + bs.length) % bs.length]; nx.click(); });
+        tabs.appendChild(b);
+      });
+      pane.setAttribute('aria-labelledby', 'ab-t-' + albumTab);
+      if (albumTab === 'creations') creationsPane(pane); else if (albumTab === 'gifts') pane.appendChild(giftSection()); else stickersPane(pane);
+      const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'ab-reset'; reset.textContent = 'start over';
+      reset.addEventListener('click', () => api.reset()); pane.appendChild(reset);
+      album.scrollTop = keep;
+    }
+
+    // ---- the passport as a picture: a portrait card built as a standalone SVG (so it needs no library), painted to a canvas and saved ----
+    // Drawn again from the designs: rank stamp, the count and its bar, the four counts, every sticker (found ones in colour, missing ones
+    // as dashed outlines), the latest polaroids the visitor kept, and the date and address. The handwriting is embedded so it renders anywhere.
+    let symDoc = null, fontB64 = null;
+    const toB64 = buf => { let s = '', a = new Uint8Array(buf); for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000)); return btoa(s); };
+    async function symbolMarkup(d) {
+      const local = !d.ext && document.getElementById(d.sym); if (local) return local.outerHTML;
+      if (!symDoc) { const t = await (await fetch(SPRITE)).text(); symDoc = new DOMParser().parseFromString(t, 'image/svg+xml'); }
+      const nd = symDoc.getElementById(d.sym); return nd ? new XMLSerializer().serializeToString(nd) : '';
+    }
+    async function passportSVG() {
+      const W = 1080, M = 70, IW = W - M * 2, INKC = '#1E2733', DIM = '#3D4858', RED = '#D93A26';
+      const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const n = foundCount(), ri = rankIndex(), nr = nextRank(), photos = window.hnPhotos ? window.hnPhotos.list().slice(-4).reverse() : [], morePh = photoCount() - photos.length;
+      const order = FIVE.concat(EXTRA, SECRET_IDS); ORDER.forEach(p => SETS[p].forEach(i => order.push(i)));
+      const COLS = 8, CELL = IW / COLS, ROWS = Math.ceil(order.length / COLS), gridTop = 850;
+      let y = gridTop + ROWS * CELL + 24; const photoTop = y; if (photos.length) y += 330;
+      const H = y + 190, ids = new Set();
+      const seed = i => ((i * 47 + 13) % 13) - 6;                                   // a steady, small tilt per sticker
+      // rank stamp
+      const words = RANKS[ri][1].split(' '), cut = words.length > 1 ? Math.ceil(words.length / 2) : 1, l1 = words.slice(0, cut).join(' '), l2 = words.slice(cut).join(' ');
+      const sx = W - M - 108, sy = 168;
+      const stamp = '<g transform="translate(' + sx + ' ' + sy + ') rotate(-9)" style="color:' + RED + ';mix-blend-mode:multiply" opacity=".92" filter="url(#hn-stamp)"><circle r="104" fill="none" stroke="currentColor" stroke-width="7"/><circle r="88" fill="none" stroke="currentColor" stroke-width="2.5"/>' +
+        '<text y="-46" text-anchor="middle" font-size="22" fill="currentColor" letter-spacing="4">RANK</text>' +
+        '<text y="' + (l2 ? -2 : 16) + '" text-anchor="middle" font-size="' + (l2 ? 42 : 54) + '" fill="currentColor">' + esc(l1) + '</text>' + (l2 ? '<text y="44" text-anchor="middle" font-size="42" fill="currentColor">' + esc(l2) + '</text>' : '') + '</g>';
+      // the count and its bar
+      const barY = 505, ticks = RANKS.slice(1).map(r => '<rect x="' + (M + IW * r[0] / TOTAL - 2).toFixed(1) + '" y="' + (barY - 8) + '" width="4" height="46" rx="2" fill="' + INKC + '" opacity=".55"/>').join('');
+      const bar = '<rect x="' + M + '" y="' + barY + '" width="' + IW + '" height="30" rx="15" fill="' + INKC + '" opacity=".12"/>' +
+        (n ? '<rect x="' + M + '" y="' + barY + '" width="' + Math.max(30, IW * n / TOTAL).toFixed(1) + '" height="30" rx="15" fill="' + RED + '"/>' : '') + ticks;
+      const nextTxt = nr ? nr.need + ' more to be ' + nr.name : 'Found every single one. Keeper of the Desk.';
+      // four counts
+      const cats = progress().map((p, i) => {
+        const cw = (IW - 3 * 24) / 4, cx = M + i * (cw + 24);
+        return '<text x="' + cx + '" y="640" font-size="32" fill="' + INKC + '">' + p.k + '</text><text x="' + (cx + cw) + '" y="640" font-size="32" text-anchor="end" fill="' + DIM + '">' + p.n + '/' + p.of + '</text>' +
+          '<rect x="' + cx + '" y="656" width="' + cw + '" height="14" rx="7" fill="' + INKC + '" opacity=".12"/>' + (p.n ? '<rect x="' + cx + '" y="656" width="' + Math.max(14, cw * p.n / p.of).toFixed(1) + '" height="14" rx="7" fill="' + p.col + '"/>' : '');
+      }).join('');
+      // the stickers
+      const grid = order.map((id, i) => {
+        const d = DEFS[id], have = st.got.includes(id), cx = M + (i % COLS) * CELL + CELL / 2, cy = gridTop + Math.floor(i / COLS) * CELL + CELL / 2, r = CELL / 2 - 12;
+        if (!have) return '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(1) + '" fill="none" stroke="' + INKC + '" stroke-opacity=".28" stroke-width="3" stroke-dasharray="7 9"/>';
+        ids.add(id);
+        const s = r * 1.15;
+        return '<g transform="rotate(' + seed(i) + ' ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"><circle cx="' + (cx + 3).toFixed(1) + '" cy="' + (cy + 4).toFixed(1) + '" r="' + r.toFixed(1) + '" fill="' + INKC + '" opacity=".16"/><circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(1) + '" fill="#FFFFFF" stroke="' + INKC + '" stroke-opacity=".2" stroke-width="2"/>' +
+          '<use href="#' + d.sym + '" x="' + (cx - s / 2).toFixed(1) + '" y="' + (cy - s / 2).toFixed(1) + '" width="' + s.toFixed(1) + '" height="' + s.toFixed(1) + '" style="color:' + d.col + '"/></g>';
+      }).join('');
+      // the gold star, if earned, sits by the stamp
+      let star = '';
+      if (st.got.includes('master')) { ids.add('master'); star = '<g transform="rotate(10 ' + (W - M - 90) + ' 380)"><use href="#' + DEFS.master.sym + '" x="' + (W - M - 160) + '" y="310" width="140" height="140" style="color:' + DEFS.master.col + '"/></g>'; }
+      // the polaroids
+      let pol = '';
+      if (photos.length) {
+        const pw = (IW - 3 * 36) / 4;
+        pol = '<text x="' + M + '" y="' + (photoTop + 44) + '" font-size="42" fill="' + INKC + '">My creations</text>' + (morePh > 0 ? '<text x="' + (M + IW) + '" y="' + (photoTop + 44) + '" font-size="28" text-anchor="end" fill="' + DIM + '">+ ' + morePh + ' more in the book</text>' : '');
+        pol += photos.map((p, i) => {
+          const h = pw * (p.r || 1), x = M + i * (pw + 36), yy = photoTop + 74 + Math.max(0, 250 - h) / 2, rot = [-3, 2.5, -2, 3.2][i % 4];
+          return '<g transform="rotate(' + rot + ' ' + (x + pw / 2).toFixed(1) + ' ' + (yy + h / 2).toFixed(1) + ')"><rect x="' + (x + 5).toFixed(1) + '" y="' + (yy + 6).toFixed(1) + '" width="' + pw.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="' + INKC + '" opacity=".2"/>' +
+            '<image href="' + p.d + '" x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" width="' + pw.toFixed(1) + '" height="' + h.toFixed(1) + '"/>' +
+            '<rect x="' + (x + pw / 2 - 42).toFixed(1) + '" y="' + (yy - 14).toFixed(1) + '" width="84" height="28" fill="#F5DE4A" opacity=".8" transform="rotate(-3 ' + (x + pw / 2).toFixed(1) + ' ' + yy.toFixed(1) + ')" style="mix-blend-mode:multiply"/></g>';
+        }).join('');
+      }
+      const syms = (await Promise.all([...ids].map(i => symbolMarkup(DEFS[i])))).join('');
+      if (!fontB64) fontB64 = toB64(await (await fetch('assets/hand/annmary-hand.woff2?v=2')).arrayBuffer());
+      const filt = (document.getElementById('hn-stamp') || {}).outerHTML || '';
+      const when = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const tape = (x, yy, rot, c) => '<rect x="' + x + '" y="' + yy + '" width="190" height="46" fill="' + c + '" opacity=".78" transform="rotate(' + rot + ' ' + (x + 95) + ' ' + (yy + 23) + ')" style="mix-blend-mode:multiply"/>';
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' +
+        '<defs><style>@font-face{font-family:"Annmary Hand";src:url(data:font/woff2;base64,' + fontB64 + ') format("woff2")} text{font-family:"Annmary Hand"}</style>' +
+        '<pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1.3" fill="rgba(72,60,38,.3)"/></pattern>' + filt + syms + '</defs>' +
+        '<rect width="100%" height="100%" fill="#FAF8F1"/><rect width="100%" height="100%" fill="url(#dots)"/>' +
+        '<rect x="26" y="26" width="' + (W - 52) + '" height="' + (H - 52) + '" rx="14" fill="none" stroke="' + INKC + '" stroke-opacity=".5" stroke-width="3"/>' +
+        '<rect x="40" y="40" width="' + (W - 80) + '" height="' + (H - 80) + '" rx="8" fill="none" stroke="' + INKC + '" stroke-opacity=".22" stroke-width="1.5" stroke-dasharray="3 7"/>' +
+        tape(74, 8, -4, '#F5DE4A') + tape(W - 264, 8, 3, '#E86B58') +
+        '<text x="' + M + '" y="172" font-size="104" fill="' + INKC + '">Studio Passport</text>' +
+        '<text x="' + M + '" y="226" font-size="36" fill="' + DIM + '">a visitor&#8217;s book from Annmary Saji&#8217;s desk</text>' +
+        stamp + star +
+        '<text x="' + M + '" y="448" font-size="196" fill="' + RED + '">' + n + '</text>' +
+        '<text x="' + (M + (String(n).length * 104 + 26)) + '" y="448" font-size="58" fill="' + INKC + '">of ' + TOTAL + ' found</text>' +
+        bar + '<text x="' + M + '" y="590" font-size="34" fill="' + DIM + '">' + esc(nextTxt) + '</text>' + cats +
+        '<text x="' + M + '" y="' + (gridTop - 34) + '" font-size="42" fill="' + INKC + '">Collected</text>' +
+        '<text x="' + (M + IW) + '" y="' + (gridTop - 34) + '" font-size="28" text-anchor="end" fill="' + DIM + '">dashed = still hiding</text>' + grid + pol +
+        '<line x1="' + M + '" y1="' + (H - 150) + '" x2="' + (W - M) + '" y2="' + (H - 150) + '" stroke="' + INKC + '" stroke-opacity=".3" stroke-width="2" stroke-dasharray="3 8"/>' +
+        '<text x="' + M + '" y="' + (H - 96) + '" font-size="38" fill="' + INKC + '">Find yours at annmarysajii.github.io/my-portfolio</text>' +
+        '<text x="' + M + '" y="' + (H - 56) + '" font-size="30" fill="' + DIM + '">' + when + '</text></svg>';
+      return { svg, W, H };
+    }
+    let shareEl = null, shareUrl = '', shareFrom = null;
+    function closeShare() {
+      if (!shareEl) return; const e = shareEl; shareEl = null; if (shareUrl) { URL.revokeObjectURL(shareUrl); shareUrl = ''; }
+      e.remove(); if (shareFrom && document.contains(shareFrom)) shareFrom.focus({ preventScroll: true }); shareFrom = null;
+    }
+    async function sharePassport(btn) {
+      const label = btn.textContent; btn.disabled = true; btn.textContent = 'one moment...';
+      try {
+        const p = await passportSVG(), u = URL.createObjectURL(new Blob([p.svg], { type: 'image/svg+xml' }));
+        const img = new Image(); await new Promise((ok, no) => { img.onload = ok; img.onerror = no; img.src = u; });
+        const cv = document.createElement('canvas'); cv.width = p.W; cv.height = p.H; cv.getContext('2d').drawImage(img, 0, 0); URL.revokeObjectURL(u);
+        const blob = await new Promise(ok => cv.toBlob(ok, 'image/png'));
+        window.__hnLastPassport = blob;                                             // (handy for testing)
+        closeShare(); shareFrom = btn; shareUrl = URL.createObjectURL(blob);
+        shareEl = document.createElement('div'); shareEl.id = 'hn-share'; shareEl.setAttribute('role', 'dialog'); shareEl.setAttribute('aria-modal', 'true'); shareEl.setAttribute('aria-label', 'Your passport, as a picture');
+        shareEl.innerHTML = '<div class="sh-in"><img alt="Your Studio Passport: ' + foundCount() + ' of ' + TOTAL + ' found, rank ' + RANKS[rankIndex()][1] + '" src="' + shareUrl + '">' +
+          '<div class="sh-row"><a class="sh-save" download="my-studio-passport.png" href="' + shareUrl + '">Save picture</a>' + (navigator.canShare && navigator.canShare({ files: [new File([blob], 'my-studio-passport.png', { type: 'image/png' })] }) ? '<button type="button" class="sh-share">Share</button>' : '') + '<button type="button" class="sh-close">Close</button></div></div>';
+        document.body.appendChild(shareEl);
+        shareEl.addEventListener('click', e => { if (e.target === shareEl) closeShare(); });
+        shareEl.querySelector('.sh-close').addEventListener('click', closeShare);
+        const sb = shareEl.querySelector('.sh-share'); if (sb) sb.addEventListener('click', () => { try { navigator.share({ files: [new File([blob], 'my-studio-passport.png', { type: 'image/png' })], title: 'My Studio Passport' }); } catch (e) {} });
+        shareEl.querySelector('.sh-save').focus({ preventScroll: true }); sfx('paperSheet');
+      } catch (e) { try { console.warn('[passport picture]', e && e.message || e); } catch (x) {} btn.textContent = 'could not make it'; setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 2200); return; }
+      btn.textContent = label; btn.disabled = false;
+    }
+    addEventListener('keydown', e => { if (e.key === 'Escape' && shareEl) { e.stopImmediatePropagation(); closeShare(); } }, true);
+    function openAlbum(tab) {
+      if (typeof tab === 'string' && ['stickers', 'creations', 'gifts'].includes(tab)) albumTab = tab;
       if (!album) {
         album = document.createElement('aside'); album.id = 'hn-album'; album.setAttribute('aria-label', 'Sticker book: your stamps and doodles'); document.body.appendChild(album);
       }
       if (bubble) { bubble.remove(); bubble = null; }
       if (window.hnGuestbook) window.hnGuestbook.close();
-      takePassport(true); renderAlbum(); album.hidden = false; setDockOpen(true);
+      albumFresh = true; takePassport(true); renderAlbum(); album.hidden = false; setDockOpen(true);
     }
     function closeAlbum(focusTab) { if (album) album.hidden = true; setDockOpen(false); if (focusTab && dockEl()) dockEl().focus({ preventScroll: true }); }
     function bindDock() {
@@ -20291,10 +20583,11 @@ body { overflow-x: clip !important; }                                          /
       const cats = [];
       const stamps = FIVE.filter(i => !st.got.includes(i)); if (stamps.length) cats.push(() => 'the ' + SECTION[stamps[Math.floor(Math.random() * stamps.length)]] + ' toy has not stamped your passport yet.');
       const doodles = Object.keys(PD).filter(i => !st.got.includes(i)); if (doodles.length) cats.push(() => 'a doodle is hiding in ' + WHERE[HOSTOF[doodles[Math.floor(Math.random() * doodles.length)]]] + '.');
+      if (!st.got.includes('photo')) cats.push(() => 'you can keep a photo of what you make in any of the toys.');
       const secrets = SECRET_IDS.filter(i => !st.got.includes(i)); if (secrets.length) cats.push(() => DEFS[secrets[Math.floor(Math.random() * secrets.length)]].how.replace(/^./, c => c.toLowerCase()).replace(/\.$/, '') + '.');
       return cats.length ? cats[Math.floor(Math.random() * cats.length)]() : '';
     }
-    function wireBookLink() { const a = document.querySelector('#hn-bubble a[data-book]'); if (a) a.addEventListener('click', e => { e.preventDefault(); openAlbum(); }); }
+    function wireBookLink() { const a = document.querySelector('#hn-bubble a[data-book]'); if (a) a.addEventListener('click', e => { e.preventDefault(); openAlbum(a.getAttribute('data-book') || undefined); }); }
     function welcomeBack() {
       if (album && !album.hidden) return;
       const n = foundCount(), done = n >= TOTAL, h = done ? '' : hintText();
@@ -20430,7 +20723,14 @@ body { overflow-x: clip !important; }                                          /
       st.got.filter(i => FIVE.includes(i)).forEach(i => { try { orig(i); } catch (e) {} });        // remembered stamps come back quietly
       updateCounter();
     }
+    function photoKept() {
+      const first = !st.got.includes('photo');
+      if (first) { st.got.push('photo'); save(); updateCounter(); sfx('reward'); say('Sticker found: First photo. It is in your sticker book.'); }
+      refresh();
+      if (first) { note('<b>A sticker for your first photo.</b> <a href="#" data-book="creations">See it in my book</a>', 6500); wireBookLink(); }
+    }
     const api = window.hnRewards = {
+      photoKept, share: () => { openAlbum(); const b = album && album.querySelector('.ab-save'); return b ? sharePassport(b) : null; }, tab: t => openAlbum(t),
       grant: id => { id = norm(id); if (FIVE.includes(id) && !st.got.includes(id)) { if (window.unlockStamp) window.unlockStamp(id); else onStamp(id); } },
       grantAll: () => FIVE.forEach((id, i) => setTimeout(() => api.grant(id), i * 2300)),
       find: id => keepDoodle(id, document.querySelector('.pd-peek[data-id="' + id + '"]')),
@@ -20440,6 +20740,7 @@ body { overflow-x: clip !important; }                                          /
     };
     const boot = () => {
       bindDock(); hook(); restore(); initPeeks(); updateCounter();
+      if (window.hnPhotos && window.hnPhotos.onchange) window.hnPhotos.onchange(refresh);
       // shapes for the stickers that the page's own doodle sprite does not have (drawn solid, like the others)
       const spr = document.getElementById('dd-runner'), host = spr && spr.parentNode;
       const addSym = (id, d) => {
@@ -20453,6 +20754,7 @@ body { overflow-x: clip !important; }                                          /
       addSym('dd-eraser', 'M5.4 14.6l8.8-8.8a2 2 0 0 1 2.8 0l1.6 1.6a2 2 0 0 1 0 2.8l-8.8 8.8H7a2 2 0 0 1-1.4-.6l-1.2-1.2a2 2 0 0 1 0-2.8zM9.4 10.6l4 4 1-1-4-4z');
       addSym('dd-washi', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 5.6a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8z');
       addSym('dd-fineliner', 'M4 20l1.2-4.4L16.4 4.4a1.7 1.7 0 0 1 2.4 0l.8.8a1.7 1.7 0 0 1 0 2.4L8.4 18.8zM6.6 17.4l.2.2 1-.3-.9-.9z');
+      addSym('dd-polaroid', 'M5 3h14a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 19 21H5a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 5 3zM6.5 5.5v10h11v-10z');
       addSym('dd-lamp', 'M8.2 3h7.6l3.4 8.5H4.8zM11 11.5h2V17h-2zM6.5 18.5h11a1 1 0 0 1 1 1V21h-13v-1.5a1 1 0 0 1 1-1z');
       if (st.got.length && !pp.claimed) { pp.claimed = true; savePP(); }                  // someone who already has stickers knows
       initSecrets();
@@ -21043,6 +21345,244 @@ body { overflow-x: clip !important; }                                          /
       if (focus) tabs[n].focus();
     }
     heading.after(bar); panes.forEach(p => inner.appendChild(p)); show(0);
+  })();
+
+  // ================================================================
+  // KEEP A PHOTO -- every toy in the playground gets a "Keep a photo in my book" button. It takes a picture of what the visitor
+  // just made (the drawing, the warped type, the still, the strings, and for the bouncing ball an onion-skin of its last move),
+  // sets it on a little polaroid card with a hand-lettered caption, and files it in the Studio Passport under "My creations". The
+  // picture flies to the passport tab. Photos live only in this browser (localStorage, 12 at most, about 50 KB each); each can be
+  // saved as a picture or removed. Nothing is uploaded. The first one earns a sticker.
+  // ================================================================
+  (function initPhotos() {
+    const KEY = 'hn-photos-v1', MAX = 12, PAPER = '#FBF9F2', INK = '#1E2733';
+    const $ = id => document.getElementById(id);
+    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
+    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let list = [], busy = false;
+    try { const r = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(r)) list = r.filter(p => p && p.id && typeof p.d === 'string' && p.d.indexOf('data:image/') === 0).slice(-MAX); } catch (e) {}
+    const persist = () => { for (;;) { try { localStorage.setItem(KEY, JSON.stringify(list)); return true; } catch (e) { if (list.length <= 1) return false; list.shift(); } } };
+    const listeners = [];
+    const changed = () => listeners.forEach(f => { try { f(); } catch (e) {} });
+    const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+    const clean = t => String(t || '').replace(/&amp;/g, 'and').replace(/&/g, 'and').replace(/\s+/g, ' ').trim();
+    const paperOf = cv => { const c = getComputedStyle(cv).backgroundColor; return (!c || c === 'transparent' || /,\s*0\)$/.test(c)) ? '#F2EFEB' : c; };
+
+    // ---- what each toy hands over: a canvas, a caption, the colour of the paper it sits on ----
+    let burst = [], lastR = null, lastMoveT = 0;                        // the bouncing ball's last move, sampled while the toy is open
+    (function watchBall() {
+      const ball = $('motionLabBall'), stage = $('motionLabStage'), reveal = $('pg-animation-reveal');
+      if (!ball || !stage || !reveal) return;
+      setInterval(() => {
+        if (document.hidden || !reveal.classList.contains('pg-open')) return;
+        const b = ball.getBoundingClientRect(), s = stage.getBoundingClientRect(), r = { x: b.left - s.left, y: b.top - s.top, w: b.width, h: b.height }, now = performance.now();
+        if (!lastR || Math.abs(r.x - lastR.x) + Math.abs(r.y - lastR.y) + Math.abs(r.w - lastR.w) + Math.abs(r.h - lastR.h) > 0.6) {
+          if (now - lastMoveT > 500) burst = [];
+          burst.push(r); if (burst.length > 70) burst.shift(); lastMoveT = now;
+        }
+        lastR = r;
+      }, 50);
+    })();
+    function shootAnimation() {
+      const stage = $('motionLabStage'), ball = $('motionLabBall'); if (!stage || !ball) return null;
+      const sr = stage.getBoundingClientRect(), K = 2, w = Math.round(sr.width * K), h = Math.round(sr.height * K), cv = mk(w, h), x = cv.getContext('2d');
+      x.fillStyle = '#FDFBF3'; x.fillRect(0, 0, w, h);
+      x.strokeStyle = 'rgba(62,126,194,.24)'; x.lineWidth = K; for (let y = 22 * K; y < h; y += 22 * K) { x.beginPath(); x.moveTo(0, y); x.lineTo(w, y); x.stroke(); }
+      x.strokeStyle = 'rgba(217,58,38,.32)'; x.beginPath(); x.moveTo(34 * K, 0); x.lineTo(34 * K, h); x.stroke();
+      const fl = stage.querySelector('.motion-lab-floor'), fy = fl ? (fl.getBoundingClientRect().top - sr.top) * K : h - 10 * K;
+      x.strokeStyle = INK; x.lineWidth = 3 * K; x.lineCap = 'round'; x.beginPath(); x.moveTo(10 * K, fy); x.lineTo(w - 10 * K, fy); x.stroke();
+      const b = ball.getBoundingClientRect(), cur = { x: b.left - sr.left, y: b.top - sr.top, w: b.width, h: b.height };
+      const pick = []; const n = Math.min(9, burst.length); for (let i = 0; i < n; i++) pick.push(burst[Math.round(i * (burst.length - 1) / Math.max(1, n - 1))]);
+      const ell = (r, a, solid) => {
+        const cx = (r.x + r.w / 2) * K, cy = (r.y + r.h / 2) * K;
+        x.globalAlpha = a; x.fillStyle = '#E8432E'; x.beginPath(); x.ellipse(cx, cy, r.w / 2 * K, r.h / 2 * K, 0, 0, 7); x.fill();
+        x.strokeStyle = INK; x.lineWidth = (solid ? 2 : 1.4) * K; x.stroke();
+        if (solid) { x.globalAlpha = .42; x.fillStyle = '#fff'; x.beginPath(); x.ellipse(cx - r.w * .17 * K, cy - r.h * .2 * K, r.w * .13 * K, r.h * .1 * K, -.5, 0, 7); x.fill(); }
+        x.globalAlpha = 1;
+      };
+      pick.forEach((r, i) => ell(r, .1 + .3 * (i / Math.max(1, n - 1)), false));
+      const gap = Math.max(0, fy / K - (cur.y + cur.h)), sh = Math.max(.35, 1 - gap / (sr.height * .8));
+      x.fillStyle = 'rgba(30,39,51,.2)'; x.beginPath(); x.ellipse((cur.x + cur.w / 2) * K, fy + 4 * K, cur.w / 2 * K * sh * 1.1, 4 * K * sh, 0, 0, 7); x.fill();
+      ell(cur, 1, true);
+      const on = document.querySelector('.motion-preset-btn.active');
+      return { cv, cap: on ? clean(on.textContent) : 'Squash and stretch', paper: '#FDFBF3' };
+    }
+    const shootCanvas = (id, cap) => { const cv = $(id); return cv ? { cv, cap, paper: paperOf(cv) } : null; };
+    let lastChord = '';
+    document.addEventListener('click', e => { const c = e.target.closest && e.target.closest('.chord-pad-btn'); if (c) lastChord = clean(c.textContent); }, true);
+    const TOYS = {
+      animation:        { name: 'Animation',      body: '#pg-animation .pg-body',        shoot: shootAnimation },
+      illustration:     { name: 'Illustration',   body: '#pg-illustration .pg-body',     shoot: () => {
+          const cv = $('cvs-draw-pg'); if (!cv) return null;
+          let ink = false; try { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let i = 3; i < d.length; i += 4) if (d[i]) { ink = true; break; } } catch (e) { ink = true; }
+          return ink ? shootCanvas('cvs-draw-pg', 'Foil and stamps') : { empty: 'Stamp something on the sheet first, then keep it.' };
+        } },
+      videography:      { name: 'Videography',    body: '#pg-videography .pg-body',      shoot: () => { const t = $('hudLutName'), s = shootCanvas('sceneCanvasVideography', t ? clean(t.textContent).toLowerCase().replace(/^./, c => c.toUpperCase()) : 'Scene and light'); if (s) s.paper = '#14131A'; return s; } },
+      'graphic-design': { name: 'Graphic design', body: '#pg-graphic-design .pg-body',   shoot: () => { const a = document.querySelector('.vector-preset-bar .pg-btn.active'); return shootCanvas('cvs-bezier-artboard', 'Bezier type' + (a && !/reset/i.test(a.textContent) ? ', ' + clean(a.textContent).toLowerCase() : '')); } },
+      music:            { name: 'Music',          body: '#pg-music .pg-body',            shoot: () => shootCanvas('cvs-guitar-pg', lastChord ? 'Strum, ' + lastChord : 'Strings') }
+    };
+
+    // ---- the polaroid ----
+    async function polaroid(shot, toy) {
+      try { await document.fonts.load('40px "Annmary Hand"'); } catch (e) {}
+      const src = shot.cv, W = 640, P = 30, pw = W - P * 2;
+      const ph = Math.max(300, Math.min(440, Math.round(pw * src.height / src.width))), H = P + ph + 136, cv = mk(W, H), x = cv.getContext('2d');
+      x.fillStyle = PAPER; x.fillRect(0, 0, W, H);
+      x.fillStyle = shot.paper; x.fillRect(P, P, pw, ph);
+      const k = Math.min(pw / src.width, ph / src.height), dw = src.width * k, dh = src.height * k;
+      x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(src, P + (pw - dw) / 2, P + (ph - dh) / 2, dw, dh);
+      x.strokeStyle = 'rgba(30,39,51,.22)'; x.lineWidth = 2; x.strokeRect(P + 1, P + 1, pw - 2, ph - 2);
+      x.fillStyle = INK; x.textBaseline = 'alphabetic'; x.font = '60px "Annmary Hand", cursive';
+      let cap = shot.cap; while (x.measureText(cap).width > pw && cap.length > 6) cap = cap.slice(0, -2);
+      x.fillText(cap, P, P + ph + 68);
+      x.fillStyle = '#3D4858'; x.font = '31px "Annmary Hand", cursive';
+      x.fillText('made in the ' + TOYS[toy].name + ' toy · ' + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }), P, P + ph + 114);
+      return cv;
+    }
+
+    // ---- the flash and the flight to the passport tab ----
+    function flash(rect) {
+      if (calm()) return;
+      const f = document.createElement('div'); f.className = 'hn-flash'; f.style.cssText = 'left:' + rect.left + 'px;top:' + rect.top + 'px;width:' + rect.width + 'px;height:' + rect.height + 'px';
+      document.body.appendChild(f); setTimeout(() => f.remove(), 340);
+    }
+    function fly(url, from, ratio) {
+      const dock = document.getElementById('passport-dock'); if (!dock || calm() || !from) return;
+      const to = dock.getBoundingClientRect(), w = 130, h = w * ratio;
+      const im = new Image(); im.src = url; im.className = 'hn-fly'; im.alt = ''; im.style.cssText = 'width:' + w + 'px;height:' + h + 'px';
+      document.body.appendChild(im);
+      const x0 = from.left + from.width / 2 - w / 2, y0 = from.top + from.height / 2 - h / 2, x1 = to.left + to.width / 2 - w / 2, y1 = to.top + to.height / 2 - h / 2;
+      const a = im.animate([
+        { transform: 'translate(' + x0 + 'px,' + y0 + 'px) rotate(-5deg) scale(.9)', opacity: 1 },
+        { transform: 'translate(' + x0 + 'px,' + (y0 - 40) + 'px) rotate(3deg) scale(1)', opacity: 1, offset: .22 },
+        { transform: 'translate(' + x1 + 'px,' + y1 + 'px) rotate(12deg) scale(.12)', opacity: .9 }
+      ], { duration: 820, easing: 'cubic-bezier(.45,.05,.7,.4)' });
+      a.onfinish = () => { im.remove(); dock.classList.remove('is-pulse'); void dock.offsetWidth; dock.classList.add('is-pulse'); setTimeout(() => dock.classList.remove('is-pulse'), 700); };
+    }
+
+    // ---- keeping one ----
+    async function keep(toy, btn, msg) {
+      if (busy) return;
+      const say = t => { msg.textContent = t; };
+      if (list.length >= MAX) { say('Your book holds ' + MAX + ' photos. Remove one in My creations to keep another.'); return; }
+      busy = true; btn.disabled = true;
+      try {
+        const shot = TOYS[toy].shoot(); if (!shot) throw new Error('nothing to photograph');
+        if (shot.empty) { say(shot.empty); busy = false; btn.disabled = false; return; }
+        const cv = await polaroid(shot, toy), d = cv.toDataURL('image/jpeg', 0.84);
+        const item = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), toy, cap: shot.cap, t: Date.now(), d, r: cv.height / cv.width };
+        list.push(item); const ok = persist();
+        const st = shot.cv.getBoundingClientRect(); flash(st); sfx('stamp'); fly(d, btn.getBoundingClientRect(), item.r);
+        say(ok ? 'Kept. ' + list.length + ' in your book.' : 'Kept for now, but this browser would not save it for later.');
+        changed();
+        try { if (window.hnRewards && window.hnRewards.photoKept) window.hnRewards.photoKept(list.length); } catch (e) {}
+      } catch (e) { say('That did not work. Try once more.'); try { console.warn('[keep a photo]', e && e.message || e); } catch (x) {} }
+      busy = false; btn.disabled = false;
+    }
+
+    Object.keys(TOYS).forEach(toy => {
+      const body = document.querySelector(TOYS[toy].body); if (!body || body.querySelector('.hn-keep')) return;
+      const row = document.createElement('div'); row.className = 'hn-keep';
+      row.innerHTML = '<button type="button" class="hn-keep-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M5 3h14a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 19 21H5a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 5 3zM6.5 5.5v10h11v-10z"/></svg><span>Keep a photo in my book</span></button><span class="hn-keep-msg" role="status" aria-live="polite"></span>';
+      body.appendChild(row);
+      const btn = row.querySelector('button'), msg = row.querySelector('.hn-keep-msg');
+      btn.addEventListener('click', () => keep(toy, btn, msg));
+    });
+
+    window.hnPhotos = {
+      MAX,
+      list: () => list.slice(),
+      count: () => list.length,
+      remove: id => { const i = list.findIndex(p => p.id === id); if (i < 0) return; list.splice(i, 1); persist(); changed(); },
+      onchange: f => { listeners.push(f); },
+      save: id => { const p = list.find(q => q.id === id); if (!p) return; const a = document.createElement('a'); a.href = p.d; a.download = 'annmarys-desk-' + clean(p.cap).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.jpg'; document.body.appendChild(a); a.click(); a.remove(); },
+      keep: toy => { const row = document.querySelector(TOYS[toy].body + ' .hn-keep'); return row ? keep(toy, row.querySelector('button'), row.querySelector('.hn-keep-msg')) : null; }
+    };
+  })();
+
+  // ================================================================
+  // THE DESK LAMP -- an object standing at the edge of the hero desk, to play with. Click it to switch it on or off; drag it anywhere
+  // on the hero and it goes with its pool of light; the head sways as it is carried and settles with a little overshoot. By default it
+  // follows the day and night switch (unlit by day, lit at night); switching it by hand overrides that until the next day/night switch.
+  // It is deliberately separate from the site's lighting: it sets no custom property on the root, moves only with a transform, and
+  // its light is a plain translucent gradient that lifts the paper without washing out the ink. Its pool is hidden in lite mode.
+  // The first time it is moved it earns a sticker (a secret). Keyboard: Space / Enter switches it, Shift + arrows move it.
+  // ================================================================
+  (function initDeskLamp() {
+    const hero = document.getElementById('hero'); if (!hero) return;
+    const root = document.documentElement;
+    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
+    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const isNight = () => root.getAttribute('data-theme') === 'dark';
+    const INK = '#1E2733';
+    const el = document.createElement('button'); el.type = 'button'; el.className = 'hn-lamp'; el.setAttribute('role', 'switch');
+    el.title = 'The desk lamp. Click to switch it on or off. Drag it around the desk.';
+    el.innerHTML =
+      '<span class="lp-pool" aria-hidden="true"></span>' +
+      '<svg class="lp-svg" viewBox="0 0 120 200" aria-hidden="true" focusable="false">' +
+        '<defs><linearGradient id="lpCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7A6" stop-opacity=".62"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></linearGradient>' +
+        '<radialGradient id="lpGlow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFE08A" stop-opacity="0"/></radialGradient></defs>' +
+        '<ellipse cx="62" cy="191" rx="46" ry="6.5" fill="rgba(20,16,10,.3)"/>' +
+        '<path d="M27 187Q27 176 40 176H82Q95 176 95 187Z" fill="#C42D1C" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="M62 177L86 104" stroke="' + INK + '" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M62 177L86 104" stroke="#E8AF30" stroke-width="4.4" stroke-linecap="round" fill="none"/>' +
+        '<circle cx="86" cy="104" r="7.5" fill="#C42D1C" stroke="' + INK + '" stroke-width="3"/>' +
+        '<path d="M86 104L47 50" stroke="' + INK + '" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M86 104L47 50" stroke="#E8AF30" stroke-width="4.4" stroke-linecap="round" fill="none"/>' +
+        '<g class="lp-head">' +
+          '<path class="lp-cone" d="M20 91L74 91L118 236L-26 236Z" fill="url(#lpCone)"/>' +
+          '<path d="M36 46Q47 35 58 46L76 90H18Z" fill="#E8AF30" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>' +
+          '<path d="M41 54L31 84" stroke="rgba(255,255,255,.55)" stroke-width="3.4" stroke-linecap="round" fill="none"/>' +
+          '<ellipse cx="47" cy="90" rx="29" ry="5.4" fill="#7A4A1E" stroke="' + INK + '" stroke-width="2.4"/>' +
+          '<ellipse class="lp-bulb" cx="47" cy="90.6" rx="15" ry="3.4"/>' +
+          '<ellipse class="lp-glow" cx="47" cy="94" rx="30" ry="14" fill="url(#lpGlow)"/>' +
+        '</g>' +
+        '<circle cx="47" cy="50" r="6.8" fill="#C42D1C" stroke="' + INK + '" stroke-width="3"/>' +
+      '</svg>';
+    hero.appendChild(el);
+
+    let manual = null, dx = 0, dy = 0;
+    const on = () => manual !== null ? manual : isNight();
+    function paint() { const v = on(); el.classList.toggle('is-on', v); el.setAttribute('aria-checked', v ? 'true' : 'false'); el.setAttribute('aria-label', 'Desk lamp, ' + (v ? 'on' : 'off') + '. Press to switch it. Drag it to move it'); }
+    function toggle() { manual = !on(); paint(); sfx('toyClap'); }
+    new MutationObserver(() => { manual = null; paint(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    paint();
+
+    // where it may go: anywhere inside the hero, but not so low that its pool would be cut by the hero's bottom edge
+    function place(x, y) {
+      const hr = hero.getBoundingClientRect(), r = el.getBoundingClientRect(), bx = r.left - dx, by = r.top - dy;      // where it would sit with no offset
+      dx = clamp(x, hr.left - bx, hr.right - bx - r.width); dy = clamp(y, hr.top - by + 56, hr.bottom - by - r.height - Math.min(150, hr.height * 0.16));
+      el.style.translate = Math.round(dx) + 'px ' + Math.round(dy) + 'px';
+    }
+    let d = null, suppress = false;
+    el.addEventListener('pointerdown', e => {
+      if (e.button > 0) return; d = { id: e.pointerId, x: e.clientX, y: e.clientY, ox: dx, oy: dy, on: false, lx: e.clientX };
+      try { el.setPointerCapture(e.pointerId); } catch (x) {}
+    });
+    el.addEventListener('pointermove', e => {
+      if (!d || e.pointerId !== d.id) return;
+      if (!d.on) { if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 6) return; d.on = true; el.classList.add('is-held'); }
+      place(d.ox + e.clientX - d.x, d.oy + e.clientY - d.y);
+      if (!calm()) { el.style.setProperty('--tilt', clamp((d.lx - e.clientX) * 1.3, -18, 18).toFixed(1) + 'deg'); d.lx = e.clientX; }
+    });
+    const finish = (e, cancel) => {
+      if (!d || (e && e.pointerId !== d.id)) return; const was = d; d = null;
+      try { el.releasePointerCapture(was.id); } catch (x) {}
+      el.classList.remove('is-held'); el.style.removeProperty('--tilt');
+      setTimeout(() => { suppress = false; }, 60);                                   // the click that follows a press is ours already
+      if (!was.on) { if (!cancel) { suppress = true; toggle(); } return; }
+      suppress = true; sfx('stickerPlace');
+      if (Math.hypot(dx - was.ox, dy - was.oy) > 12) { try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {} }
+    };
+    el.addEventListener('pointerup', e => finish(e, false));
+    el.addEventListener('pointercancel', e => finish(e, true));
+    el.addEventListener('click', e => { if (suppress) { suppress = false; e.preventDefault(); return; } if (e.detail === 0) toggle(); });   // a keyboard press
+    el.addEventListener('keydown', e => {
+      const k = { ArrowLeft: [-24, 0], ArrowRight: [24, 0], ArrowUp: [0, -24], ArrowDown: [0, 24] }[e.key]; if (!k || !e.shiftKey) return;
+      e.preventDefault(); place(dx + k[0], dy + k[1]); try { if (window.hnRewards && window.hnRewards.secret) window.hnRewards.secret('secret-lamp'); } catch (x) {}
+    });
+    el.addEventListener('dblclick', e => { e.preventDefault(); dx = 0; dy = 0; el.style.translate = ''; });                    // a double click puts it home
+    addEventListener('resize', () => { if (dx || dy) place(dx, dy); });
+    window.hnDeskLamp = { toggle, on, place, home: () => { dx = 0; dy = 0; el.style.translate = ''; } };
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
