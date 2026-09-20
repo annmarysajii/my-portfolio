@@ -29,6 +29,14 @@ file it uses the fallback below; a slot with neither stays silent. No code chang
   toyDraw         toy-draw-N          Draw: the pen starting a stroke                              toy-draw-1..3 (pencil)
   (lamp click)    lamp-click.mp3      the lamp switch                                              lamp-click.mp3
 
+LEVELS AND TIMING (portfolio.html, initRoomSound)
+  Every effect is decoded as soon as room sound is switched on, so a press plays immediately (no fetch on first use).
+  Mouse presses on the toys and the notebook page sound on the press itself, not when the button comes back up.
+  Base levels are --snd-ui .30 and --snd-rustle .13 (night .34 / .15); each kind then has its own trim in SLOT_VOL
+  (for example reward .45, toyBounce .45, tape .7). A soft limiter sits on the output. To make one kind quieter or louder,
+  change its number in SLOT_VOL. A fast second press cuts the first short instead of stacking on it, and each play is
+  varied by a few percent in speed and volume so repeats do not sound identical.
+
 The new files were cut, faded and level-matched with ffmpeg (mono, 44.1 kHz, peaks -3 to -8 dBFS) from the
 recordings in assets/sound/, which are the untouched originals: polaroid printing, turn-a-page, paper-slide-short,
 duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,

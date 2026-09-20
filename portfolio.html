@@ -16035,8 +16035,8 @@ h1, h2, h3, h4, .sec-title, .hero-role {
 @media (prefers-reduced-motion: reduce) { #themeBtn { transition: none; } }
 
 /* ---- sound: levels live with the rest of the variables (JS reads them), and the toggle mirrors the lamp switch ---- */
-:root { --snd-loop: .70; --snd-ui: .55; --snd-rustle: .22; }                 /* day: a soft room */
-[data-theme="dark"] { --snd-loop: .80; --snd-ui: .6; --snd-rustle: .25; }   /* night: a little closer, a little louder */
+:root { --snd-loop: .70; --snd-ui: .30; --snd-rustle: .13; }                 /* day: a soft room */
+[data-theme="dark"] { --snd-loop: .80; --snd-ui: .34; --snd-rustle: .15; }   /* night: a little closer, a little louder */
 #soundBtn .snd-on { display: none; }
 #soundBtn[aria-pressed="true"] .snd-off { display: none; }
 #soundBtn[aria-pressed="true"] .snd-on { display: block; }
@@ -19323,7 +19323,10 @@ footer.foot, [data-theme="dark"] footer.foot {
       if (ctx) return ctx;
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
-      ctx = new AC(); master = ctx.createGain(); master.gain.value = 1; master.connect(ctx.destination);
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 1;
+      const lim = ctx.createDynamicsCompressor();                          // a soft limiter: overlapping sounds never jump out
+      lim.threshold.value = -16; lim.knee.value = 14; lim.ratio.value = 6; lim.attack.value = 0.003; lim.release.value = 0.2;
+      master.connect(lim); lim.connect(ctx.destination);
       an = ctx.createAnalyser(); an.fftSize = 1024; master.connect(an);     // only listens; feeds the little meter on the button
       say('audio context created, state:', ctx.state, ', sample rate:', ctx.sampleRate);
       return ctx;
@@ -19372,6 +19375,7 @@ footer.foot, [data-theme="dark"] footer.foot {
       try { await ctx.resume(); } catch (e) { warn('resume() failed', e && e.message); }
       on = true; armed = false; paint(); startMeter();
       const ok = await startLoop(mode());
+      preloadAll();
       if (!ok) {                                                                    // nothing to play: say why, stay off
         on = false; stopMeter(); paint(lastErr ? "couldn't start: " + lastErr : 'sound files have not been added yet');
       }
@@ -19416,30 +19420,57 @@ footer.foot, [data-theme="dark"] footer.foot {
 
     const slotFiles = {};
     let lastPick = '';
-    async function pickSlot(name) {
+    // ---- effects: everything is decoded ahead of time (as soon as sound is on), so a press plays at once, never after a
+    // fetch. Each kind has its own trim so nothing jumps out over the music, and a fast second press cuts the first
+    // one short instead of stacking on it.
+    const SLOT_VOL = { paperPrint: 1, paperSheet: 1, paperSlip: 1, pageTurn: 1, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
+      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, click: .8 };
+    const voices = {};
+    async function discover(name) {                                       // find and decode every file of one slot
       const sl = SLOTS[name];
-      if (!sl) return name;
-      if (!slotFiles[name]) {
-        const found = [];
-        for (let i = 1; i <= 4; i++) { const k = sl.own + '-' + i; if (await load(k, true)) found.push(k); else break; }
-        if (!found.length && await load(sl.own, true)) found.push(sl.own);
-        slotFiles[name] = found.length ? found : sl.fall.slice();
-      }
-      const list = slotFiles[name]; if (!list.length) return null;
+      if (!sl) { await load(name, true); return; }
+      if (slotFiles[name]) return;
+      const found = [];
+      for (let i = 1; i <= 4; i++) { const k = sl.own + '-' + i; if (await load(k, true)) found.push(k); else break; }
+      if (!found.length && await load(sl.own, true)) found.push(sl.own);
+      const list = found.length ? found : sl.fall.slice();
+      for (const k of list) await load(k, true);
+      slotFiles[name] = list;
+    }
+    let preloading = false;
+    async function preloadAll() {
+      if (preloading) return; preloading = true;
+      for (const n of Object.keys(SLOTS).concat('click')) { if (!on) break; try { await discover(n); } catch (e) {} }
+    }
+    function pickSync(name) {                                             // a buffer key, null (nothing to play) or undefined (not decoded yet)
+      if (!SLOTS[name]) return bufs[name] ? name : undefined;
+      const list = slotFiles[name]; if (!list) return undefined;
+      if (!list.length) return null;
       const pool = list.filter(k => k !== lastPick);
-      return (pool.length ? pool : list)[Math.floor(Math.random() * (pool.length || list.length))];
+      const k = (pool.length ? pool : list)[Math.floor(Math.random() * (pool.length || list.length))];
+      return bufs[k] ? k : undefined;
     }
-    async function once(key, vol) {
-      if (!on || !ctx || ctx.state !== 'running') return;
-      key = await pickSlot(key); if (!key) return;
+    function play(key, name, vol) {
       lastPick = key;
-      const b = await load(key, true); if (!b) return;
-      const s = ctx.createBufferSource(); s.buffer = b;
-      const g = ctx.createGain(); g.gain.value = vol; s.connect(g); g.connect(master); s.start();
+      const t = ctx.currentTime, s = ctx.createBufferSource(); s.buffer = bufs[key];
+      s.playbackRate.value = 0.96 + Math.random() * 0.08;                 // a hair of variation, so repeats do not sound like one sample
+      const g = ctx.createGain(); g.gain.value = vol * (SLOT_VOL[name] || 1) * (0.9 + Math.random() * 0.2);
+      s.connect(g); g.connect(master);
+      const prev = voices[name];
+      if (prev) { try { prev.g.gain.cancelScheduledValues(t); prev.g.gain.setValueAtTime(prev.g.gain.value, t); prev.g.gain.linearRampToValueAtTime(0, t + 0.04); prev.s.stop(t + 0.05); } catch (e) {} }
+      voices[name] = { s, g };
+      s.onended = () => { if (voices[name] && voices[name].s === s) delete voices[name]; try { g.disconnect(); } catch (e) {} };
+      s.start(t);
     }
-    window.__hnLampClick = () => once('click', num('--snd-ui', .5));
+    async function once(name, vol) {
+      if (!on || !ctx || ctx.state !== 'running') return;
+      let key = pickSync(name);
+      if (key === undefined) { await discover(name); if (!on || !ctx) return; key = pickSync(name); }   // only if a press beats the preload
+      if (key) play(key, name, vol);
+    }
+    window.__hnLampClick = () => once('click', num('--snd-ui', .3));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
-    window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .22) : num('--snd-ui', .55));
+    window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3));
     // Paper on hover was too much (every card, all the time). Now: mouse only, once per object per 20 seconds, and
     // never more than one paper sound every 3.5 seconds anywhere. Each kind of paper has its own slot.
     const HOVER = [
@@ -19990,14 +20021,19 @@ footer.foot, [data-theme="dark"] footer.foot {
     window.__hnStampCancel = () => dropStamp(true);
     addEventListener('pointermove', e => { if (ghost) ghost.style.transform = 'translate(' + (e.clientX - 40) + 'px,' + (e.clientY - 40) + 'px) rotate(-6deg)'; }, { passive: true });
     addEventListener('keydown', e => { if (e.key === 'Escape' && held) dropStamp(); });
-    canvas.addEventListener('click', e => {
+    let pressedAt = 0;
+    function place(e) {
       if (!held) return;
       const r = canvas.getBoundingClientRect();
       const s = { k: held, x: +(((e.clientX - r.left) / r.width) * 100).toFixed(2), y: +(((e.clientY - r.top) / r.height) * 100).toFixed(2), r: Math.round(Math.random() * 20 - 10), o: +(0.78 + Math.random() * 0.16).toFixed(2), c: ink };
       state.stamps.push(s); if (state.stamps.length > MAX) { state.stamps.shift(); const f = canvas.firstElementChild; if (f) f.remove(); }
       save(); imprint(s, true); sfx();
       try { if (window.hnRewards && window.hnRewards.notebook) window.hnRewards.notebook(); } catch (err) {}
-    });
+    }
+    // a mouse stamps the moment the button goes down (the click arrives after the button comes back up, which feels late);
+    // touch, pen and keyboard still use the click
+    canvas.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button === 0 && held) { pressedAt = performance.now(); place(e); } });
+    canvas.addEventListener('click', e => { if (performance.now() - pressedAt < 600) return; place(e); });
     sp.querySelector('.hn-sp-clear').addEventListener('click', () => { state.stamps = []; save(); canvas.innerHTML = ''; });
 
     // ---- turning the page ----
@@ -20022,11 +20058,15 @@ footer.foot, [data-theme="dark"] footer.foot {
   (function initToyMotion() {
     const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
     const pulse = (card, cls, ms) => { if (!card) return; card.classList.remove(cls); void card.offsetWidth; card.classList.add(cls); setTimeout(() => card.classList.remove(cls), ms); };
+    // sound on the press itself (a mouse's click only arrives after the button comes back up); the click still handles
+    // keyboard use, and the motion, and does not play the sound twice
+    let soundedAt = 0;
+    const hit = e => (e.target.closest && (e.target.closest('#pg-animation-toy .motion-preset-btn') && 'toyBounce' || e.target.closest('#pg-videography-toy #btn-cam-capture') && 'toyClap')) || null;
+    document.addEventListener('pointerdown', e => { const n = hit(e); if (n && e.button === 0) { soundedAt = performance.now(); sfx(n); } }, true);
     document.addEventListener('click', e => {
-      const a = e.target.closest && e.target.closest('#pg-animation-toy .motion-preset-btn');
-      if (a) { pulse(a.closest('.playground-scrap-card'), 'is-riffle', 540); sfx('toyBounce'); return; }
-      const c = e.target.closest && e.target.closest('#pg-videography-toy #btn-cam-capture');
-      if (c) { pulse(c.closest('.playground-scrap-card'), 'is-clap', 440); sfx('toyClap'); }
+      const n = hit(e); if (!n) return;
+      if (n === 'toyBounce') pulse(e.target.closest('.playground-scrap-card'), 'is-riffle', 540); else pulse(e.target.closest('.playground-scrap-card'), 'is-clap', 440);
+      if (performance.now() - soundedAt > 500) sfx(n);
     }, true);
     // Draw: the pen scratches when you start a stroke; any of the stamps in that toy lands like a stamp (one sound per stroke)
     let lastDraw = 0;
