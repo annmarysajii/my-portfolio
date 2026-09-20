@@ -17065,7 +17065,7 @@ footer.foot, [data-theme="dark"] footer.foot {
 @media (max-width: 640px) { .foot .foot-logo { font-size: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { #nav .nav-r .theme-toggle, #nav .nav-cta { transition: none !important; } }
 
-/* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (desktop) ------------------------------- */
+/* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
 #hero .hn-turn-t::after { content: " \2192"; }
@@ -17123,7 +17123,8 @@ footer.foot, [data-theme="dark"] footer.foot {
 @keyframes hnPress { 0% { scale: 1.3; opacity: 0; } 55% { scale: .95; opacity: var(--o, .85); } 100% { scale: 1; } }
 .hn-sp-ghost { position: fixed; left: 0; top: 0; z-index: 9993; width: 80px; height: 80px; pointer-events: none; opacity: .5; }
 .hn-sp-ghost svg { width: 100%; height: 100%; }
-@media (max-width: 900px) { #hero .hn-turn, .hn-sp { display: none !important; } }
+@media (max-width: 640px) { #hero .hn-turn, .hn-sp { display: none !important; } }
+@media (max-width: 900px) { .hn-sp { min-height: 380px; } .hn-sp-rack { bottom: 3.4rem; } }
 @media (prefers-reduced-motion: reduce) { .hn-sp.is-in, .hn-sp.is-out, .hn-sp-shade, .hn-imp.is-new { animation: none !important; } .hn-sp-stamp, #hero .hn-turn-c { transition: none; } }
 /* ==== HN-SITE-END ==== */
 
@@ -19800,13 +19801,13 @@ footer.foot, [data-theme="dark"] footer.foot {
   // ================================================================
   // THE NEXT PAGE -- the hero notebook can be turned. The next page is blank, dotted paper with a rack of rubber
   // stamps: a visitor picks one, presses it anywhere on the page, and it stays there (localStorage, so the page is
-  // theirs on later visits). It is the visitor's page in her book: nothing on it is hers. Desktop only (on a phone the
+  // theirs on later visits). It is the visitor's page in her book: nothing on it is hers. Tablet and desktop (on a phone the
   // hero is a flip pad of its own). Stamps are drawn with her handwriting; ink comes from three pads. The stamp sound
   // is the same 'stamp' slot the rewards use (silent until a file exists).
   // ================================================================
   (function initStampPage() {
     const page = document.querySelector('#hero .book-page-right');
-    if (!page || !matchMedia('(min-width: 901px)').matches) return;
+    if (!page) return;                                   // hidden by CSS on a phone (<= 640px), where the hero is a flip pad of its own
     const KEY = 'hn-stampage-v1', MAX = 60;
     let uid = 0;
     const PDS = 'assets/hand/project-doodles-sprite.svg?v=4';
