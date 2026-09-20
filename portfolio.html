@@ -17380,6 +17380,35 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 @keyframes tidyDone { 0% { scale: 1; } 30% { scale: 1.12; rotate: -5deg; } 60% { scale: .96; rotate: 3deg; } 100% { scale: 1; rotate: 0deg; } }
 @media (prefers-reduced-motion: reduce) { .tidy-pouch.is-shake, .bp-tidy.is-tidy .tidy-pouch { animation: none; } .tidy-item { transition: none; } }
 
+/* ---- AE. THE STUDIO DESK DRAWER IN THREE TABS, AND WORDS YOU CAN READ ------------------------------------------------ */
+.dt-tabs { display: flex; gap: .3rem; margin: .5rem 0 0; border-bottom: 2px solid rgba(30, 39, 51, .28); }
+.dt-tab { appearance: none; cursor: pointer; position: relative; margin-bottom: -2px; padding: .4rem .95rem .35rem; font: 400 1.3rem/1 var(--hn-hand); color: var(--hn-ink-2); background: rgba(30, 39, 51, .07); border: 2px solid transparent; border-bottom: 0; border-radius: 5px 5px 0 0; }
+.dt-tab:hover, .dt-tab:focus-visible { color: var(--hn-ink); background: rgba(245, 222, 74, .35); outline: none; }
+.dt-tab:focus-visible { box-shadow: 0 0 0 2px var(--hn-red); }
+.dt-tab[aria-selected="true"] { color: var(--hn-ink); background: var(--hn-paper-r); border-color: rgba(30, 39, 51, .28); padding-bottom: .5rem; }
+.dt-dot { position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--hn-red); }
+.dt-pane { padding-top: .5rem; } .dt-pane[hidden] { display: none; }
+.dt-pane .bp-desk, .dt-pane .bp-pols, .dt-pane .bp-tidy { margin-top: .6rem; }
+.dt-pane .bp-pols { padding-top: .6rem; border-top: 0; }
+.dt-pane .bp-pols .bp-pol { width: calc((100% - 1.8rem) / 3); }
+.dt-pane .bp-pols-h { display: none; }
+/* readable: handwriting needs to be larger than print to be as easy to read, and the small caps labels were 11px */
+#about .bp-tagline { font-size: 1.32rem !important; line-height: 1.34 !important; }
+#about .about-spec dd { font-size: 1.3rem !important; line-height: 1.24 !important; }
+#about .about-spec dt { font-size: .82rem !important; letter-spacing: .1em !important; }
+#about .bp-facts-text { font-size: 1.25rem !important; line-height: 1.32 !important; margin-top: .4rem; }
+#about .bp-note { font-size: 1.22rem !important; line-height: 1.28 !important; }
+#about .bp-pol figcaption { font-size: 1.12rem !important; line-height: 1.12 !important; }
+#about .bp-inv-chip { font-size: .84rem !important; padding: .4rem .85rem !important; }
+#about .bp-inv-note { font-size: 1.22rem !important; line-height: 1.3 !important; }
+#about .bp-inv-list li, #about .bp-list-title, #about .bp-list-sub { font-size: 1rem !important; line-height: 1.35 !important; }
+#about .tidy-t, #about .tidy-msg { font-size: 1.15rem; }
+/* the credentials card: label above value, so the values get the full width instead of a narrow second column */
+#about .about-spec > div { display: block !important; padding: .55rem 0 .6rem !important; }
+#about .about-spec dt { margin: 0 0 .15rem !important; }
+#about .about-spec dd { margin: 0 !important; }
+@media (max-width: 480px) { .dt-pane .bp-pols .bp-pol { width: calc((100% - 1rem) / 2); } .dt-tab { padding: .4rem .7rem .35rem; font-size: 1.2rem; } }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -21053,6 +21082,38 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
     }
     again.addEventListener('click', scatter);
     scatter();
+  })();
+
+  // ================================================================
+  // THE STUDIO DESK DRAWER, IN THREE TABS -- it had grown into one long scroll (her words, six objects, the pouch game, five photos). Now it
+  // is a folder with three index tabs: On my desk (her words and the six objects), Photos (from uni) and Play (tidy the pouch). Only one shows
+  // at a time, so the drawer is about a third of its old height and the About section stops being a scroll. The pieces themselves are
+  // untouched: they are moved into panes. The Play tab carries a small red dot until it has been opened.
+  // ================================================================
+  (function initDeskTabs() {
+    const inner = document.querySelector('.bp-facts-inner'); if (!inner) return;
+    const heading = inner.querySelector('.bp-facts-heading'), text = inner.querySelector('.bp-facts-text'), desk = inner.querySelector('.bp-desk'), tidy = inner.querySelector('.bp-tidy'), pols = inner.querySelector('.bp-pols');
+    if (!heading || !text || !desk || !pols) return;
+    const defs = [['desk', 'On my desk', [text, desk]], ['photos', 'Photos', [pols]], ['play', 'Play', tidy ? [tidy] : []]].filter(d => d[2].length);
+    const bar = document.createElement('div'); bar.className = 'dt-tabs'; bar.setAttribute('role', 'tablist'); bar.setAttribute('aria-label', 'Studio Desk sections');
+    const tabs = [], panes = [];
+    defs.forEach(([id, label, nodes], i) => {
+      const t = document.createElement('button'); t.type = 'button'; t.className = 'dt-tab'; t.id = 'dt-tab-' + id; t.setAttribute('role', 'tab'); t.setAttribute('aria-controls', 'dt-pane-' + id);
+      t.innerHTML = label + (id === 'play' ? '<i class="dt-dot" aria-hidden="true"></i>' : '');
+      const p = document.createElement('div'); p.className = 'dt-pane'; p.id = 'dt-pane-' + id; p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', t.id);
+      nodes.forEach(n => p.appendChild(n));
+      tabs.push(t); panes.push(p); bar.appendChild(t);
+      t.addEventListener('click', () => show(i));
+      t.addEventListener('keydown', e => {
+        const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (e.key === 'Home') { e.preventDefault(); show(0, true); } else if (e.key === 'End') { e.preventDefault(); show(tabs.length - 1, true); } else if (k) { e.preventDefault(); show((i + k + tabs.length) % tabs.length, true); }
+      });
+    });
+    function show(n, focus) {
+      tabs.forEach((t, i) => { const on = i === n; t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1; panes[i].hidden = !on; });
+      const dot = tabs[n].querySelector('.dt-dot'); if (dot) dot.remove();
+      if (focus) tabs[n].focus();
+    }
+    heading.after(bar); panes.forEach(p => inner.appendChild(p)); show(0);
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).

@@ -403,6 +403,12 @@ glyphs drawn for it: fineliner, eraser, washi roll, highlighter) are scattered i
 pouch (`initTidy`). The last one gives the pouch a flourish, a line ("All tidy. (It will not last.)") and the "Pencil case" sticker; "mess it up again" reshuffles it. Keyboard: pressing a
 piece puts it in. A plain press also puts a piece in, so a slow or shaky hand is never blocked.
 
+**About: the Studio Desk drawer in three tabs, and text you can read.** The drawer had become one 1500 px scroll (her words, six objects, the pouch game, five photos). It is now a
+folder with three index tabs (`initDeskTabs`): "On my desk" (her words and the six objects), "Photos" (the uni polaroids, three across, two on a phone) and "Play" (tidy the
+pouch; a red dot until it has been opened). One shows at a time: the drawer is 480-600 px tall instead of ~1500, nothing is clipped, and the pieces are only moved, not changed.
+Text in About was small: handwriting needs to be larger than print to read as easily, and the small caps labels were 11 px. Now the intro is 21 px, the credentials 21 px with the
+label above the value (so the value gets the whole card width instead of a narrow column), the drawer text 20 px, the labels 13 px and the chips 13.4 px.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).
