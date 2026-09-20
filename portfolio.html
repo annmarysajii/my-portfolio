@@ -19296,7 +19296,11 @@ footer.foot, [data-theme="dark"] footer.foot {
       reward:      { own: 'reward',       fall: [] },              // a small chime
       rewardFinal: { own: 'reward-final', fall: [] },              // the last stamp
       drawerOpen:  { own: 'drawer-open',  fall: [] },
-      drawerClose: { own: 'drawer-close', fall: [] }
+      drawerClose: { own: 'drawer-close', fall: [] },
+      pageTurn:    { own: 'page-turn',    fall: GENERIC_PAPER },   // turning the notebook's page
+      toyBounce:   { own: 'toy-bounce',   fall: [] },              // Animate: a principle played on the ball
+      toyClap:     { own: 'toy-clap',     fall: [] },              // Capture: the clapper
+      toyDraw:     { own: 'toy-draw',     fall: [] }               // Draw: the pen starting a stroke
     };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
     const FADE = 0.8;                                                    // seconds
@@ -19435,7 +19439,7 @@ footer.foot, [data-theme="dark"] footer.foot {
     }
     window.__hnLampClick = () => once('click', num('--snd-ui', .5));
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
-    window.__hnSfx = name => once(/^paper/.test(name) ? name : name, /^paper/.test(name) ? num('--snd-rustle', .22) : num('--snd-ui', .55));
+    window.__hnSfx = name => once(name, /^(paper|page)/.test(name) ? num('--snd-rustle', .22) : num('--snd-ui', .55));
     // Paper on hover was too much (every card, all the time). Now: mouse only, once per object per 20 seconds, and
     // never more than one paper sound every 3.5 seconds anywhere. Each kind of paper has its own slot.
     const HOVER = [
@@ -20007,7 +20011,7 @@ footer.foot, [data-theme="dark"] footer.foot {
       sp.classList.remove('is-in', 'is-out'); void sp.offsetWidth; sp.classList.add(to ? 'is-in' : 'is-out');
       const done = () => { if (to) page.classList.add('is-turned'); else sp.hidden = true; busy = false; if (to) sp.querySelector('.hn-sp-stamp').focus({ preventScroll: true }); else turn.focus({ preventScroll: true }); };
       calm() ? done() : setTimeout(done, 720);
-      try { if (window.__hnSfx) window.__hnSfx('paperSheet'); } catch (e) {}
+      try { if (window.__hnSfx) window.__hnSfx('pageTurn'); } catch (e) {}
     }
     turn.addEventListener('click', () => go(true));
     sp.querySelector('.hn-sp-back').addEventListener('click', () => go(false));
@@ -20016,12 +20020,21 @@ footer.foot, [data-theme="dark"] footer.foot {
   // The toy objects move when used: the flipbook is thumbed when a principle is pressed, the clapper snaps on Capture.
   // (CSS does the moving; this only toggles a class for the length of the animation.)
   (function initToyMotion() {
+    const sfx = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
     const pulse = (card, cls, ms) => { if (!card) return; card.classList.remove(cls); void card.offsetWidth; card.classList.add(cls); setTimeout(() => card.classList.remove(cls), ms); };
     document.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('#pg-animation-toy .motion-preset-btn');
-      if (a) { pulse(a.closest('.playground-scrap-card'), 'is-riffle', 540); return; }
+      if (a) { pulse(a.closest('.playground-scrap-card'), 'is-riffle', 540); sfx('toyBounce'); return; }
       const c = e.target.closest && e.target.closest('#pg-videography-toy #btn-cam-capture');
-      if (c) pulse(c.closest('.playground-scrap-card'), 'is-clap', 440);
+      if (c) { pulse(c.closest('.playground-scrap-card'), 'is-clap', 440); sfx('toyClap'); }
+    }, true);
+    // Draw: the pen scratches when you start a stroke; any of the stamps in that toy lands like a stamp (one sound per stroke)
+    let lastDraw = 0;
+    document.addEventListener('pointerdown', e => {
+      const cv = e.target.closest && e.target.closest('#cvs-draw-pg'); if (!cv || e.button > 0) return;
+      const now = performance.now(); if (now - lastDraw < 700) return; lastDraw = now;
+      const on = document.querySelector('#pg-illustration-toy .rubber-stamp-btn.active');
+      sfx(on && on.dataset.stamp && on.dataset.stamp !== 'pen' ? 'stamp' : 'toyDraw');
     }, true);
   })();
 

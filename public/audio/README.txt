@@ -10,19 +10,29 @@ into this folder. The page plays any that exist, at random, never the same twice
 file it uses the fallback below; a slot with neither stays silent. No code change is needed. Short, mono, peak about
 -3 dBFS, no reverb, 0.2 to 1 second.
 
-  slot            file name           where it plays                                              fallback until you add one
-  paperPrint      paper-print-N       hovering a photo print or a work card, a download card      paper-1/2/3
-  paperSheet      paper-sheet-N       hovering the big lead sheet, the About notebook page        paper-1/2/3
-  paperSlip       paper-slip-N        hovering a taped scrap, sticky note, the ID card             paper-1/2/3
-  tape            tape-N              (planned) tape peeled or pressed                            silent
-  stamp           stamp-N             (planned) a rubber stamp landing when a stamp is earned      silent
-  stickerPeel     sticker-peel-N      (planned) picking up a sticker                              silent
-  stickerPlace    sticker-place-N     (planned) pressing a sticker down                           silent
-  reward          reward-N            (planned) a small chime for a reward                        silent
-  rewardFinal     reward-final-N      (planned) the last stamp                                    silent
+  slot            file name           where it plays                                              files now
+  paperPrint      paper-print-N       hovering a photo print or a work card, a download card      paper-print-1 (polaroid printing)
+  paperSheet      paper-sheet-N       hovering the big lead sheet, the About notebook page        (none: uses paper-1/2/3)
+  paperSlip       paper-slip-N        hovering a taped scrap, sticky note, the ID card             paper-slip-1 (paper slide)
+  pageTurn        page-turn-N         turning the hero notebook's page                             page-turn-1
+  tape            tape-N              tape peeled or pressed (planned)                             tape-1, tape-2 (duct tape)
+  stamp           stamp-N             a rubber stamp: earned stamps, the notebook stamps, and     stamp-1
+                                      any stamp pressed in the Draw toy
+  stickerPeel     sticker-peel-N      picking up a sticker                                         sticker-peel-1, -2 (protective film)
+  stickerPlace    sticker-place-N     pressing a sticker down                                      sticker-place-1 (soft thump)
+  reward          reward-N            a small chime for a reward                                   reward-1
+  rewardFinal     reward-final-N      the last stamp                                               reward-final-1
   drawerOpen      drawer-open-N       the quick-look drawer and the About Studio Desk drawer      drawer-open.mp3
-  drawerClose     drawer-close-N      the same, closing                                           drawer-close.mp3
-  (lamp click)    lamp-click.mp3      the lamp switch                                              silent
+  drawerClose     drawer-close-N      the same, closing                                            drawer-close.mp3
+  toyBounce       toy-bounce-N        Animate: pressing a principle                                toy-bounce-1..3 (cartoon boing)
+  toyClap         toy-clap-N          Capture: the clapper                                         toy-clap-1 (clack)
+  toyDraw         toy-draw-N          Draw: the pen starting a stroke                              toy-draw-1..3 (pencil)
+  (lamp click)    lamp-click.mp3      the lamp switch                                              lamp-click.mp3
+
+The new files were cut, faded and level-matched with ffmpeg (mono, 44.1 kHz, peaks -3 to -8 dBFS) from the
+recordings in assets/sound/, which are the untouched originals: polaroid printing, turn-a-page, paper-slide-short,
+duct-tape-peels, peeling-off-protective-film, stamp, thump2, ui-chime-notification, magic-spell-03, light-switch,
+cartoon_boing, clack and pencil. To use a different section of one, re-cut it from assets/sound/.
 
 Paper hover is deliberately rare now: a mouse only, once per object per 20 seconds, and never more than one paper
 sound every 3.5 seconds anywhere.
