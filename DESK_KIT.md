@@ -425,6 +425,10 @@ page-wide light follows at a slower step (every 300 ms) while dragging and settl
 does not meet the hero's bottom edge. A soft mask on the hero's light pools was tried to hide that edge and made night scrolling drop frames, so it is not used. The nav button is drawn as a lamp
 (`.lamp-ico`, unlit by day, glowing at night) instead of a sun/moon; a click still switches day and night. The lamp can be dragged by day too (then it is the window light that moves, defaults day 12/8 and night 30/36); picking it up no longer switches night on, and the light keeps its place when the mode is switched.
 
+**By day, the window's shadow follows the light.** By day nearly nothing in the lighting depended on where the light is (the day pool is off), so dragging the lamp did next to nothing. The window-frame
+shadow is the day's main light feature, so it now slides with the light (`.hn-key.hn-key-window` in the hero and `html::before` below it: `translate` of 0.085 % of their own size per % the light is moved from home
+(12, 8), inside 10 % of slack). Only the window layer moves, not `.hn-key-lamp`, which shares the `.hn-key` class and already centres on the light itself.
+
 **A video with sound wins.** While any `<video>`/`<audio>` on the page is playing with its sound on (the hero reel after its Sound button, or in the
 lightbox), the room music fades out and the effects go quiet; muting, pausing or the end of the video fades the music back in (`syncDuck` in
 `initRoomSound`, driven by the media events caught at the document, so it needs no per-video wiring).

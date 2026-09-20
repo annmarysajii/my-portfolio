@@ -17435,6 +17435,12 @@ html.hn-lamp-drag body { user-select: none; -webkit-user-select: none; cursor: g
 #themeBtn { cursor: grab; }
 /* (A soft mask on the hero's light pools was tried to hide the hero's bottom edge: it made scrolling at night drop below 60 fps, so it is not used. The lamp's range is limited instead.) */
 
+/* ---- AG. BY DAY, THE WINDOW'S SHADOW FOLLOWS THE LIGHT ----------------------------------------------------------------
+   By day nearly nothing in the lighting depended on where the light is (the day pool is off), so dragging the lamp did next to nothing. The window-frame shadow is the day's
+   main light feature, so it now slides with the light: 0.085 % of its own size per % the light is moved from its home (12, 8), inside 10 % of slack around the hero / the screen. */
+.hn-key.hn-key-window { inset: -10%; translate: calc((var(--light-x) - 12) * .085%) calc((var(--light-y) - 8) * .085%); }
+html::before { inset: -10%; translate: calc((var(--pl-x) - 12) * .085%) calc((var(--pl-y) - 8) * .085%); }
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
