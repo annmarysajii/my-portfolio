@@ -368,6 +368,7 @@ body::after{
 [data-theme="dark"] .aw-i { color: #F0EEF5 !important; }
 </style>
 
+<link rel="stylesheet" href="css/hn-gateway.css?v=1"/>
 </head>
 
 <body>
@@ -420,20 +421,16 @@ body::after{
 
 
 
+<button class="gw-snd" id="soundBtn" type="button" aria-label="Room sound" aria-pressed="false" title="Room sound"><svg class="snd-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="snd-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="snd-meter" aria-hidden="true"><i></i><i></i><i></i></span></button>
 <section id="gw">
 
   <h1 class="gw-q">What are you looking for?</h1>
 
   <div class="gw-opts">
-
-    <button class="gw-opt" onclick="go('anim')">A visual storyteller.<span class="arr">→</span></button>
-
-    <button class="gw-opt" onclick="go('brand')">Someone to elevate our branding.<span class="arr">→</span></button>
-
-    <button class="gw-opt" onclick="go('all')">A multidisciplinary creative.<span class="arr">→</span></button>
-
-    <button class="gw-opt" onclick="go('about')">I want to get to know Annmary.<span class="arr">→</span></button>
-
+    <button class="gw-opt" onclick="go('anim')"><svg class="gw-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/hand/doodles-sprite.svg#dd-runner"/></svg><span class="gw-t">A visual storyteller.</span><span class="gw-d">Animation and film</span><span class="arr" aria-hidden="true">&rarr;</span></button>
+    <button class="gw-opt" onclick="go('brand')"><svg class="gw-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/hand/doodles-sprite.svg#dd-ruler"/></svg><span class="gw-t">Someone to elevate our branding.</span><span class="gw-d">Brand and graphic design</span><span class="arr" aria-hidden="true">&rarr;</span></button>
+    <button class="gw-opt" onclick="go('all')"><svg class="gw-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/hand/doodles-sprite.svg#dd-camera"/></svg><span class="gw-t">A multidisciplinary creative.</span><span class="gw-d">The whole desk</span><span class="arr" aria-hidden="true">&rarr;</span></button>
+    <button class="gw-opt" onclick="go('about')"><svg class="gw-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="assets/hand/doodles-sprite.svg#dd-heart-solid"/></svg><span class="gw-t">I want to get to know Annmary.</span><span class="gw-d">About me</span><span class="arr" aria-hidden="true">&rarr;</span></button>
   </div>
 
 </section>
@@ -567,9 +564,9 @@ function bgFrame(){
 
     const a=s.alpha+(s.lit*.6);
 
-    const color=s.lit>.04 ? `hsla(${s.hue},88%,52%,${a})`
+    const color=s.lit>.04 ? `hsla(${s.hue},92%,64%,${a})`
 
-      :`rgba(17,16,9,${s.alpha})`;
+      :`rgba(244,238,222,${Math.min(.5, s.alpha * 1.6)})`;
 
 
 
@@ -636,81 +633,13 @@ window.toggleMusic=function(){
 
 
 window.go=function(filter){
-
   dest='portfolio.html?f='+filter;
-
   if(pref){location.href=dest;return;}
-
-  const sfx = document.getElementById('warp-sfx');
-
-  if(sfx) sfx.play().catch(e=>console.log('SFX play prevented:',e));
-
-  // Safety net: guarantee navigation even if the canvas animation below
-  // stalls (backgrounded tab, throttled rAF, slow device, etc).
-  let navigated = false;
-  const forceNav = () => { if(!navigated){ navigated = true; location.href = dest; } };
-  const navTimeout = setTimeout(forceNav, 3200);
-
-  document.getElementById('gw').classList.add('out');
-
-  setTimeout(()=>document.getElementById('affirm').classList.add('show'),150);
-
-  setTimeout(()=>{
-
-    document.getElementById('affirm').style.opacity='0';
-
-    wc.classList.add('on');
-
-    const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);
-
-    wStars=Array.from({length:380},()=>({
-
-      x:(Math.random()-.5)*W,y:(Math.random()-.5)*H,z:Math.random()*W,pz:0
-
-    }));
-
-    wStars.forEach(s=>s.pz=s.z);prog=0;
-
-    (function frame(){
-
-      const spd=10+prog*180;
-
-      const bgRGB = (document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark') ? '17,16,9' : '250,248,244'; ctx.fillStyle=`rgba(${bgRGB},${.2+prog*.22})`;
-
-      ctx.fillRect(0,0,W,H);
-
-      wStars.forEach(s=>{
-
-        s.pz=s.z;s.z-=spd;
-
-        if(s.z<=0){s.x=(Math.random()-.5)*W;s.y=(Math.random()-.5)*H;s.z=W;s.pz=s.z;}
-
-        const sx=(s.x/s.z)*W+W/2,sy=(s.y/s.z)*H+H/2;
-
-        const px=(s.x/s.pz)*W+W/2,py=(s.y/s.pz)*H+H/2;
-
-        const br=1-s.z/W;
-
-        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);
-
-        ctx.strokeStyle=`rgba(17,16,9,${.07+br*.88})`;
-
-        ctx.lineWidth=Math.max(.25,br*2.2);ctx.stroke();
-
-      });
-
-      prog+=.009+prog*.018; // ease-in acceleration (cubic feel)
-
-      if(prog<1)requestAnimationFrame(frame);
-
-      else{const isDark = document.body.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark'; const bgHex = isDark ? '#111009' : '#FAF8F4'; ctx.fillStyle=bgHex;ctx.fillRect(0,0,W,H);clearTimeout(navTimeout);setTimeout(forceNav,40);}
-
-    })();
-
-  },1500);
-
+  try{ if(window.__hnSfx) window.__hnSfx('stamp'); }catch(e){}
+  document.getElementById('gw').classList.add('leaving');
+  setTimeout(()=>document.getElementById('affirm').classList.add('show'),260);
+  setTimeout(()=>{ location.href = dest; },1250);
 };
-
 </script>
 
   <script src="scripts/motion.js?v=1787342124"></script>
@@ -813,5 +742,13 @@ setTimeout(() => document.body.classList.add('loaded'), 800); // safety fallback
       }
     });
 </script>
+<script>
+/* the answers answer the hand, like the project cards on the portfolio: a soft thump on hover, a heavier one on press */
+document.querySelectorAll('.gw-opt').forEach(el=>{
+  el.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && window.__hnSfx) window.__hnSfx('drawerStrip',2); });
+  el.addEventListener('pointerdown',e=>{ if(e.button<=0 && window.__hnSfx) window.__hnSfx('drawerStrip',3); });
+});
+</script>
+<script src="js/room-sound.js?v=1" defer></script>
 </body>
 </html>
