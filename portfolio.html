@@ -17594,6 +17594,16 @@ html.hn-lite #hero .hero-foot { margin-bottom: 0; }
   .hn-sp .hn-imp.is-new { animation: none !important; }
 }
 
+/* ---- AO. THE CLOSED PHONE MENU MUST NOT BE CLICKABLE --------------------------------------------------------------------------------- */
+/* Found from a real phone ("ghost clicks" that teleported the page to Illustration, Videography...). On a phone the Work/About/Contact menu is a flyout that
+   is closed with opacity 0 and visibility hidden, but the Work sub-list sets its own visibility: visible and pointer-events: auto, which wins over the parent's
+   hidden. So its five links (Animation, Illustration, Videography, Graphic design, Music) sat, invisible, in the top-right of the screen (about 220 x 320 px under
+   the bar), and any tap there jumped to that section. While the menu is closed nothing inside it can be tapped; the sub-list follows its parent's visibility. */
+@media (max-width: 640px) {
+  #nav:not(.nav-open) .nav-links, #nav:not(.nav-open) .nav-links * { pointer-events: none !important; }
+  #nav:not(.nav-open) .nav-links .nav-work-dropdown { visibility: inherit !important; }
+}
+
 /* ---- O. THE NEXT PAGE OF THE NOTEBOOK: a blank page with rubber stamps (tablet and desktop) ------------------------------- */
 #hero .hn-turn { position: absolute; right: 0; bottom: 0; z-index: 4; appearance: none; border: 0; background: none; cursor: pointer; padding: .7rem 3.6rem 1rem 1.6rem; color: var(--hn-ink-2); font-family: var(--hn-hand); font-size: var(--hn-t4); }
 #hero .hn-turn-t { position: relative; z-index: 1; }
@@ -21346,6 +21356,38 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
       save: id => { const p = list.find(q => q.id === id); if (!p) return; const a = document.createElement('a'); a.href = p.d; a.download = 'annmarys-desk-' + clean(p.cap).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.jpg'; document.body.appendChild(a); a.click(); a.remove(); },
       keep: toy => { const row = document.querySelector(TOYS[toy].body + ' .hn-keep'); return row ? keep(toy, row.querySelector('button'), row.querySelector('.hn-keep-msg')) : null; }
     };
+  })();
+
+  // ================================================================
+  // SCROLL GUARD (phones) -- taps on a phone were sometimes followed by the page leaping to another section (a doodle, the drawer, a
+  // sticker, drawing on the Illustration toy). A tap never means "go somewhere else": only a link to a section does. So on a touch device,
+  // if the page moves by most of a screen within a couple of seconds of a plain tap (a touch that did not drag), and the tap was not on a
+  // link to a section, the page is put back where it was, at once. A real swipe (any touch that moves) is never touched, and neither is
+  // scrolling that carries on after one; nor is a tap on the menu or on a link to a section. The tap-and-jump count is kept in
+  // sessionStorage ('hn-guard') so it can be read later. The old passport screen, whose slots jump to sections, is removed at boot too.
+  // ================================================================
+  (function initScrollGuard() {
+    const dropOld = () => { try { const old = document.getElementById('passport-modal'); if (old) old.remove(); } catch (e) {} };
+    if (document.readyState === 'complete') dropOld(); else addEventListener('load', dropOld);
+    if (!matchMedia('(hover: none)').matches) return;
+    let tapAt = 0, backTo = 0, moved = false, linkAt = -1e9, guarding = false;
+    const now = () => performance.now();
+    addEventListener('touchstart', () => { moved = false; backTo = scrollY; tapAt = 0; }, { passive: true, capture: true });
+    addEventListener('touchmove', () => { moved = true; }, { passive: true, capture: true });
+    addEventListener('touchend', () => { if (!moved) { tapAt = now(); backTo = scrollY; } }, { passive: true, capture: true });
+    // a tap that really is on a link to a section (or in the menu) is allowed to scroll
+    document.addEventListener('click', e => { if (e.target.closest && e.target.closest('a[href^="#"]:not([href="#"]), #nav, .nav, .foot-nav, .disc, .hero-tag-pill, .pill-btn')) linkAt = now(); }, true);
+    addEventListener('scroll', () => {
+      if (!tapAt || guarding) return;
+      const t = now();
+      if (t - tapAt > 2500 || linkAt >= tapAt - 80) return;
+      if (Math.abs(scrollY - backTo) > innerHeight * 0.8) {
+        guarding = true; const y = backTo; tapAt = 0;
+        try { const n = (+sessionStorage.getItem('hn-guard') || 0) + 1; sessionStorage.setItem('hn-guard', String(n)); } catch (e) {}
+        scrollTo({ top: y, behavior: 'instant' });
+        setTimeout(() => { guarding = false; }, 300);
+      }
+    }, { passive: true });
   })();
 
   // 3.5 Mobile nav dropdown (Work/About/Contact off the hamburger).
