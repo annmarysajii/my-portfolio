@@ -472,3 +472,8 @@ nudge it (Shift = 4x), Delete removes it, Esc lets go. Stamps carry an optional 
 Every change (add, move, resize, turn, remove) goes on `hist`, keyed by the mark object (`elOf` is a WeakMap mark -> element, so the saved JSON stays plain
 data), and `undo` steps back through them; after a reload, with no history, undo still takes the last mark off. Pen and marker each have thin / medium / thick
 (three dots by the inks, shown only while drawing), and the line under "Your page" tells you what the current tool does (`hint()`).
+
+**Notebook sounds (Sept 2026).** Three new sound slots in `js/room-sound.js` (`pick`, `key`, `paperGrab`; files in `public/audio/`). Picking up a stamp, the
+pen, the marker or the words tool plays `pick` (an ink plays it at 0.6), and so does a stamp in the Draw toy; every letter typed with the Words tool plays `key`;
+turning the notebook's page plays `paperGrab` (x2.2, the rustle base level is quiet), open and close. Wired in `initStampPage` and `initToyMotion`. The needle drop and
+vinyl crackle that exist in the Reels were left out of the site on purpose. `js/room-sound.js` is now `?v=4` on portfolio, project and index.

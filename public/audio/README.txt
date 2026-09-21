@@ -60,3 +60,9 @@ back in. The autoplaying background loops are muted, so they never trigger it. T
 SCRIBBLE LOOPS (not slots): scribble-pencil.mp3 (5.5 s of steady pencil on paper, from assets/sound/freesound_community-pencil-29272.mp3) and scribble-marker.mp3
 (2 s of one marker stroke, from freesound_community-marker-lineswav-14823.mp3). The page crossfades each one into a seamless loop and plays it while a pen or marker
 stroke is being drawn (notebook page and the Draw toy); loudness and pitch follow the pointer's speed, and a still hand is silent. Levels are in SCRIB in js/room-sound.js.
+
+NOTEBOOK SOUNDS (Sept 2026)
+  pick            pick-1              picking up a stamp, the pen, the marker, the words tool (and softly, an ink); also a stamp in the Draw toy   pick-1 ("take it", freesound_community-take-it-90781, trimmed to 0.6 s)
+  key             key-1..4            a key click for every letter typed with the Words tool                                                   key-1..4 (small clicks made with code, so nothing to license)
+  paperGrab       paper-grab-1        turning the notebook's page, both ways (replaces the generic page turn there)                            paper-grab-1 (soundsforstory-paper-grab-259214, the grab cut from 0.93 s, 0.55 s)
+The originals are in assets/sound/. They follow the same rules as every effect: only when room sound is on, quiet under a video with sound.

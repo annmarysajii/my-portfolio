@@ -41,6 +41,9 @@
       toyBounce:   { own: 'toy-bounce',   fall: [] },              // Animate: a principle played on the ball
       toyClap:     { own: 'toy-clap',     fall: [] },              // Capture: the clapper
       toyDraw:     { own: 'toy-draw',     fall: [] },              // Draw: the pen starting a stroke
+      pick:        { own: 'pick',         fall: [] },              // picking up a stamp, a pen, a marker ("take it")
+      key:         { own: 'key',          fall: [] },              // a key click while typing on the notebook page
+      paperGrab:   { own: 'paper-grab',   fall: [] },              // turning the notebook's page: a real paper grab
       drawerStrip: { own: 'drawer-strip', fall: [] }               // the paper strips in the open drawer: a soft thump
     };
     const NOW_PLAYING = { day: 'Jazz Rainy Lounge, Alex Morgan', night: '2 AM Lofi Chill, Music For Videos' };   // credit, shown in the button's tooltip
@@ -191,7 +194,7 @@
     // fetch. Each kind has its own trim so nothing jumps out over the music, and a fast second press cuts the first
     // one short instead of stacking on it.
     const SLOT_VOL = { paperPrint: .6, paperSheet: .6, paperSlip: .6, pageTurn: .8, tape: .7, stamp: .8, stickerPeel: .6, stickerPlace: .8,
-      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, drawerStrip: .7, click: .8 };
+      reward: .45, rewardFinal: .55, drawerOpen: .7, drawerClose: .7, toyBounce: .45, toyClap: .7, toyDraw: .55, drawerStrip: .7, click: .8, pick: .7, key: .5, paperGrab: .8 };
     const voices = {};
     async function discover(name) {                                       // find and decode every file of one slot
       const sl = SLOTS[name];

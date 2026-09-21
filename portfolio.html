@@ -20685,7 +20685,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
     let held = null, ink = INKS[0][1], ghost = null, tool = null;
     let sel = null, hist = [], sizeI = 1;                 // the selected mark; what can be undone (added, moved, resized, removed); pen and marker thickness
     const elOf = new WeakMap();                           // mark -> its element (marks are saved as plain data, so the elements are kept apart)
-    const sound = n => { try { if (window.__hnSfx) window.__hnSfx(n); } catch (e) {} };
+    const sound = (n, k) => { try { if (window.__hnSfx) window.__hnSfx(n, k); } catch (e) {} };
 
     // The rack and the saved imprints draw with the doodle sprite (~470 KB), so they are built the first time the page is
     // turned to, not at page load: a visitor who never turns the page never downloads it.
@@ -20713,7 +20713,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
     INKS.forEach(([n, c], i) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'hn-sp-ink' + (i === 0 ? ' is-on' : ''); b.style.setProperty('--c', c);
       b.setAttribute('aria-label', n + ' ink'); b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
-      b.addEventListener('click', () => { ink = c; inks.querySelectorAll('.hn-sp-ink').forEach(x => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); if (ghost) ghost.style.color = ink; sp.style.setProperty('--now', ink); });
+      b.addEventListener('click', () => { ink = c; inks.querySelectorAll('.hn-sp-ink').forEach(x => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); if (ghost) ghost.style.color = ink; sp.style.setProperty('--now', ink); sound('pick', .6); });
       inks.appendChild(b);
     });
     sp.style.setProperty('--now', ink);
@@ -20749,7 +20749,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
       if (window.hnRewards && window.hnRewards.cancel) window.hnRewards.cancel();
       held = k; sp.classList.add('is-stamping');
       rack.querySelectorAll('.hn-sp-stamp').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('is-held', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-      ghost = document.createElement('span'); ghost.className = 'hn-sp-ghost'; ghost.style.color = ink; ghost.setAttribute('aria-hidden', 'true'); ghost.innerHTML = svgOf(k); document.body.appendChild(ghost); hint();
+      ghost = document.createElement('span'); ghost.className = 'hn-sp-ghost'; ghost.style.color = ink; ghost.setAttribute('aria-hidden', 'true'); ghost.innerHTML = svgOf(k); document.body.appendChild(ghost); sound('pick'); hint();
     }
     function dropStamp(quiet) {
       if (ghost) { ghost.remove(); ghost = null; }
@@ -20761,7 +20761,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
     function setTool(k) {
       dropStamp(true); closeWordInput(false);
       if (window.hnRewards && window.hnRewards.cancel) window.hnRewards.cancel();
-      tool = tool === k ? null : k; if (tool !== 'move') deselect();
+      tool = tool === k ? null : k; if (tool) sound('pick'); if (tool !== 'move') deselect();
       sp.classList.toggle('is-drawing', tool === 'pen' || tool === 'marker'); sp.classList.toggle('is-typing', tool === 'words'); sp.classList.toggle('is-moving', tool === 'move'); paintSizes(); hint();
       rack.querySelectorAll('.hn-sp-tool').forEach(b => { const on = b.dataset.tool === tool; b.classList.toggle('is-held', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
     }
@@ -20833,7 +20833,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
       const r = canvas.getBoundingClientRect(), x = +(((e.clientX - r.left) / r.width) * 100).toFixed(2), y = +(((e.clientY - r.top) / r.height) * 100).toFixed(2);
       const inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 40; inp.className = 'hn-tx-in'; inp.setAttribute('aria-label', 'Type something on your page, then press Enter');
       inp.style.left = x + '%'; inp.style.top = y + '%'; inp.style.color = ink; inp.style.width = Math.max(90, Math.min(r.width * (1 - x / 100) - 14, 320)) + 'px';
-      canvas.appendChild(inp); wordIn = { el: inp, x, y };
+      canvas.appendChild(inp); wordIn = { el: inp, x, y }; inp.addEventListener('input', () => sound('key'));
       inp.addEventListener('keydown', k => { if (k.key === 'Enter') { k.preventDefault(); closeWordInput(true); } else if (k.key === 'Escape') { k.stopPropagation(); closeWordInput(false); } });
       inp.addEventListener('blur', () => setTimeout(() => closeWordInput(true), 0));
       setTimeout(() => inp.focus(), 0);
@@ -21035,7 +21035,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
       sp.classList.remove('is-in', 'is-out'); void sp.offsetWidth; sp.classList.add(to ? 'is-in' : 'is-out');
       const done = () => { if (to) page.classList.add('is-turned'); else { sp.hidden = true; if (sp.classList.contains('is-fs')) { page.appendChild(sp); sp.classList.remove('is-fs'); rootEl.classList.remove('hn-sp-open'); } } busy = false; if (to) sp.querySelector('.hn-sp-stamp').focus({ preventScroll: true }); else turn.focus({ preventScroll: true }); };
       calm() ? done() : setTimeout(done, 720);
-      try { if (window.__hnSfx) window.__hnSfx('pageTurn'); } catch (e) {}
+      try { if (window.__hnSfx) window.__hnSfx('paperGrab', 2.2); } catch (e) {}
     }
     turn.addEventListener('click', () => go(true));
     sp.querySelector('.hn-sp-back').addEventListener('click', () => go(false));
@@ -21056,6 +21056,8 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
       if (n === 'toyBounce') pulse(e.target.closest('.playground-scrap-card'), 'is-riffle', 540); else pulse(e.target.closest('.playground-scrap-card'), 'is-clap', 440);
       if (performance.now() - soundedAt > 500) sfx(n);
     }, true);
+    // picking up a stamp in the Draw toy sounds like picking one up on the notebook page
+    document.addEventListener('pointerdown', e => { const b = e.target.closest && e.target.closest('#pg-illustration-toy .rubber-stamp-btn'); if (b && e.button === 0) sfx('pick'); }, true);
     // Draw: the pen scratches for as long as it is moving on the sheet (the pencil loop follows the speed of the hand); any of the stamps in that
     // toy lands like a stamp (one sound per press)
     let lastDraw = 0, pen = null;
@@ -24448,6 +24450,6 @@ window.addEventListener('load', () => {
   </div>
 </div>
 
-<script src="js/room-sound.js?v=3" defer></script>
+<script src="js/room-sound.js?v=4" defer></script>
 </body>
 </html>
