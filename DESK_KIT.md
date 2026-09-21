@@ -477,3 +477,9 @@ data), and `undo` steps back through them; after a reload, with no history, undo
 pen, the marker or the words tool plays `pick` (an ink plays it at 0.6), and so does a stamp in the Draw toy; every letter typed with the Words tool plays `key`;
 turning the notebook's page plays `paperGrab` (x2.2, the rustle base level is quiet), open and close. Wired in `initStampPage` and `initToyMotion`. The needle drop and
 vinyl crackle that exist in the Reels were left out of the site on purpose. `js/room-sound.js` is now `?v=4` on portfolio, project and index.
+
+**Section doodles were still hidden; hero night deepened (Sept 2026).** The floating doodles had been "restored" by raising their z-index and opacity, but an older
+`#wrap .desk .sec-bg-canvas { display: none !important }` (from the desk redesign) still hid all five section canvases (height 0); check `display`, not just z-index. The
+rule now also sets `display: block` and `pointer-events: none`, and the five tall sections draw more, larger, stronger doodles than the hero (`const tall` in the doodle
+script). Section AP of the site CSS re-grades the hero at night (desktop, not lite): steeper falloff where the book ends, a warm spill and deeper shadow around the book,
+a stronger mat glow. Measured on the darkest paper: ink 9:1 or better, secondary text 5.6:1 or better.
