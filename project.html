@@ -1304,35 +1304,16 @@ if(bgC){
 })();
 
 window.toggleTheme = function() {
+  if (window.__lightOnly) return;                 // this page's colours are made for the light theme only (see __lightOnly)
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   const next = isDark ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
-
-  // Clear hardcoded inline theme overrides on html element so CSS takes full effect
   const el = document.documentElement;
-  if (next === 'dark') {
-    el.style.removeProperty('--bg');
-    el.style.removeProperty('--surf');
-    el.style.removeProperty('--ink');
-    el.style.removeProperty('--white');
-    el.style.removeProperty('--line');
-  } else {
-    // Re-apply project-specific light colors if applicable
-    const params = new URLSearchParams(window.location.search);
-    const pId = params.get('id');
-    if (pId === 'gobunny') {
-      el.style.setProperty('--bg', '#FFF2F0');
-      el.style.setProperty('--surf', '#FFFFFF');
-      el.style.setProperty('--ink', '#FF3522');
-      el.style.setProperty('--line', 'rgba(255, 53, 34, 0.2)');
-    } else if (pId === 'green-arrow') {
-      el.style.setProperty('--bg', '#EBF4ED');
-      el.style.setProperty('--surf', '#F4F9F5');
-      el.style.setProperty('--ink', '#2B5E39');
-      el.style.setProperty('--line', 'rgba(43, 94, 57, 0.2)');
-    }
-  }
+
+  // the project's own palette belongs to the light theme only (see PROJECT_PALETTES)
+  if (window.__applyProjectPalette) window.__applyProjectPalette(next === 'dark');
+  else if (next === 'dark') { ['--bg', '--surf', '--ink', '--white', '--line'].forEach(k => el.style.removeProperty(k)); }
 
   const icon = document.getElementById('themeIcon');
   if (icon) {
@@ -2739,38 +2720,36 @@ if (id === 'original-tracks') {
     document.documentElement.style.setProperty('--line', 'rgba(255, 255, 255, 0.12)');
     document.body.style.backgroundColor = '#020204';
     document.body.style.color = '#FFFFFF';
-} else if (id === 'acorn-oak') {
-    // The brand's own palette. Cream ground, brown ink: 12.1:1, well clear of AA.
-    document.documentElement.style.setProperty('--bg', '#F8F6F3');
-    document.documentElement.style.setProperty('--surf', '#EFEAE0');
-    document.documentElement.style.setProperty('--accent', '#502506');
-    document.documentElement.style.setProperty('--line', 'rgba(80, 37, 6, 0.16)');
-    // The discipline kicker defaults to the site blue, which fought the brand's
-    // brown and olive. 12.1:1 on this cream ground.
-    document.documentElement.style.setProperty('--blue', '#502506');
-} else if (id === 'gobunny') {
-    // High Readability: Warm airy background, rich charcoal body text, signature strawberry accent
-    document.documentElement.style.setProperty('--bg', '#FFF7F5');
-    document.documentElement.style.setProperty('--surf', '#FFEFEA');
-    document.documentElement.style.setProperty('--accent', '#FF3522');
-    document.documentElement.style.setProperty('--line', 'rgba(255, 53, 34, 0.15)');
-} else if (id === 'green-arrow') {
-    // High Readability: Sage tinted background, rich charcoal body text, deep botanical accent
-    document.documentElement.style.setProperty('--bg', '#F3F8F5');
-    document.documentElement.style.setProperty('--surf', '#E5EFE8');
-    document.documentElement.style.setProperty('--accent', '#243E36');
-    document.documentElement.style.setProperty('--line', 'rgba(36, 62, 54, 0.15)');
-} else if (id === 'dear-friend') {
-    // Sampled straight from the deck: dusty gothic rose ground, near-black warm ink.
-    // Ink on bg: 11.44:1. Burgundy accent on bg: 5.22:1 — clears AA for body text.
-    document.documentElement.style.setProperty('--bg', '#E8CCBD');
-    document.documentElement.style.setProperty('--surf', '#F2E4DC');
-    document.documentElement.style.setProperty('--accent', '#7C3E49');
-    document.documentElement.style.setProperty('--line', 'rgba(124, 62, 73, 0.18)');
-    // The discipline kicker defaults to the site blue, which fought the gothic
-    // rose/burgundy palette. 5.22:1 on this ground.
-    document.documentElement.style.setProperty('--blue', '#7C3E49');
 }
+
+// The brand palettes of the four projects that have their own art direction. They are made for the LIGHT theme (a dusty rose ground, a cream one, ...), so they are
+// applied only there. In the dark theme the page uses the site's own dark colours instead; before this, a stored dark theme kept the pale ground but took the dark theme's
+// pale ink and dark overlay, which left Dear Friend a muddy grey with low-contrast text. The lamp button (toggleTheme, above) calls this too, both ways.
+const PROJECT_PALETTES = {
+  'acorn-oak': {   // The brand's own palette. Cream ground, brown ink: 12.1:1, well clear of AA. The kicker defaults to the site blue, which fought the brand's brown and olive.
+    '--bg': '#F8F6F3', '--surf': '#EFEAE0', '--accent': '#502506', '--line': 'rgba(80, 37, 6, 0.16)', '--blue': '#502506' },
+  'gobunny': {     // High readability: warm airy background, rich charcoal body text, signature strawberry accent
+    '--bg': '#FFF7F5', '--surf': '#FFEFEA', '--accent': '#FF3522', '--line': 'rgba(255, 53, 34, 0.15)' },
+  'green-arrow': { // High readability: sage tinted background, rich charcoal body text, deep botanical accent
+    '--bg': '#F3F8F5', '--surf': '#E5EFE8', '--accent': '#243E36', '--line': 'rgba(36, 62, 54, 0.15)' },
+  'dear-friend': { // Sampled straight from the deck: dusty gothic rose ground, near-black warm ink. Ink on bg 11.44:1; the burgundy accent on bg 5.22:1 (AA for body text).
+    '--bg': '#E8CCBD', '--surf': '#F2E4DC', '--accent': '#7C3E49', '--line': 'rgba(124, 62, 73, 0.18)', '--blue': '#7C3E49' }
+};
+// Dear Friend and Acorn & Oak carry their own hard-coded colours all the way down the page (dark brown / burgundy text on the rose or cream ground, cream cards), so
+// they only work in the light theme: on a dark ground their headings and paragraphs all but disappear. They stay in light whatever theme is stored (this is not saved,
+// so the other pages keep the visitor's choice) and the lamp button is hidden there, because it would only break them. GoBunny and Green Arrow read fine in both.
+window.__lightOnly = ['dear-friend', 'acorn-oak'].indexOf(id) >= 0;
+if (window.__lightOnly) {
+  document.documentElement.setAttribute('data-theme', 'light');
+  const lo = document.createElement('style'); lo.textContent = '#themeBtn{display:none!important}'; document.head.appendChild(lo);
+}
+window.__applyProjectPalette = function (dark) {
+  const el = document.documentElement, pal = PROJECT_PALETTES[id]; if (!pal) return;
+  const all = ['--bg', '--surf', '--accent', '--line', '--blue', '--ink', '--white'];
+  all.forEach(k => el.style.removeProperty(k));
+  if (!dark) Object.keys(pal).forEach(k => el.style.setProperty(k, pal[k]));
+};
+window.__applyProjectPalette(document.documentElement.getAttribute('data-theme') === 'dark');
 
 const rawMedia = (typeof PORTFOLIO_DATA !== 'undefined' && PORTFOLIO_DATA[id]) ? PORTFOLIO_DATA[id] : [];
 const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().includes('image coming soon') && !f.toLowerCase().includes('placeholder'));

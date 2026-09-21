@@ -483,3 +483,10 @@ vinyl crackle that exist in the Reels were left out of the site on purpose. `js/
 rule now also sets `display: block` and `pointer-events: none`, and the five tall sections draw more, larger, stronger doodles than the hero (`const tall` in the doodle
 script). Section AP of the site CSS re-grades the hero at night (desktop, not lite): steeper falloff where the book ends, a warm spill and deeper shadow around the book,
 a stronger mat glow. Measured on the darkest paper: ink 9:1 or better, secondary text 5.6:1 or better.
+
+**Project pages with their own colours, in the dark theme (Sept 2026).** Dear Friend "grayed out" on a phone whenever the stored theme (`localStorage.theme`, set by the
+lamp button on any project page) was dark: the page kept its pale rose ground but took the dark theme's pale ink and dark overlay, so it went muddy grey with low-contrast
+text; toggling back to light also lost the palette. `project.html` now keeps the four palettes (`PROJECT_PALETTES`) in one table, applies them only in the light theme, and the lamp
+button (`toggleTheme`) uses the same `__applyProjectPalette(dark)` both ways. Dear Friend and Acorn & Oak also hard-code light-only colours all the way down the page
+(their headings and paragraphs vanish on a dark ground), so they are kept in light whatever is stored (`__lightOnly`, not saved) and the lamp button is hidden on them. GoBunny and
+Green Arrow read well in both themes and keep the button.
