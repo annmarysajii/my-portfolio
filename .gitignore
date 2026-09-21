@@ -47,3 +47,15 @@ assets/name.svg
 # not referenced by any page. Kept on disk locally, just not git-tracked.
 assets/vidtogif/*.gif
 assets/vidtogif/*.webp
+
+# Dependencies (installed with npm; nothing on the site uses them)
+node_modules/
+
+# Working files that are not part of the site
+_linkedin/
+_to_delete/
+_*-preview*.html
+_doodle-index.html
+graphify-out/
+# original sound recordings the site's small mp3s were cut from (licences are the creators'; the cut files live in public/audio/)
+assets/sound/
