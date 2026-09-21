@@ -30,7 +30,7 @@ file it uses the fallback below; a slot with neither stays silent. No code chang
   drawerStrip     drawer-strip-N      hovering a project card or a paper strip in the drawer: thump drawer-strip-1, -2 (thump)
   toyBounce       toy-bounce-N        Animate: pressing a principle                                toy-bounce-1..3 (cartoon boing)
   toyClap         toy-clap-N          Capture: the clapper                                         toy-clap-1 (clack)
-  toyDraw         toy-draw-N          Draw: the pen starting a stroke                              toy-draw-1..3 (pencil)
+  toyDraw         toy-draw-N          (unused now: the pen sounds through scribble-pencil, below)  toy-draw-1..3 (pencil)
   (lamp click)    lamp-click.mp3      the lamp switch                                              lamp-click.mp3
 
 LEVELS AND TIMING (portfolio.html, initRoomSound)
@@ -56,3 +56,7 @@ freesound_community-drawer-41055.mp3. Check each file's licence before the site 
 VIDEOS WIN: while any video or audio element on the page is playing with its sound on (the reel, once its Sound button is pressed, or the
 expanded reel), the room music fades out over half a second and the little effects stay quiet. When it is muted, paused or ends, the music fades
 back in. The autoplaying background loops are muted, so they never trigger it. The speaker button's tooltip says why while it is paused.
+
+SCRIBBLE LOOPS (not slots): scribble-pencil.mp3 (5.5 s of steady pencil on paper, from assets/sound/freesound_community-pencil-29272.mp3) and scribble-marker.mp3
+(2 s of one marker stroke, from freesound_community-marker-lineswav-14823.mp3). The page crossfades each one into a seamless loop and plays it while a pen or marker
+stroke is being drawn (notebook page and the Draw toy); loudness and pitch follow the pointer's speed, and a still hand is silent. Levels are in SCRIB in js/room-sound.js.

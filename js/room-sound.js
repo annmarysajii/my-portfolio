@@ -208,6 +208,7 @@
     async function preloadAll() {
       if (preloading) return; preloading = true;
       for (const n of Object.keys(SLOTS).concat('click')) { if (!on) break; try { await discover(n); } catch (e) {} }
+      for (const k of Object.keys(SCRIB)) { if (!on) break; try { await scribbleReady(k); } catch (e) {} }
     }
     function pickSync(name) {                                             // a buffer key, null (nothing to play) or undefined (not decoded yet)
       if (!SLOTS[name]) return bufs[name] ? name : undefined;
@@ -249,6 +250,52 @@
     ['play', 'playing', 'pause', 'ended', 'volumechange', 'emptied'].forEach(ev => document.addEventListener(ev, syncDuck, true));   // media events do not bubble, but they can be caught on the way down
     window.__hnRoom = { loopGain: () => (loop && ctx ? +loop.g.gain.value.toFixed(3) : null), rainGain: () => (rain && ctx ? +rain.g.gain.value.toFixed(3) : null), ducked: () => ducked };   // (for testing)
     window.__hnLampClick = () => once('click', num('--snd-ui', .3));
+    // ---- scribbling: a pencil or a marker on the page sounds for exactly as long as the hand moves. Each kind is one short steady cut
+    // (public/audio/scribble-pencil.mp3, scribble-marker.mp3) turned into a seamless loop here (its tail is crossfaded into its head),
+    // played while the stroke lasts. The level and the pitch follow the speed of the pointer, so a slow careful line is quiet and a quick
+    // one rasps; a hand held still is silent. window.__hnScribble.start('pencil'|'marker') on press, .move(pxPerMs) on every move, .end() on release.
+    const SCRIB = { pencil: { file: 'scribble-pencil', vol: .5 }, marker: { file: 'scribble-marker', vol: .7 } };
+    const scribBuf = {};
+    let scrib = null;
+    function seamless(b, xfSec) {                                        // a copy of b whose end runs straight back into its start
+      const n = b.length, xf = Math.min(Math.floor(xfSec * b.sampleRate), Math.floor(n / 3)), len = n - xf, out = ctx.createBuffer(b.numberOfChannels, len, b.sampleRate);
+      for (let c = 0; c < b.numberOfChannels; c++) {
+        const s = b.getChannelData(c), d = out.getChannelData(c);
+        for (let i = 0; i < len; i++) d[i] = s[i];
+        for (let i = 0; i < xf; i++) { const a = (i / xf) * Math.PI / 2; d[i] = s[i] * Math.sin(a) + s[len + i] * Math.cos(a); }   // equal-power crossfade
+      }
+      return out;
+    }
+    async function scribbleReady(kind) {
+      if (scribBuf[kind] || !SCRIB[kind]) return scribBuf[kind] || null;
+      const b = await load(SCRIB[kind].file, true); if (b && !scribBuf[kind]) scribBuf[kind] = seamless(b, 0.18);
+      return scribBuf[kind] || null;
+    }
+    function scribEnd() {
+      const v = scrib; if (!v) return; scrib = null; clearInterval(v.t);
+      const t = ctx.currentTime;
+      try { v.g.gain.cancelScheduledValues(t); v.g.gain.setValueAtTime(v.g.gain.value, t); v.g.gain.linearRampToValueAtTime(0, t + 0.07); v.s.stop(t + 0.09); } catch (e) {}
+      setTimeout(() => { try { v.g.disconnect(); } catch (e) {} }, 200);
+    }
+    window.__hnScribble = {
+      start(kind) {
+        scribEnd();
+        if (!on || !ctx || ctx.state !== 'running' || ducked || !SCRIB[kind]) return;
+        const b = scribBuf[kind]; if (!b) { scribbleReady(kind); return; }         // (first ever stroke before it decoded: the next one sounds)
+        const s = ctx.createBufferSource(); s.buffer = b; s.loop = true;
+        const g = ctx.createGain(); g.gain.value = 0; s.connect(g); g.connect(master);
+        s.start(0, Math.random() * b.duration);
+        const v = scrib = { s, g, kind, at: performance.now() };
+        v.t = setInterval(() => { if (scrib !== v) return; const idle = performance.now() - v.at; if (idle > 4000) return scribEnd(); if (idle > 90) g.gain.setTargetAtTime(0, ctx.currentTime, 0.05); }, 60);
+      },
+      move(speed) {
+        const v = scrib; if (!v || !ctx) return; v.at = performance.now();
+        const k = Math.max(0, Math.min(1, speed / 1.4)), t = ctx.currentTime;
+        v.g.gain.setTargetAtTime(speed < 0.02 ? 0 : SCRIB[v.kind].vol * (0.3 + 0.7 * k), t, 0.03);
+        v.s.playbackRate.setTargetAtTime(0.9 + 0.22 * k, t, 0.05);
+      },
+      end() { scribEnd(); }
+    };
     // the page's foley, for anything else to call by slot name (silent unless room sound is on)
     window.__hnSfx = (name, k) => once(name, (/^(paper|page)/.test(name) ? num('--snd-rustle', .13) : num('--snd-ui', .3)) * (k || 1));
     // Project cards and the paper strips in the open drawer answer the hand: a soft thump every time the pointer comes onto one (not once

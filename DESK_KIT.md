@@ -455,3 +455,20 @@ lightbox), the room music fades out and the effects go quiet; muting, pausing or
 **Die-cut doodles are solid.** The project doodles are line drawings, so `assets/hand/project-doodles-fill.svg` holds a solid
 silhouette of each (gaps closed, holes filled), drawn in white under the ink wherever a doodle is cut out over the mat.
 Regenerate it (`pd_fill.py` in the build scripts) whenever a doodle is added or redrawn.
+
+**Scribble sound (Sept 2026).** A pencil or marker on the page no longer plays a one-shot; it sounds for as long as the hand moves.
+`public/audio/scribble-pencil.mp3` (5.5 s, cut from `assets/sound/freesound_community-pencil-29272.mp3`) and `scribble-marker.mp3` (2 s, cut from
+`freesound_community-marker-lineswav-14823.mp3`, Pixabay) are turned into seamless loops at run time (`seamless()` in `js/room-sound.js`: the tail
+is crossfaded into the head, equal power, 0.18 s). `window.__hnScribble.start('pencil'|'marker')` on press, `.move(pxPerMs)` on every move, `.end()`
+on release: the level and pitch follow the pointer's speed and a hand held still is silent (a 60 ms watchdog fades it after 90 ms without a move).
+Used by the notebook's Pen and Marker and by the Illustration toy's Sketch Pen (wired in `initToyMotion`). A stroke no longer plays the `stamp`
+sound when it ends: only a rubber stamp does (`push()` in `initStampPage`). The `toyDraw` slot is now unused. Re-cut a loop with ffmpeg from the originals
+in `assets/sound/` if a different section is wanted.
+
+**The notebook page: move, select, change (Sept 2026).** A fourth tool, Move (four-arrow icon), joins Pen / Marker / Words; with nothing in hand any mark can be
+grabbed and dragged directly. Hit-testing is geometric (`hit()`: distance to the polyline for strokes, the element's box for stamps and words), so thin
+pen lines are easy to catch. A selected mark gets a dashed box and a small tag (smaller / bigger / turn / remove; strokes only have remove); the arrow keys
+nudge it (Shift = 4x), Delete removes it, Esc lets go. Stamps carry an optional `z` (scale, CSS `--z`), words their `fs`, both honoured by "take my page".
+Every change (add, move, resize, turn, remove) goes on `hist`, keyed by the mark object (`elOf` is a WeakMap mark -> element, so the saved JSON stays plain
+data), and `undo` steps back through them; after a reload, with no history, undo still takes the last mark off. Pen and marker each have thin / medium / thick
+(three dots by the inks, shown only while drawing), and the line under "Your page" tells you what the current tool does (`hint()`).
