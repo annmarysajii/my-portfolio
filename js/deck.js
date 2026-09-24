@@ -26,6 +26,7 @@
     `<div class="cas-window"><span class="cas-reel"></span><span class="cas-reel is-r"></span></div>` +
     `<div class="cas-foot"></div><i></i><i></i><i></i><i></i></div>`;
 
+  deck.querySelector('.deck-body').appendChild(deck.querySelector('.deck-tapes'));   // the tapes lie beside the player
   const shelf = deck.querySelector('.deck-tapes'), slot = deck.querySelector('.deck-slot'), vis = deck.querySelector('.deck-vis');
   const cap = deck.querySelector('.deck-cap'), nowT = deck.querySelector('.deck-now-t'), time = deck.querySelector('.deck-time');
   const bPlay = deck.querySelector('.deck-play'), bEject = deck.querySelector('.deck-eject'), cta = deck.querySelector('.deck-cta');

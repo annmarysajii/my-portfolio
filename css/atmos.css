@@ -355,3 +355,41 @@ html.atmos #music .grid:not(:has(.card:not(.atm-hide))) { display: none !importa
   html.atmos #passport-dock .passport-dock-icon { width: 30px; height: 38px; }
   html.atmos #passport-dock .passport-dock-counter { display: none !important; }
 }
+
+/* ---- 11. LEAD CARDS, SHORTER -------------------------------------------------------------------- */
+/* The process strip was the tallest part of every lead (and a tall stack on phones). It is now a row
+   of thumbnails with a number and a title; each step's caption shows in the viewer when it is picked up. */
+html.atmos #wrap .sec.desk .lc-proc { margin-top: 1.1rem !important; padding-top: .9rem !important; }
+html.atmos #wrap .sec.desk .lc-step-d { display: none !important; }
+html.atmos #wrap .sec.desk .lc-step-n { margin: .4rem 0 0 !important; display: inline !important; }
+html.atmos #wrap .sec.desk .lc-step-t { display: inline !important; margin-left: .35rem; font-size: .88rem !important; }
+html.atmos #wrap .sec.desk .lc-thumb { aspect-ratio: 16 / 10 !important; height: auto !important; object-fit: cover !important; }
+/* the specs: label and value pairs, two to a row */
+html.atmos #wrap .sec.desk .lc-spec { grid-template-columns: 1fr 1fr !important; gap: .45rem 1.4rem !important; margin-top: .9rem !important; padding-top: .75rem !important; }
+html.atmos #wrap .sec.desk .lc-spec > div { grid-template-columns: 4.6rem 1fr !important; }
+html.atmos #wrap .sec.desk .lc-scene img, html.atmos #wrap .sec.desk .lc-scene video { max-height: 46vh !important; }
+html.atmos #wrap .sec.desk .lc-body { margin-top: .9rem !important; }
+html.atmos #wrap .sec.desk .lc-foot { padding-top: .7rem !important; margin-top: .9rem !important; }
+
+/* the tape deck: the tapes lie beside the player, so the deck is one screen */
+.atm-deck .deck-body { grid-template-columns: minmax(0, 1.5fr) minmax(250px, .7fr) !important; grid-template-areas: "screen player" "screen tapes"; align-items: start; }
+.atm-deck .deck-screen { grid-area: screen; }
+.atm-deck .deck-player { grid-area: player; }
+.atm-deck .deck-body > .deck-tapes { grid-area: tapes; margin: 0 !important; gap: 1rem !important; justify-content: space-between; flex-wrap: nowrap; }
+.atm-deck .deck-body > .deck-tapes .cas-btn { width: calc(50% - .5rem); }
+.atm-deck .deck-body > .deck-tapes .cas-note { font-size: .85rem; }
+
+@media (max-width: 820px) {
+  html.atmos #wrap .sec.desk .lc-spec { grid-template-columns: 1fr !important; }
+  /* phones: the process is one swipeable row, not a stack */
+  html.atmos #wrap .sec.desk .lc-steps { display: flex !important; grid-template-columns: none !important; gap: .7rem !important; overflow-x: auto !important; scroll-snap-type: x mandatory; padding-bottom: .5rem; }
+  html.atmos #wrap .sec.desk .lc-step { flex: 0 0 42% !important; scroll-snap-align: start; }
+  .atm-deck .deck-body { grid-template-columns: 1fr !important; grid-template-areas: "screen" "player" "tapes"; }
+  .atm-deck .deck-body > .deck-tapes { justify-content: center; }
+}
+@media (max-width: 820px) {
+  html.atmos #wrap .sec.desk .lc-scene { order: -1; }                 /* phones: the work first, then the words */
+  html.atmos #wrap .sec.desk .lc-blurb { font-size: .95rem !important; line-height: 1.55 !important; }
+  .atm-deck .deck-player { max-width: 250px !important; }
+  .atm-deck .deck-body > .deck-tapes .cas-btn { width: calc(50% - .5rem); max-width: 170px; }
+}
