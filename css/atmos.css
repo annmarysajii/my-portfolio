@@ -1,0 +1,357 @@
+/* ATMOSPHERE LAYER. Loaded by portfolio.html on every visit; everything is scoped to html.atmos.
+   One idea: the lamp is a curator's light. It pools on the work you are looking at, the desk around
+   it sits back, and anything on the desk can be picked up and brought close. The hero keeps its own
+   rig (.hn-grade-*); this carries the same lamp down the page. See js/atmos.js. */
+
+/* ---- 1. THE LAMP ------------------------------------------------------------------------------------ */
+/* The lamp lights the room, never the work: this layer sits UNDER everything (z-index -1 paints above the
+   mat but below every sheet and print), so the desk surface gets the warm pool and the dark edges while
+   every piece of art stays at full brightness wherever it is on screen. js/atmos.js eases the pool
+   toward what you are reading. */
+html.atmos .atm-lamp {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: var(--atm-on, 0);
+  --lx: 50%; --ly: 50%; --lw: 60vw; --lh: 60vh;
+  --atm-p: 255, 214, 150;      /* the warm light on the desk */
+  --atm-pa: .10;
+  --atm-s: 24, 20, 14;        /* the desk falling away from the lamp */
+  --atm-sa: .30;
+  background:
+    radial-gradient(ellipse var(--lw) var(--lh) at var(--lx) var(--ly),
+      rgba(var(--atm-p), var(--atm-pa)) 0%, rgba(var(--atm-p), calc(var(--atm-pa) * .5)) 45%, rgba(var(--atm-s), 0) 70%, rgba(var(--atm-s), var(--atm-sa)) 100%);
+}
+html.atmos[data-theme="dark"] .atm-lamp {
+  --atm-p: 255, 190, 110;      /* tungsten */
+  --atm-pa: .20;
+  --atm-s: 2, 6, 14;
+  --atm-sa: .62;
+}
+
+/* every lit object reads its own light direction (js sets --sx/--sy per object), so the shadow tokens
+   are redeclared here: a custom property resolved on :root would keep :root's direction */
+html.atmos #wrap .sec.desk .lc,
+html.atmos #wrap .sec.desk .grid .card,
+html.atmos #wrap .sec.desk .lc-scene img,
+html.atmos #wrap .sec.desk .lc-thumb {
+  --hn-edge:
+    inset calc(var(--sx) * 1.8px) calc(var(--sy) * 1.8px) 0 rgba(255, 255, 255, .72),
+    inset calc(var(--sx) * -1.3px) calc(var(--sy) * -1.3px) 0 rgba(var(--hn-shadow-rgb), .11);
+  --hn-stack:
+    calc(var(--sx) * 1.4px) calc(var(--sy) * 1.6px) 0 #e6e1d4,
+    calc(var(--sx) * 2.8px) calc(var(--sy) * 3.2px) 0 #d4cebe;
+  --hn-sh-raised:
+    calc(var(--sx) * 1.2px) calc(var(--sy) * 1.8px) 2px rgba(var(--hn-shadow-rgb), calc(.42 * var(--sh-k))),
+    calc(var(--sx) * 6px) calc(var(--sy) * 8px) 12px rgba(var(--hn-shadow-rgb), calc(.24 * var(--sh-k))),
+    calc(var(--sx) * 18px) calc(var(--sy) * 24px) 38px rgba(var(--hn-tint-rgb), calc(.2 * var(--sh-k)));
+  --hn-sh-book:
+    calc(var(--sx) * 1px) calc(var(--sy) * 1.6px) 2px rgba(var(--hn-shadow-rgb), calc(.5 * var(--sh-k))),
+    calc(var(--sx) * 9px) calc(var(--sy) * 12px) 20px rgba(var(--hn-shadow-rgb), calc(.3 * var(--sh-k))),
+    calc(var(--sx) * 26px) calc(var(--sy) * 34px) 60px rgba(var(--hn-tint-rgb), calc(.26 * var(--sh-k)));
+}
+
+/* ---- 2. THE WORK, BIGGER ---------------------------------------------------------------------------- */
+html.atmos #wrap .sec.desk .con { max-width: min(1340px, 92vw) !important; }
+
+/* the lead: the artwork takes the larger share, beside the words, never taller than about half the screen.
+   The full-size view is the viewer (pick it up); the page itself stays quick to scroll. */
+html.atmos #wrap .sec.desk .lc-body { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr) !important; align-items: center !important; }
+html.atmos #wrap .sec.desk .lc-scene img {
+  width: 100% !important; height: auto !important; max-height: 52vh; aspect-ratio: auto !important; object-fit: contain !important;
+  border-radius: 2px !important; box-shadow: var(--hn-sh-raised) !important; cursor: zoom-in;
+}
+html.atmos #wrap .sec.desk .lc-scene figcaption { max-width: 60ch; }
+html.atmos #wrap .sec.desk .lc-blurb { font-size: 1.02rem !important; max-width: 62ch; }
+html.atmos #wrap .sec.desk .lc-thumb { cursor: zoom-in; }
+
+/* the rest: three prints to a row as before, a little larger (the sheet is wider), fewer words on each */
+html.atmos #wrap .sec.desk .grid { gap: 2.4rem 2rem !important; }
+html.atmos #wrap .sec.desk .grid .card .card-img { cursor: zoom-in; }
+html.atmos #wrap .sec.desk .grid .card .card-role { display: none !important; }
+html.atmos #wrap .sec.desk .grid .card .ov { display: none !important; }
+@media (max-width: 820px) { html.atmos #wrap .sec.desk .lc-body { grid-template-columns: 1fr !important; } }
+
+/* ---- 3. NOTHING SITS ON THE WORK -------------------------------------------------------------------- */
+html.atmos .pd-peek { z-index: 0 !important; }
+html.atmos #wrap .sec.desk .card-img, html.atmos #wrap .sec.desk .lc-scene { position: relative; z-index: 1; }
+/* the passport's ticket always landed on work; the booklet on the desk is the invitation now (it nudges) */
+html.atmos #hn-ticket { display: none !important; }
+
+/* ---- 4. THE PASSPORT IS A THING ON THE DESK --------------------------------------------------------- */
+html.atmos #passport-dock {
+  background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+  padding: 0 !important; gap: 0 !important; display: grid !important; place-items: center; width: auto !important; height: auto !important;
+  right: 22px !important; bottom: 18px !important;
+}
+html.atmos #passport-dock::before, html.atmos #passport-dock::after { display: none !important; }
+html.atmos #passport-dock .passport-dock-icon {
+  width: 62px; height: 76px; rotate: -9deg; transition: rotate 450ms var(--hn-ease), translate 450ms var(--hn-ease);
+  filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, .35)) drop-shadow(4px 8px 10px rgba(0, 0, 0, .28));
+}
+html.atmos #passport-dock .passport-dock-icon svg { width: 100% !important; height: 100% !important; }
+html.atmos #passport-dock .passport-dock-label { display: none !important; }
+/* the count is written on a slip tucked under the cover */
+html.atmos #passport-dock .passport-dock-counter {
+  position: absolute; left: -46px; bottom: 6px; rotate: 5deg; z-index: -1;
+  padding: .2rem .55rem .15rem 1.1rem; border: 0 !important; border-radius: 1px !important;
+  background: #fbf8ef !important; color: #1e2733 !important;
+  font-family: var(--hn-hand) !important; font-size: 1.05rem !important; line-height: 1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 2px 5px 8px rgba(0, 0, 0, .18) !important;
+}
+html.atmos #passport-dock:hover .passport-dock-icon, html.atmos #passport-dock:focus-visible .passport-dock-icon { rotate: -3deg; translate: 0 -5px; }
+html.atmos #passport-dock.is-inviting { animation: none !important; }
+html.atmos #passport-dock.is-inviting .passport-dock-icon { animation: atmNudge 5.5s var(--hn-ease) 3s infinite; }
+@keyframes atmNudge { 0%, 88%, 100% { rotate: -9deg; translate: 0 0; } 92% { rotate: -4deg; translate: 0 -6px; } 96% { rotate: -11deg; translate: 0 0; } }
+
+/* ---- 5. THE TOY'S CONTROLS ARE STAMPS --------------------------------------------------------------- */
+/* same object as the notebook's stamps (.hn-sp-face / .hn-sp-handle): press one to play that principle */
+html.atmos #pg-animation .motion-preset-bar { display: flex !important; justify-content: center; gap: 1.1rem !important; flex-wrap: nowrap !important; padding-top: .3rem; }
+html.atmos #pg-animation .motion-preset-btn {
+  appearance: none; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important;
+  display: grid !important; justify-items: center; gap: 0; width: auto !important; min-width: 0 !important;
+  color: var(--hn-red, #b8322a); cursor: pointer; transition: translate 250ms var(--hn-ease);
+}
+html.atmos #pg-animation .motion-preset-btn .hn-sp-face { width: 50px; height: 50px; padding: 6px; rotate: 180deg; }
+html.atmos #pg-animation .motion-preset-btn .hn-sp-face svg { rotate: 180deg; }
+html.atmos #pg-animation .motion-preset-btn .hn-sp-handle { width: 22px; height: 22px; order: -1; margin: 0 0 -1px; border-radius: 12px 12px 4px 4px; }
+html.atmos #pg-animation .motion-preset-btn .atm-lbl {
+  margin-top: .35rem; font-family: var(--hn-hand); font-size: .95rem; line-height: 1.05; color: var(--hn-ink-2, #3a3530); max-width: 7.5em; text-align: center;
+}
+html.atmos #pg-animation .motion-preset-btn:hover, html.atmos #pg-animation .motion-preset-btn:focus-visible { translate: 0 -3px; }
+html.atmos #pg-animation .pg-btn.motion-preset-btn.active, html.atmos #pg-animation .pg-btn.motion-preset-btn:hover { background: none !important; box-shadow: none !important; color: var(--hn-red, #b8322a) !important; }
+html.atmos #pg-animation .motion-preset-btn.active { translate: 0 3px; }
+html.atmos #pg-animation .motion-preset-btn.active .hn-sp-face { background: #fbe9dc; }
+html.atmos #pg-animation .motion-preset-btn.active .atm-lbl { color: var(--hn-red, #b8322a); }
+html.atmos #pg-animation .motion-preset-btn:focus-visible { outline: 2px solid #f5de4a; outline-offset: 4px; }
+
+/* ---- 6. PICK IT UP ---------------------------------------------------------------------------------- */
+.atm-view {
+  position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; color: #1e2733;
+}
+.atm-view::backdrop { background: rgba(9, 15, 28, .66); backdrop-filter: blur(3px) saturate(.85); }
+.atm-view[open] { display: grid; place-items: center; }
+.atm-stage { position: relative; display: grid; justify-items: center; gap: 1.2rem; max-width: 92vw; }
+/* the print: a paper mount around the work, lit from the upper left like the rest of the desk */
+.atm-print {
+  position: relative; padding: clamp(12px, 1.6vw, 22px); border-radius: 2px;
+  background-color: #f7f2e7;
+  background-image:
+    linear-gradient(132deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 45%, rgba(70, 52, 28, .06)),
+    url("../assets/svg-opt/paper-light-tile.webp");
+  background-size: auto, 400px 400px;
+  box-shadow:
+    inset 1.5px 1.5px 0 rgba(255, 255, 255, .8), inset -1px -1px 0 rgba(40, 30, 20, .12),
+    2px 3px 3px rgba(0, 0, 0, .3), 14px 22px 34px rgba(0, 0, 0, .34), 40px 60px 90px rgba(4, 10, 24, .45);
+  rotate: -.6deg; transform-origin: 50% 50%; will-change: transform;
+}
+.atm-print img, .atm-print video {
+  display: block; max-width: min(88vw, 1500px); max-height: calc(100dvh - 15rem); width: auto; height: auto;
+  object-fit: contain; background: #0c1626;
+}
+/* the label: a slip taped under the print */
+.atm-label {
+  position: relative; display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem 1.4rem; justify-content: center;
+  max-width: min(88vw, 900px); padding: .7rem 1.4rem .6rem; rotate: .5deg;
+  background: #fbf8ef; border-radius: 1px;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, .28), 6px 10px 18px rgba(0, 0, 0, .25);
+}
+.atm-label::before {
+  content: ''; position: absolute; top: -12px; left: 50%; width: 88px; height: 24px; margin-left: -44px; rotate: -2deg;
+  background: url("../assets/svg-opt/tape-mustard.webp") center / 100% 100%; opacity: .92;
+}
+.atm-title { margin: 0; font-family: var(--hn-hand, cursive); font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.05; color: #1e2733; }
+.atm-desc { margin: 0; font-size: .95rem; line-height: 1.45; color: #4a4239; max-width: 60ch; }
+.atm-cta { font-family: var(--hn-hand, cursive); font-size: 1.15rem; color: #b8322a; text-decoration: underline; text-underline-offset: .2em; }
+.atm-cta:hover, .atm-cta:focus-visible { background: linear-gradient(transparent 62%, rgba(245, 222, 74, .75) 62%); }
+.atm-count { font-family: var(--hn-hand, cursive); font-size: 1rem; color: #6b6258; font-variant-numeric: tabular-nums; }
+/* leafing: paper tabs at the edges, and the way back */
+.atm-nav {
+  position: fixed; top: 50%; translate: 0 -50%; appearance: none; border: 0; cursor: pointer;
+  width: 58px; height: 86px; display: grid; place-items: center; padding: 0;
+  background: #fbf8ef; color: #1e2733; border-radius: 2px;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, .3), 6px 10px 18px rgba(0, 0, 0, .25);
+  transition: translate 300ms var(--hn-ease, ease), rotate 300ms var(--hn-ease, ease);
+}
+.atm-nav svg { width: 26px; height: 26px; }
+.atm-prev { left: 18px; rotate: -3deg; } .atm-next { right: 18px; rotate: 3deg; }
+.atm-prev:hover, .atm-prev:focus-visible { translate: -3px -50%; rotate: -5deg; }
+.atm-next:hover, .atm-next:focus-visible { translate: 3px -50%; rotate: 5deg; }
+.atm-close {
+  position: fixed; top: 18px; right: 22px; appearance: none; border: 0; background: none; cursor: pointer;
+  font-family: var(--hn-hand, cursive); font-size: 1.3rem; color: #fbf8ef; text-decoration: underline; text-underline-offset: .22em; padding: .3rem .4rem;
+}
+.atm-close:hover, .atm-close:focus-visible { color: #f5de4a; }
+.atm-nav:focus-visible, .atm-close:focus-visible, .atm-cta:focus-visible { outline: 2px solid #f5de4a; outline-offset: 3px; }
+.atm-nav[hidden] { display: none; }
+@media (max-width: 700px) {
+  .atm-nav { width: 44px; height: 64px; top: auto; bottom: 16px; translate: none; }
+  .atm-prev:hover, .atm-next:hover { translate: none; }
+  .atm-print img, .atm-print video { max-height: calc(100dvh - 17rem); }
+}
+@media (max-width: 700px) {
+  html.atmos #passport-dock { right: 10px !important; bottom: 10px !important; }
+  html.atmos #passport-dock .passport-dock-icon { width: 40px; height: 50px; }
+  html.atmos #passport-dock .passport-dock-counter { left: -34px; bottom: 2px; font-size: .85rem !important; padding-left: .8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.atmos #passport-dock.is-inviting .passport-dock-icon { animation: none; }
+  html.atmos #pg-animation .motion-preset-btn, .atm-nav, html.atmos #passport-dock .passport-dock-icon { transition: none; }
+}
+
+/* ---- 7. MUSIC GETS A LEAD: THE SOUND LAB ------------------------------------------------------------ */
+/* Same .lc component, a fifth instance. On the desk every lead takes its section's pen (#wrap .desk .lc reads
+   --acc-ink), so it needs no palette of its own: Music's purple, as the other four take theirs. */
+.atm-only { display: none !important; }
+html.atmos .atm-only { display: block !important; }
+html.atmos .atm-hide { display: none !important; }
+html.atmos #wrap .sec.desk .lc-scene video {
+  display: block; width: 100%; height: auto; max-height: 76vh; object-fit: contain;
+  border-radius: 2px; background: #0c1626; box-shadow: var(--hn-sh-raised); cursor: zoom-in;
+}
+/* two cards left in Music's grid: side by side, one a little lower */
+html.atmos #music .grid .card:not(.atm-hide):nth-child(2) { margin-top: 3rem !important; }
+
+/* ---- 8. READABLE SMALL TEXT ------------------------------------------------------------------------- */
+/* Measured floor on a 1920 laptop: reading copy >= ~14px, tracked uppercase labels >= ~12.8px (they read
+   larger for their spacing). Decorative UI inside the toys (REC, LUT tags, stamp text) is left as drawn. */
+html.atmos #wrap .sec.desk .lc-step-t { font-size: .95rem !important; }
+html.atmos #wrap .sec.desk .lc-step-d,
+html.atmos #wrap .sec.desk .lc-scene figcaption { font-size: .9rem !important; line-height: 1.5 !important; }
+html.atmos #wrap .sec.desk .lc-kicker,
+html.atmos #wrap .sec.desk .lc-proc-hd,
+html.atmos #wrap .sec.desk .lc-spec dt { font-size: .8rem !important; }
+html.atmos #wrap .sec.desk .lc-sub,
+html.atmos #wrap .sec.desk .lc-meta { font-size: .86rem !important; }
+html.atmos #wrap .sec.desk .lc-spec dd { font-size: .92rem !important; }
+html.atmos #wrap .sec.desk .card-role { font-size: .95rem !important; }
+html.atmos #wrap .sec.desk .card .tool { font-size: 1rem !important; }
+html.atmos #wrap .sec.desk .badge { font-size: .8rem !important; }
+html.atmos .margin-note-inner { font-size: .9rem !important; }
+html.atmos #about .bp-inv-sub, html.atmos #about .bp-inv-chip, html.atmos #about .bp-kicker,
+html.atmos .polaroid-cap, html.atmos .polaroid-sub { font-size: max(.88rem, 1em) !important; }
+
+/* ---- 9. THE TAPE DECK (the Music lead) -------------------------------------------------------------- */
+/* Pick a tape up off the desk; it drops into the deck, the reels turn, and the screen shows the picture
+   the music was made for. js/deck.js. The sheet stays the lead-card paper; the deck and tapes are objects
+   lying on it. */
+html.atmos #music .grid:not(:has(.card:not(.atm-hide))) { display: none !important; }
+.atm-deck .deck-body {
+  margin-top: clamp(1rem, 2.2vw, 1.5rem);
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(250px, .62fr); gap: clamp(1.2rem, 2.6vw, 2.2rem); align-items: center;
+}
+.atm-deck .deck-screen { margin: 0; }
+.atm-deck .deck-vis {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px; background: #0d0b12;
+  box-shadow: var(--hn-sh-raised); display: grid; place-items: center;
+}
+.atm-deck .deck-vis > video { position: absolute; inset: 0; width: 100%; height: 100%; }
+.atm-deck .deck-vis > video { object-fit: contain; background: #000; }
+.atm-deck .deck-idle { position: relative; margin: 0; padding: 1.5rem; text-align: center; font-family: var(--hn-hand); font-size: clamp(1.5rem, 2.3vw, 2rem); line-height: 1.15; color: #f3eee2; }
+.atm-deck .deck-idle span { display: block; margin-top: .5rem; font-size: .62em; color: #c9c2d6; }
+.atm-deck .deck-cap { margin-top: .85rem; max-width: 62ch; min-height: 1.4em; font-size: .92rem; line-height: 1.5; color: var(--lc-dim); }
+
+/* the player: a portable deck, brushed aluminium, a smoked door over the tape */
+.atm-deck .deck-player {
+  position: relative; padding: 16px 16px 14px; border-radius: 12px; rotate: 1.2deg;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 3px),
+    linear-gradient(160deg, #d9d9dc, #a9aab0 55%, #8d8e95);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .7), inset -1px -1px 0 rgba(0, 0, 0, .25), var(--hn-sh-raised);
+}
+.atm-deck .deck-door {
+  position: relative; aspect-ratio: 1.58; border-radius: 8px; padding: 7% 6%;
+  background: linear-gradient(160deg, #2b2733, #15131b);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .7), inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+.atm-deck .deck-door::after {
+  content: ""; position: absolute; inset: 0; border-radius: 8px; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, .16) 0 18%, transparent 30% 100%);
+}
+.atm-deck .deck-slot { position: relative; width: 100%; height: 100%; }
+.atm-deck .deck-slot .cas { position: absolute; inset: 0; width: 100%; box-shadow: 0 2px 5px rgba(0, 0, 0, .5); }
+.atm-deck .deck-now { margin: .7rem 0 .5rem; display: flex; justify-content: space-between; align-items: baseline; gap: .6rem;
+  padding: .35rem .6rem .25rem; background: #fbf8ee; border-radius: 1px; box-shadow: var(--hn-sh-flat);
+  font-family: var(--hn-hand); font-size: 1.1rem; line-height: 1.1; color: #1e2733; }
+.atm-deck .deck-time { font-variant-numeric: tabular-nums; color: #5a5347; }
+.atm-deck .deck-keys { display: flex; gap: 10px; }
+.atm-deck .deck-key {
+  flex: 1; height: 42px; appearance: none; border: 0; border-radius: 5px; cursor: pointer; display: grid; place-items: center;
+  background: linear-gradient(180deg, #3a3842, #24222a); color: #e9e5dc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 3px 0 #111016, 0 5px 8px rgba(0, 0, 0, .35);
+  transition: translate 90ms ease, box-shadow 90ms ease;
+}
+.atm-deck .deck-key svg { width: 20px; height: 20px; fill: currentColor; }
+.atm-deck .deck-key:active:not(:disabled) { translate: 0 3px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 0 0 #111016, 0 2px 3px rgba(0, 0, 0, .35); }
+.atm-deck .deck-key:disabled { opacity: .45; cursor: default; }
+.atm-deck .deck-key:focus-visible, .atm-deck .cas-btn:focus-visible { outline: 2px solid #f5de4a; outline-offset: 3px; }
+.atm-deck .deck-play .k-pause { display: none; }
+.atm-deck.is-playing .deck-play .k-play { display: none; }
+.atm-deck.is-playing .deck-play .k-pause { display: inline; }
+
+/* the tapes lying on the sheet */
+.atm-deck .deck-tapes { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1.2rem, 3vw, 2.6rem); margin: clamp(1.6rem, 3vw, 2.4rem) 0 .4rem; }
+.atm-deck .cas-btn { position: relative; appearance: none; border: 0; padding: 0; background: none; cursor: pointer; display: grid; justify-items: center; gap: .55rem; width: clamp(180px, 22vw, 240px);
+  rotate: var(--r, 0deg); transition: translate 350ms var(--hn-ease), rotate 350ms var(--hn-ease); }
+.atm-deck .cas-btn:hover, .atm-deck .cas-btn:focus-visible { translate: 0 -6px; rotate: calc(var(--r, 0deg) * .4); }
+.atm-deck .cas-btn.is-out .cas { visibility: hidden; }
+.atm-deck .cas-btn.is-out::before {
+  content: ""; position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 1.58; border-radius: 9px;
+  border: 1.5px dashed rgba(30, 39, 51, .3);
+}
+.atm-deck .cas-note { font-family: var(--hn-hand); font-size: 1.02rem; line-height: 1.15; color: var(--hn-ink-2, #3d4858); text-align: center; max-width: 16em; }
+
+/* a cassette: moulded shell, screws, a J-card label in her hand, and a window with two reels */
+.cas {
+  --shell: #2a2731; --band: #EC4E9B;
+  position: relative; width: 100%; aspect-ratio: 1.58; border-radius: 9px; overflow: hidden;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--shell) 85%, white), var(--shell) 60%);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .22), inset -1px -1px 0 rgba(0, 0, 0, .35), var(--hn-sh-raised, 0 4px 10px rgba(0, 0, 0, .3));
+}
+.cas-label { position: absolute; left: 7%; right: 7%; top: 8%; height: 60%; border-radius: 4px; background: #fbf8ee; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06); }
+.cas-label::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 26%; background: var(--band); border-radius: 0 0 4px 4px; }
+.cas-title { position: absolute; left: 11%; right: 18%; top: 10%; font-family: var(--hn-hand); font-size: clamp(.95rem, 1.3vw, 1.2rem); line-height: 1; color: #1e2733; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cas-side { position: absolute; right: 10%; top: 10%; font-family: var(--hn-hand); font-size: .8rem; line-height: 1; color: #6e665b; }
+.cas-window {
+  position: absolute; left: 24%; right: 24%; top: 30%; height: 24%; border-radius: 30px;
+  background: linear-gradient(180deg, rgba(20, 16, 26, .94), rgba(40, 34, 48, .92)); box-shadow: inset 0 1px 3px rgba(0, 0, 0, .7);
+  display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
+}
+.cas-reel { position: relative; height: 84%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #ebe5d8 0 20%, #3b3542 21% 28%, #6d5f4d 29% 100%); }
+.cas-reel::after { content: ""; position: absolute; inset: 29%; border-radius: 50%;
+  background: conic-gradient(#ebe5d8 0 12%, transparent 12% 33%, #ebe5d8 33% 45%, transparent 45% 66%, #ebe5d8 66% 78%, transparent 78%); }
+.cas-reel.is-r { background: radial-gradient(circle, #ebe5d8 0 20%, #3b3542 21% 28%, #6d5f4d 29% 60%, transparent 61%); }
+.cas i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: rgba(0, 0, 0, .35); box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .2); }
+.cas i:nth-of-type(1) { left: 3%; top: 5%; } .cas i:nth-of-type(2) { right: 3%; top: 5%; } .cas i:nth-of-type(3) { left: 3%; bottom: 6%; } .cas i:nth-of-type(4) { right: 3%; bottom: 6%; }
+.cas-foot { position: absolute; left: 22%; right: 22%; bottom: 0; height: 17%; background: rgba(0, 0, 0, .2); clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%); }
+.atm-deck.is-playing .deck-slot .cas-reel { animation: casSpin 1.6s linear infinite; }
+@keyframes casSpin { to { rotate: 360deg; } }
+
+@media (max-width: 820px) {
+  .atm-deck .deck-body { grid-template-columns: 1fr; }
+  .atm-deck .deck-player { max-width: 360px; margin: 0 auto; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atm-deck.is-playing .deck-slot .cas-reel { animation: none; }
+  }
+
+
+/* ---- 10. FINAL PASS ------------------------------------------------------------------------------- */
+/* the tape deck at rest shows the two films it holds, dimmed, instead of an empty black screen */
+.atm-deck .deck-idle-art { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.atm-deck .deck-idle-art img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.38) saturate(.85); }
+.atm-deck .deck-idle-art img + img { border-left: 2px solid #0d0b12; }
+.atm-deck .deck-idle { text-shadow: 0 2px 14px rgba(0, 0, 0, .8); }
+
+/* phones: prints two to a row (a page half as long), the passport a small booklet that stays out of the text */
+@media (max-width: 600px) {
+  html.atmos #wrap .sec.desk .grid { grid-template-columns: 1fr 1fr !important; gap: 1.2rem .9rem !important; }
+  html.atmos #wrap .sec.desk .grid .card { rotate: 0deg !important; margin-top: 0 !important; }
+  html.atmos #wrap .sec.desk .grid .card .card-img { width: calc(100% - 12px) !important; margin: 6px 6px 0 !important; }
+  html.atmos #wrap .sec.desk .grid .card .card-body { padding: .5rem .55rem .6rem !important; }
+  html.atmos #wrap .sec.desk .grid .card .card-name { font-size: 1.05rem !important; line-height: 1.1 !important; }
+  html.atmos #wrap .sec.desk .grid .card .card-tools { display: none !important; }
+  html.atmos #wrap .sec.desk .grid .card .badge { display: none !important; }
+  html.atmos #passport-dock { right: 6px !important; bottom: 8px !important; }
+  html.atmos #passport-dock .passport-dock-icon { width: 30px; height: 38px; }
+  html.atmos #passport-dock .passport-dock-counter { display: none !important; }
+}

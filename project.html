@@ -1015,6 +1015,10 @@ html.has-custom-cursor #star-cursor {
 
 <!-- The desk's language for every project page except the three with their own brand direction. -->
 <script>(function(){var id='';try{id=new URLSearchParams(location.search).get('id')||'';}catch(e){}if(['gobunny','green-arrow','acorn-oak'].indexOf(id)<0)document.documentElement.classList.add('hn-proj');})();</script>
+<script>/* the three brand pages keep their own look, with a thread back to the desk (css/atmos-proj.css) */
+(function(){var id='';try{id=new URLSearchParams(location.search).get('id')||'';}catch(e){}
+if(['gobunny','green-arrow','acorn-oak'].indexOf(id)>-1){document.documentElement.classList.add('atmos-brand');var l=document.createElement('link');l.rel='stylesheet';l.href='css/atmos-proj.css';document.head.appendChild(l);
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.nav .nav-back').forEach(function(a){if(a.closest('.nav'))a.lastChild.textContent=' ← back to the desk';});});}})();</script>
 <style>
 /* the room-sound button (js/room-sound.js): speaker icons, and the little level meter that appears while it plays */
 #soundBtn .snd-on { display: none; }
@@ -4753,10 +4757,10 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
               const tracks = [
                 { 
                   file: 'assets/portfolio-data/Original demo tracks/Club got boots (2).m4a', 
-                  video: null,
+                  video: 'assets/portfolio-data/music_video/clubgotboots_stream.mp4',   // stock club footage cut to the song's bars (the song is muxed in)
                   name: 'Club Got Boots', 
                   genre: 'club', 
-                  tag: '128 BPM', 
+                  tag: '118 BPM', 
                   color: '#00FF66',
                   glow: 'rgba(0, 255, 102, 0.5)'
                 },
@@ -5415,7 +5419,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     rawTreble = (tSum / 140) / 255.0;
                   } else if (isPlaying) {
                     // Musical Fallback
-                    const bpm = track.genre === 'club' ? 128 : (track.genre === 'pop' ? 118 : 84);
+                    const bpm = track.genre === 'club' ? 117.5 : (track.genre === 'pop' ? 118 : 84);
                     const beatPeriod = 60 / bpm;
                     const phase = (cTime % beatPeriod) / beatPeriod;
                     rawBass = (phase < 0.15) ? 0.75 : Math.max(0.08, Math.pow(1 - phase, 2.0) * 0.6);
@@ -5480,7 +5484,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     // tuned data was effectively never reached in practice.
                     if (isPlaying && window.TRACK_SPECTRUM && window.TRACK_SPECTRUM['club']) {
                       const cData = window.TRACK_SPECTRUM['club'];
-                      const fIdx = Math.floor(audio.currentTime * cData.fps);
+                      const fIdx = Math.floor(cTime * cData.fps);
                       if (cData.frames && fIdx < cData.frames.length) {
                         const f = cData.frames[fIdx];
                         airEnergy = (f[0] || 0) * 1.5;
@@ -5575,6 +5579,18 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     }
                     const buildTension = Math.min(1, clubSubRiseRate * 9);
 
+                    // The music video: club footage cut to the song's bar grid, with a small punch-in on every kick.
+                    // Until it can play, the drawn club (js/rave.js) stands in; the ring below is the last fallback.
+                    if (bgVideo && track.video && bgVideo.readyState >= 2) {
+                      const vW = bgVideo.videoWidth || 1280, vH = bgVideo.videoHeight || 720;
+                      const punch = prefersReducedMotion ? 1 : 1 + kickPunch * 0.03;
+                      const sc = Math.max(W / vW, H / vH) * punch, sW = vW * sc, sH = vH * sc;
+                      ctx.drawImage(bgVideo, (W - sW) / 2, (H - sH) / 2, sW, sH);
+                    } else if (window.ClubRave && window.ClubRave.draw(ctx, W, H, dpr, {
+                      t: cTime, playing: isPlaying, gain: activeGain, calm: prefersReducedMotion,
+                      e: { sub: subEnergy, bass: bassEnergy, mid: midEnergy, lead: leadEnergy, hat: hatEnergy, air: airEnergy },
+                      kick: kickPunch, isKick: isDynamicKick, drop: dropEvent, tension: buildTension, active: activeCount
+                    })) { /* drawn */ } else {
                     // 4. BROKEN-RING LIGHT TUNNEL -- a symmetric ring of glowing
                     // arcs, not six independent beams fanning off-screen. The
                     // six-beam, six-color version above photographed as busy and
@@ -5806,6 +5822,7 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
                     vignette.addColorStop(1, 'rgba(3, 2, 6, 0.6)');
                     ctx.fillStyle = vignette;
                     ctx.fillRect(0, 0, W, H);
+                    }
                   }
 
                   else if (track.genre === 'experimental') {
@@ -6351,6 +6368,36 @@ const media = rawMedia.filter(f => typeof f === 'string' && !f.toLowerCase().inc
 
   <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
   <script src="scripts/track_spectrum.js?v=20260824"></script>
+  <script src="js/rave.js"></script>
+  <script>
+  /* Sound Lab: while a track plays and the visitor is not touching anything, the heading, the deck and the key hints
+     fade away so the room behind them gets the whole screen, like a video going fullscreen. Any pointer move, tap,
+     scroll or key brings them straight back. */
+  (function () {
+    if (!/[?&]id=original-tracks/.test(location.search)) return;
+    var css = document.createElement('style');
+    css.textContent =
+      'body.dj-studio-mode .dj-hud-header, body.dj-studio-mode .dj-deck-wrapper, body.dj-studio-mode .keyboard-hints, body.dj-studio-mode .ph-foot, body.dj-studio-mode .nav { transition: opacity .7s cubic-bezier(.2,.7,.2,1), translate .7s cubic-bezier(.2,.7,.2,1); }' +
+      'body.dj-stage .dj-hud-header, body.dj-stage .keyboard-hints, body.dj-stage .ph-foot, body.dj-stage .nav { opacity: 0; pointer-events: none; }' +
+      'body.dj-stage .dj-deck-wrapper { opacity: 0; translate: 0 24px; pointer-events: none; }' +
+      '.dj-stage-hint { position: fixed; left: 50%; bottom: 22px; translate: -50% 0; z-index: 50; padding: .4rem .9rem; border-radius: 30px; font: 600 .78rem/1 "General Sans", system-ui, sans-serif; letter-spacing: .04em; color: rgba(255,255,255,.75); background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .7s; }' +
+      'body.dj-stage .dj-stage-hint { opacity: 1; }' +
+      '@media (prefers-reduced-motion: reduce) { body.dj-studio-mode .dj-hud-header, body.dj-studio-mode .dj-deck-wrapper, body.dj-studio-mode .keyboard-hints, body.dj-studio-mode .nav { transition: none; } }';
+    document.head.appendChild(css);
+    var hint = document.createElement('div'); hint.className = 'dj-stage-hint'; hint.textContent = 'move to show the deck';
+    document.body.appendChild(hint);
+    var idle = 0;
+    var playing = function () { return [].some.call(document.querySelectorAll('audio, video'), function (m) { return !m.paused && !m.ended && m.currentTime > 0 && !m.muted; }); };
+    function wake() {
+      document.body.classList.remove('dj-stage');
+      clearTimeout(idle);
+      idle = setTimeout(function () { if (playing()) document.body.classList.add('dj-stage'); }, 2800);
+    }
+    ['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, wake, { passive: true }); });
+    document.addEventListener('play', wake, true);
+    document.addEventListener('pause', function () { if (!playing()) { clearTimeout(idle); document.body.classList.remove('dj-stage'); } }, true);
+  })();
+  </script>
   <script src="scripts/data.js?v=1787342124"></script>
   <script src="scripts/motion.js?v=1787342124"></script>
   <script src="https://unpkg.com/lucide@latest"></script>

@@ -17742,6 +17742,15 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
 #soundBtn .snd-meter i:nth-child(3) { height: calc(3px + var(--lvl, 0) * 9.5px); }
 @media (prefers-reduced-motion: reduce) { #soundBtn .snd-meter i { transition: none; } }
 </style>
+<script>
+/* Atmosphere layer: the lamp, the pick-it-up viewer, the tape deck. css/atmos.css, js/atmos.js, js/deck.js
+   (everything they style is scoped to html.atmos) */
+document.documentElement.classList.add('atmos');
+(function () {
+  var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'css/atmos.css'; document.head.appendChild(l);
+  addEventListener('DOMContentLoaded', function () { ['js/atmos.js', 'js/deck.js'].forEach(function (f) { var s = document.createElement('script'); s.src = f; document.body.appendChild(s); }); });
+})();
+</script>
 </head>
 <body>
 <!-- TACTILE FILM & PAPER GRAIN OVERLAY (ORGANIC ARTIST TEXTURE) -->
@@ -19291,6 +19300,41 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
     </div>
    </div>
   </div>
+  <!-- Music's lead: the tape deck (js/deck.js). The two cards it replaces in the grid below carry .atm-hide. -->
+  <article class="lc atm-only atm-deck" id="tape-deck">
+    <div class="lc-head">
+      <p class="lc-kicker">Lead project &middot; Music, and the picture it plays under</p>
+      <h3 class="lc-title lc-title-text">The tape deck</h3>
+      <p class="lc-sub">A film score &middot; original tracks</p>
+    </div>
+
+    <div class="deck-body">
+      <figure class="deck-screen">
+        <div class="deck-vis" aria-live="polite">
+          <div class="deck-idle-art" aria-hidden="true"><img src="assets/projects/tapes/score-poster.webp" alt=""><img src="assets/projects/tapes/club-poster.webp" alt=""></div>
+          <p class="deck-idle">Pick a tape up off the desk.<br><span>Each one plays with the picture it was made for.</span></p>
+        </div>
+        <figcaption class="deck-cap"></figcaption>
+      </figure>
+
+      <div class="deck-player">
+        <div class="deck-door" aria-hidden="true"><div class="deck-slot"></div></div>
+        <p class="deck-now"><span class="deck-now-t">no tape in</span><span class="deck-time" aria-hidden="true">0:00</span></p>
+        <div class="deck-keys">
+          <button type="button" class="deck-key deck-play" disabled aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="k-play" d="M8 5.5v13l10.5-6.5z"/><path class="k-pause" d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg></button>
+          <button type="button" class="deck-key deck-eject" disabled aria-label="Eject the tape"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 8H5zM5 16h14v3H5z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="deck-tapes" role="group" aria-label="Tapes on the desk"></div>
+
+    <div class="lc-foot">
+      <p class="lc-meta">Composed and produced by Annmary</p>
+      <a class="lc-cta deck-cta" data-dock-avoid href="project.html?id=short-film-score">Open the case study <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </article>
+
   <div class="grid">
 
 
@@ -19313,7 +19357,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
 
 
 
-   <article class="card rv d1">
+   <article class="card rv d1 atm-hide">
 
     <a href="project.html?id=short-film-score" class="card-img">
 
@@ -19329,7 +19373,7 @@ html.hn-sp-open, html.hn-sp-open body { overflow: hidden; }
 
 
 
-   <article class="card rv d2">
+   <article class="card rv d2 atm-hide">
 
     <a href="project.html?id=original-tracks" class="card-img">
 

@@ -1,0 +1,40 @@
+/* ATMOSPHERE PASS (prototype) for the three brand case studies: acorn-oak, gobunny, green-arrow.
+   Loaded by project.html only for those three, only with the prototype on (html.atmos-brand).
+   The brand keeps the whole page. The desk keeps one thread: the boxwood ruler as a thin strip along the
+   top edge, and the way back is a taped paper note in Annmary's hand, the same objects as the desk's. */
+
+@font-face { font-family: 'Annmary Hand'; src: url('../assets/hand/annmary-hand.woff2?v=2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+
+/* the ruler, 12px of it, above whatever the brand does with its nav */
+html.atmos-brand .nav::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 12px; pointer-events: none; z-index: 2;
+  background:
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .7) 0 1.3px, transparent 1.3px 100px) left top / 100% 9px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .6) 0 1.1px, transparent 1.1px 20px) left top / 100% 6px no-repeat,
+    repeating-linear-gradient(90deg, rgba(30, 39, 51, .45) 0 1px, transparent 1px 4px) left top / 100% 3px no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, .3), rgba(120, 88, 34, .16)),
+    #EBD9A6;
+  box-shadow: 0 1px 0 rgba(96, 66, 22, .45), 0 2px 5px rgba(46, 34, 20, .22);
+}
+html.atmos-brand .nav { padding-top: calc(12px + .6rem) !important; }
+
+/* the way back: a paper note, taped, in her hand */
+html.atmos-brand .nav .nav-back {
+  position: relative;
+  font-family: 'Annmary Hand', 'Segoe Print', cursive !important; font-size: 1.2rem !important; font-weight: 400 !important; letter-spacing: 0 !important;
+  padding: .32rem .95rem .26rem !important; border: 0 !important; border-radius: 1px !important;
+  background: #FBF8EE !important; color: #1E2733 !important; backdrop-filter: none !important;
+  box-shadow: inset 1.4px 1.6px 0 rgba(255, 255, 255, .72), 0 1px 2px rgba(46, 34, 20, .3), 1px 3px 7px rgba(46, 34, 20, .2) !important;
+  rotate: -2deg; transition: rotate 200ms cubic-bezier(.2, .7, .2, 1), translate 200ms cubic-bezier(.2, .7, .2, 1) !important;
+}
+html.atmos-brand .nav .nav-back::before {
+  content: ""; position: absolute; top: -9px; left: 50%; width: 46px; height: 17px; margin-left: -23px; rotate: 4deg;
+  background: url("../assets/svg-opt/tape-mustard.webp") center / 100% 100%; opacity: .92; pointer-events: none;
+}
+html.atmos-brand .nav .nav-back svg, html.atmos-brand .nav .nav-back i { display: none !important; }
+html.atmos-brand .nav .nav-back:hover, html.atmos-brand .nav .nav-back:focus-visible { rotate: 0deg; translate: 0 -1px; background: #FBF8EE !important; color: #A8281F !important; }
+html.atmos-brand .nav .nav-back:focus-visible { outline: 2px solid #A8281F; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { html.atmos-brand .nav .nav-back { transition: none !important; } }
+html.atmos-brand .nav .nav-back { white-space: nowrap; }
+@media (max-width: 520px) { html.atmos-brand .nav .nav-back { font-size: 1.02rem !important; padding: .28rem .7rem .22rem !important; } }
+@media (max-width: 520px) { html.atmos-brand .nav .nav-back { font-size: .92rem !important; padding: .26rem .6rem .2rem !important; margin-right: 4px; } }
